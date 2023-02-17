@@ -18,4 +18,3 @@ public partial class AppDbContext : DbContext
     public DbSet<Price> Prices { get; set; }
     public DbSet<UnitOfMeasure> UnitsOfMeasure { get; set; }
 }
-
