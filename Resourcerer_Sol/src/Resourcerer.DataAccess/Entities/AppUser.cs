@@ -1,0 +1,6 @@
+﻿namespace Resourcerer.DataAccess.Entities;
+public class AppUser : EntityBase
+{
+    public string? Name { get; set; }
+    public string? Claims { get; set; }
+}
