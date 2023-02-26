@@ -14,7 +14,6 @@ public static class Login
         }
 
         public UserDto Dto { get; }
-        public RSAParameters PrivateKey { get; }
     }
 
     public class Handler : IRequestHandler<Command, Dictionary<string, string>>
