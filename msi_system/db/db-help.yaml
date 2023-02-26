@@ -1,0 +1,4 @@
+serveCommand: .\pocketbase serve --http="127.0.0.1:8090"
+credentials:
+  email: admin@admin.com
+  password: adminadmin
