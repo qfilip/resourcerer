@@ -54,3 +54,4 @@ testem.log
 Thumbs.db
 obj
 /msi_system/client/.vscode
+/msi_system/db/pocketbase.exe
