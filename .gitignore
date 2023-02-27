@@ -55,3 +55,8 @@ Thumbs.db
 obj
 /msi_system/client/.vscode
 /msi_system/db/pocketbase.exe
+/msi_system/db/pb_migrations
+/msi_system/db/pb_migrations
+/msi_system/client/public/build/bundle.css
+/msi_system/client/public/build/bundle.js.map
+/msi_system/db/pb_data
