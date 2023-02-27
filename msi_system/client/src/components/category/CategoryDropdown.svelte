@@ -13,7 +13,7 @@
     });
 
 
-    let expanded = false;
+    let expanded = true;
     let selectedCategoryId = '';
     let childCategories = allCategories.filter(x => x.parentCategoryId === category.id);
 

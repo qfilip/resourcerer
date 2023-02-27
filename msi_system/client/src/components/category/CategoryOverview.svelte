@@ -26,18 +26,37 @@
 </h2>
 
 <section>
-    <div>
+    <div class="dropdowns">
+        <h3>Tree</h3>
         {#each mainCategories as ctg}
             <CategoryDropdown category={ctg} allCategories={categories} />
         {/each}
     </div>
+    <div class="actions">
+        <h3>Actions</h3>
+        <button>
+            <i class="las la-plus"></i>
+        </button>
+        <button>
+            <i class="las la-chart-line"></i>
+        </button>
+        <button>
+            <i class="las la-trash"></i>
+        </button>
+    </div>
     <div>
-        <CategoryDetails category={selectedCategory} />
+        <h3>Info</h3>
+        <div>
+            Composites: 0
+        </div>
+        <div>
+            Elements: 0
+        </div>
     </div>
 </section>
 
 <style>
-    h2 {
+    h2, h3 {
         text-align: center;
     }
 
@@ -45,15 +64,29 @@
         margin: 1rem;
         
         display: flex;
-        justify-content: center;
+        justify-content: space-evenly;
         align-items: center;
     }
 
     section > div {
-        margin: 2rem;
-        width: 30%;
-        border: .1rem groove lightgrey;
         min-height: 50vh;
         overflow-y: auto;
+    }
+
+    .dropdowns {
+        margin: 2rem;
+    }
+
+    .actions > button {
+        font-size: 4rem;
+        height: 7rem;
+        width: 7rem;
+        color: var(--color-black);
+        background-color: transparent;
+    }
+
+    .actions > button:hover {
+        color: var(--color-red);
+        background-color: var(--color-black);
     }
 </style>
