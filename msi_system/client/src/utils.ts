@@ -1,12 +1,15 @@
-import type ICategory from "./interfaces/ICategory";
-import type IComposite from "./interfaces/IComposite";
-import type ICompositeSoldEvent from "./interfaces/ICompositeSoldEvent";
-import type IElement from "./interfaces/IElement";
-import type IElementPurchasedEvent from "./interfaces/IElementPurchasedEvent";
-import type IEntityBase from "./interfaces/IEntityBase";
-import type IExcerpt from "./interfaces/IExcerpt";
-import type IPrice from "./interfaces/IPrice";
-import type IUnitOfMeasure from "./interfaces/IUnitOfMeasure";
+import type ICategory from "./interfaces/dbModels/ICategory";
+import type IComposite from "./interfaces/dbModels/IComposite";
+import type ICompositeSoldEvent from "./interfaces/dbModels/ICompositeSoldEvent";
+import type IElement from "./interfaces/dbModels/IElement";
+import type IElementPurchasedEvent from "./interfaces/dbModels/IElementPurchasedEvent";
+import type IEntityBase from "./interfaces/dbModels/IEntityBase";
+import type IExcerpt from "./interfaces/dbModels/IExcerpt";
+import type IPrice from "./interfaces/dbModels/IPrice";
+import type IUnitOfMeasure from "./interfaces/dbModels/IUnitOfMeasure";
+
+import PocketBase from 'pocketbase';
+
 
 export interface IDatabase {
     categories: ICategory[];
@@ -19,13 +22,21 @@ export interface IDatabase {
     excerpts: IExcerpt[];
 }
 
-export function mkEntity<T extends IEntityBase>(retn: () => T) {
-    const now = new Date();
-    const t = retn();
+function makeId(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
+}
 
-    t.id = Math.random().toString(16).substring(2);
-    t.createdAt = now;
-    t.modifiedAt = now;
+export function mkEntity<T extends IEntityBase>(retn: () => T) {
+    const t = retn();
+    t.id = makeId(15);
 
     return t;
 }
@@ -106,8 +117,9 @@ export function seedDbMock() {
     const waters = mkCategory('Waters', bar);
     const veggies = mkCategory('Veggies', bar);
     const cocktails = mkCategory('Cocktails', bar);
+    const tikiCocktails = mkCategory('Tiki', cocktails);
 
-    const categories = [bar, spirits, ales, waters, veggies, cocktails];
+    const categories = [bar, spirits, ales, waters, veggies, cocktails, tikiCocktails];
 
     // units of measure
     const liter = mkUnitOfMeasure('Liter', 'l');
@@ -190,4 +202,35 @@ export function seedDbMock() {
     };
 
     return db;
+}
+
+export async function seedDbAsync() {
+    const pb = new PocketBase('http://127.0.0.1:8090');
+    const dbMock = seedDbMock();
+
+    const authData = await pb.admins.authWithPassword('admin@admin.com', 'adminadmin');
+
+    await seedCollection('categories', dbMock.categories, pb);
+    await seedCollection('unitsOfMeasure', dbMock.unitsOfMeasure, pb);
+    await seedCollection('elements', dbMock.elements, pb);
+    await seedCollection('composites', dbMock.composites, pb);
+    await seedCollection('prices', dbMock.prices, pb);
+    await seedCollection('elementPurchasedEvents', dbMock.purchases, pb);
+    await seedCollection('excerpts', dbMock.excerpts, pb);
+
+    pb.authStore.clear();
+}
+
+async function seedCollection(collectionName: string, items: any[], pb: PocketBase) {
+    for(let item of items) {
+        try {
+            console.log(`seeding: ${collectionName}/${JSON.stringify(item)}`)
+            await pb.collection(collectionName).create(item);
+        }
+        catch(error) {
+            let itemJson = JSON.stringify(item, null, 2);
+            console.log(`failed to create item in collection ${collectionName}, item: ${itemJson}`);
+            console.log(`Error: ${error}`);
+        }
+    }
 }

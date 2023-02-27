@@ -1,5 +1,5 @@
 export default interface IEntityBase {
     id: string;
-    createdAt: Date;
-    modifiedAt: Date;
+    created: Date;
+    updated: Date;
 }

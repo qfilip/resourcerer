@@ -187,7 +187,7 @@
         "required": true,
         "unique": false,
         "options": {
-          "min": 2,
+          "min": 1,
           "max": 7,
           "pattern": ""
         }
@@ -388,7 +388,7 @@
   },
   {
     "id": "zgfhj7eiweeqpgu",
-    "name": "elementPurchasedEvent",
+    "name": "elementPurchasedEvents",
     "type": "base",
     "system": false,
     "schema": [
@@ -440,7 +440,7 @@
   },
   {
     "id": "8f7yus10tv383k4",
-    "name": "compositeSoldEvent",
+    "name": "compositeSoldEvents",
     "type": "base",
     "system": false,
     "schema": [
