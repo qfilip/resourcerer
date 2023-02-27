@@ -2,7 +2,7 @@
     import { createEventDispatcher } from 'svelte';
 
     const dispatch = createEventDispatcher();
-    let expanded = true;
+    let expanded = false;
     
     const buttons = [
         { text: 'Categories', icon: 'las la-clipboard-list' },

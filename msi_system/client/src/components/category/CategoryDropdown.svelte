@@ -43,7 +43,9 @@
 
 <style>
     .dd-button {
+        font-size: 1rem;
         margin: .2rem .2rem;
+        padding: 0 .2rem;
         text-align: start;
         border: none;
         transition: none;

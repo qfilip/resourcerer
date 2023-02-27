@@ -1,6 +1,6 @@
-import  Home from '../components/home/Home.svelte';
-import  Login from '../components/account/Login.svelte';
-import  Register from '../components/account/Register.svelte';
+import Home from '../../components/home/Home.svelte';
+import Login from '../../components/account/Login.svelte';
+import Register from '../../components/account/Register.svelte';
 import { writable } from "svelte/store";
 
 

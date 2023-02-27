@@ -1,20 +1,24 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type IAppUser from '../../interfaces/dbModels/IAppUser';
-    import * as pageService from '../../services/page.service';
+    import type IUserLoginDto from "../../interfaces/dtos/IUserLoginDto";
+    import * as pageService from '../../services/commonUi/page.service';
+    import * as userController from '../../controllers/user.controller';
     
     onMount(() => {
-        pageService.goto.home();
+        userController.checkAuthStore(() => {
+            pageService.goto.home();
+        })
     });
 
     let dto = {
-        email: '',
-        password: ''
-    } as IAppUser;
+        email: 'admin@admin.com',
+        password: 'adminadmin',
+        asAdmin: true
+    } as IUserLoginDto;
 
     function handleSubmit() {
         console.log(dto);
-        pageService.goto.home();
+        userController.login(dto, () => pageService.goto.home());
     }
 
     function goToRegisterPage() {
@@ -27,10 +31,13 @@
         <legend>Login</legend>
         <form on:submit|preventDefault={handleSubmit}>
             <label>
-                <input bind:value={dto.email} placeholder="email" type="text">
+                <input bind:value={dto.email} placeholder="email" type="text" />
             </label>
             <label>
-                <input bind:value={dto.password} placeholder="password" type="password">
+                <input bind:value={dto.password} placeholder="password" type="password" />
+            </label>
+            <label>
+                As admin <input bind:checked={dto.asAdmin} type="checkbox" />
             </label>
             <button type="submit">Submit</button>
             <div class="register">

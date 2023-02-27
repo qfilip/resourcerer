@@ -1,12 +1,14 @@
 <script lang="ts">
     import AppTest from "./AppTest.svelte";
     import AppHeader from "./components/commonUI/AppHeader.svelte";
+    import PageLoader from "./components/commonUI/PageLoader.svelte";
     import PageSelector from "./components/commonUI/PageSelector.svelte";
 </script>
 
+<PageLoader />
 <AppHeader />
 <main>
-    <AppTest />
+    <!-- <AppTest /> -->
     <PageSelector />
 </main>
 
@@ -40,6 +42,7 @@
         padding: 0;
         margin: 0;
         border: .15rem ridge var(--color-red);
+        border-radius: 0;
         transition: var(--transition);
         cursor: pointer;
     }

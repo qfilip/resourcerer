@@ -1,24 +1,19 @@
 <script lang="ts">
-    import Modal from "./components/commonUI/Modal.svelte";
-    import * as modalService from './services/modal.service';
-    import * as utils from './utils';
-
-    function openDialog() {
-        modalService.open();
-    }
-
-    async function seedDb() {
-        await utils.seedDbAsync();
+    import * as pageLoaderService from './services/commonUi/loader.service';
+    
+    function testLoader() {
+        [2500, 1000, 1500].forEach(x => {
+            pageLoaderService.show();
+            const tout = setTimeout(() => {
+                pageLoaderService.hide();
+                console.log(`task ${x} done`);
+                clearTimeout(tout);
+            }, x)
+        })
     }
 </script>
-<Modal>
-    <div slot="content">
-        Hello
-    </div>
-</Modal>
-<button on:click={openDialog}>Open dialog</button>
-<button on:click={seedDb}>Seed Db</button>
 
+<button on:click={testLoader}>Test loader</button>
 
 <style>
 </style>
