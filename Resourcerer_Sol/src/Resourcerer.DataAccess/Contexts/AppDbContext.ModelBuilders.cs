@@ -9,6 +9,7 @@ public partial class AppDbContext
         modelBuilder.Entity<Category>(e =>
         {
             e.ToTable(nameof(Category));
+            e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
             e.HasOne(x => x.ParentCategory)
                 .WithMany(x => x.ChildCategories);
@@ -17,6 +18,7 @@ public partial class AppDbContext
         modelBuilder.Entity<Composite>(e =>
         {
             e.ToTable(nameof(Composite));
+            e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
             e.HasOne(x => x.Category).WithMany(x => x.Composites);
         });
@@ -31,6 +33,7 @@ public partial class AppDbContext
         modelBuilder.Entity<Element>(e =>
         {
             e.ToTable(nameof(Element));
+            e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
             e.HasOne(x => x.Category).WithMany(x => x.Elements);
             e.HasOne(x => x.UnitOfMeasure).WithMany(x => x.Elements);
@@ -59,6 +62,7 @@ public partial class AppDbContext
         modelBuilder.Entity<UnitOfMeasure>(e =>
         {
             e.ToTable(nameof(UnitOfMeasure));
+            e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
             e.Property(x => x.Symbol).IsRequired();
         });
@@ -66,14 +70,8 @@ public partial class AppDbContext
         modelBuilder.Entity<AppUser>(e =>
         {
             e.ToTable(nameof(AppUser));
+            e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
-        });
-
-        modelBuilder.Entity<AppEvent>(e =>
-        {
-            e.ToTable(nameof(AppEvent));
-            e.Property(x => x.EventType).IsRequired();
-            e.Property(x => x.Data).IsRequired();
         });
 
         base.OnModelCreating(modelBuilder);

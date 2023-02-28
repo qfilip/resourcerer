@@ -11,7 +11,7 @@ using Resourcerer.DataAccess.Contexts;
 namespace Resourcerer.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230228230122_Initial")]
+    [Migration("20230228233600_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -19,31 +19,6 @@ namespace Resourcerer.DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.3");
-
-            modelBuilder.Entity("Resourcerer.DataAccess.Entities.AppEvent", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Data")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("EventType")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AppEvent", (string)null);
-                });
 
             modelBuilder.Entity("Resourcerer.DataAccess.Entities.AppUser", b =>
                 {
@@ -69,6 +44,9 @@ namespace Resourcerer.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("AppUser", (string)null);
                 });
 
@@ -92,6 +70,9 @@ namespace Resourcerer.DataAccess.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.HasIndex("ParentCategoryId");
 
@@ -120,6 +101,9 @@ namespace Resourcerer.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Composite", (string)null);
                 });
@@ -176,6 +160,9 @@ namespace Resourcerer.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.HasIndex("UnitOfMeasureId");
 
@@ -291,6 +278,9 @@ namespace Resourcerer.DataAccess.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("UnitOfMeasure", (string)null);
                 });

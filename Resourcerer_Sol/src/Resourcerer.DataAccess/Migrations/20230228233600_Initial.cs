@@ -12,21 +12,6 @@ namespace Resourcerer.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AppEvent",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    EventType = table.Column<string>(type: "TEXT", nullable: false),
-                    Data = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AppEvent", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AppUser",
                 columns: table => new
                 {
@@ -231,6 +216,18 @@ namespace Resourcerer.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AppUser_Name",
+                table: "AppUser",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Category_Name",
+                table: "Category",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Category_ParentCategoryId",
                 table: "Category",
                 column: "ParentCategoryId");
@@ -239,6 +236,12 @@ namespace Resourcerer.DataAccess.Migrations
                 name: "IX_Composite_CategoryId",
                 table: "Composite",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Composite_Name",
+                table: "Composite",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_CompositeSoldEvent_CompositeId",
@@ -254,6 +257,12 @@ namespace Resourcerer.DataAccess.Migrations
                 name: "IX_Element_CategoryId",
                 table: "Element",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Element_Name",
+                table: "Element",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Element_UnitOfMeasureId",
@@ -284,14 +293,17 @@ namespace Resourcerer.DataAccess.Migrations
                 name: "IX_Price_CompositeId",
                 table: "Price",
                 column: "CompositeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UnitOfMeasure_Name",
+                table: "UnitOfMeasure",
+                column: "Name",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AppEvent");
-
             migrationBuilder.DropTable(
                 name: "AppUser");
 

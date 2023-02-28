@@ -10,7 +10,6 @@ public partial class AppDbContext : DbContext
 	}
 
 	public DbSet<AppUser> AppUsers { get; set; }
-    public DbSet<AppEvent> AppEvents { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Composite> Composites { get; set; }
     public DbSet<CompositeSoldEvent> CompositeSoldEvents { get; set; }
