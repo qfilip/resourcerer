@@ -27,6 +27,7 @@ app.UseAuthorization();
 
 Users.MapEndpoints(app);
 Categories.MapEndpoints(app);
+Mocks.MapEndpoints(app);
 
 app.Run();
 

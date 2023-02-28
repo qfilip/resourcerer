@@ -11,7 +11,7 @@ using Resourcerer.DataAccess.Contexts;
 namespace Resourcerer.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230217235504_Initial")]
+    [Migration("20230228230122_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -110,9 +110,6 @@ namespace Resourcerer.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("CurrentPriceId")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("TEXT");
 
@@ -124,10 +121,34 @@ namespace Resourcerer.DataAccess.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("CurrentPriceId")
-                        .IsUnique();
-
                     b.ToTable("Composite", (string)null);
+                });
+
+            modelBuilder.Entity("Resourcerer.DataAccess.Entities.CompositeSoldEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("CompositeId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("PriceId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompositeId");
+
+                    b.HasIndex("PriceId");
+
+                    b.ToTable("CompositeSoldEvent", (string)null);
                 });
 
             modelBuilder.Entity("Resourcerer.DataAccess.Entities.Element", b =>
@@ -142,9 +163,6 @@ namespace Resourcerer.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("CurrentPriceId")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("TEXT");
 
@@ -152,14 +170,44 @@ namespace Resourcerer.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("UnitOfMeasureId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("CurrentPriceId")
-                        .IsUnique();
+                    b.HasIndex("UnitOfMeasureId");
 
                     b.ToTable("Element", (string)null);
+                });
+
+            modelBuilder.Entity("Resourcerer.DataAccess.Entities.ElementPurchasedEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ElementId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("NumOfUnits")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("UnitPrice")
+                        .HasColumnType("REAL");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ElementId");
+
+                    b.ToTable("ElementPurchasedEvent", (string)null);
                 });
 
             modelBuilder.Entity("Resourcerer.DataAccess.Entities.Excerpt", b =>
@@ -180,10 +228,10 @@ namespace Resourcerer.DataAccess.Migrations
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Quantity")
+                        .HasColumnType("REAL");
 
-                    b.Property<Guid>("UnitOfMeasureId")
+                    b.Property<Guid?>("UnitOfMeasureId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -203,19 +251,21 @@ namespace Resourcerer.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("CompositeId")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("ValidFrom")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Value")
-                        .HasColumnType("TEXT");
+                    b.Property<double>("Value")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompositeId");
 
                     b.ToTable("Price", (string)null);
                 });
@@ -224,10 +274,6 @@ namespace Resourcerer.DataAccess.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Abbreviation")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
@@ -240,6 +286,10 @@ namespace Resourcerer.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("UnitOfMeasure", (string)null);
@@ -248,7 +298,7 @@ namespace Resourcerer.DataAccess.Migrations
             modelBuilder.Entity("Resourcerer.DataAccess.Entities.Category", b =>
                 {
                     b.HasOne("Resourcerer.DataAccess.Entities.Category", "ParentCategory")
-                        .WithMany("Categories")
+                        .WithMany("ChildCategories")
                         .HasForeignKey("ParentCategoryId");
 
                     b.Navigation("ParentCategory");
@@ -262,13 +312,26 @@ namespace Resourcerer.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Resourcerer.DataAccess.Entities.Price", "CurrentPrice")
-                        .WithOne("Composite")
-                        .HasForeignKey("Resourcerer.DataAccess.Entities.Composite", "CurrentPriceId");
-
                     b.Navigation("Category");
+                });
 
-                    b.Navigation("CurrentPrice");
+            modelBuilder.Entity("Resourcerer.DataAccess.Entities.CompositeSoldEvent", b =>
+                {
+                    b.HasOne("Resourcerer.DataAccess.Entities.Composite", "Composite")
+                        .WithMany("CompositeSoldEvents")
+                        .HasForeignKey("CompositeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Resourcerer.DataAccess.Entities.Price", "Price")
+                        .WithMany("CompositeSoldEvents")
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Composite");
+
+                    b.Navigation("Price");
                 });
 
             modelBuilder.Entity("Resourcerer.DataAccess.Entities.Element", b =>
@@ -279,15 +342,26 @@ namespace Resourcerer.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Resourcerer.DataAccess.Entities.Price", "CurrentPrice")
-                        .WithOne("Element")
-                        .HasForeignKey("Resourcerer.DataAccess.Entities.Element", "CurrentPriceId")
+                    b.HasOne("Resourcerer.DataAccess.Entities.UnitOfMeasure", "UnitOfMeasure")
+                        .WithMany("Elements")
+                        .HasForeignKey("UnitOfMeasureId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
 
-                    b.Navigation("CurrentPrice");
+                    b.Navigation("UnitOfMeasure");
+                });
+
+            modelBuilder.Entity("Resourcerer.DataAccess.Entities.ElementPurchasedEvent", b =>
+                {
+                    b.HasOne("Resourcerer.DataAccess.Entities.Element", "Element")
+                        .WithMany("ElementPurchasedEvents")
+                        .HasForeignKey("ElementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Element");
                 });
 
             modelBuilder.Entity("Resourcerer.DataAccess.Entities.Excerpt", b =>
@@ -304,22 +378,29 @@ namespace Resourcerer.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Resourcerer.DataAccess.Entities.UnitOfMeasure", "UnitOfMeasure")
+                    b.HasOne("Resourcerer.DataAccess.Entities.UnitOfMeasure", null)
                         .WithMany("Excerpts")
-                        .HasForeignKey("UnitOfMeasureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UnitOfMeasureId");
 
                     b.Navigation("Composite");
 
                     b.Navigation("Element");
+                });
 
-                    b.Navigation("UnitOfMeasure");
+            modelBuilder.Entity("Resourcerer.DataAccess.Entities.Price", b =>
+                {
+                    b.HasOne("Resourcerer.DataAccess.Entities.Composite", "Composite")
+                        .WithMany("Prices")
+                        .HasForeignKey("CompositeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Composite");
                 });
 
             modelBuilder.Entity("Resourcerer.DataAccess.Entities.Category", b =>
                 {
-                    b.Navigation("Categories");
+                    b.Navigation("ChildCategories");
 
                     b.Navigation("Composites");
 
@@ -328,23 +409,29 @@ namespace Resourcerer.DataAccess.Migrations
 
             modelBuilder.Entity("Resourcerer.DataAccess.Entities.Composite", b =>
                 {
+                    b.Navigation("CompositeSoldEvents");
+
                     b.Navigation("Excerpts");
+
+                    b.Navigation("Prices");
                 });
 
             modelBuilder.Entity("Resourcerer.DataAccess.Entities.Element", b =>
                 {
+                    b.Navigation("ElementPurchasedEvents");
+
                     b.Navigation("Excerpts");
                 });
 
             modelBuilder.Entity("Resourcerer.DataAccess.Entities.Price", b =>
                 {
-                    b.Navigation("Composite");
-
-                    b.Navigation("Element");
+                    b.Navigation("CompositeSoldEvents");
                 });
 
             modelBuilder.Entity("Resourcerer.DataAccess.Entities.UnitOfMeasure", b =>
                 {
+                    b.Navigation("Elements");
+
                     b.Navigation("Excerpts");
                 });
 #pragma warning restore 612, 618

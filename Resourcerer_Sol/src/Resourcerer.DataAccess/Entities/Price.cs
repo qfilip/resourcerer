@@ -2,9 +2,14 @@
 
 public class Price : EntityBase
 {
-    public DateTime ValidFrom { get; set; }
-    public decimal Value { get; set; }
+    public Price()
+    {
+        CompositeSoldEvents = new HashSet<CompositeSoldEvent>();
+    }
 
-    public virtual Element? Element { get; set; }
+    public Guid CompositeId { get; set; }
+    public double Value { get; set; }
+
     public virtual Composite? Composite { get; set; }
+    public ICollection<CompositeSoldEvent> CompositeSoldEvents { get; set; }
 }
