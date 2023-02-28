@@ -1,16 +1,17 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import * as elementController from "../../controllers/element.controller";
-    import type IElement from "../../interfaces/dbModels/IElement";
+    import type IElementTableDetails from "../../interfaces/appModels/IElementTableDetails";
+    import type IElementPurchasedEvent from "../../interfaces/dbModels/IElementPurchasedEvent";
+
 
     onMount(() => {
-        elementController.getElementsForTable().then(x => {
-            console.log(x)
-            // elements = x;
+        elementController.getElementsForTable().then(data => {
+            
         });
     });
 
-    let elements: IElement[] = [];
+    let elements: IElementTableDetails[] = [];
 </script>
 
 <h2>
