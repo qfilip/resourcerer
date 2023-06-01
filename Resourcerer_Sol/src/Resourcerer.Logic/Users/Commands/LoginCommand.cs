@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Resourcerer.Dtos.Users;
-using System.Security.Cryptography;
 
 namespace Resourcerer.Logic.Users.Commands;
 
