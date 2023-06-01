@@ -6,6 +6,8 @@ using Resourcerer.DataAccess.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(o => o.AddDefaultPolicy(b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
+
 builder.Services.AddDbContext<AppDbContext>(cfg =>
     cfg.UseSqlite(AppInitializer.GetDbConnection(builder.Environment)));
 
@@ -21,6 +23,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();

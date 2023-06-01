@@ -1,4 +1,8 @@
-﻿namespace Resourcerer.Api.Endpoints;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Resourcerer.Logic.Categories.Queries;
+
+namespace Resourcerer.Api.Endpoints;
 public static class Categories
 {
     private static IResult CreateCategory()
@@ -6,9 +10,18 @@ public static class Categories
         return Results.Ok();
     }
 
+    private static async Task<IResult> GetAll(IMediator mediator)
+    {
+        var categories = await mediator.Send(new GetAllCategories.Query());
+        return Results.Ok(new { Ole = "yay "});
+    }
+
     public static void MapEndpoints(WebApplication app)
     {
-        app.MapPost("category/", CreateCategory)
+        app.MapGet("/categories/all", GetAll);
+            //.RequireAuthorization(AppStaticData.AuthPolicy.Admin);
+
+        app.MapPost("/categories/create", CreateCategory)
             .RequireAuthorization(AppStaticData.AuthPolicy.Admin);
     }
 }

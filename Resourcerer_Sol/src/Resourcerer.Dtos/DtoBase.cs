@@ -1,5 +1,6 @@
-﻿namespace Resourcerer.DataAccess.Entities;
-public class EntityBase
+﻿namespace Resourcerer.Dtos;
+
+public class DtoBase
 {
     public Guid Id { get; set; }
     public DateTime CreatedAt { get; set; }
