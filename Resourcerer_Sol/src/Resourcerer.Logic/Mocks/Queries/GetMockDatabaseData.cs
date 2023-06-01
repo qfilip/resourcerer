@@ -1,25 +1,17 @@
 ﻿using MediatR;
-using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Mocks;
 
-namespace Resourcerer.Logic.Mocks.Commands;
-public static class SeedMockData
+namespace Resourcerer.Logic.Mocks.Queries;
+public class GetMockDatabaseData
 {
-    private static DateTime now = DateTime.Now;
-    public class Command : IRequest<Unit>
+    public class Query : IRequest<DatabaseData>
     {
     }
 
-    public class Handler : IRequestHandler<Command, Unit>
+    public class Handler : IRequestHandler<Query, DatabaseData>
     {
-        private readonly AppDbContext _dbContext;
-
-        public Handler(AppDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
-        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+        public Task<DatabaseData> Handle(Query request, CancellationToken cancellationToken)
         {
             var bar = MakeCategory("Bar");
             var spirits = MakeCategory("Spirits", bar);
@@ -66,6 +58,12 @@ public static class SeedMockData
 
             var purchases = new ElementPurchasedEvent[] { pur1, pur2, pur3, pur4, pur5, pur6 };
 
+            var sale1 = MakeCompositeSoldEvent(moscowMule, p1);
+            var sale2 = MakeCompositeSoldEvent(moscowMule, p1);
+            var sale3 = MakeCompositeSoldEvent(darkNstormy, p2);
+
+            var sales = new CompositeSoldEvent[] { sale1, sale2, sale3 };
+
             var excerptData = new List<(Composite, List<(Element, double)>)>
             {
                     (moscowMule, new List<(Element, double)>()
@@ -86,19 +84,23 @@ public static class SeedMockData
                 .Select(x => MakeExcerpts(x.Item1, x.Item2))
                 .SelectMany(x => x);
 
-            _dbContext.Categories.AddRange(categories);
-            _dbContext.UnitsOfMeasure.AddRange(uoms);
-            _dbContext.Elements.AddRange(elements);
-            _dbContext.Composites.AddRange(composites);
-            _dbContext.Excerpts.AddRange(excerpts);
-            _dbContext.Prices.AddRange(prices);
-            _dbContext.ElementPurchasedEvents.AddRange(purchases);
+            var dbdata = new DatabaseData
+            {
+                Categories = categories,
+                Composites = composites,
+                CompositeSoldEvents = sales,
+                ElementPurchasedEvents = purchases,
+                Elements = elements,
+                Excerpts = excerpts,
+                Prices = prices,
+                UnitOfMeasures = uoms
+            };
 
-            await _dbContext.SaveChangesAsync();
-
-            return new Unit();
+            return Task.FromResult(dbdata);
         }
     }
+
+    private static DateTime now = DateTime.Now;
 
     private static T MakeEntity<T>(Func<T> retn) where T : EntityBase
     {
@@ -163,6 +165,15 @@ public static class SeedMockData
             ElementId = element.Id,
             NumOfUnits = numOfUnits,
             UnitPrice = unitPrice
+        });
+    }
+
+    private static CompositeSoldEvent MakeCompositeSoldEvent(Composite composite, Price price)
+    {
+        return MakeEntity(() => new CompositeSoldEvent
+        {
+            CompositeId = composite.Id,
+            PriceId = price.Id
         });
     }
 
