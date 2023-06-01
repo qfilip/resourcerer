@@ -1,6 +1,5 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import CategoryDetails from './CategoryDetails.svelte';
     import CategoryDropdown from './CategoryDropdown.svelte';
     import * as categoryService from "../../services/category.service";
     import * as categoryController from "../../controllers/category.controller";
@@ -8,6 +7,7 @@
 
     onMount(() => {
         categoryController.getCategories().then(x => {
+            console.log(x);
             categories = x;
             categoryService.selectedCategoryId$.set(x[0].id);
         });

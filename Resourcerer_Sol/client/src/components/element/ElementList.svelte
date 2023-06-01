@@ -2,25 +2,10 @@
     import { onMount } from "svelte";
     import * as elementController from "../../controllers/element.controller";
     import type IElementTableDetails from "../../interfaces/appModels/IElementTableDetails";
-    import type IElementPurchasedEvent from "../../interfaces/dbModels/IElementPurchasedEvent";
 
     onMount(() => {
         elementController.getElementsOverviews().then((data) => {
-            elements = data.elements.map((el) => {
-                return {
-                    id: el.id,
-                    name: el.name,
-                    category: data.categories.find(
-                        (x) => x.id === el.categoryId
-                    ).name,
-                    unitOfMeasure: data.unitsOfMeasure.find(
-                        (x) => x.id === el.unitOfMeasureId
-                    ).name,
-                    compositesCount: data.excerpts.filter(
-                        (x) => x.elementId === el.id
-                    ).length,
-                } as IElementTableDetails;
-            });
+            
         });
     });
 

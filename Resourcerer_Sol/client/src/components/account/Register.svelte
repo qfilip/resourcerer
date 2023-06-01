@@ -1,6 +1,6 @@
 <script lang="ts">
+    import * as userController from '../../controllers/user.controller';
     import type IUserResiterDto from '../../interfaces/dtos/IUserRegisterDto';
-    import * as dbService from '../../services/pocketbase.service';
 
     let dto = {
         username: '',
@@ -10,7 +10,7 @@
     } as IUserResiterDto;
 
     function handleSubmit() {
-        dbService.createUser(dto);
+        userController.register(dto);
     }
 </script>
 
