@@ -3,20 +3,20 @@
     import CategoryDropdown from './CategoryDropdown.svelte';
     import * as categoryService from "../../services/category.service";
     import * as categoryController from "../../controllers/category.controller";
-    import type ICategory from '../../interfaces/dbModels/ICategory';
+    import type ICategoryDto from '../../interfaces/dtos/ICategoryDto';
 
     onMount(() => {
-        categoryController.getCategories().then(x => {
-            console.log(x);
-            categories = x;
-            categoryService.selectedCategoryId$.set(x[0].id);
-        });
+        categoryController.getAllCategories()
+            .then(x => {
+                console.log(x);
+                categories = x;
+            });
 
         categoryService.selectedCategoryId$.subscribe(x => {
             selectedCategory = categories.find(c => c.id === x);
         });
     });
-    let categories: ICategory[] = [];
+    let categories: ICategoryDto[] = [];
     let selectedCategory;
     $: mainCategories = categories.filter(x => !x.parentCategoryId);
 </script>

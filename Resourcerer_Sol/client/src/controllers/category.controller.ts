@@ -1,12 +1,8 @@
-import type ICategory from '../interfaces/dbModels/ICategory';
+import type ICategoryDto from '../interfaces/dtos/ICategoryDto';
 import * as base from './base.controller';
 
-export async function getCategories() {
-    const url = base.apiUrl + '/categories/all';
-    const response = await fetch(url, { method: 'GET', mode: 'no-cors' });
-    console.log(response);
-    return response.json();
-    // const message = 'Fetching categories...';
-    // return base.handlePromise(apiCall, message);
+export async function getAllCategories() {
+    const data = await base.sendGet('/categories/all', 'Fetching categories...');
+    return data as ICategoryDto[];
 }
 

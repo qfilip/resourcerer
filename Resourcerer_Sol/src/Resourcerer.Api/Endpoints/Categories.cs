@@ -13,7 +13,7 @@ public static class Categories
     private static async Task<IResult> GetAll(IMediator mediator)
     {
         var categories = await mediator.Send(new GetAllCategories.Query());
-        return Results.Ok(new { Ole = "yay "});
+        return Results.Ok(categories);
     }
 
     public static void MapEndpoints(WebApplication app)
