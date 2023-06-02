@@ -1,28 +1,27 @@
+import IApiDto from '../interfaces/dtos/IApiDto';
 import * as loaderService from '../services/commonUi/loader.service';
 
-export const apiUrl = 'http://localhost:5128';
+const apiUrl = 'https://localhost:44387';
 
-export async function handlePromise<T>(apiCall: () => Promise<T>, message?: string) {
-    loaderService.show(message);
-    try {
-        const data = await apiCall();
-        loaderService.hide();
-        return data;
-    }
-    catch(error) {
-        loaderService.hide();
-        console.log(error);
-    }
+export function sendGet<TResponse>(endpoint: string, onOk: (r: Response) => TResponse, message?: string) {
+    const url = apiUrl + endpoint;
+    const apiCall = () => fetch(url);
+
+    return handleCall(apiCall, onOk, message);
 }
 
-export async function executeGet<TResponse>(url: string, responseHandler: (Response) => TResponse = null) {
-    const response = await fetch(url);
-    console.log(response);
-    if(responseHandler) {
-        return responseHandler(response);
-    }
+export function sendPost<TResponse>(endpoint: string, body: unknown, onOk: (r: Response) => TResponse, message?: string) {
+    const url = apiUrl + endpoint;
+    
+    const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    } as RequestInit;
+    
+    const apiCall = () => fetch(url, options);
 
-    return null;
+    return handleCall(apiCall, onOk, message);
 }
 
 export async function executePost<TRequest, TResponse>(url: string, data: TRequest, responseHandler: (Response) => TResponse = null) {
@@ -41,4 +40,30 @@ export async function executePost<TRequest, TResponse>(url: string, data: TReque
       }
 
       return await response.json() as TResponse;
+}
+
+async function handleCall<TResponse>(
+    apiCall: () => Promise<Response>,
+    onOk: (r: Response) => TResponse,
+    message?: string) {
+        loaderService.show(message);
+        try {
+            const response = await apiCall();
+            loaderService.hide();
+            
+            const data = (response.status === 200) ? onOk(response) : null;
+            const dto: IApiDto<TResponse> = {
+                status: response.status,
+                data: data
+            };
+
+            return dto;
+        }
+        catch(error) {
+            loaderService.hide();
+            console.log(error);
+            return {
+                status: 500
+            } as IApiDto<TResponse>;
+        }
 }

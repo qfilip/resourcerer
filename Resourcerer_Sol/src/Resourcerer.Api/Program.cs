@@ -1,16 +1,9 @@
-using Microsoft.EntityFrameworkCore;
-using Resourcerer.Api;
 using Resourcerer.Api.Endpoints;
 using Resourcerer.Api.Services;
-using Resourcerer.DataAccess.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(o => o.AddDefaultPolicy(b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
-
-builder.Services.AddDbContext<AppDbContext>(cfg =>
-    cfg.UseSqlite(AppInitializer.GetDbConnection(builder.Environment)));
-
+builder.Services.AddAspNetServices();
 builder.Services.AddAppServices(builder.Environment);
 builder.Services.Add3rdParyServices();
 
@@ -22,16 +15,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+Users.MapEndpoints(app);
+Categories.MapEndpoints(app);
+Mocks.MapEndpoints(app);
+
 app.UseHttpsRedirection();
 
 app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-Users.MapEndpoints(app);
-Categories.MapEndpoints(app);
-Mocks.MapEndpoints(app);
 
 app.Run();
 
