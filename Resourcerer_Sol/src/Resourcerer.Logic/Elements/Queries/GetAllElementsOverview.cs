@@ -1,14 +1,11 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using System.Text.Json;
 
 namespace Resourcerer.Logic.Elements.Queries;
-public static class ElementOverviews
+public static class GetAllElementsOverview
 {
-    public class Query : IRequest<string> { }
-
-    public class Handler : IRequestHandler<Query, string>
+    public class Handler : IRequestHandler<Unit, string>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -17,7 +14,7 @@ public static class ElementOverviews
             _appDbContext = appDbContext;
         }
 
-        public async Task<string> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<HandlerResult<string>> Handle(Unit _)
         {
             var query =
                 from es in _appDbContext.Elements
@@ -27,8 +24,9 @@ public static class ElementOverviews
                 select new { Element = elementsWithEvents };
 
             var data = await query.ToListAsync();
+            var stringData = JsonSerializer.Serialize(data);
             
-            return JsonSerializer.Serialize(data);
+            return HandlerResult<string>.Ok(stringData);
         }
     }
 }

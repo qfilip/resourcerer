@@ -1,17 +1,12 @@
-﻿using MediatR;
-using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Mocks;
 
 namespace Resourcerer.Logic.Mocks.Queries;
 public class GetMockDatabaseData
 {
-    public class Query : IRequest<DatabaseData>
+    public class Handler : IRequestHandler<Unit, DatabaseData>
     {
-    }
-
-    public class Handler : IRequestHandler<Query, DatabaseData>
-    {
-        public Task<DatabaseData> Handle(Query request, CancellationToken cancellationToken)
+        public Task<HandlerResult<DatabaseData>> Handle(Unit _)
         {
             var bar = MakeCategory("Bar");
             var spirits = MakeCategory("Spirits", bar);
@@ -96,7 +91,7 @@ public class GetMockDatabaseData
                 UnitOfMeasures = uoms
             };
 
-            return Task.FromResult(dbdata);
+            return Task.FromResult(HandlerResult<DatabaseData>.Ok(dbdata));
         }
     }
 

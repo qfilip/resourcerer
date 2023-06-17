@@ -4,8 +4,14 @@ using Resourcerer.Api.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAspNetServices();
-builder.Services.AddAppServices(builder.Environment);
-builder.Services.Add3rdParyServices();
+builder.Services.AddAppServices();
+builder.Services.Add3rdParyServices(builder.Environment);
+
+builder.Host.UseDefaultServiceProvider((_, options) =>
+{
+    options.ValidateOnBuild = true;
+    options.ValidateScopes = true;
+});
 
 var app = builder.Build();
 
@@ -15,9 +21,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-Users.MapEndpoints(app);
-Categories.MapEndpoints(app);
-Mocks.MapEndpoints(app);
+EndpointMapper.Map(app);
 
 app.UseHttpsRedirection();
 

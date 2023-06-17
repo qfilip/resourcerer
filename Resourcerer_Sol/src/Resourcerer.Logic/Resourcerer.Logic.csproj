@@ -7,17 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.0.0" />
+    <Compile Remove="Categories\Commands\**" />
+    <EmbeddedResource Remove="Categories\Commands\**" />
+    <None Remove="Categories\Commands\**" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Resourcerer.DataAccess\Resourcerer.DataAccess.csproj" />
     <ProjectReference Include="..\Resourcerer.Dtos\Resourcerer.Dtos.csproj" />
     <ProjectReference Include="..\Resourcerer.Utilities\Resourcerer.Utilities.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Categories\Commands\" />
   </ItemGroup>
 
 </Project>

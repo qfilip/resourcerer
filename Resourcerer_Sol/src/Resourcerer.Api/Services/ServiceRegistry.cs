@@ -3,15 +3,29 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Logic;
-using System.Reflection;
 
 namespace Resourcerer.Api.Services;
 public static partial class ServiceRegistry
 {
-    public static void AddAppServices(this IServiceCollection services, IWebHostEnvironment env)
+    public static void AddAppServices(this IServiceCollection services)
     {
-        services.AddDbContext<AppDbContext>(cfg =>
-            cfg.UseSqlite(AppInitializer.GetDbConnection(env)));
+        var assembly = typeof(IRequestHandler<,>).Assembly;
+        
+        var handlers = assembly
+        .GetTypes()
+        .Where(x =>
+            x.GetInterface(typeof(IRequestHandler<,>).Name) != null &&
+            !x.IsAbstract &&
+            !x.IsInterface)
+        .ToList();
+        
+        handlers.ForEach(x =>
+        {
+            Console.WriteLine(x.Name);
+            services.AddTransient(x);
+        });
+
+        services.AddScoped<Pipeline>();
     }
 
     public static void AddAspNetServices(this IServiceCollection services)
@@ -22,13 +36,10 @@ public static partial class ServiceRegistry
         services.AddAuthorization();
     }
 
-    public static void Add3rdParyServices(this IServiceCollection services)
+    public static void Add3rdParyServices(this IServiceCollection services, IWebHostEnvironment env)
     {
-        services.AddMediatR(cfg =>
-        {
-            var assembly = typeof(IResourcererLogicAssemblyMarker).GetTypeInfo().Assembly;
-            cfg.RegisterServicesFromAssembly(assembly);
-        });
+        services.AddDbContext<AppDbContext>(cfg =>
+            cfg.UseSqlite(AppInitializer.GetDbConnection(env)));
     }
 
     private static void AddSwagger(this IServiceCollection services)

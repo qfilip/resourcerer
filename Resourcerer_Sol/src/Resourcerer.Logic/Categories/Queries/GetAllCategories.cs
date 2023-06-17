@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.Categories;
 
@@ -7,9 +6,7 @@ namespace Resourcerer.Logic.Categories.Queries;
 
 public static class GetAllCategories
 {
-    public class Query : IRequest<List<CategoryDto>> {}
-
-    public class Handler : IRequestHandler<Query, List<CategoryDto>>
+    public class Handler : IRequestHandler<Unit, List<CategoryDto>>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -18,15 +15,17 @@ public static class GetAllCategories
             _appDbContext = appDbContext;
         }
 
-        public async Task<List<CategoryDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<HandlerResult<List<CategoryDto>>> Handle(Unit _)
         {
-            return await _appDbContext.Categories.Select(x => new CategoryDto {
+            var result =  await _appDbContext.Categories.Select(x => new CategoryDto {
                 Id = x.Id,
                 Name = x.Name,
                 ParentCategoryId = x.ParentCategoryId,
                 CreatedAt = x.CreatedAt,
                 ModifiedAt = x.ModifiedAt
             }).ToListAsync();
+
+            return HandlerResult<List<CategoryDto>>.Ok(result);
         }
     }
 }
