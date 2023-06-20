@@ -17,6 +17,7 @@ public static class GetAllElementsOverview
         public async Task<HandlerResult<List<ElementUsageDetailsDto>>> Handle(Unit _)
         {
             var elementsData = await _appDbContext.Elements
+                .Include(x => x.ElementSoldEvents)
                 .Include(x => x.ElementPurchasedEvents)
                 .Include(x => x.UnitOfMeasure)
                 .Include(x => x.Category)
@@ -54,11 +55,9 @@ public static class GetAllElementsOverview
                     .SelectMany(i => i.ElementCompositeIds)
                     .ToList();
 
-                var sales = compositeSoldEvents
-                    .Where(cse => elementCompositeIds.Contains(cse.CompositeId))
-                    .ToList();
+                var unitsSoldRaw = x.ElementSoldEvents.Count;
 
-                var unitsUsed = x.Excerpts
+                var unitsUsedInComposites = x.Excerpts
                     .Where(e => compositeSoldEvents.Select(cse => cse.CompositeId).Contains(e.CompositeId))
                     .Sum(e => e.Quantity);
                 
@@ -69,8 +68,8 @@ public static class GetAllElementsOverview
                     Unit = x.UnitOfMeasure!.Name,
                     UnitsPurchased = unitsPurchased,
                     PurchaseCosts = purchaseCosts,
-                    UnitsUsed = unitsUsed,
-                    UnitsInStock = unitsPurchased - unitsUsed
+                    UnitsUsed = unitsUsedInComposites,
+                    UnitsInStock = unitsPurchased - unitsUsedInComposites - unitsSoldRaw
                 };
             })
             .ToList();
