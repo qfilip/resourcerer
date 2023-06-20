@@ -45,13 +45,14 @@ public class GetMockDatabaseData
             var prices = new Price[] { p1, p2, p3 };
 
             var pur1 = MakeElementPurchasedEvent(vodka, 1, 10);
-            var pur2 = MakeElementPurchasedEvent(rum, 1, 20);
-            var pur3 = MakeElementPurchasedEvent(gin, 1, 5);
-            var pur4 = MakeElementPurchasedEvent(gingerAle, 1, 15);
-            var pur5 = MakeElementPurchasedEvent(sparklingWater, 1, 2);
-            var pur6 = MakeElementPurchasedEvent(lime, 0.5d, 5);
+            var pur2 = MakeElementPurchasedEvent(vodka, 1, 10);
+            var pur3 = MakeElementPurchasedEvent(rum, 1, 20);
+            var pur4 = MakeElementPurchasedEvent(gin, 1, 5);
+            var pur5 = MakeElementPurchasedEvent(gingerAle, 1, 15);
+            var pur6 = MakeElementPurchasedEvent(sparklingWater, 1, 2);
+            var pur7 = MakeElementPurchasedEvent(lime, 0.5d, 5);
 
-            var purchases = new ElementPurchasedEvent[] { pur1, pur2, pur3, pur4, pur5, pur6 };
+            var purchases = new ElementPurchasedEvent[] { pur1, pur2, pur3, pur4, pur5, pur6, pur7 };
 
             var sale1 = MakeCompositeSoldEvent(moscowMule, p1);
             var sale2 = MakeCompositeSoldEvent(moscowMule, p1);

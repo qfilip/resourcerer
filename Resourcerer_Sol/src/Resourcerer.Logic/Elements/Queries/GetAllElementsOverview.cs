@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
-using System.Text.Json;
+using Resourcerer.Dtos.Elements;
 
 namespace Resourcerer.Logic.Elements.Queries;
 public static class GetAllElementsOverview
 {
-    public class Handler : IRequestHandler<Unit, string>
+    public class Handler : IRequestHandler<Unit, List<ElementUsageDetailsDto>>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -14,19 +14,68 @@ public static class GetAllElementsOverview
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<string>> Handle(Unit _)
+        public async Task<HandlerResult<List<ElementUsageDetailsDto>>> Handle(Unit _)
         {
-            var query =
-                from es in _appDbContext.Elements
-                join ps in _appDbContext.ElementPurchasedEvents
-                on es.Id equals ps.ElementId
-                into elementsWithEvents
-                select new { Element = elementsWithEvents };
-
-            var data = await query.ToListAsync();
-            var stringData = JsonSerializer.Serialize(data);
+            var elementsData = await _appDbContext.Elements
+                .Include(x => x.ElementPurchasedEvents)
+                .Include(x => x.UnitOfMeasure)
+                .Include(x => x.Category)
+                .Include(x => x.Excerpts)
+                .ToListAsync();
             
-            return HandlerResult<string>.Ok(stringData);
+            var idLookup = elementsData
+                .Select(x => new
+                {
+                    ElementId = x.Id,
+                    ElementCompositeIds = x.Excerpts
+                        .Select(e => e.CompositeId)
+                        .ToList()
+                })
+                .ToList();
+
+            var compositeIds = idLookup
+                .SelectMany(x => x.ElementCompositeIds)
+                .ToList();
+
+            var compositeSoldEvents = await _appDbContext.CompositeSoldEvents
+                .Where(x => compositeIds.Contains(x.CompositeId))
+                .Include(x => x.Price)
+                .ToListAsync();
+
+            var usageDetails = elementsData.Select(x => {
+                var unitsPurchased = x.ElementPurchasedEvents
+                    .Sum(epe => epe.NumOfUnits);
+
+                var purchaseCosts = x.ElementPurchasedEvents
+                    .Sum(epe => epe.UnitPrice);
+
+                var elementCompositeIds = idLookup
+                    .Where(il => il.ElementId == x.Id)
+                    .SelectMany(i => i.ElementCompositeIds)
+                    .ToList();
+
+                var sales = compositeSoldEvents
+                    .Where(cse => elementCompositeIds.Contains(cse.CompositeId))
+                    .ToList();
+
+                var unitsUsed = x.Excerpts
+                    .Where(e => compositeSoldEvents.Select(cse => cse.CompositeId).Contains(e.CompositeId))
+                    .Sum(e => e.Quantity);
+                
+                return new ElementUsageDetailsDto
+                {
+                    ElementId = x.Id,
+                    ElementName = x.Name,
+                    Unit = x.UnitOfMeasure!.Name,
+                    UnitsPurchased = unitsPurchased,
+                    PurchaseCosts = purchaseCosts,
+                    UnitsUsed = unitsUsed,
+                    UnitsInStock = unitsPurchased - unitsUsed
+                };
+            })
+            .ToList();
+            
+            return HandlerResult<List<ElementUsageDetailsDto>>.Ok(usageDetails);
         }
     }
 }
