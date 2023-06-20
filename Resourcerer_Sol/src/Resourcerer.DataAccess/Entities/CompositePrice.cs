@@ -1,8 +1,8 @@
 ﻿namespace Resourcerer.DataAccess.Entities;
 
-public class Price : EntityBase
+public class CompositePrice : EntityBase
 {
-    public Price()
+    public CompositePrice()
     {
         CompositeSoldEvents = new HashSet<CompositeSoldEvent>();
     }

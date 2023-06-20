@@ -1,11 +1,15 @@
-﻿namespace Resourcerer.DataAccess.Entities;
+﻿using System.Diagnostics;
+
+namespace Resourcerer.DataAccess.Entities;
 
 public class Element : EntityBase
 {
     public Element()
     {
         Excerpts = new HashSet<Excerpt>();
+        Prices = new HashSet<ElementPrice>();
         ElementPurchasedEvents = new HashSet<ElementPurchasedEvent>();
+        ElementSoldEvents = new HashSet<ElementSoldEvent>();
     }
 
     public string? Name { get; set; }
@@ -15,6 +19,9 @@ public class Element : EntityBase
     public virtual Category? Category { get; set; }
     public virtual UnitOfMeasure? UnitOfMeasure { get; set; }
     public ICollection<Excerpt> Excerpts { get; set; }
+    
+    public ICollection<ElementPrice> Prices { get; set; }
     public ICollection<ElementPurchasedEvent> ElementPurchasedEvents { get; set; }
+    public ICollection<ElementSoldEvent> ElementSoldEvents { get; set; }
 }
 

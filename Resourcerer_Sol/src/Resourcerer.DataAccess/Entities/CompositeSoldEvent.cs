@@ -5,6 +5,6 @@ public class CompositeSoldEvent : EntityBase
     public Guid PriceId { get; set; }
 
     public virtual Composite? Composite { get; set; }
-    public virtual Price? Price { get; set; }
+    public virtual CompositePrice? Price { get; set; }
 }
 

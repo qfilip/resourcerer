@@ -38,11 +38,11 @@ public class GetMockDatabaseData
 
             var composites = new Composite[] { moscowMule, darkNstormy, ginFizz };
 
-            var p1 = MakePrice(6, moscowMule);
-            var p2 = MakePrice(7, darkNstormy);
-            var p3 = MakePrice(4, ginFizz);
+            var cp1 = MakePrice(6, moscowMule);
+            var cp2 = MakePrice(7, darkNstormy);
+            var cp3 = MakePrice(4, ginFizz);
 
-            var prices = new Price[] { p1, p2, p3 };
+            var compositePrices = new CompositePrice[] { cp1, cp2, cp3 };
 
             var pur1 = MakeElementPurchasedEvent(vodka, 1, 10);
             var pur2 = MakeElementPurchasedEvent(vodka, 1, 10);
@@ -54,11 +54,18 @@ public class GetMockDatabaseData
 
             var purchases = new ElementPurchasedEvent[] { pur1, pur2, pur3, pur4, pur5, pur6, pur7 };
 
-            var sale1 = MakeCompositeSoldEvent(moscowMule, p1);
-            var sale2 = MakeCompositeSoldEvent(moscowMule, p1);
-            var sale3 = MakeCompositeSoldEvent(darkNstormy, p2);
+            var ep = MakePrice(2, sparklingWater);
+            var elementPrices = new ElementPrice[] { ep };
 
-            var sales = new CompositeSoldEvent[] { sale1, sale2, sale3 };
+            var rese = MakeElementSoldEvent(sparklingWater, ep);
+
+            var elementSoldEvents = new ElementSoldEvent[] { rese };
+            
+            var cse1 = MakeCompositeSoldEvent(moscowMule, cp1);
+            var cse2 = MakeCompositeSoldEvent(moscowMule, cp1);
+            var cse3 = MakeCompositeSoldEvent(darkNstormy, cp2);
+
+            var sales = new CompositeSoldEvent[] { cse1, cse2, cse3 };
 
             var excerptData = new List<(Composite, List<(Element, double)>)>
             {
@@ -84,11 +91,15 @@ public class GetMockDatabaseData
             {
                 Categories = categories,
                 Composites = composites,
+                CompositePrices = compositePrices,
                 CompositeSoldEvents = sales,
-                ElementPurchasedEvents = purchases,
+
                 Elements = elements,
+                ElementPrices = elementPrices,
+                ElementSoldEvents = elementSoldEvents,
+                ElementPurchasedEvents = purchases,
+                
                 Excerpts = excerpts,
-                Prices = prices,
                 UnitOfMeasures = uoms
             };
 
@@ -145,12 +156,21 @@ public class GetMockDatabaseData
         });
     }
 
-    private static Price MakePrice(int value, Composite composite)
+    private static CompositePrice MakePrice(int value, Composite composite)
     {
-        return MakeEntity(() => new Price
+        return MakeEntity(() => new CompositePrice
         {
             Value = value,
             CompositeId = composite.Id
+        });
+    }
+
+    private static ElementPrice MakePrice(int value, Element element)
+    {
+        return MakeEntity(() => new ElementPrice
+        {
+            Value = value,
+            ElementId = element.Id
         });
     }
 
@@ -164,7 +184,16 @@ public class GetMockDatabaseData
         });
     }
 
-    private static CompositeSoldEvent MakeCompositeSoldEvent(Composite composite, Price price)
+    private static ElementSoldEvent MakeElementSoldEvent(Element element, ElementPrice price)
+    {
+        return MakeEntity(() => new ElementSoldEvent
+        {
+            ElementId = element.Id,
+            PriceId = price.Id
+        });
+    }
+
+    private static CompositeSoldEvent MakeCompositeSoldEvent(Composite composite, CompositePrice price)
     {
         return MakeEntity(() => new CompositeSoldEvent
         {
