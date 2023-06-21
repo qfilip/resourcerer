@@ -1,5 +1,6 @@
 ﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Mocks;
+using System.Xml.Linq;
 
 namespace Resourcerer.Logic.Mocks.Queries;
 public class GetMockDatabaseData
@@ -38,32 +39,30 @@ public class GetMockDatabaseData
 
             var composites = new Composite[] { moscowMule, darkNstormy, ginFizz };
 
-            var cp1 = MakePrice(6, moscowMule);
-            var cp2 = MakePrice(7, darkNstormy);
-            var cp3 = MakePrice(4, ginFizz);
+            var p1 = MakePrice(6, moscowMule);
+            var p2 = MakePrice(7, darkNstormy);
+            var p3 = MakePrice(4, ginFizz);
+            var p4 = MakePrice(2, sparklingWater);
 
-            var compositePrices = new CompositePrice[] { cp1, cp2, cp3 };
+            var prices = new Price[] { p1, p2, p3, p4 };
 
-            var pur1 = MakeElementPurchasedEvent(vodka, 1, 10);
-            var pur2 = MakeElementPurchasedEvent(vodka, 1, 10);
-            var pur3 = MakeElementPurchasedEvent(rum, 1, 20);
-            var pur4 = MakeElementPurchasedEvent(gin, 1, 5);
-            var pur5 = MakeElementPurchasedEvent(gingerAle, 1, 15);
-            var pur6 = MakeElementPurchasedEvent(sparklingWater, 1, 2);
-            var pur7 = MakeElementPurchasedEvent(lime, 0.5d, 5);
+            var pur1 = MakeElementPurchasedEvent(vodka, 1, 10, liter);
+            var pur2 = MakeElementPurchasedEvent(vodka, 1, 10, liter);
+            var pur3 = MakeElementPurchasedEvent(rum, 1, 20, liter);
+            var pur4 = MakeElementPurchasedEvent(gin, 1, 5, liter);
+            var pur5 = MakeElementPurchasedEvent(gingerAle, 1, 15, liter);
+            var pur6 = MakeElementPurchasedEvent(sparklingWater, 1, 2, liter);
+            var pur7 = MakeElementPurchasedEvent(lime, 1, 5, kg);
 
             var purchases = new ElementPurchasedEvent[] { pur1, pur2, pur3, pur4, pur5, pur6, pur7 };
 
-            var ep = MakePrice(2, sparklingWater);
-            var elementPrices = new ElementPrice[] { ep };
-
-            var rese = MakeElementSoldEvent(sparklingWater, ep);
+            var rese = MakeElementSoldEvent(sparklingWater, liter, p4.Value);
 
             var elementSoldEvents = new ElementSoldEvent[] { rese };
             
-            var cse1 = MakeCompositeSoldEvent(moscowMule, cp1);
-            var cse2 = MakeCompositeSoldEvent(moscowMule, cp1);
-            var cse3 = MakeCompositeSoldEvent(darkNstormy, cp2);
+            var cse1 = MakeCompositeSoldEvent(moscowMule, 1, p1.Value);
+            var cse2 = MakeCompositeSoldEvent(moscowMule, 1, p1.Value);
+            var cse3 = MakeCompositeSoldEvent(darkNstormy, 1, p1.Value);
 
             var sales = new CompositeSoldEvent[] { cse1, cse2, cse3 };
 
@@ -90,17 +89,16 @@ public class GetMockDatabaseData
             var dbdata = new DatabaseData
             {
                 Categories = categories,
+                Excerpts = excerpts,
+                UnitOfMeasures = uoms,
+                Prices = prices,
+
                 Composites = composites,
-                CompositePrices = compositePrices,
                 CompositeSoldEvents = sales,
 
                 Elements = elements,
-                ElementPrices = elementPrices,
                 ElementSoldEvents = elementSoldEvents,
-                ElementPurchasedEvents = purchases,
-                
-                Excerpts = excerpts,
-                UnitOfMeasures = uoms
+                ElementPurchasedEvents = purchases
             };
 
             return Task.FromResult(HandlerResult<DatabaseData>.Ok(dbdata));
@@ -156,49 +154,62 @@ public class GetMockDatabaseData
         });
     }
 
-    private static CompositePrice MakePrice(int value, Composite composite)
+    private static CompositeSoldEvent MakeCompositeSoldEvent(Composite composite, int unitsSold, double priceByUnit)
     {
-        return MakeEntity(() => new CompositePrice
+        return MakeEntity(() => new CompositeSoldEvent
+        {
+            CompositeId = composite.Id,
+            UnitsSold = unitsSold,
+            PriceByUnit = priceByUnit
+        });
+    }
+
+    private static Price MakePrice(int value, Composite composite)
+    {
+        return MakeEntity(() => new Price
         {
             Value = value,
             CompositeId = composite.Id
         });
     }
 
-    private static ElementPrice MakePrice(int value, Element element)
+    private static Price MakePrice(int value, Element element)
     {
-        return MakeEntity(() => new ElementPrice
+        return MakeEntity(() => new Price
         {
             Value = value,
             ElementId = element.Id
         });
     }
 
-    private static ElementPurchasedEvent MakeElementPurchasedEvent(Element element, double unitPrice, int numOfUnits)
+    private static ElementPurchasedEvent MakeElementPurchasedEvent(Element element, int unitsBought, double priceByUnit, UnitOfMeasure unitOfMeasure)
     {
         return MakeEntity(() => new ElementPurchasedEvent
         {
             ElementId = element.Id,
-            NumOfUnits = numOfUnits,
-            UnitPrice = unitPrice
+            UnitsBought = unitsBought,
+            PriceByUnit = priceByUnit,
+            UnitOfMeasure = unitOfMeasure
         });
     }
 
-    private static ElementSoldEvent MakeElementSoldEvent(Element element, ElementPrice price)
+    private static ElementSoldEvent MakeElementSoldEvent(Element element, UnitOfMeasure unitOfMeasure, double priceByUnit)
     {
         return MakeEntity(() => new ElementSoldEvent
         {
             ElementId = element.Id,
-            PriceId = price.Id
+            PriceByUnit = priceByUnit,
+            UnitOfMeasure = unitOfMeasure
         });
     }
 
-    private static CompositeSoldEvent MakeCompositeSoldEvent(Composite composite, CompositePrice price)
+    private static CompositeSoldEvent MakeSoldEvent(Composite composite, int unitsSold, double priceByUnit)
     {
         return MakeEntity(() => new CompositeSoldEvent
         {
             CompositeId = composite.Id,
-            PriceId = price.Id
+            UnitsSold = unitsSold,
+            PriceByUnit = priceByUnit
         });
     }
 

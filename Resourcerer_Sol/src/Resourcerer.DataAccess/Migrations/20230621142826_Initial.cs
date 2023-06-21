@@ -19,6 +19,7 @@ namespace Resourcerer.DataAccess.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
                     Claims = table.Column<string>(type: "TEXT", nullable: true),
+                    EntityStatus = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -34,6 +35,7 @@ namespace Resourcerer.DataAccess.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     ParentCategoryId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    EntityStatus = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -54,6 +56,7 @@ namespace Resourcerer.DataAccess.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Symbol = table.Column<string>(type: "TEXT", nullable: false),
+                    EntityStatus = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -69,6 +72,7 @@ namespace Resourcerer.DataAccess.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     CategoryId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    EntityStatus = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -89,8 +93,9 @@ namespace Resourcerer.DataAccess.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "TEXT", nullable: true),
                     UnitOfMeasureId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    EntityStatus = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -101,8 +106,7 @@ namespace Resourcerer.DataAccess.Migrations
                         name: "FK_Element_Category_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Element_UnitOfMeasure_UnitOfMeasureId",
                         column: x => x.UnitOfMeasureId,
@@ -112,43 +116,24 @@ namespace Resourcerer.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CompositePrice",
+                name: "CompositeSoldEvent",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UnitsSold = table.Column<int>(type: "INTEGER", nullable: false),
+                    PriceByUnit = table.Column<double>(type: "REAL", nullable: false),
                     CompositeId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Value = table.Column<double>(type: "REAL", nullable: false),
+                    EntityStatus = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CompositePrice", x => x.Id);
+                    table.PrimaryKey("PK_CompositeSoldEvent", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CompositePrice_Composite_CompositeId",
+                        name: "FK_CompositeSoldEvent_Composite_CompositeId",
                         column: x => x.CompositeId,
                         principalTable: "Composite",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ElementPrice",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ElementId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Value = table.Column<double>(type: "REAL", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ElementPrice", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ElementPrice_Element_ElementId",
-                        column: x => x.ElementId,
-                        principalTable: "Element",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -158,9 +143,11 @@ namespace Resourcerer.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UnitsBought = table.Column<int>(type: "INTEGER", nullable: false),
+                    PriceByUnit = table.Column<double>(type: "REAL", nullable: false),
+                    UnitOfMeasureId = table.Column<Guid>(type: "TEXT", nullable: true),
                     ElementId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    NumOfUnits = table.Column<int>(type: "INTEGER", nullable: false),
-                    UnitPrice = table.Column<double>(type: "REAL", nullable: false),
+                    EntityStatus = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -173,6 +160,40 @@ namespace Resourcerer.DataAccess.Migrations
                         principalTable: "Element",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ElementPurchasedEvent_UnitOfMeasure_UnitOfMeasureId",
+                        column: x => x.UnitOfMeasureId,
+                        principalTable: "UnitOfMeasure",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ElementSoldEvent",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UnitsSold = table.Column<int>(type: "INTEGER", nullable: false),
+                    PriceByUnit = table.Column<double>(type: "REAL", nullable: false),
+                    UnitOfMeasureId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    ElementId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    EntityStatus = table.Column<int>(type: "INTEGER", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ElementSoldEvent", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ElementSoldEvent_Element_ElementId",
+                        column: x => x.ElementId,
+                        principalTable: "Element",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ElementSoldEvent_UnitOfMeasure_UnitOfMeasureId",
+                        column: x => x.UnitOfMeasureId,
+                        principalTable: "UnitOfMeasure",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -184,6 +205,7 @@ namespace Resourcerer.DataAccess.Migrations
                     ElementId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Quantity = table.Column<double>(type: "REAL", nullable: false),
                     UnitOfMeasureId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    EntityStatus = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -210,57 +232,30 @@ namespace Resourcerer.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CompositeSoldEvent",
+                name: "Price",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CompositeId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    PriceId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Value = table.Column<double>(type: "REAL", nullable: false),
+                    ElementId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    CompositeId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    EntityStatus = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CompositeSoldEvent", x => x.Id);
+                    table.PrimaryKey("PK_Price", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CompositeSoldEvent_CompositePrice_PriceId",
-                        column: x => x.PriceId,
-                        principalTable: "CompositePrice",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CompositeSoldEvent_Composite_CompositeId",
+                        name: "FK_Price_Composite_CompositeId",
                         column: x => x.CompositeId,
                         principalTable: "Composite",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ElementSoldEvent",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ElementId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    PriceId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ElementSoldEvent", x => x.Id);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ElementSoldEvent_ElementPrice_PriceId",
-                        column: x => x.PriceId,
-                        principalTable: "ElementPrice",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ElementSoldEvent_Element_ElementId",
+                        name: "FK_Price_Element_ElementId",
                         column: x => x.ElementId,
                         principalTable: "Element",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -292,19 +287,9 @@ namespace Resourcerer.DataAccess.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CompositePrice_CompositeId",
-                table: "CompositePrice",
-                column: "CompositeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CompositeSoldEvent_CompositeId",
                 table: "CompositeSoldEvent",
                 column: "CompositeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CompositeSoldEvent_PriceId",
-                table: "CompositeSoldEvent",
-                column: "PriceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Element_CategoryId",
@@ -323,14 +308,14 @@ namespace Resourcerer.DataAccess.Migrations
                 column: "UnitOfMeasureId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ElementPrice_ElementId",
-                table: "ElementPrice",
-                column: "ElementId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ElementPurchasedEvent_ElementId",
                 table: "ElementPurchasedEvent",
                 column: "ElementId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ElementPurchasedEvent_UnitOfMeasureId",
+                table: "ElementPurchasedEvent",
+                column: "UnitOfMeasureId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ElementSoldEvent_ElementId",
@@ -338,9 +323,9 @@ namespace Resourcerer.DataAccess.Migrations
                 column: "ElementId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ElementSoldEvent_PriceId",
+                name: "IX_ElementSoldEvent_UnitOfMeasureId",
                 table: "ElementSoldEvent",
-                column: "PriceId");
+                column: "UnitOfMeasureId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Excerpt_CompositeId",
@@ -356,6 +341,16 @@ namespace Resourcerer.DataAccess.Migrations
                 name: "IX_Excerpt_UnitOfMeasureId",
                 table: "Excerpt",
                 column: "UnitOfMeasureId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Price_CompositeId",
+                table: "Price",
+                column: "CompositeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Price_ElementId",
+                table: "Price",
+                column: "ElementId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UnitOfMeasure_Name",
@@ -383,10 +378,7 @@ namespace Resourcerer.DataAccess.Migrations
                 name: "Excerpt");
 
             migrationBuilder.DropTable(
-                name: "CompositePrice");
-
-            migrationBuilder.DropTable(
-                name: "ElementPrice");
+                name: "Price");
 
             migrationBuilder.DropTable(
                 name: "Composite");

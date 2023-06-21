@@ -23,18 +23,10 @@ public partial class AppDbContext
             e.HasOne(x => x.Category).WithMany(x => x.Composites);
         });
 
-        modelBuilder.Entity<CompositePrice>(e =>
-        {
-            e.ToTable(nameof(CompositePrice));
-            e.Property(x => x.Value).IsRequired();
-            e.HasOne(x => x.Composite).WithMany(x => x.Prices);
-        });
-
         modelBuilder.Entity<CompositeSoldEvent>(e =>
         {
             e.ToTable(nameof(CompositeSoldEvent));
             e.HasOne(x => x.Composite).WithMany(x => x.CompositeSoldEvents);
-            e.HasOne(x => x.Price).WithMany(x => x.CompositeSoldEvents);
         });
 
         modelBuilder.Entity<Element>(e =>
@@ -44,13 +36,6 @@ public partial class AppDbContext
             e.Property(x => x.Name).IsRequired();
             e.HasOne(x => x.Category).WithMany(x => x.Elements);
             e.HasOne(x => x.UnitOfMeasure).WithMany(x => x.Elements);
-        });
-
-        modelBuilder.Entity<ElementPrice>(e =>
-        {
-            e.ToTable(nameof(ElementPrice));
-            e.Property(x => x.Value).IsRequired();
-            e.HasOne(x => x.Element).WithMany(x => x.Prices);
         });
 
         modelBuilder.Entity<ElementPurchasedEvent>(e =>
@@ -63,6 +48,14 @@ public partial class AppDbContext
         {
             e.ToTable(nameof(ElementSoldEvent));
             e.HasOne(x => x.Element).WithMany(x => x.ElementSoldEvents);
+         });
+
+        modelBuilder.Entity<Price>(e =>
+        {
+            e.ToTable(nameof(Price));
+            e.Property(x => x.Value).IsRequired();
+            e.HasOne(x => x.Element).WithMany(x => x.Prices);
+            e.HasOne(x => x.Composite).WithMany(x => x.Prices);
         });
 
         modelBuilder.Entity<Excerpt>(e =>

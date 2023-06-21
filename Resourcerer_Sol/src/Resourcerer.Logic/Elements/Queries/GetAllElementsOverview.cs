@@ -40,15 +40,14 @@ public static class GetAllElementsOverview
 
             var compositeSoldEvents = await _appDbContext.CompositeSoldEvents
                 .Where(x => compositeIds.Contains(x.CompositeId))
-                .Include(x => x.Price)
                 .ToListAsync();
 
             var usageDetails = elementsData.Select(x => {
                 var unitsPurchased = x.ElementPurchasedEvents
-                    .Sum(epe => epe.NumOfUnits);
+                    .Sum(epe => epe.UnitsBought);
 
                 var purchaseCosts = x.ElementPurchasedEvents
-                    .Sum(epe => epe.UnitPrice);
+                    .Sum(epe => epe.PriceByUnit);
 
                 var elementCompositeIds = idLookup
                     .Where(il => il.ElementId == x.Id)

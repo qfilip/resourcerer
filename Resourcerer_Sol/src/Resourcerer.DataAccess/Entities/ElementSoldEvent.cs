@@ -2,9 +2,10 @@
 
 public class ElementSoldEvent : EntityBase
 {
-    public Guid ElementId { get; set; }
-    public Guid PriceId { get; set; }
+    public int UnitsSold { get; set; }
+    public double PriceByUnit { get; set; }
+    public UnitOfMeasure? UnitOfMeasure { get; set; }
 
+    public Guid ElementId { get; set; }
     public virtual Element? Element { get; set; }
-    public virtual ElementPrice? Price { get; set; }
 }

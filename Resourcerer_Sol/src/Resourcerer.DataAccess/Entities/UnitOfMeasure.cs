@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace Resourcerer.DataAccess.Entities;
+﻿namespace Resourcerer.DataAccess.Entities;
 
 public class UnitOfMeasure : EntityBase
 {
