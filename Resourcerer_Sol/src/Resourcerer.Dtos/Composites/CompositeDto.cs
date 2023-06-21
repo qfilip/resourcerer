@@ -5,7 +5,7 @@ using Resourcerer.Dtos.Prices;
 
 namespace Resourcerer.Dtos.Composites;
 
-public class CompositeDto : DtoBase
+public class CompositeDto : EntityDto
 {
     public string? Name { get; set; }
     public Guid CategoryId { get; set; }

@@ -5,7 +5,7 @@ using Resourcerer.Dtos.UnitsOfMeasure;
 
 namespace Resourcerer.Dtos.Elements;
 
-public class ElementDto : DtoBase
+public class ElementDto : EntityDto
 {
     public string? Name { get; set; }
     public Guid CategoryId { get; set; }

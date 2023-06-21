@@ -3,7 +3,7 @@ using Resourcerer.Dtos.Elements;
 
 namespace Resourcerer.Dtos.Categories;
 
-public class CategoryDto : DtoBase
+public class CategoryDto : EntityDto
 {
     public string? Name { get; set; }
     public Guid? ParentCategoryId { get; set; }

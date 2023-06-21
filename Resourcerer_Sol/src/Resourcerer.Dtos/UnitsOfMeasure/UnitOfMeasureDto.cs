@@ -3,7 +3,7 @@ using Resourcerer.Dtos.Excerpts;
 
 namespace Resourcerer.Dtos.UnitsOfMeasure;
 
-public class UnitOfMeasureDto : DtoBase
+public class UnitOfMeasureDto : EntityDto
 {
     public string? Name { get; set; }
     public string? Symbol { get; set; }

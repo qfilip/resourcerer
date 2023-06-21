@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos.ElementPurchasedEvents;
 
-public class ElementPurchasedEventDto : DtoBase
+public class ElementPurchasedEventDto : EntityDto
 {
     public Guid ElementId { get; set; }
     public int NumOfUnits { get; set; }

@@ -3,7 +3,7 @@ using Resourcerer.Dtos.Elements;
 
 namespace Resourcerer.Dtos.Excerpts;
 
-public class ExcerptDto : DtoBase
+public class ExcerptDto : EntityDto
 {
     public Guid CompositeId { get; set; }
     public Guid ElementId { get; set; }

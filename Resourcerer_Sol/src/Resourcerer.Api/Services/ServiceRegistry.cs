@@ -19,11 +19,7 @@ public static partial class ServiceRegistry
             !x.IsInterface)
         .ToList();
         
-        handlers.ForEach(x =>
-        {
-            Console.WriteLine(x.Name);
-            services.AddTransient(x);
-        });
+        handlers.ForEach(x => services.AddTransient(x));
 
         services.AddScoped<Pipeline>();
     }

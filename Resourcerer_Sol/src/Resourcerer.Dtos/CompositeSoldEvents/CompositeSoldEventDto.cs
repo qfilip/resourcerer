@@ -3,7 +3,7 @@ using Resourcerer.Dtos.Prices;
 
 namespace Resourcerer.Dtos.CompositeSoldEvents;
 
-public class CompositeSoldEventDto : DtoBase
+public class CompositeSoldEventDto : EntityDto
 {
     public Guid CompositeId { get; set; }
     public Guid PriceId { get; set; }

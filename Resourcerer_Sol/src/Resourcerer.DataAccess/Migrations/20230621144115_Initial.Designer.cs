@@ -11,7 +11,7 @@ using Resourcerer.DataAccess.Contexts;
 namespace Resourcerer.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230621142826_Initial")]
+    [Migration("20230621144115_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
