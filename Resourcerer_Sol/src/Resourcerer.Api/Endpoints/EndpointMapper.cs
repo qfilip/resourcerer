@@ -10,6 +10,7 @@ public class EndpointMapper
     {
         var categories = app.MapGroup("/categories");
         categories.MapGet("/getall", GetAllCategoriesEndpoint.Action);
+        categories.MapPost("/add", AddCategoryEndpoint.Action);
 
         var elements = app.MapGroup("/elements");
         elements.MapGet("/elements-overviews", GetAllElementsOverviewsEndpoint.Action);
