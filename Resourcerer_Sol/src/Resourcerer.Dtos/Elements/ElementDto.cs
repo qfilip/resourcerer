@@ -1,4 +1,5 @@
-﻿using Resourcerer.Dtos.Categories;
+﻿using FluentValidation;
+using Resourcerer.Dtos.Categories;
 using Resourcerer.Dtos.ElementPurchasedEvents;
 using Resourcerer.Dtos.Excerpts;
 using Resourcerer.Dtos.UnitsOfMeasure;
@@ -15,4 +16,20 @@ public class ElementDto : EntityDto
     public UnitOfMeasureDto? UnitOfMeasure { get; set; }
     public List<ExcerptDto> Excerpts { get; set; } = new();
     public List<ElementPurchasedEventDto> ElementPurchasedEvents { get; set; } = new();
+}
+
+public class ElementDtoValidator : AbstractValidator<ElementDto>
+{
+    public ElementDtoValidator()
+    {
+        RuleFor(x => x.Name)
+            .NotEmpty().WithMessage("Element name cannot be empty")
+            .Length(min: 3, max: 50).WithMessage("Element name must be between 3 and 50 characters long");
+
+        RuleFor(x => x.CategoryId)
+            .NotEmpty().WithMessage("Element's category cannot be empty");
+
+        RuleFor(x => x.UnitOfMeasureId)
+            .NotEmpty().WithMessage("Element's unit of measure cannot be empty");
+    }
 }
