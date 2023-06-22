@@ -9,11 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resourcerer.DataAccess", "s
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{90BD2420-5A51-4239-A10A-D179B357EE7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resourcerer.Dtos", "src\Resourcerer.Dtos\Resourcerer.Dtos.csproj", "{5F933B12-D378-49C6-89C6-4245B9B51A14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resourcerer.Dtos", "src\Resourcerer.Dtos\Resourcerer.Dtos.csproj", "{5F933B12-D378-49C6-89C6-4245B9B51A14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resourcerer.Utilities", "src\Resourcerer.Utilities\Resourcerer.Utilities.csproj", "{2D532F2F-0FE0-4B00-9FAF-967060A3531F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resourcerer.Utilities", "src\Resourcerer.Utilities\Resourcerer.Utilities.csproj", "{2D532F2F-0FE0-4B00-9FAF-967060A3531F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resourcerer.Logic", "src\Resourcerer.Logic\Resourcerer.Logic.csproj", "{0D512C8D-396A-4989-A62A-4B0EC3B82154}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resourcerer.Logic", "src\Resourcerer.Logic\Resourcerer.Logic.csproj", "{0D512C8D-396A-4989-A62A-4B0EC3B82154}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B54F7C3E-2824-4271-ABDC-DF6701C18720}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resourcerer.UnitTests", "tests\Resourcerer.UnitTests\Resourcerer.UnitTests.csproj", "{6BE407B6-10B3-4AB0-A996-D0C338A087F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,10 @@ Global
 		{0D512C8D-396A-4989-A62A-4B0EC3B82154}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D512C8D-396A-4989-A62A-4B0EC3B82154}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D512C8D-396A-4989-A62A-4B0EC3B82154}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BE407B6-10B3-4AB0-A996-D0C338A087F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BE407B6-10B3-4AB0-A996-D0C338A087F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BE407B6-10B3-4AB0-A996-D0C338A087F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BE407B6-10B3-4AB0-A996-D0C338A087F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,6 +59,7 @@ Global
 		{5F933B12-D378-49C6-89C6-4245B9B51A14} = {90BD2420-5A51-4239-A10A-D179B357EE7C}
 		{2D532F2F-0FE0-4B00-9FAF-967060A3531F} = {90BD2420-5A51-4239-A10A-D179B357EE7C}
 		{0D512C8D-396A-4989-A62A-4B0EC3B82154} = {90BD2420-5A51-4239-A10A-D179B357EE7C}
+		{6BE407B6-10B3-4AB0-A996-D0C338A087F1} = {B54F7C3E-2824-4271-ABDC-DF6701C18720}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8173D281-6217-45CE-9AF2-848F4AF18466}

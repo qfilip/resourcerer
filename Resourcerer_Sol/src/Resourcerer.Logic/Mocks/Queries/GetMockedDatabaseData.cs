@@ -1,9 +1,8 @@
 ﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Mocks;
-using System.Xml.Linq;
 
 namespace Resourcerer.Logic.Mocks.Queries;
-public class GetMockDatabaseData
+public class GetMockedDatabaseData
 {
     public class Handler : IRequestHandler<Unit, DatabaseData>
     {
@@ -200,16 +199,6 @@ public class GetMockDatabaseData
             ElementId = element.Id,
             PriceByUnit = priceByUnit,
             UnitOfMeasure = unitOfMeasure
-        });
-    }
-
-    private static CompositeSoldEvent MakeSoldEvent(Composite composite, int unitsSold, double priceByUnit)
-    {
-        return MakeEntity(() => new CompositeSoldEvent
-        {
-            CompositeId = composite.Id,
-            UnitsSold = unitsSold,
-            PriceByUnit = priceByUnit
         });
     }
 
