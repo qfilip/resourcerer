@@ -8,9 +8,9 @@ public static class AddElement
 {
     public class Handler : IRequestHandler<ElementDto, Unit>
     {
-        private readonly AppDbContext _appDbContext;
+        private readonly IAppDbContext _appDbContext;
 
-        public Handler(AppDbContext appDbContext)
+        public Handler(IAppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }

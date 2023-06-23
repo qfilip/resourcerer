@@ -8,9 +8,9 @@ public class AddCategory
 {
     public class Handler : IRequestHandler<CategoryDto, Unit>
     {
-        private readonly AppDbContext _appDbContext;
+        private readonly IAppDbContext _appDbContext;
 
-        public Handler(AppDbContext appDbContext)
+        public Handler(IAppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }

@@ -8,9 +8,9 @@ public static class GetAllCategories
 {
     public class Handler : IRequestHandler<Unit, List<CategoryDto>>
     {
-        private readonly AppDbContext _appDbContext;
+        private readonly IAppDbContext _appDbContext;
 
-        public Handler(AppDbContext appDbContext)
+        public Handler(IAppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
