@@ -47,7 +47,7 @@ public static class GetAllElementsOverview
                     .Sum(epe => epe.UnitsBought);
 
                 var purchaseCosts = x.ElementPurchasedEvents
-                    .Sum(epe => epe.PriceByUnit);
+                    .Sum(epe => epe.PriceByUnit * epe.UnitsBought);
 
                 var elementCompositeIds = idLookup
                     .Where(il => il.ElementId == x.Id)
