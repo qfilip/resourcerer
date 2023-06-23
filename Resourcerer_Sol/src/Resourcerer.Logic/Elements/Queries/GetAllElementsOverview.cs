@@ -7,9 +7,9 @@ public static class GetAllElementsOverview
 {
     public class Handler : IRequestHandler<Unit, List<ElementUsageDetailsDto>>
     {
-        private readonly AppDbContext _appDbContext;
+        private readonly IAppDbContext _appDbContext;
 
-        public Handler(AppDbContext appDbContext)
+        public Handler(IAppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }

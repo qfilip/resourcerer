@@ -36,6 +36,8 @@ public static partial class ServiceRegistry
     {
         services.AddDbContext<AppDbContext>(cfg =>
             cfg.UseSqlite(AppInitializer.GetDbConnection(env)));
+
+        services.AddScoped<IAppDbContext, AppDbContext>();
     }
 
     private static void AddSwagger(this IServiceCollection services)

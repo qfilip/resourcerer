@@ -8,7 +8,7 @@ public class SeedDatabaseEndpoint
 {
     public static async Task<IResult> Action(
         Pipeline pipeline,
-        GetMockDatabaseData.Handler mockHandler,
+        GetMockedDatabaseData.Handler mockHandler,
         SeedMockData.Handler seedHandler)
     {
         var dbData = await mockHandler.Handle(new Unit());
