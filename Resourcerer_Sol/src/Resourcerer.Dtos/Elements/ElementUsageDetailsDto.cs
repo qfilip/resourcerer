@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.Dtos.Elements;
 
-public class ElementUsageDetailsDto : DtoBase
+public class ElementUsageDetailsDto : BaseDto
 {
     public Guid ElementId { get; set; }
     public string? ElementName { get; set; }

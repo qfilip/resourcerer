@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.Dtos;
 
-public class EntityDto : DtoBase
+public class EntityDto : BaseDto
 {
     public Guid Id { get; set; }
     public DateTime CreatedAt { get; set; }
