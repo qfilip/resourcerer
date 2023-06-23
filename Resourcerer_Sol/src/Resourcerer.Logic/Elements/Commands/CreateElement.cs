@@ -4,7 +4,7 @@ using Resourcerer.Dtos.Elements;
 
 namespace Resourcerer.Logic.Elements.Commands;
 
-public static class AddElement
+public static class CreateElement
 {
     public class Handler : IRequestHandler<ElementDto, Unit>
     {

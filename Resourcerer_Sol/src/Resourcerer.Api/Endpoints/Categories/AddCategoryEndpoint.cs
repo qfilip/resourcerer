@@ -9,8 +9,8 @@ public class AddCategoryEndpoint
     public static async Task<IResult> Action(
         [FromBody] CategoryDto categoryDto,
         [FromServices] Pipeline pipeline,
-        [FromServices] AddCategory.Handler handler)
+        [FromServices] CreateCategory.Handler handler)
     {
-        return await pipeline.Pipe(handler, categoryDto, nameof(AddCategory));
+        return await pipeline.Pipe(handler, categoryDto, nameof(CreateCategory));
     }
 }

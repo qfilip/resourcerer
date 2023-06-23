@@ -4,7 +4,7 @@ using Resourcerer.Dtos.Categories;
 
 namespace Resourcerer.Logic.Categories.Commands;
 
-public class AddCategory
+public class CreateCategory
 {
     public class Handler : IRequestHandler<CategoryDto, Unit>
     {

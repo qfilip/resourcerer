@@ -10,8 +10,8 @@ public class AddElementEndpoint
     public static async Task<IResult> Action(
        [FromBody] ElementDto dto,
        [FromServices] Pipeline pipeline,
-       [FromServices] AddElement.Handler handler)
+       [FromServices] CreateElement.Handler handler)
     {
-        return await pipeline.Pipe(handler, dto, nameof(AddElement));
+        return await pipeline.Pipe(handler, dto, nameof(CreateElement));
     }
 }
