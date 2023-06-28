@@ -20,7 +20,6 @@ public static class GetAllElementsOverview
                 .Include(x => x.ElementSoldEvents)
                 .Include(x => x.ElementPurchasedEvents)
                 .Include(x => x.UnitOfMeasure)
-                .Include(x => x.Category)
                 .Include(x => x.Excerpts)
                 .ToListAsync();
             
