@@ -24,7 +24,17 @@ public class FluentElementMocker : IFluentElementMocker
         };
     }
 
-    public static IFluentElementMocker WithName(string name) => new FluentElementMocker(name);
+    private FluentElementMocker(Guid id, string name)
+    {
+        _element = new Element
+        {
+            Id = id,
+            Name = name
+        };
+    }
+
+    public static IFluentElementMocker Create(string name) => new FluentElementMocker(name);
+    public static IFluentElementMocker Create(Guid id, string name) => new FluentElementMocker(id, name);
 
     public IFluentElementMocker AddElementSoldEvents(List<(double priceByUnit, int unitsSold)> parameters)
     {

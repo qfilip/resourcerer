@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.Elements;
 
@@ -41,6 +42,8 @@ public static class GetAllElementsOverview
                 .Where(x => compositeIds.Contains(x.CompositeId))
                 .ToListAsync();
 
+            var compositeSoldEventsCompositeIds = compositeSoldEvents.Select(cse => cse.CompositeId).ToList();
+
             var usageDetails = elementsData.Select(x => {
                 var unitsPurchased = x.ElementPurchasedEvents
                     .Sum(epe => epe.UnitsBought);
@@ -53,11 +56,29 @@ public static class GetAllElementsOverview
                     .SelectMany(i => i.ElementCompositeIds)
                     .ToList();
 
-                var unitsSoldRaw = x.ElementSoldEvents.Count;
+                var unitsSoldRaw = x.ElementSoldEvents.Sum(ese => ese.UnitsSold);
 
-                var unitsUsedInComposites = x.Excerpts
-                    .Where(e => compositeSoldEvents.Select(cse => cse.CompositeId).Contains(e.CompositeId))
-                    .Sum(e => e.Quantity);
+                var relevantExcerptsLookup = x.Excerpts
+                    .Where(e => compositeSoldEventsCompositeIds.Contains(e.CompositeId))
+                    .Select(e => new
+                    { 
+                        CompositeId = e.CompositeId,
+                        ElementQuantity = e.Quantity
+                    })
+                    .ToList();
+
+                var unitsUsedInComposites = compositeSoldEvents.Aggregate(0d, (acc, cse) =>
+                {
+                    var quantityInfo = relevantExcerptsLookup
+                        .FirstOrDefault(rel => rel.CompositeId == cse.CompositeId);
+                    
+                    if (quantityInfo != null)
+                    {
+                        acc += quantityInfo.ElementQuantity;
+                    }
+
+                    return acc;
+                });
                 
                 return new ElementUsageDetailsDto
                 {
