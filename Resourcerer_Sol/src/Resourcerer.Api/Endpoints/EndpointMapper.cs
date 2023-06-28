@@ -12,15 +12,19 @@ public class EndpointMapper
         var categories = app.MapGroup("/categories");
         categories.MapGet("/getall", GetAllCategoriesEndpoint.Action);
         categories.MapPost("/add", AddCategoryEndpoint.Action);
+        categories.WithTags("Categories");
 
         var elements = app.MapGroup("/elements");
         elements.MapGet("/elements-overviews", GetAllElementsOverviewsEndpoint.Action);
         elements.MapPost("/add", AddElementEndpoint.Action);
+        elements.WithTags("Elements");
 
         var unitsOfMeasure = app.MapGroup("unitsofmeasure");
         unitsOfMeasure.MapPost("/add", AddUnitOfMeasureEndpoint.Action);
+        unitsOfMeasure.WithTags("Units Of Measure");
 
         var mocks = app.MapGroup("/mocks");
-        elements.MapGet("/seed-db", SeedDatabaseEndpoint.Action);
+        mocks.MapGet("/seed-db", SeedDatabaseEndpoint.Action);
+        mocks.WithTags("Mocks");
     }
 }
