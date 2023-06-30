@@ -60,7 +60,7 @@ public class GetMockedDatabaseData
 
             var purchases = new ElementPurchasedEvent[] { pur1, pur2, pur3, pur4, pur5, pur6, pur7 };
 
-            var rese = MakeElementSoldEvent(sparklingWater, liter, p4.Value, Now.AddDays(7));
+            var rese = MakeElementSoldEvent(sparklingWater, liter, 1, p4.Value, Now.AddDays(7));
 
             var elementSoldEvents = new ElementSoldEvent[] { rese };
 

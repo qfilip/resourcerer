@@ -69,7 +69,7 @@ public class MockingUtilities
         });
     }
 
-    protected static CompositeSoldEvent MakeCompositeSoldEvent(Composite composite, int unitsSold, double priceByUnit, DateTime createdAt)
+    protected static CompositeSoldEvent MakeCompositeSoldEvent(Composite composite, double unitsSold, double priceByUnit, DateTime createdAt)
     {
         return MakeEntity(() => new CompositeSoldEvent
         {
@@ -99,7 +99,7 @@ public class MockingUtilities
         });
     }
 
-    protected static ElementPurchasedEvent MakeElementPurchasedEvent(Element element, int unitsBought, double priceByUnit, UnitOfMeasure unitOfMeasure, DateTime createdAt)
+    protected static ElementPurchasedEvent MakeElementPurchasedEvent(Element element, double unitsBought, double priceByUnit, UnitOfMeasure unitOfMeasure, DateTime createdAt)
     {
         return MakeEntity(() => new ElementPurchasedEvent
         {
@@ -112,12 +112,13 @@ public class MockingUtilities
         });
     }
 
-    protected static ElementSoldEvent MakeElementSoldEvent(Element element, UnitOfMeasure unitOfMeasure, double priceByUnit, DateTime createdAt)
+    protected static ElementSoldEvent MakeElementSoldEvent(Element element, UnitOfMeasure unitOfMeasure, double unitsSold, double priceByUnit, DateTime createdAt)
     {
         return MakeEntity(() => new ElementSoldEvent
         {
             ElementId = element.Id,
             PriceByUnit = priceByUnit,
+            UnitsSold = unitsSold,
             UnitOfMeasure = unitOfMeasure,
 
             CreatedAt = createdAt
