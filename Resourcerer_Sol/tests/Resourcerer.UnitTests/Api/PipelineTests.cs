@@ -1,9 +1,11 @@
 ﻿using FakeItEasy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Logging;
 using Resourcerer.Api.Services;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.FluentMocks;
+using Resourcerer.UnitTests.Utilities.TestClasses;
 
 namespace Resourcerer.UnitTests.Api;
 
@@ -21,10 +23,17 @@ public class PipelineTests
     {
         var handler = new TestHandler.Handler();
         var dto = new TestDto();
-        
-        var result = await _pipeline.Pipe<TestDto, TestDtoValidator, TestEntity>(handler, dto);
-        
-        Assert.True(result is Ok<TestEntity>);
+
+        var iResults = new[]
+        {
+            await _pipeline.Pipe(handler, dto),
+            await _pipeline.Pipe<TestDto, TestDtoValidator, TestEntity>(handler, dto)
+        };
+
+        iResults.Every(x =>
+        {
+            Assert.True(x is Ok<TestEntity>);
+        });
     }
 
     [Fact]
@@ -33,11 +42,39 @@ public class PipelineTests
         var handler = new TestHandler.Handler();
         var dto = new TestDto() { Property = 1 };
 
-        var iResult = await _pipeline.Pipe<TestDto, TestDtoValidator, TestEntity>(handler, dto);
-        var result = iResult as BadRequest<string[]>;
-        
-        Assert.NotNull(result);
-        Assert.NotNull(result.Value);
-        Assert.Contains(TestDtoValidator.ErrorMessage, result.Value);
+        var iResults = new[]
+        {
+            await _pipeline.Pipe(handler, dto),
+            await _pipeline.Pipe<TestDto, TestDtoValidator, TestEntity>(handler, dto)
+        };
+
+        iResults.Every(x =>
+        {
+            var r = x as BadRequest<string[]>;
+            Assert.NotNull(r);
+            Assert.NotNull(r.Value);
+            Assert.Contains(TestDtoValidator.ErrorMessage, r.Value);
+        });
+    }
+
+    [Fact]
+    public async Task Pipeline_Uses_CustomMapper()
+    {
+        var handler = new TestHandler.Handler();
+        var dto = new TestDto();
+        var customMapper = (TestEntity e) => Results.Accepted();
+
+        var iResults = new[]
+        {
+             await _pipeline.Pipe(handler, dto, customMapper),
+             await _pipeline
+                .Pipe<TestDto, TestDtoValidator, TestEntity>(handler, dto, customMapper)
+        };
+
+        iResults.Every(x =>
+        {
+            Assert.NotNull(x);
+            Assert.True(x is Accepted);
+        });
     }
 }

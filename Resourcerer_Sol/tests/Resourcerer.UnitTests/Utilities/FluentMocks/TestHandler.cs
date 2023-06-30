@@ -1,4 +1,5 @@
 ﻿using Resourcerer.Logic;
+using Resourcerer.UnitTests.Utilities.TestClasses;
 
 namespace Resourcerer.UnitTests.Utilities.FluentMocks;
 
