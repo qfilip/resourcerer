@@ -7,6 +7,8 @@ using System.Text.Json;
 namespace Resourcerer.Logic.Queries.Mocks;
 public class GetMockedDatabaseData
 {
+    private static DateTime Now = new DateTime(2000, 1, 1);
+
     public class Handler : IRequestHandler<Unit, DatabaseData>
     {
         public Task<HandlerResult<DatabaseData>> Handle(Unit _)
@@ -53,23 +55,23 @@ public class GetMockedDatabaseData
 
             var prices = new Price[] { p1, p2, p3, p4 };
 
-            var pur1 = MakeElementPurchasedEvent(vodka, 1, 10, liter);
-            var pur2 = MakeElementPurchasedEvent(vodka, 1, 10, liter);
-            var pur3 = MakeElementPurchasedEvent(rum, 1, 20, liter);
-            var pur4 = MakeElementPurchasedEvent(gin, 1, 5, liter);
-            var pur5 = MakeElementPurchasedEvent(gingerAle, 1, 15, liter);
-            var pur6 = MakeElementPurchasedEvent(sparklingWater, 1, 2, liter);
-            var pur7 = MakeElementPurchasedEvent(lime, 1, 5, kg);
+            var pur1 = MakeElementPurchasedEvent(vodka, 1, 10, liter, Now.AddDays(1));
+            var pur2 = MakeElementPurchasedEvent(vodka, 1, 10, liter, Now.AddDays(2));
+            var pur3 = MakeElementPurchasedEvent(rum, 1, 20, liter, Now.AddDays(3));
+            var pur4 = MakeElementPurchasedEvent(gin, 1, 5, liter, Now.AddDays(4));
+            var pur5 = MakeElementPurchasedEvent(gingerAle, 1, 15, liter, Now.AddDays(5));
+            var pur6 = MakeElementPurchasedEvent(sparklingWater, 1, 2, liter, Now.AddDays(6));
+            var pur7 = MakeElementPurchasedEvent(lime, 1, 5, kg, Now.AddDays(7));
 
             var purchases = new ElementPurchasedEvent[] { pur1, pur2, pur3, pur4, pur5, pur6, pur7 };
 
-            var rese = MakeElementSoldEvent(sparklingWater, liter, p4.Value);
+            var rese = MakeElementSoldEvent(sparklingWater, liter, p4.Value, Now.AddDays(7));
 
             var elementSoldEvents = new ElementSoldEvent[] { rese };
 
-            var cse1 = MakeCompositeSoldEvent(moscowMule, 1, p1.Value);
-            var cse2 = MakeCompositeSoldEvent(moscowMule, 1, p1.Value);
-            var cse3 = MakeCompositeSoldEvent(darkNstormy, 1, p1.Value);
+            var cse1 = MakeCompositeSoldEvent(moscowMule, 1, p1.Value, Now.AddMonths(1));
+            var cse2 = MakeCompositeSoldEvent(moscowMule, 1, p1.Value, Now.AddMonths(1));
+            var cse3 = MakeCompositeSoldEvent(darkNstormy, 1, p1.Value, Now.AddMonths(1));
 
             var sales = new CompositeSoldEvent[] { cse1, cse2, cse3 };
 
@@ -113,14 +115,12 @@ public class GetMockedDatabaseData
         }
     }
 
-    private static DateTime now = DateTime.Now;
-
     private static T MakeEntity<T>(Func<T> retn) where T : EntityBase
     {
         var e = retn();
         e.Id = Guid.NewGuid();
-        e.CreatedAt = now;
-        e.ModifiedAt = now;
+        e.CreatedAt = Now;
+        e.ModifiedAt = Now;
 
         return e as T;
     }
@@ -176,13 +176,15 @@ public class GetMockedDatabaseData
         });
     }
 
-    private static CompositeSoldEvent MakeCompositeSoldEvent(Composite composite, int unitsSold, double priceByUnit)
+    private static CompositeSoldEvent MakeCompositeSoldEvent(Composite composite, int unitsSold, double priceByUnit, DateTime createdAt)
     {
         return MakeEntity(() => new CompositeSoldEvent
         {
             CompositeId = composite.Id,
             UnitsSold = unitsSold,
-            PriceByUnit = priceByUnit
+            PriceByUnit = priceByUnit,
+
+            CreatedAt = createdAt
         });
     }
 
@@ -204,24 +206,28 @@ public class GetMockedDatabaseData
         });
     }
 
-    private static ElementPurchasedEvent MakeElementPurchasedEvent(Element element, int unitsBought, double priceByUnit, UnitOfMeasure unitOfMeasure)
+    private static ElementPurchasedEvent MakeElementPurchasedEvent(Element element, int unitsBought, double priceByUnit, UnitOfMeasure unitOfMeasure, DateTime createdAt)
     {
         return MakeEntity(() => new ElementPurchasedEvent
         {
             ElementId = element.Id,
             UnitsBought = unitsBought,
             PriceByUnit = priceByUnit,
-            UnitOfMeasure = unitOfMeasure
+            UnitOfMeasure = unitOfMeasure,
+
+            CreatedAt = createdAt
         });
     }
 
-    private static ElementSoldEvent MakeElementSoldEvent(Element element, UnitOfMeasure unitOfMeasure, double priceByUnit)
+    private static ElementSoldEvent MakeElementSoldEvent(Element element, UnitOfMeasure unitOfMeasure, double priceByUnit, DateTime createdAt)
     {
         return MakeEntity(() => new ElementSoldEvent
         {
             ElementId = element.Id,
             PriceByUnit = priceByUnit,
-            UnitOfMeasure = unitOfMeasure
+            UnitOfMeasure = unitOfMeasure,
+
+            CreatedAt = createdAt
         });
     }
 

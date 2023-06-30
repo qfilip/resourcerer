@@ -17,4 +17,5 @@ public interface IAppDbContext
     public DbSet<ElementSoldEvent> ElementSoldEvents { get; set; }
 
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    Task<int> BaseSaveChangesAsync(CancellationToken cancellationToken = default);
 }

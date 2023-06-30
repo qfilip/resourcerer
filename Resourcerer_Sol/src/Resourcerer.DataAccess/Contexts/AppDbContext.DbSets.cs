@@ -45,4 +45,9 @@ public partial class AppDbContext : DbContext, IAppDbContext
         }
         return await base.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<int> BaseSaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        return await base.SaveChangesAsync();
+    }
 }
