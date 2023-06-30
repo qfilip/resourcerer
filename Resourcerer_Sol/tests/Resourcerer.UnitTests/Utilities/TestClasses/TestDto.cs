@@ -15,7 +15,7 @@ public class TestDtoValidator : AbstractValidator<TestDto>
     public TestDtoValidator()
     {
         RuleFor(x => x.Property)
-            .Equal(eHandlerResult.Invalid)
+            .Must(e => e != eHandlerResult.Invalid)
             .WithMessage(ErrorMessage);
     }
 }

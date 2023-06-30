@@ -33,7 +33,7 @@ public class PipelineTests
 
         iResults.Every(x =>
         {
-            Assert.True(x is Ok<Task<Unit>>);
+            Assert.True(x is Ok<Unit>);
         });
     }
 
@@ -96,7 +96,7 @@ public class PipelineTests
         iResults.Every(x =>
         {
             Assert.NotNull(x);
-            Assert.True(x is Accepted);
+            Assert.True(x is NotFound<Unit>);
         });
     }
 }

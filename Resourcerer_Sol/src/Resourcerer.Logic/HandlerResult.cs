@@ -24,29 +24,29 @@ public class HandlerResult<T>
 
     public static HandlerResult<T> ValidationError(string error)
     {
-        return new HandlerResult<T>(HandlerResultStatus.ValidationError, new List<string> { error });
+        return new HandlerResult<T>(HandlerResultStatus.ValidationError, new string[] { error });
     }
 
-    public static HandlerResult<T> ValidationError(IEnumerable<string> errors)
+    public static HandlerResult<T> ValidationError(string[] errors)
     {
-        return new HandlerResult<T>(HandlerResultStatus.ValidationError, errors.ToList());
+        return new HandlerResult<T>(HandlerResultStatus.ValidationError, errors);
     }
 
     private HandlerResult(T? obj)
     {
         Object = obj;
         Status = HandlerResultStatus.Ok;
-        Errors = new();
+        Errors = Array.Empty<string>();
     }
 
-    private HandlerResult(HandlerResultStatus status, IEnumerable<string> errors)
+    private HandlerResult(HandlerResultStatus status, string[] errors)
     {
         Status = status;
-        Errors = errors.ToList();
+        Errors = errors;
     }
 
     public T? Object { get; private set; }
-    public List<string> Errors { get; private set; }
+    public string[] Errors { get; private set; }
     public HandlerResultStatus Status { get; private set; }
 
     public HandlerResult<TTarget> MapSelfTo<TTarget>()
