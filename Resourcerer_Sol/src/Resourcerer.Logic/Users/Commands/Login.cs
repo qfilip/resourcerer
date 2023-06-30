@@ -12,7 +12,8 @@ public static class Login
             {
                 { "sub", Guid.NewGuid().ToString() },
                 { "name", request.Name! },
-                { "admin", "" }
+                { "admin", "" },
+                { "elements", "" }
             };
             
             return Task.FromResult(HandlerResult<Dictionary<string, string>>.Ok(claims));

@@ -1,7 +1,5 @@
 using Resourcerer.Api.Endpoints;
 using Resourcerer.Api.Services;
-using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
