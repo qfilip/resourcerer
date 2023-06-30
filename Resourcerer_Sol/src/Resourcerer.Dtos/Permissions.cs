@@ -1,6 +1,5 @@
 ﻿using Resourcerer.DataAccess.Entities;
 using System.Security.Claims;
-using System.Text.Json;
 
 namespace Resourcerer.Dtos;
 
@@ -19,6 +18,22 @@ public class Permission
         $"{nameof(Price)}s",
         $"{nameof(UnitOfMeasure)}s"
     };
+
+    public static Dictionary<string, string> GetAllPermissionsDictionary()
+    {
+        var dict = new Dictionary<string, string>();
+        AllSets.ForEach(s =>
+        {
+            var level = 0;
+            AllPermissions.ForEach(p =>
+            {
+                level = level | (int)p;
+            });
+            dict.Add(s, level.ToString());
+        });
+
+        return dict;
+    }
 
     public static List<Claim> GetClaimsFromDictionary(Dictionary<string, string> permissionsDict)
     {

@@ -3,6 +3,7 @@ using Resourcerer.Api.Endpoints.Elements;
 using Resourcerer.Api.Endpoints.Mocks;
 using Resourcerer.Api.Endpoints.Prices;
 using Resourcerer.Api.Endpoints.UnitsOfMeasure;
+using Resourcerer.Api.Endpoints.Users;
 using System.Text.RegularExpressions;
 
 namespace Resourcerer.Api.Endpoints;
@@ -16,6 +17,7 @@ public class EndpointMapper
         MapMocks(app);
         MapPrices(app);
         MapUnitsOfMeasure(app);
+        MapUsers(app);
     }
 
     private static void MapCategories(WebApplication app)
@@ -54,6 +56,12 @@ public class EndpointMapper
     {
         var g = GetGroup(app, "Units Of Measure");
         AddUnitOfMeasureEndpoint.MapToGroup(g);
+    }
+
+    private static void MapUsers(WebApplication app)
+    {
+        var g = GetGroup(app, "Users");
+        LoginEndpoint.MapToGroup(g);
     }
 
     private static RouteGroupBuilder GetGroup(WebApplication app, string name)

@@ -15,7 +15,7 @@ public class Pipeline
     public async Task<IResult> Pipe<TRequest, TResponse>(
         IRequestHandler<TRequest, TResponse> handler,
         TRequest request,
-        Func<HandlerResult<TResponse>, IResult>? customResultMapper = null)
+        Func<TResponse, IResult>? customOkResultMapper = null)
     {
         var actionName = GetHandlerName(handler);
 
@@ -25,13 +25,13 @@ public class Pipeline
 
         _logger.LogInformation("Action {Action} finished", actionName);
 
-        return MapResult(handlerResult, customResultMapper);
+        return MapResult(handlerResult, customOkResultMapper);
     }
 
     public async Task<IResult> Pipe<TRequest, TRequestValidator, TResponse>(
         IRequestHandler<TRequest, TResponse> handler,
         TRequest request,
-        Func<HandlerResult<TResponse>, IResult>? customResultMapper = null)
+        Func<TResponse, IResult>? customOkResultMapper = null)
         where TRequest : class
         where TRequestValidator : AbstractValidator<TRequest>, new()
     {
@@ -49,19 +49,17 @@ public class Pipeline
         var handlerResult = await handler.Handle(request);
         _logger.LogInformation("Action {Action} finished", actionName);
 
-        return MapResult(handlerResult, customResultMapper);
+        return MapResult(handlerResult, customOkResultMapper);
     }
 
     private static IResult MapResult<TResponse>(
         HandlerResult<TResponse> handlerResult,
-        Func<HandlerResult<TResponse>, IResult>? customResultMapper = null)
+        Func<TResponse, IResult>? customOkResultMapper = null)
     {
-        var result = customResultMapper?.Invoke(handlerResult);
-
-        return (handlerResult.Status, result) switch
+        return (handlerResult.Status, customOkResultMapper) switch
         {
-            (_, IResult) => result,
             (HandlerResultStatus.Ok, null) => Results.Ok(handlerResult.Object),
+            (HandlerResultStatus.Ok, _) => customOkResultMapper.Invoke(handlerResult.Object!),
             (HandlerResultStatus.NotFound, null) => Results.NotFound(handlerResult.Object),
             (HandlerResultStatus.ValidationError, null) => Results.BadRequest(handlerResult.Errors),
             _ =>

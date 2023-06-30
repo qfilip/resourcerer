@@ -1,5 +1,4 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using Resourcerer.Dtos.Users;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -7,14 +6,8 @@ namespace Resourcerer.Api.Services;
 
 public class JwtService
 {
-    public string GenerateToken(UserDto dto)
+    public static string GenerateToken(List<Claim> claims)
     {
-        var claims = new[]
-        {
-                new Claim(JwtRegisteredClaimNames.Sub, dto.Name!),
-                //new Claim(ClaimTypes.Role, user.Role)
-        };
-
         var creadentials = new SigningCredentials(AppStaticData.Jwt.Key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(

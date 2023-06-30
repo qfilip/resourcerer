@@ -25,8 +25,6 @@ public static class Register
 
             var claims = new Dictionary<string, string>()
             {
-                { nameof(request.Name), request.Name },
-                { nameof(request.Role), request.Role ?? "" },
             };
 
             var claimsJson = JsonSerializer.Serialize(claims);

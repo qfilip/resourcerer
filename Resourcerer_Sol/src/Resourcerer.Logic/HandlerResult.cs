@@ -43,4 +43,9 @@ public class HandlerResult<T>
     public T? Object { get; private set; }
     public List<string> Errors { get; private set; }
     public HandlerResultStatus Status { get; private set; }
+
+    public HandlerResult<TTarget> MapSelfTo<TTarget>()
+    {
+        return new HandlerResult<TTarget>(Status, Errors);
+    }
 }
