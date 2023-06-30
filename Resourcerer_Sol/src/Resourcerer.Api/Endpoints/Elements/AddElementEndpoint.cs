@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
+using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos;
 using Resourcerer.Dtos.Elements;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Elements;
@@ -19,6 +21,10 @@ public class AddElementEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        group.MapPost("/add", Action);
+        group.MapPost("/add", Action)
+            .RequireAuthorization(cfg =>
+            {
+                cfg.RequireClaim(nameof(Element), ePermission.Write.ToString());
+            });
     }
 }

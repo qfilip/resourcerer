@@ -18,10 +18,10 @@ public static class AppStaticData
         public static string Audience { get; } = "Resourcerer.Api";
     }
 
-    public static class AuthPolicy
+    public static class AuthorizationPolicy
     {
         public static string Admin { get; } = "admin";
-        public static string User { get; } = "user";
+        public static string Jwt { get; } = "JWT";
     }
 }
 

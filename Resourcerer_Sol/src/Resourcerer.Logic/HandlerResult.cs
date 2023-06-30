@@ -12,9 +12,14 @@ public class HandlerResult<T>
         return new HandlerResult<T>(obj);
     }
 
+    public static HandlerResult<T> NotFound(string message)
+    {
+        return new HandlerResult<T>(HandlerResultStatus.NotFound, new string[] { message });
+    }
+
     public static HandlerResult<T> NotFound()
     {
-        return new HandlerResult<T>(HandlerResultStatus.NotFound, new string[0] { });
+        return new HandlerResult<T>(HandlerResultStatus.NotFound, Array.Empty<string>());
     }
 
     public static HandlerResult<T> ValidationError(string error)

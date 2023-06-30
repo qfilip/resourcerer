@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
+using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos;
 using Resourcerer.Dtos.Categories;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Categories;
@@ -19,6 +21,10 @@ public class AddCategoryEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        group.MapPost("/add", Action);
+        group.MapPost("/add", Action)
+            .RequireAuthorization(cfg =>
+            {
+                cfg.RequireClaim(nameof(Category), ePermission.Write.ToString());
+            });
     }
 }

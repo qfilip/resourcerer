@@ -2,7 +2,7 @@
 using System.Security.Claims;
 
 namespace Resourcerer.Dtos.Users;
-public class UserDto
+public class UserDto : EntityDto
 {
     public string? Name { get; set; }
     public string? Password { get; set; }

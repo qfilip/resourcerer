@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
+using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Queries.Categories;
 
@@ -16,6 +18,10 @@ public class GetAllCategoriesEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        group.MapGet("", Action);
+        group.MapGet("", Action)
+            .RequireAuthorization(cfg =>
+            {
+                cfg.RequireClaim(nameof(Category), ePermission.Read.ToString());
+            });
     }
 }

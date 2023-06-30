@@ -8,16 +8,42 @@ public class Permission
     private static List<ePermission> AllPermissions = Enum.GetValues<ePermission>().ToList();
     private static List<string> AllSets = new List<string>
     {
-        $"{nameof(AppUser)}s",
-        $"{nameof(Category)}s",
-        $"{nameof(Composite)}s",
-        $"{nameof(CompositeSoldEvent)}s",
-        $"{nameof(Element)}s",
-        $"{nameof(ElementSoldEvent)}s",
-        $"{nameof(Excerpt)}s",
-        $"{nameof(Price)}s",
-        $"{nameof(UnitOfMeasure)}s"
+        nameof(AppUser),
+        nameof(Category),
+        nameof(Composite),
+        nameof(CompositeSoldEvent),
+        nameof(Element),
+        nameof(ElementSoldEvent),
+        nameof(Excerpt),
+        nameof(Price),
+        nameof(UnitOfMeasure)
     };
+
+    public static List<string> Validate(Dictionary<string, string> permissions)
+    {
+        var errors = new List<string>();
+        var lookup = permissions.ToLookup(x => x.Key);
+
+        foreach(var l in lookup)
+        {
+            if(!AllSets.Contains(l.Key))
+            {
+                errors.Add($"Permission of type {l.Key} doesn't exist");
+            }
+            else
+            {
+                foreach (var kv in lookup[l.Key])
+                {
+                    if(!Enum.TryParse(kv.Value, out ePermission p))
+                    {
+                        errors.Add($"Permission of value {p} doesn't exist");
+                    }
+                }
+            }
+        }
+
+        return errors;
+    }
 
     public static Dictionary<string, string> GetAllPermissionsDictionary()
     {

@@ -1,4 +1,6 @@
 ﻿using Resourcerer.Api.Services;
+using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Queries.Elements;
 
@@ -15,6 +17,10 @@ public class GetAllElementsOverviewsEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        group.MapGet("/all-overviews", Action);
+        group.MapGet("/all-overviews", Action)
+            .RequireAuthorization(cfg =>
+            {
+                cfg.RequireClaim(nameof(Element), ePermission.Read.ToString());
+            });
     }
 }

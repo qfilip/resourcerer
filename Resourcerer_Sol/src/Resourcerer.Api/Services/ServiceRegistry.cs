@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Logic;
+using System.Security.Cryptography.Xml;
 
 namespace Resourcerer.Api.Services;
 public static partial class ServiceRegistry
@@ -48,10 +50,26 @@ public static partial class ServiceRegistry
             o.AddSecurityDefinition("bearer", new OpenApiSecurityScheme()
             {
                 Name = "Swagger Auth",
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = AppStaticData.AuthPolicy.Admin,
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer",
                 BearerFormat = "JWT",
                 In = ParameterLocation.Header
+            });
+
+            o.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                }
+                
             });
         });
     }
@@ -75,13 +93,11 @@ public static partial class ServiceRegistry
                 };
             });
 
-        var admin = AppStaticData.AuthPolicy.Admin;
         services.AddAuthorization(cfg =>
         {
-            cfg.AddPolicy(admin, b =>
+            cfg.AddPolicy(AppStaticData.AuthorizationPolicy.Jwt, b =>
                 b.RequireAuthenticatedUser()
-                    .AddAuthenticationSchemes(jwtScheme)
-                    .RequireClaim(admin));
+                    .AddAuthenticationSchemes(jwtScheme));
         });
     }
 }

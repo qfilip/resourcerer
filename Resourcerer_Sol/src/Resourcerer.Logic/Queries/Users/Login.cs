@@ -11,8 +11,8 @@ public static class Login
     public static AppUser FakeAdmin = new AppUser
     {
         Id = Guid.NewGuid(),
-        Name = "admin",
-        PasswordHash = Hasher.GetSha256Hash("admin"),
+        Name = "string",
+        PasswordHash = Hasher.GetSha256Hash("string"),
         Claims = JsonSerializer.Serialize(Permission.GetAllPermissionsDictionary())
     };
 

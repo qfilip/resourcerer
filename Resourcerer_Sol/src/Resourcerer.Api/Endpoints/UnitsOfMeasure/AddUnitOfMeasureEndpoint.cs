@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
+using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos;
 using Resourcerer.Dtos.UnitsOfMeasure;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.UnitsOfMeasure;
@@ -19,6 +21,10 @@ public class AddUnitOfMeasureEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        group.MapPost("/add", Action);
+        group.MapPost("/add", Action)
+            .RequireAuthorization(cfg =>
+            {
+                cfg.RequireClaim(nameof(UnitOfMeasure), ePermission.Write.ToString());
+            });
     }
 }

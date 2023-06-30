@@ -4,6 +4,8 @@ using Resourcerer.Api.Endpoints.Mocks;
 using Resourcerer.Api.Endpoints.Prices;
 using Resourcerer.Api.Endpoints.UnitsOfMeasure;
 using Resourcerer.Api.Endpoints.Users;
+using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos;
 using System.Text.RegularExpressions;
 
 namespace Resourcerer.Api.Endpoints;
@@ -62,6 +64,12 @@ public class EndpointMapper
     {
         var g = GetGroup(app, "Users");
         LoginEndpoint.MapToGroup(g);
+        SetPermissionsEndpoint.MapToGroup(g);
+        g.MapGet("/test", () => Results.Ok())
+            .RequireAuthorization(cfg =>
+            {
+                cfg.RequireClaim(nameof(Element), ePermission.Read.ToString());
+            });
     }
 
     private static RouteGroupBuilder GetGroup(WebApplication app, string name)
