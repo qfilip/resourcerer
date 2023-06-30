@@ -1,4 +1,5 @@
-﻿using Resourcerer.Logic;
+﻿using FluentValidation;
+using Resourcerer.Logic;
 
 namespace Resourcerer.Api;
 
@@ -21,6 +22,36 @@ public class Pipeline
         var handlerResult = await handler.Handle(request);
         _logger.LogInformation("Action {Action} finished", actionName);
 
+        return MapResult(handlerResult, customResultMapper);
+    }
+
+    public async Task<IResult> Pipe<TRequest, TRequestValidator, TResponse>(
+        IRequestHandler<TRequest, TResponse> handler,
+        TRequest request,
+        string actionName,
+        Func<HandlerResult<TResponse>, IResult>? customResultMapper = null)
+        where TRequest : class
+        where TRequestValidator : AbstractValidator<TRequest>, new()
+    {
+        _logger.LogInformation("Action {Action} started", actionName);
+        
+        var validationErrors = DtoValidator.Validate<TRequest, TRequestValidator>(request);
+        if(validationErrors.Any())
+        {
+            _logger.LogInformation("Action {Action} finished with validation errors", actionName);
+            return Results.BadRequest(validationErrors);
+        }
+        
+        var handlerResult = await handler.Handle(request);
+        _logger.LogInformation("Action {Action} finished", actionName);
+
+        return MapResult(handlerResult, customResultMapper);
+    }
+
+    private static IResult MapResult<TResponse>(
+        HandlerResult<TResponse> handlerResult,
+        Func<HandlerResult<TResponse>, IResult>? customResultMapper = null)
+    {
         var result = customResultMapper?.Invoke(handlerResult);
 
         return (handlerResult.Status, result) switch
