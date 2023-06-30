@@ -2,7 +2,7 @@
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Prices;
 
-namespace Resourcerer.Logic.Prices.Commands;
+namespace Resourcerer.Logic.Commands.Prices;
 
 public static class ChangePrice
 {

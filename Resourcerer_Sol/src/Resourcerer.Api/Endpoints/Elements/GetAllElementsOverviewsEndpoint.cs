@@ -1,5 +1,5 @@
 ﻿using Resourcerer.Logic;
-using Resourcerer.Logic.Elements.Queries;
+using Resourcerer.Logic.Queries.Elements;
 
 namespace Resourcerer.Api.Endpoints.Elements;
 

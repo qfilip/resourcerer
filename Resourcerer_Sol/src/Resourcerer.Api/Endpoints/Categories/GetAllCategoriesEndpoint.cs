@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Logic;
-using Resourcerer.Logic.Categories.Queries;
+using Resourcerer.Logic.Queries.Categories;
 
 namespace Resourcerer.Api.Endpoints.Categories;
 

@@ -2,7 +2,7 @@
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.Categories;
 
-namespace Resourcerer.Logic.Categories.Queries;
+namespace Resourcerer.Logic.Queries.Categories;
 
 public static class GetAllCategories
 {
@@ -17,7 +17,8 @@ public static class GetAllCategories
 
         public async Task<HandlerResult<List<CategoryDto>>> Handle(Unit _)
         {
-            var result =  await _appDbContext.Categories.Select(x => new CategoryDto {
+            var result = await _appDbContext.Categories.Select(x => new CategoryDto
+            {
                 Id = x.Id,
                 Name = x.Name,
                 ParentCategoryId = x.ParentCategoryId,

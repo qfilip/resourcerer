@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Dtos.Elements;
-using Resourcerer.Logic.Categories.Commands;
-using Resourcerer.Logic.Elements.Commands;
+using Resourcerer.Logic.Commands.Elements;
 
 namespace Resourcerer.Api.Endpoints.Elements;
 

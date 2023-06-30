@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.Elements;
 
-namespace Resourcerer.Logic.Elements.Queries;
+namespace Resourcerer.Logic.Queries.Elements;
 public static class GetAllElementsOverview
 {
     public class Handler : IRequestHandler<Unit, List<ElementUsageDetailsDto>>
@@ -23,7 +23,7 @@ public static class GetAllElementsOverview
                 .Include(x => x.UnitOfMeasure)
                 .Include(x => x.Excerpts)
                 .ToListAsync();
-            
+
             var idLookup = elementsData
                 .Select(x => new
                 {
@@ -44,7 +44,8 @@ public static class GetAllElementsOverview
 
             var compositeSoldEventsCompositeIds = compositeSoldEvents.Select(cse => cse.CompositeId).ToList();
 
-            var usageDetails = elementsData.Select(x => {
+            var usageDetails = elementsData.Select(x =>
+            {
                 var unitsPurchased = x.ElementPurchasedEvents
                     .Sum(epe => epe.UnitsBought);
 
@@ -61,8 +62,8 @@ public static class GetAllElementsOverview
                 var relevantExcerptsLookup = x.Excerpts
                     .Where(e => compositeSoldEventsCompositeIds.Contains(e.CompositeId))
                     .Select(e => new
-                    { 
-                        CompositeId = e.CompositeId,
+                    {
+                        e.CompositeId,
                         ElementQuantity = e.Quantity
                     })
                     .ToList();
@@ -71,7 +72,7 @@ public static class GetAllElementsOverview
                 {
                     var quantityInfo = relevantExcerptsLookup
                         .FirstOrDefault(rel => rel.CompositeId == cse.CompositeId);
-                    
+
                     if (quantityInfo != null)
                     {
                         acc += quantityInfo.ElementQuantity;
@@ -79,7 +80,7 @@ public static class GetAllElementsOverview
 
                     return acc;
                 });
-                
+
                 return new ElementUsageDetailsDto
                 {
                     ElementId = x.Id,
@@ -92,7 +93,7 @@ public static class GetAllElementsOverview
                 };
             })
             .ToList();
-            
+
             return HandlerResult<List<ElementUsageDetailsDto>>.Ok(usageDetails);
         }
     }

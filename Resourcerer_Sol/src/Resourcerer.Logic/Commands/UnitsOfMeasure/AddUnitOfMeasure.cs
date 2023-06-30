@@ -2,7 +2,7 @@
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.UnitsOfMeasure;
 
-namespace Resourcerer.Logic.UnitsOfMeasure.Command;
+namespace Resourcerer.Logic.Commands.UnitsOfMeasure;
 
 public class AddUnitOfMeasure
 {

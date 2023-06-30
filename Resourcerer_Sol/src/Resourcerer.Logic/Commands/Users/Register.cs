@@ -4,7 +4,7 @@ using Resourcerer.Dtos.Users;
 using Resourcerer.Utilities.Cryptography;
 using System.Text.Json;
 
-namespace Resourcerer.Logic.Users.Commands;
+namespace Resourcerer.Logic.Commands.Users;
 public static class Register
 {
     public class Handler : IRequestHandler<UserDto, UserDto>
@@ -18,7 +18,7 @@ public static class Register
 
         public async Task<HandlerResult<UserDto>> Handle(UserDto request)
         {
-            if(string.IsNullOrEmpty(request.Name) || string.IsNullOrEmpty(request.Password))
+            if (string.IsNullOrEmpty(request.Name) || string.IsNullOrEmpty(request.Password))
             {
                 return HandlerResult<UserDto>.ValidationError(new string[] { "Name or password cannot be empty" });
             }

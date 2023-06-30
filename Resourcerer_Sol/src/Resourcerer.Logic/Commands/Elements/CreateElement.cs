@@ -2,7 +2,7 @@
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Elements;
 
-namespace Resourcerer.Logic.Elements.Commands;
+namespace Resourcerer.Logic.Commands.Elements;
 
 public static class CreateElement
 {

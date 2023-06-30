@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Dtos.Prices;
 using Resourcerer.Logic;
-using Resourcerer.Logic.Prices.Commands;
+using Resourcerer.Logic.Commands.Prices;
 
 namespace Resourcerer.Api.Endpoints.Prices;
 

@@ -9,7 +9,7 @@ public class Permission
 
     public static List<Permission> FromString(string value)
     {
-
+        return new List<Permission>();
     }
 
     public void SetLEvel(ePermission level)

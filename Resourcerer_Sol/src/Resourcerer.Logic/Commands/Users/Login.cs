@@ -1,6 +1,6 @@
 ﻿using Resourcerer.Dtos.Users;
 
-namespace Resourcerer.Logic.Users.Commands;
+namespace Resourcerer.Logic.Commands.Users;
 
 public static class Login
 {
@@ -15,7 +15,7 @@ public static class Login
                 { "admin", "" },
                 { "elements", "" }
             };
-            
+
             return Task.FromResult(HandlerResult<Dictionary<string, string>>.Ok(claims));
         }
     }

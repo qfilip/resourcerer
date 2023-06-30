@@ -1,7 +1,7 @@
 ﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Mocks;
 
-namespace Resourcerer.Logic.Mocks.Queries;
+namespace Resourcerer.Logic.Queries.Mocks;
 public class GetMockedDatabaseData
 {
     public class Handler : IRequestHandler<Unit, DatabaseData>
@@ -58,7 +58,7 @@ public class GetMockedDatabaseData
             var rese = MakeElementSoldEvent(sparklingWater, liter, p4.Value);
 
             var elementSoldEvents = new ElementSoldEvent[] { rese };
-            
+
             var cse1 = MakeCompositeSoldEvent(moscowMule, 1, p1.Value);
             var cse2 = MakeCompositeSoldEvent(moscowMule, 1, p1.Value);
             var cse3 = MakeCompositeSoldEvent(darkNstormy, 1, p1.Value);

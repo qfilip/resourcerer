@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Dtos.UnitsOfMeasure;
-using Resourcerer.Logic.UnitsOfMeasure.Command;
+using Resourcerer.Logic.Commands.UnitsOfMeasure;
 
 namespace Resourcerer.Api.Endpoints.UnitsOfMeasure;
 

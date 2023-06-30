@@ -2,7 +2,7 @@
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Categories;
 
-namespace Resourcerer.Logic.Categories.Commands;
+namespace Resourcerer.Logic.Commands.Categories;
 
 public class CreateCategory
 {
@@ -18,7 +18,7 @@ public class CreateCategory
         public async Task<HandlerResult<Unit>> Handle(CategoryDto request)
         {
             var errors = DtoValidator.Validate<CategoryDto, CategoryDtoValidator>(request);
-            if(errors.Any())
+            if (errors.Any())
             {
                 return HandlerResult<Unit>.ValidationError(errors);
             }

@@ -1,6 +1,6 @@
 ﻿using Resourcerer.Logic;
-using Resourcerer.Logic.Mocks.Commands;
-using Resourcerer.Logic.Mocks.Queries;
+using Resourcerer.Logic.Commands.Mocks;
+using Resourcerer.Logic.Queries.Mocks;
 
 namespace Resourcerer.Api.Endpoints.Mocks;
 
