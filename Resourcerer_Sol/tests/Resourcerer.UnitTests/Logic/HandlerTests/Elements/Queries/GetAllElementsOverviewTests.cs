@@ -12,7 +12,7 @@ public class GetAllElementsOverviewTests
     public GetAllElementsOverviewTests()
     {
         
-        _testDbContext = new ContextCreator().GetTestDbContext();
+        _testDbContext = new ContextCreator(seedEvents: false).GetTestDbContext();
     }
 
     [Fact]

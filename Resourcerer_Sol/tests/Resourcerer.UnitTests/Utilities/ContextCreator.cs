@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
+using Resourcerer.DataAccess.Mocks;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Mocks;
 using Resourcerer.Logic.Queries.Mocks;
@@ -11,7 +12,7 @@ public class ContextCreator : IDisposable
 {
     private readonly SqliteConnection _connection;
     private readonly DbContextOptions<AppDbContext> _options;
-    public ContextCreator()
+    public ContextCreator(bool seedEvents)
     {
         _connection = new SqliteConnection("Filename=:memory:");
         _connection.Open();
@@ -23,7 +24,7 @@ public class ContextCreator : IDisposable
         var context = new AppDbContext(_options);
         if (context.Database.EnsureCreated())
         {
-            SeedMockData(context);
+            SeedMockData(context, seedEvents);
         }
     }
     public IAppDbContext GetTestDbContext()
@@ -31,13 +32,17 @@ public class ContextCreator : IDisposable
         return new AppDbContext(_options);
     }
 
-    private void SeedMockData(AppDbContext context)
+    private void SeedMockData(AppDbContext context, bool seedEvents)
     {
-        var getHandler = new GetMockedDatabaseData.Handler();
-        var dbData = getHandler.Handle(new Unit()).GetAwaiter().GetResult().Object!;
+        IRequestHandler<Unit, DatabaseData> getMocksHandler =
+            seedEvents ?
+            new GetMockedDatabaseData.Handler() :
+            new GetMockedNonEventDatabaseData.Handler();
 
-        var seedHandler = new SeedMockData.Handler(context);
-        seedHandler.Handle(dbData).GetAwaiter().GetResult();
+        var dbData = getMocksHandler.Handle(new Unit()).GetAwaiter().GetResult().Object!;
+
+        var seedMocksHandler = new SeedMockData.Handler(context);
+        seedMocksHandler.Handle(dbData).GetAwaiter().GetResult();
     }
 
     public void Dispose()
