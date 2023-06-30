@@ -21,10 +21,11 @@ public class AddCategoryEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        group.MapPost("/add", Action)
-            .RequireAuthorization(cfg =>
-            {
-                cfg.RequireClaim(nameof(Category), ePermission.Write.ToString());
-            });
+        var endpoint = group.MapPost("/add", Action);
+        
+        EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
+        {
+            (nameof(Category), new[] { ePermission.Write.ToString() })
+        });
     }
 }

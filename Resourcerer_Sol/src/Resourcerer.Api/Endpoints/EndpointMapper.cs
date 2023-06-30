@@ -1,4 +1,5 @@
-﻿using Resourcerer.Api.Endpoints.Categories;
+﻿using Microsoft.AspNetCore.Authentication;
+using Resourcerer.Api.Endpoints.Categories;
 using Resourcerer.Api.Endpoints.Elements;
 using Resourcerer.Api.Endpoints.Mocks;
 using Resourcerer.Api.Endpoints.Prices;
@@ -65,11 +66,17 @@ public class EndpointMapper
         var g = GetGroup(app, "Users");
         LoginEndpoint.MapToGroup(g);
         SetPermissionsEndpoint.MapToGroup(g);
-        g.MapGet("/test", () => Results.Ok())
-            .RequireAuthorization(cfg =>
-            {
-                cfg.RequireClaim(nameof(Element), ePermission.Read.ToString());
-            });
+    }
+
+    public static void AddAuthorization(
+        RouteHandlerBuilder route,
+        List<(string claimType, string[] claimValues)> claims)
+    {
+        if(true)
+        {
+            route.RequireAuthorization(cfg => 
+                claims.ForEach(c => cfg.RequireClaim(c.claimType, c.claimValues)));
+        }
     }
 
     private static RouteGroupBuilder GetGroup(WebApplication app, string name)

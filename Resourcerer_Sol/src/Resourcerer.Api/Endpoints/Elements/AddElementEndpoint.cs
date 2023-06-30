@@ -21,10 +21,11 @@ public class AddElementEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        group.MapPost("/add", Action)
-            .RequireAuthorization(cfg =>
-            {
-                cfg.RequireClaim(nameof(Element), ePermission.Write.ToString());
-            });
+        var endpoint = group.MapPost("/add", Action);
+
+        EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
+        {
+            (nameof(Element), new[] { ePermission.Write.ToString() })
+        });
     }
 }

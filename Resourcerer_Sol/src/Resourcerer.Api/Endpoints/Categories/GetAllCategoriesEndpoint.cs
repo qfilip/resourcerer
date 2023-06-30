@@ -18,10 +18,11 @@ public class GetAllCategoriesEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        group.MapGet("", Action)
-            .RequireAuthorization(cfg =>
-            {
-                cfg.RequireClaim(nameof(Category), ePermission.Read.ToString());
-            });
+        var endpoint = group.MapGet("", Action);
+        
+        EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
+        {
+            (nameof(Category), new[] { ePermission.Read.ToString() })
+        });
     }
 }

@@ -17,10 +17,11 @@ public class GetAllElementsOverviewsEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        group.MapGet("/all-overviews", Action)
-            .RequireAuthorization(cfg =>
-            {
-                cfg.RequireClaim(nameof(Element), ePermission.Read.ToString());
-            });
+        var endpoint = group.MapGet("/all-overviews", Action);
+
+        EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
+        {
+            (nameof(Element), new[] { ePermission.Read.ToString() })
+        });
     }
 }

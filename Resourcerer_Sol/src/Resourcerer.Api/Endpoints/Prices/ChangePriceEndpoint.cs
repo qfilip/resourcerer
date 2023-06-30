@@ -20,10 +20,11 @@ public class ChangePriceEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        group.MapPost("/change", Action)
-            .RequireAuthorization(cfg =>
-            {
-                cfg.RequireClaim(nameof(Price), ePermission.Write.ToString());
-            });
+        var endpoint = group.MapPost("/change", Action);
+
+        EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
+        {
+            (nameof(Price), new[] { ePermission.Write.ToString() })
+        });
     }
 }

@@ -22,10 +22,11 @@ public class SetPermissionsEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        group.MapPost("/set-permissions", Action)
-            .RequireAuthorization(cfg =>
-            {
-                cfg.RequireClaim(nameof(AppUser), ePermission.Write.ToString());
-            });
+        var endpoint = group.MapPost("/set-permissions", Action);
+
+        EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
+        {
+            (nameof(AppUser), new[] { ePermission.Write.ToString() })
+        });
     }
 }
