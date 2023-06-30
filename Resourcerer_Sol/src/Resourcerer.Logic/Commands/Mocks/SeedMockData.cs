@@ -6,9 +6,9 @@ public static class SeedMockData
 {
     public class Handler : IRequestHandler<DatabaseData, Unit>
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IAppDbContext _dbContext;
 
-        public Handler(AppDbContext dbContext)
+        public Handler(IAppDbContext dbContext)
         {
             _dbContext = dbContext;
         }
