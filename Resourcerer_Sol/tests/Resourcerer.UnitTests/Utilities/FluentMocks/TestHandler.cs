@@ -5,11 +5,22 @@ namespace Resourcerer.UnitTests.Utilities.FluentMocks;
 
 public static class TestHandler
 {
-    public class Handler : IRequestHandler<TestDto, TestEntity>
+    public class Handler : IRequestHandler<TestDto, Unit>
     {
-        public Task<HandlerResult<TestEntity>> Handle(TestDto request)
+        public Task<HandlerResult<Unit>> Handle(TestDto request)
         {
-            return Task.FromResult(HandlerResult<TestEntity>.Ok(new TestEntity()));
+            if(request.Property == eHandlerResult.Ok)
+            {
+                return Task.FromResult(HandlerResult<Unit>.Ok(new Unit()));
+            }
+            else if (request.Property == eHandlerResult.NotFound)
+            {
+                return Task.FromResult(HandlerResult<Unit>.NotFound("Oops"));
+            }
+            else
+            {
+                return Task.FromResult(HandlerResult<Unit>.ValidationError(TestDtoValidator.ErrorMessage));
+            }
         }
     }
 }
