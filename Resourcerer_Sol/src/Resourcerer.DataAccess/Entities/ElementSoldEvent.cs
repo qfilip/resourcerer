@@ -2,7 +2,7 @@
 
 public class ElementSoldEvent : EntityBase
 {
-    public int UnitsSold { get; set; }
+    public double UnitsSold { get; set; }
     public double PriceByUnit { get; set; }
     public UnitOfMeasure? UnitOfMeasure { get; set; }
 
