@@ -18,10 +18,13 @@ public static class GetAllElementsOverview
         public async Task<HandlerResult<List<ElementUsageDetailsDto>>> Handle(Unit _)
         {
             var elementsData = await _appDbContext.Elements
+                .IgnoreQueryFilters()
                 .Include(x => x.ElementSoldEvents)
                 .Include(x => x.ElementPurchasedEvents)
                 .Include(x => x.UnitOfMeasure)
+                .IgnoreQueryFilters()
                 .Include(x => x.Excerpts)
+                .IgnoreQueryFilters()
                 .ToListAsync();
 
             var idLookup = elementsData
