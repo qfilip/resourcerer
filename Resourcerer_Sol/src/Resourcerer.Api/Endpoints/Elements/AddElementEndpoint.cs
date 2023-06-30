@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Dtos.Elements;
+using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Elements;
 
 namespace Resourcerer.Api.Endpoints.Elements;
@@ -11,6 +12,7 @@ public class AddElementEndpoint
        [FromServices] Pipeline pipeline,
        [FromServices] CreateElement.Handler handler)
     {
-        return await pipeline.Pipe(handler, dto, nameof(CreateElement));
+        return await pipeline
+            .Pipe<ElementDto, ElementDtoValidator, Unit>(handler, dto);
     }
 }

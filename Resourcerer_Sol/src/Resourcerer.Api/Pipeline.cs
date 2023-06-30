@@ -15,11 +15,14 @@ public class Pipeline
     public async Task<IResult> Pipe<TRequest, TResponse>(
         IRequestHandler<TRequest, TResponse> handler,
         TRequest request,
-        string actionName,
         Func<HandlerResult<TResponse>, IResult>? customResultMapper = null)
     {
+        var actionName = handler.GetType().FullName;
+
         _logger.LogInformation("Action {Action} started", actionName);
+        
         var handlerResult = await handler.Handle(request);
+        
         _logger.LogInformation("Action {Action} finished", actionName);
 
         return MapResult(handlerResult, customResultMapper);
@@ -28,11 +31,12 @@ public class Pipeline
     public async Task<IResult> Pipe<TRequest, TRequestValidator, TResponse>(
         IRequestHandler<TRequest, TResponse> handler,
         TRequest request,
-        string actionName,
         Func<HandlerResult<TResponse>, IResult>? customResultMapper = null)
         where TRequest : class
         where TRequestValidator : AbstractValidator<TRequest>, new()
     {
+        var actionName = handler.GetType().FullName;
+
         _logger.LogInformation("Action {Action} started", actionName);
         
         var validationErrors = DtoValidator.Validate<TRequest, TRequestValidator>(request);

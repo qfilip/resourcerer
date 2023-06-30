@@ -10,6 +10,6 @@ public class GetAllCategoriesEndpoint
         [FromServices] Pipeline pipeline,
         [FromServices] GetAllCategories.Handler handler)
     {
-        return await pipeline.Pipe(handler, new Unit(), nameof(GetAllCategories));
+        return await pipeline.Pipe(handler, new Unit());
     }
 }

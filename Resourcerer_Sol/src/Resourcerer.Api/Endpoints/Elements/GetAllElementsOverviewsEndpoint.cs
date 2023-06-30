@@ -9,6 +9,6 @@ public class GetAllElementsOverviewsEndpoint
         Pipeline pipeline,
         GetAllElementsOverview.Handler handler)
     {
-        return await pipeline.Pipe(handler, new Unit(), nameof(GetAllElementsOverview));
+        return await pipeline.Pipe(handler, new Unit());
     }
 }

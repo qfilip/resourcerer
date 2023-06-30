@@ -17,12 +17,6 @@ public static class CreateElement
 
         public async Task<HandlerResult<Unit>> Handle(ElementDto request)
         {
-            var errors = DtoValidator.Validate<ElementDto, ElementDtoValidator>(request);
-            if (errors.Any())
-            {
-                return HandlerResult<Unit>.ValidationError(errors);
-            }
-
             var entity = new Element
             {
                 Name = request.Name,

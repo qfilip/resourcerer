@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Dtos.UnitsOfMeasure;
+using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.UnitsOfMeasure;
 
 namespace Resourcerer.Api.Endpoints.UnitsOfMeasure;
@@ -11,6 +12,7 @@ public class AddUnitOfMeasureEndpoint
        [FromServices] Pipeline pipeline,
        [FromServices] AddUnitOfMeasure.Handler handler)
     {
-        return await pipeline.Pipe(handler, dto, nameof(AddUnitOfMeasure));
+        return await pipeline
+            .Pipe<UnitOfMeasureDto, UnitOfMeasureDtoValidator, Unit>(handler, dto);
     }
 }

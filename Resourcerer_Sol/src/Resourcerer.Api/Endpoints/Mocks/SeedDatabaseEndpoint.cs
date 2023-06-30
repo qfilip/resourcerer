@@ -14,7 +14,7 @@ public class SeedDatabaseEndpoint
         var dbData = await mockHandler.Handle(new Unit());
         if(dbData.Object != null)
         {
-            return await pipeline.Pipe(seedHandler, dbData.Object, nameof(SeedMockData));
+            return await pipeline.Pipe(seedHandler, dbData.Object);
         }
         else
         {

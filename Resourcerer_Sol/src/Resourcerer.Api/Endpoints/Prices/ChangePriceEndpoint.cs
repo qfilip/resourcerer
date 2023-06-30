@@ -12,6 +12,6 @@ public class ChangePriceEndpoint
         [FromServices] Pipeline pipeline,
         [FromServices] ChangePrice.Handler handler)
     {
-        return await pipeline.Pipe<PriceDto, PriceDtoValidator, Unit>(handler, dto, nameof(ChangePrice));
+        return await pipeline.Pipe<PriceDto, PriceDtoValidator, Unit>(handler, dto);
     }
 }

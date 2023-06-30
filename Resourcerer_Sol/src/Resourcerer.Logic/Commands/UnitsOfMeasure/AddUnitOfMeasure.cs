@@ -17,12 +17,6 @@ public class AddUnitOfMeasure
 
         public async Task<HandlerResult<Unit>> Handle(UnitOfMeasureDto request)
         {
-            var errors = DtoValidator.Validate<UnitOfMeasureDto, UnitOfMeasureDtoValidator>(request);
-            if (errors.Any())
-            {
-                return HandlerResult<Unit>.ValidationError(errors);
-            }
-
             var entity = new UnitOfMeasure
             {
                 Name = request.Name,

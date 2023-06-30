@@ -16,12 +16,6 @@ public static class ChangePrice
 
         public async Task<HandlerResult<Unit>> Handle(PriceDto request)
         {
-            var errors = DtoValidator.Validate<PriceDto, PriceDtoValidator>(request);
-            if (errors.Any())
-            {
-                return HandlerResult<Unit>.ValidationError(errors);
-            }
-
             var entity = new Price
             {
                 CompositeId = request.CompositeId,

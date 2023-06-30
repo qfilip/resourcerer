@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Dtos.Categories;
+using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Categories;
 
 namespace Resourcerer.Api.Endpoints.Categories;
@@ -10,7 +11,8 @@ public class AddCategoryEndpoint
         [FromBody] CategoryDto categoryDto,
         [FromServices] Pipeline pipeline,
         [FromServices] CreateCategory.Handler handler)
-    {
-        return await pipeline.Pipe(handler, categoryDto, nameof(CreateCategory));
+    {   
+        return await pipeline
+            .Pipe<CategoryDto, CategoryDtoValidator, Unit>(handler, categoryDto);
     }
 }
