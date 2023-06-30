@@ -15,4 +15,9 @@ public class AddUnitOfMeasureEndpoint
         return await pipeline
             .Pipe<UnitOfMeasureDto, UnitOfMeasureDtoValidator, Unit>(handler, dto);
     }
+
+    internal static void MapToGroup(RouteGroupBuilder group)
+    {
+        group.MapPost("/add", Action);
+    }
 }

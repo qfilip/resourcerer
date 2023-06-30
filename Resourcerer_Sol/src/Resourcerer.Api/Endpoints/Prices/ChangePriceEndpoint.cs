@@ -14,4 +14,9 @@ public class ChangePriceEndpoint
     {
         return await pipeline.Pipe<PriceDto, PriceDtoValidator, Unit>(handler, dto);
     }
+
+    internal static void MapToGroup(RouteGroupBuilder group)
+    {
+        group.MapPost("/change", Action);
+    }
 }

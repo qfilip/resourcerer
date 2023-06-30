@@ -11,4 +11,9 @@ public class GetAllElementsOverviewsEndpoint
     {
         return await pipeline.Pipe(handler, new Unit());
     }
+
+    internal static void MapToGroup(RouteGroupBuilder group)
+    {
+        group.MapGet("/all-overviews", Action);
+    }
 }

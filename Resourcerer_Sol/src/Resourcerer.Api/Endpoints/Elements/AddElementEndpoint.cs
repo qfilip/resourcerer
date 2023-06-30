@@ -15,4 +15,9 @@ public class AddElementEndpoint
         return await pipeline
             .Pipe<ElementDto, ElementDtoValidator, Unit>(handler, dto);
     }
+
+    internal static void MapToGroup(RouteGroupBuilder group)
+    {
+        group.MapPost("/add", Action);
+    }
 }

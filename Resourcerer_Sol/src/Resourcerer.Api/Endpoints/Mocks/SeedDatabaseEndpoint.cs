@@ -21,4 +21,9 @@ public class SeedDatabaseEndpoint
             return Results.BadRequest();
         }
     }
+
+    internal static void MapToGroup(RouteGroupBuilder group)
+    {
+        group.MapGet("/seed", Action);
+    }
 }

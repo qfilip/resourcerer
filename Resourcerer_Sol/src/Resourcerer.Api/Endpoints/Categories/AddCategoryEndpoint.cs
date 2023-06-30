@@ -15,4 +15,9 @@ public class AddCategoryEndpoint
         return await pipeline
             .Pipe<CategoryDto, CategoryDtoValidator, Unit>(handler, categoryDto);
     }
+
+    internal static void MapToGroup(RouteGroupBuilder group)
+    {
+        group.MapPost("/add", Action);
+    }
 }

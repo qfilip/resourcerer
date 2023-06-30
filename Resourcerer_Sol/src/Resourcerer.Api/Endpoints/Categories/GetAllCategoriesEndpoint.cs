@@ -12,4 +12,9 @@ public class GetAllCategoriesEndpoint
     {
         return await pipeline.Pipe(handler, new Unit());
     }
+
+    internal static void MapToGroup(RouteGroupBuilder group)
+    {
+        group.MapGet("", Action);
+    }
 }
