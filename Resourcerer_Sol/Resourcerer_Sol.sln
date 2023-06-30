@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resourcerer.Logic", "src\Re
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B54F7C3E-2824-4271-ABDC-DF6701C18720}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resourcerer.UnitTests", "tests\Resourcerer.UnitTests\Resourcerer.UnitTests.csproj", "{6BE407B6-10B3-4AB0-A996-D0C338A087F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resourcerer.UnitTests", "tests\Resourcerer.UnitTests\Resourcerer.UnitTests.csproj", "{6BE407B6-10B3-4AB0-A996-D0C338A087F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

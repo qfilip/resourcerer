@@ -6,12 +6,12 @@ using Resourcerer.Logic;
 using Resourcerer.Logic.Queries.Elements;
 using Resourcerer.UnitTests.Utilities.FluentMocks;
 
-namespace Resourcerer.UnitTests.HandlerTests.Elements.Queries;
+namespace Resourcerer.UnitTests.Logic.HandlerTests.Elements.Queries;
 
 public class GetAllElementsOverviewTests
 {
     private readonly IAppDbContext _appDbContext;
-    
+
     public GetAllElementsOverviewTests()
     {
         _appDbContext = A.Fake<IAppDbContext>();
@@ -40,7 +40,7 @@ public class GetAllElementsOverviewTests
         var result = await handler.Handle(new Unit());
 
         Assert.Equal(HandlerResultStatus.Ok, result.Status);
-        
+
         Assert.Equal(10, result.Object![0].UnitsPurchased);
         Assert.Equal(10d, result.Object![0].PurchaseCosts);
         Assert.Equal(10, result.Object![0].UnitsInStock);
