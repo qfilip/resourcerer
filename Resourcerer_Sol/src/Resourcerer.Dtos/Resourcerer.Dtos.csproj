@@ -11,4 +11,8 @@
     <PackageReference Include="FluentValidator" Version="2.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Resourcerer.DataAccess\Resourcerer.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>

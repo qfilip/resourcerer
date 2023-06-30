@@ -1,7 +1,10 @@
+using Resourcerer.Api;
 using Resourcerer.Api.Endpoints;
 using Resourcerer.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+AppInitializer.LoadConfiguration(builder.Configuration);
 
 builder.Services.AddAspNetServices();
 builder.Services.AddAppServices();

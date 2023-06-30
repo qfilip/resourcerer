@@ -1,7 +1,7 @@
 ﻿using FakeItEasy;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Logging;
-using Resourcerer.Api;
+using Resourcerer.Api.Services;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.FluentMocks;
 

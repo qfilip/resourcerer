@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Resourcerer.Logic;
 
-namespace Resourcerer.Api;
+namespace Resourcerer.Api.Services;
 
 public class Pipeline
 {
@@ -20,9 +20,9 @@ public class Pipeline
         var actionName = GetHandlerName(handler);
 
         _logger.LogInformation("Action {Action} started", actionName);
-        
+
         var handlerResult = await handler.Handle(request);
-        
+
         _logger.LogInformation("Action {Action} finished", actionName);
 
         return MapResult(handlerResult, customResultMapper);
@@ -38,14 +38,14 @@ public class Pipeline
         var actionName = GetHandlerName(handler);
 
         _logger.LogInformation("Action {Action} started", actionName);
-        
+
         var validationErrors = DtoValidator.Validate<TRequest, TRequestValidator>(request);
-        if(validationErrors.Any())
+        if (validationErrors.Any())
         {
             _logger.LogInformation("Action {Action} finished with validation errors", actionName);
             return Results.BadRequest(validationErrors);
         }
-        
+
         var handlerResult = await handler.Handle(request);
         _logger.LogInformation("Action {Action} finished", actionName);
 

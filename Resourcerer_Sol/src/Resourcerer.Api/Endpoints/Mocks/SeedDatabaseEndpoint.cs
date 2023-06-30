@@ -1,4 +1,5 @@
-﻿using Resourcerer.Logic;
+﻿using Resourcerer.Api.Services;
+using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Mocks;
 using Resourcerer.Logic.Queries.Mocks;
 
