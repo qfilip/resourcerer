@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Resourcerer.Api.Endpoints.Categories;
+﻿using Resourcerer.Api.Endpoints.Categories;
 using Resourcerer.Api.Endpoints.Elements;
 using Resourcerer.Api.Endpoints.Mocks;
 using Resourcerer.Api.Endpoints.Prices;
 using Resourcerer.Api.Endpoints.UnitsOfMeasure;
 using Resourcerer.Api.Endpoints.Users;
-using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
 using System.Text.RegularExpressions;
 
 namespace Resourcerer.Api.Endpoints;
