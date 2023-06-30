@@ -37,6 +37,7 @@ public class PipelineTests
         var result = iResult as BadRequest<string[]>;
         
         Assert.NotNull(result);
-        Assert.Contains(TestDtoValidator.ErrorMessage, result.Value!);
+        Assert.NotNull(result.Value);
+        Assert.Contains(TestDtoValidator.ErrorMessage, result.Value);
     }
 }
