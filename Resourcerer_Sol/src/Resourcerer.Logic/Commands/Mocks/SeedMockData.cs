@@ -15,6 +15,7 @@ public static class SeedMockData
 
         public async Task<HandlerResult<Unit>> Handle(DatabaseData dbData)
         {
+            _dbContext.AppUsers.AddRange(dbData.AppUsers!);
             _dbContext.Categories.AddRange(dbData.Categories!);
             _dbContext.UnitsOfMeasure.AddRange(dbData.UnitOfMeasures!);
             _dbContext.Excerpts.AddRange(dbData.Excerpts!);

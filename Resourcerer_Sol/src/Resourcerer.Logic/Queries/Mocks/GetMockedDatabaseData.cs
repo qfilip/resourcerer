@@ -1,5 +1,8 @@
 ﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Mocks;
+using Resourcerer.Dtos;
+using Resourcerer.Utilities.Cryptography;
+using System.Text.Json;
 
 namespace Resourcerer.Logic.Queries.Mocks;
 public class GetMockedDatabaseData
@@ -8,6 +11,11 @@ public class GetMockedDatabaseData
     {
         public Task<HandlerResult<DatabaseData>> Handle(Unit _)
         {
+            var adminUser = MakeUser("admin", "admin", true);
+            var loserUser = MakeUser("user", "user", false);
+
+            var users = new AppUser[] { adminUser, loserUser };
+
             var bar = MakeCategory("Bar");
             var spirits = MakeCategory("Spirits", bar);
             var ales = MakeCategory("Ales", bar);
@@ -87,6 +95,7 @@ public class GetMockedDatabaseData
 
             var dbdata = new DatabaseData
             {
+                AppUsers = users,
                 Categories = categories,
                 Excerpts = excerpts,
                 UnitOfMeasures = uoms,
@@ -114,6 +123,20 @@ public class GetMockedDatabaseData
         e.ModifiedAt = now;
 
         return e as T;
+    }
+
+    private static AppUser MakeUser(string name, string password, bool allPermissions, Dictionary<string, string>? permissions = null)
+    {
+        var userPermissions = allPermissions ?
+            Permission.GetAllPermissionsDictionary() :
+            (permissions ?? new Dictionary<string, string>());
+
+        return MakeEntity(() => new AppUser
+        {
+            Name = name,
+            PasswordHash = Hasher.GetSha256Hash(password),
+            Permissions = JsonSerializer.Serialize(userPermissions)
+        });
     }
 
     private static Category MakeCategory(string name, Category? parentCategory = null)

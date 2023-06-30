@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -18,7 +17,7 @@ namespace Resourcerer.DataAccess.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
-                    Claims = table.Column<string>(type: "TEXT", nullable: true),
+                    Permissions = table.Column<string>(type: "TEXT", nullable: true),
                     EntityStatus = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: false)

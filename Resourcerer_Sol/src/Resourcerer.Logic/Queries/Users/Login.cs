@@ -13,7 +13,7 @@ public static class Login
         Id = Guid.NewGuid(),
         Name = "string",
         PasswordHash = Hasher.GetSha256Hash("string"),
-        Claims = JsonSerializer.Serialize(Permission.GetAllPermissionsDictionary())
+        Permissions = JsonSerializer.Serialize(Permission.GetAllPermissionsDictionary())
     };
 
     public class Handler : IRequestHandler<UserDto, UserDto>
@@ -22,8 +22,11 @@ public static class Login
         {
             if(request.Name == FakeAdmin.Name && Hasher.GetSha256Hash(request.Password!) == FakeAdmin.PasswordHash)
             {
-                var claimsDict = JsonSerializer.Deserialize<Dictionary<string, string>>(FakeAdmin.Claims!);
-                
+                var claimsDict = JsonSerializer.Deserialize<Dictionary<string, string>>(FakeAdmin.Permissions!);
+                claimsDict!.Add("sub", FakeAdmin.Id.ToString());
+                claimsDict!.Add("name", FakeAdmin.Name!);
+                claimsDict!.Add("pwdhash", FakeAdmin.PasswordHash!);
+
                 var dto = new UserDto
                 {
                     Name = FakeAdmin.Name,

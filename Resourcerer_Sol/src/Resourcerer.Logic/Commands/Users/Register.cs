@@ -33,7 +33,7 @@ public static class Register
             {
                 Name = request.Name,
                 PasswordHash = Hasher.GetSha256Hash(request.Password),
-                Claims = claimsJson
+                Permissions = claimsJson
             };
 
             _dbContext.AppUsers.Add(user);

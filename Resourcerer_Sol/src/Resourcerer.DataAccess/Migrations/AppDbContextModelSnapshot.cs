@@ -23,9 +23,6 @@ namespace Resourcerer.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Claims")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
@@ -40,6 +37,9 @@ namespace Resourcerer.DataAccess.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordHash")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Permissions")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

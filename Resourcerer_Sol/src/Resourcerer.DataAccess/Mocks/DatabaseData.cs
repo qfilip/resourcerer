@@ -3,6 +3,7 @@
 namespace Resourcerer.DataAccess.Mocks;
 public class DatabaseData
 {
+    public IEnumerable<AppUser>? AppUsers { get; set; }
     public IEnumerable<Category>? Categories { get; set; }
     public IEnumerable<Excerpt>? Excerpts { get; set; }
     public IEnumerable<UnitOfMeasure>? UnitOfMeasures { get; set; }

@@ -11,7 +11,7 @@ using Resourcerer.DataAccess.Contexts;
 namespace Resourcerer.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230621144115_Initial")]
+    [Migration("20230630144919_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -24,9 +24,6 @@ namespace Resourcerer.DataAccess.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Claims")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
@@ -43,6 +40,9 @@ namespace Resourcerer.DataAccess.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordHash")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Permissions")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
