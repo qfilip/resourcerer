@@ -28,7 +28,7 @@ public static class SeedMockData
             _dbContext.ElementSoldEvents.AddRange(dbData.ElementSoldEvents!);
             _dbContext.ElementPurchasedEvents.AddRange(dbData.ElementPurchasedEvents!);
 
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.BaseSaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());
         }

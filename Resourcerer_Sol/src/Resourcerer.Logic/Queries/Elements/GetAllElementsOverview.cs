@@ -45,7 +45,13 @@ public static class GetAllElementsOverview
                 .Where(x => compositeIds.Contains(x.CompositeId))
                 .ToListAsync();
 
-            var compositeSoldEventsCompositeIds = compositeSoldEvents.Select(cse => cse.CompositeId).ToList();
+            var compositeSoldEventsLookup = compositeSoldEvents
+                .Select(cse => new
+                {
+                    CompositeId = cse.CompositeId,
+                    UnitsSold = cse.UnitsSold
+
+                }).ToLookup(x => x.CompositeId);
 
             var usageDetails = elementsData.Select(x =>
             {
@@ -62,27 +68,16 @@ public static class GetAllElementsOverview
 
                 var unitsSoldRaw = x.ElementSoldEvents.Sum(ese => ese.UnitsSold);
 
-                var relevantExcerptsLookup = x.Excerpts
-                    .Where(e => compositeSoldEventsCompositeIds.Contains(e.CompositeId))
-                    .Select(e => new
-                    {
-                        e.CompositeId,
-                        ElementQuantity = e.Quantity
+                var unitsUsedInComposites = x.Excerpts
+                    .Select(e => {
+                        var compositeUnitsSold = compositeSoldEventsLookup[e.CompositeId].Sum(x => x.UnitsSold);
+                        return new
+                        {
+                            e.CompositeId,
+                            ElementQuantity = e.Quantity * compositeUnitsSold
+                        };
                     })
-                    .ToList();
-
-                var unitsUsedInComposites = compositeSoldEvents.Aggregate(0d, (acc, cse) =>
-                {
-                    var quantityInfo = relevantExcerptsLookup
-                        .FirstOrDefault(rel => rel.CompositeId == cse.CompositeId);
-
-                    if (quantityInfo != null)
-                    {
-                        acc += quantityInfo.ElementQuantity;
-                    }
-
-                    return acc;
-                });
+                    .Sum(x => x.ElementQuantity);
 
                 return new ElementUsageDetailsDto
                 {

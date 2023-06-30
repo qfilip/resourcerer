@@ -82,7 +82,7 @@ public class GetMockedDatabaseData
                     }),
                     (ginFizz, new List<(Element, double)>()
                     {
-                        (rum, 0.005d), (sparklingWater, 0.003d), (lime, 0.025d)
+                        (gin, 0.005d), (sparklingWater, 0.003d), (lime, 0.025d)
                     })
             };
 
