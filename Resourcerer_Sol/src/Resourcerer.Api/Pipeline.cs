@@ -17,7 +17,7 @@ public class Pipeline
         TRequest request,
         Func<HandlerResult<TResponse>, IResult>? customResultMapper = null)
     {
-        var actionName = handler.GetType().FullName;
+        var actionName = GetHandlerName(handler);
 
         _logger.LogInformation("Action {Action} started", actionName);
         
@@ -35,7 +35,7 @@ public class Pipeline
         where TRequest : class
         where TRequestValidator : AbstractValidator<TRequest>, new()
     {
-        var actionName = handler.GetType().FullName;
+        var actionName = GetHandlerName(handler);
 
         _logger.LogInformation("Action {Action} started", actionName);
         
@@ -68,4 +68,7 @@ public class Pipeline
                 throw new NotImplementedException($"Cannot handle status of {handlerResult.Status}")
         };
     }
+
+    private string GetHandlerName(object handler) =>
+        handler.GetType().FullName!.Split('.').Last();
 }
