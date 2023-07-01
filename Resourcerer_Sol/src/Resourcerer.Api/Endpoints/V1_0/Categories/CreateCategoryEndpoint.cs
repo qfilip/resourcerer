@@ -8,7 +8,7 @@ using Resourcerer.Logic.Commands.Categories;
 
 namespace Resourcerer.Api.Endpoints.V1_0.Categories;
 
-public class AddCategoryEndpoint
+public class CreateCategoryEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] CategoryDto categoryDto,
@@ -21,7 +21,7 @@ public class AddCategoryEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/add", Action);
+        var endpoint = group.MapPost("/create", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
         {

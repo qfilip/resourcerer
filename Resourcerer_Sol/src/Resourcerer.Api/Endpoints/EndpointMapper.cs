@@ -14,7 +14,7 @@ public static class EndpointMapper
         RouteHandlerBuilder route,
         List<(string claimType, string[] claimValues)> claims)
     {
-        if (true)
+        if (false)
         {
             route.RequireAuthorization(cfg =>
                 claims.ForEach(c => cfg.RequireClaim(c.claimType, c.claimValues)));

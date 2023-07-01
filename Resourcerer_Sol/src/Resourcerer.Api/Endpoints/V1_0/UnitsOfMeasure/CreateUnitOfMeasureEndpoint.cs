@@ -8,12 +8,12 @@ using Resourcerer.Logic.Commands.UnitsOfMeasure;
 
 namespace Resourcerer.Api.Endpoints.V1_0.UnitsOfMeasure;
 
-public class AddUnitOfMeasureEndpoint
+public class CreateUnitOfMeasureEndpoint
 {
     public static async Task<IResult> Action(
        [FromBody] UnitOfMeasureDto dto,
        [FromServices] Pipeline pipeline,
-       [FromServices] AddUnitOfMeasure.Handler handler)
+       [FromServices] CreateUnitOfMeasure.Handler handler)
     {
         return await pipeline
             .Pipe<UnitOfMeasureDto, UnitOfMeasureDtoValidator, Unit>(handler, dto);
@@ -21,7 +21,7 @@ public class AddUnitOfMeasureEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/add", Action);
+        var endpoint = group.MapPost("/create", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
         {

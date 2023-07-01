@@ -8,7 +8,7 @@ using Resourcerer.Logic.Commands.Elements;
 
 namespace Resourcerer.Api.Endpoints.V1_0.Elements;
 
-public class AddElementEndpoint
+public class CreateElementEndpoint
 {
     public static async Task<IResult> Action(
        [FromBody] ElementDto dto,
@@ -21,7 +21,7 @@ public class AddElementEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/add", Action);
+        var endpoint = group.MapPost("/create", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
         {

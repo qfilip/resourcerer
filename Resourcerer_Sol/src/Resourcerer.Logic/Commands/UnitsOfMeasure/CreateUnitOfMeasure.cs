@@ -4,7 +4,7 @@ using Resourcerer.Dtos.UnitsOfMeasure;
 
 namespace Resourcerer.Logic.Commands.UnitsOfMeasure;
 
-public class AddUnitOfMeasure
+public class CreateUnitOfMeasure
 {
     public class Handler : IRequestHandler<UnitOfMeasureDto, Unit>
     {

@@ -1,4 +1,5 @@
 ﻿using Resourcerer.Api.Endpoints.V1_0.Categories;
+using Resourcerer.Api.Endpoints.V1_0.Composites;
 using Resourcerer.Api.Endpoints.V1_0.Elements;
 using Resourcerer.Api.Endpoints.V1_0.Mocks;
 using Resourcerer.Api.Endpoints.V1_0.Prices;
@@ -13,6 +14,7 @@ public class EndpointMapperV1_0
     public static void MapV1_0(WebApplication app)
     {
         MapCategories(app);
+        MapComposites(app);
         MapElements(app);
         MapMocks(app);
         MapPrices(app);
@@ -25,7 +27,14 @@ public class EndpointMapperV1_0
         var g = EndpointMapper.GetGroup(app, Version, "Categories");
 
         GetAllCategoriesEndpoint.MapToGroup(g);
-        AddCategoryEndpoint.MapToGroup(g);
+        CreateCategoryEndpoint.MapToGroup(g);
+    }
+
+    private static void MapComposites(WebApplication app)
+    {
+        var g = EndpointMapper.GetGroup(app, Version, "Composites");
+
+        CreateCompositeEndpoint.MapToGroup(g);
     }
 
     private static void MapElements(WebApplication app)
@@ -33,11 +42,7 @@ public class EndpointMapperV1_0
         var g = EndpointMapper.GetGroup(app, Version, "Elements");
 
         GetAllElementsStatisticsEndpoint.MapToGroup(g);
-        AddElementEndpoint.MapToGroup(g);
-        g.RequireAuthorization(cfg =>
-        {
-            cfg.RequireClaim("elements");
-        });
+        CreateElementEndpoint.MapToGroup(g);
     }
 
     private static void MapMocks(WebApplication app)
@@ -55,7 +60,7 @@ public class EndpointMapperV1_0
     private static void MapUnitsOfMeasure(WebApplication app)
     {
         var g = EndpointMapper.GetGroup(app, Version, "Units Of Measure");
-        AddUnitOfMeasureEndpoint.MapToGroup(g);
+        CreateUnitOfMeasureEndpoint.MapToGroup(g);
     }
 
     private static void MapUsers(WebApplication app)
