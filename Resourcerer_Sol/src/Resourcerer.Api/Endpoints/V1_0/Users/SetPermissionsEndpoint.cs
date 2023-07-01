@@ -6,7 +6,7 @@ using Resourcerer.Dtos.Users;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Users;
 
-namespace Resourcerer.Api.Endpoints.Users;
+namespace Resourcerer.Api.Endpoints.V1_0.Users;
 
 public class SetPermissionsEndpoint
 {

@@ -5,7 +5,7 @@ using Resourcerer.Dtos;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Queries.Categories;
 
-namespace Resourcerer.Api.Endpoints.Categories;
+namespace Resourcerer.Api.Endpoints.V1_0.Categories;
 
 public class GetAllCategoriesEndpoint
 {
@@ -19,7 +19,7 @@ public class GetAllCategoriesEndpoint
     internal static void MapToGroup(RouteGroupBuilder group)
     {
         var endpoint = group.MapGet("", Action);
-        
+
         EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
         {
             (nameof(Category), new[] { ePermission.Read.ToString() })

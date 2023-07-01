@@ -6,7 +6,7 @@ using Resourcerer.Dtos.Prices;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Prices;
 
-namespace Resourcerer.Api.Endpoints.Prices;
+namespace Resourcerer.Api.Endpoints.V1_0.Prices;
 
 public class ChangePriceEndpoint
 {

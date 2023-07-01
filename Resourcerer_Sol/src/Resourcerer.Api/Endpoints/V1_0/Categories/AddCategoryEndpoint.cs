@@ -6,7 +6,7 @@ using Resourcerer.Dtos.Categories;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Categories;
 
-namespace Resourcerer.Api.Endpoints.Categories;
+namespace Resourcerer.Api.Endpoints.V1_0.Categories;
 
 public class AddCategoryEndpoint
 {
@@ -14,7 +14,7 @@ public class AddCategoryEndpoint
         [FromBody] CategoryDto categoryDto,
         [FromServices] Pipeline pipeline,
         [FromServices] CreateCategory.Handler handler)
-    {   
+    {
         return await pipeline
             .Pipe<CategoryDto, CategoryDtoValidator, Unit>(handler, categoryDto);
     }
@@ -22,7 +22,7 @@ public class AddCategoryEndpoint
     internal static void MapToGroup(RouteGroupBuilder group)
     {
         var endpoint = group.MapPost("/add", Action);
-        
+
         EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
         {
             (nameof(Category), new[] { ePermission.Write.ToString() })

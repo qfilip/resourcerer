@@ -3,7 +3,7 @@ using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Mocks;
 using Resourcerer.Logic.Queries.Mocks;
 
-namespace Resourcerer.Api.Endpoints.Mocks;
+namespace Resourcerer.Api.Endpoints.V1_0.Mocks;
 
 public class SeedDatabaseEndpoint
 {
@@ -13,7 +13,7 @@ public class SeedDatabaseEndpoint
         SeedMockData.Handler seedHandler)
     {
         var dbData = await mockHandler.Handle(new Unit());
-        if(dbData.Object != null)
+        if (dbData.Object != null)
         {
             return await pipeline.Pipe(seedHandler, dbData.Object);
         }

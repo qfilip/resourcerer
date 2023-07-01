@@ -2,21 +2,21 @@
 using Resourcerer.Api.Services;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
-using Resourcerer.Dtos.Elements;
+using Resourcerer.Dtos.UnitsOfMeasure;
 using Resourcerer.Logic;
-using Resourcerer.Logic.Commands.Elements;
+using Resourcerer.Logic.Commands.UnitsOfMeasure;
 
-namespace Resourcerer.Api.Endpoints.Elements;
+namespace Resourcerer.Api.Endpoints.V1_0.UnitsOfMeasure;
 
-public class AddElementEndpoint
+public class AddUnitOfMeasureEndpoint
 {
     public static async Task<IResult> Action(
-       [FromBody] ElementDto dto,
+       [FromBody] UnitOfMeasureDto dto,
        [FromServices] Pipeline pipeline,
-       [FromServices] CreateElement.Handler handler)
+       [FromServices] AddUnitOfMeasure.Handler handler)
     {
         return await pipeline
-            .Pipe<ElementDto, ElementDtoValidator, Unit>(handler, dto);
+            .Pipe<UnitOfMeasureDto, UnitOfMeasureDtoValidator, Unit>(handler, dto);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
@@ -25,7 +25,7 @@ public class AddElementEndpoint
 
         EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
         {
-            (nameof(Element), new[] { ePermission.Write.ToString() })
+            (nameof(UnitOfMeasure), new[] { ePermission.Write.ToString() })
         });
     }
 }

@@ -4,7 +4,7 @@ using Resourcerer.Dtos;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Queries.Elements;
 
-namespace Resourcerer.Api.Endpoints.Elements;
+namespace Resourcerer.Api.Endpoints.V1_0.Elements;
 
 public class GetAllElementsOverviewsEndpoint
 {

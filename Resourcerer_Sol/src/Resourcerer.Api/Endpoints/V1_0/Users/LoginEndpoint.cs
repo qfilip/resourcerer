@@ -5,7 +5,7 @@ using Resourcerer.Dtos;
 using Resourcerer.Dtos.Users;
 using Resourcerer.Logic.Queries.Users;
 
-namespace Resourcerer.Api.Endpoints.Users;
+namespace Resourcerer.Api.Endpoints.V1_0.Users;
 
 public class LoginEndpoint
 {
