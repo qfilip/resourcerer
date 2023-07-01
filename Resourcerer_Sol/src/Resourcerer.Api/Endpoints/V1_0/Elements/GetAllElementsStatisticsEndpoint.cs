@@ -6,7 +6,7 @@ using Resourcerer.Logic.Queries.Elements;
 
 namespace Resourcerer.Api.Endpoints.V1_0.Elements;
 
-public class GetAllElementsOverviewsEndpoint
+public class GetAllElementsStatisticsEndpoint
 {
     public static async Task<IResult> Action(
         Pipeline pipeline,
@@ -17,7 +17,7 @@ public class GetAllElementsOverviewsEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapGet("/all-overviews", Action);
+        var endpoint = group.MapGet("/statistics", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
         {

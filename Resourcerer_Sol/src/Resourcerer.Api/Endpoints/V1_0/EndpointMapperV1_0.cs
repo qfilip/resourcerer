@@ -32,7 +32,7 @@ public class EndpointMapperV1_0
     {
         var g = EndpointMapper.GetGroup(app, Version, "Elements");
 
-        GetAllElementsOverviewsEndpoint.MapToGroup(g);
+        GetAllElementsStatisticsEndpoint.MapToGroup(g);
         AddElementEndpoint.MapToGroup(g);
         g.RequireAuthorization(cfg =>
         {
