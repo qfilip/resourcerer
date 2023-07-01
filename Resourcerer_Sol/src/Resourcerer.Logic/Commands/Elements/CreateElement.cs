@@ -1,4 +1,5 @@
-﻿using Resourcerer.DataAccess.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Elements;
 
@@ -17,6 +18,22 @@ public static class CreateElement
 
         public async Task<HandlerResult<Unit>> Handle(ElementDto request)
         {
+            var category = await _appDbContext.Categories
+                .FirstOrDefaultAsync(x => x.Id == request.CategoryId);
+
+            if (category == null)
+            {
+                HandlerResult<Unit>.ValidationError("Cannot find supplied category");
+            }
+
+            var unitOfMeasure = await _appDbContext.UnitsOfMeasure
+                .FirstOrDefaultAsync(x => x.Id == request.UnitOfMeasureId);
+
+            if (unitOfMeasure == null)
+            {
+                HandlerResult<Unit>.ValidationError("Cannot find supplied unit of measure");
+            }
+
             var entity = new Element
             {
                 Name = request.Name,

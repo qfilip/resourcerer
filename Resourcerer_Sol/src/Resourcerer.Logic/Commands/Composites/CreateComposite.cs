@@ -1,4 +1,5 @@
-﻿using Resourcerer.DataAccess.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Composites;
 
@@ -17,6 +18,14 @@ public static class CreateComposite
 
         public async Task<HandlerResult<Unit>> Handle(CompositeDto request)
         {
+            var category = await _appDbContext.Categories
+                .FirstOrDefaultAsync(x => x.Id == request.CategoryId);
+
+            if(category == null)
+            {
+                HandlerResult<Unit>.ValidationError("Cannot find supplied category");
+            }
+
             var entity = new Composite
             {
                 Name = request.Name,

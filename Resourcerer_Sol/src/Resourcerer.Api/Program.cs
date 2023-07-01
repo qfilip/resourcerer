@@ -27,11 +27,12 @@ if (app.Environment.IsDevelopment())
 EndpointMapper.Map(app);
 
 app.UseHttpsRedirection();
-
 app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<AppHttpMiddleware>();
 
 app.Run();
 

@@ -1,4 +1,5 @@
-﻿using Resourcerer.DataAccess.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Prices;
 
@@ -16,6 +17,14 @@ public static class ChangePrice
 
         public async Task<HandlerResult<Unit>> Handle(PriceDto request)
         {
+            var composite = await _appDbContext.Composites
+                .FirstOrDefaultAsync(x => x.Id == request.CompositeId);
+
+            if (composite == null)
+            {
+                HandlerResult<Unit>.ValidationError("Cannot find supplied composite");
+            }
+
             var entity = new Price
             {
                 CompositeId = request.CompositeId,
