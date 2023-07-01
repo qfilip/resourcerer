@@ -33,7 +33,7 @@ public static class CreateElement
             };
 
             _appDbContext.Elements.Add(element);
-            _appDbContext.Prices.Add(price);
+            _appDbContext.OldPrices.Add(price);
 
             await _appDbContext.SaveChangesAsync();
 

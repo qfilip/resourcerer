@@ -1,4 +1,5 @@
 ﻿using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Mocks;
 using Resourcerer.Dtos;
 using Resourcerer.Utilities.Cryptography;
 using System.Text.Json;
@@ -7,6 +8,89 @@ namespace Resourcerer.Logic.Queries.Mocks;
 
 public class MockingUtilities
 {
+    public DatabaseData GetData()
+    {
+        var adminUser = MakeUser("admin", "admin", true);
+        var loserUser = MakeUser("user", "user", false);
+
+        var users = new AppUser[] { adminUser, loserUser };
+
+        var bar = MakeCategory("Bar");
+        var spirits = MakeCategory("Spirits", bar);
+        var ales = MakeCategory("Ales", bar);
+        var waters = MakeCategory("Waters", bar);
+        var veggies = MakeCategory("Veggies", bar);
+        var cocktails = MakeCategory("Cocktails", bar);
+        var tikiCocktails = MakeCategory("Tiki", cocktails);
+
+        var categories = new Category[] { bar, spirits, ales, waters, veggies, cocktails, tikiCocktails };
+
+        var liter = MakeUnitOfMeasure("Liter", "l");
+        var kg = MakeUnitOfMeasure("Kilogram", "kg");
+
+        var uoms = new UnitOfMeasure[] { liter, kg };
+
+        var vodka = MakeElement("vodka", 2, spirits, liter);
+        var rum = MakeElement("rum", 2, spirits, liter);
+        var gin = MakeElement("gin", 2, spirits, liter);
+        var gingerAle = MakeElement("ginger ale", 3, ales, liter);
+        var sparklingWater = MakeElement("sparkling water", 1, waters, liter);
+        var lime = MakeElement("lime", 3, veggies, kg);
+
+        var elements = new Element[] { vodka, rum, gin, gingerAle, sparklingWater, lime };
+
+        var moscowMule = MakeComposite("moscow mule", 5, cocktails);
+        var darkNstormy = MakeComposite("dark n stormy", 5, cocktails);
+        var ginFizz = MakeComposite("gin fizz", 5, cocktails);
+
+        var composites = new Composite[] { moscowMule, darkNstormy, ginFizz };
+
+        var p1 = MakePrice(6, moscowMule);
+        var p2 = MakePrice(7, darkNstormy);
+        var p3 = MakePrice(4, ginFizz);
+        var p4 = MakePrice(2, sparklingWater);
+
+        var prices = new OldPrice[] { p1, p2, p3, p4 };
+
+        var excerptData = new List<(Composite, List<(Element, double)>)>
+            {
+                    (moscowMule, new List<(Element, double)>()
+                    {
+                        (vodka, 0.005d), (gingerAle, 0.003d), (lime, 0.025d)
+                    }),
+                    (darkNstormy, new List<(Element, double)>()
+                    {
+                        (rum, 0.005d), (gingerAle, 0.003d), (lime, 0.025d)
+                    }),
+                    (ginFizz, new List<(Element, double)>()
+                    {
+                        (gin, 0.005d), (sparklingWater, 0.003d), (lime, 0.025d)
+                    })
+            };
+
+        var excerpts = excerptData
+            .Select(x => MakeExcerpts(x.Item1, x.Item2))
+            .SelectMany(x => x);
+
+        var dbdata = new DatabaseData
+        {
+            AppUsers = users,
+            Categories = categories,
+            Excerpts = excerpts,
+            UnitOfMeasures = uoms,
+            OldPrices = prices,
+
+            Composites = composites,
+            CompositeSoldEvents = Array.Empty<CompositeSoldEvent>(),
+
+            Elements = elements,
+            ElementSoldEvents = Array.Empty<ElementSoldEvent>(),
+            ElementPurchasedEvents = Array.Empty<ElementPurchasedEvent>()
+        };
+
+        return dbdata;
+    }
+
     protected static DateTime Now = new DateTime(2000, 1, 1);
     protected static T MakeEntity<T>(Func<T> retn) where T : EntityBase
     {
@@ -50,21 +134,23 @@ public class MockingUtilities
         });
     }
 
-    protected static Element MakeElement(string name, Category category, UnitOfMeasure uom)
+    protected static Element MakeElement(string name, double currentSellPrice, Category category, UnitOfMeasure uom)
     {
         return MakeEntity(() => new Element
         {
             Name = name,
+            CurrentSellPrice = currentSellPrice,
             CategoryId = category.Id,
             UnitOfMeasureId = uom.Id
         });
     }
 
-    protected static Composite MakeComposite(string name, Category category)
+    protected static Composite MakeComposite(string name, double currentSellPrice, Category category)
     {
         return MakeEntity(() => new Composite
         {
             Name = name,
+            CurrentSellPrice = currentSellPrice,
             CategoryId = category.Id
         });
     }
@@ -81,7 +167,7 @@ public class MockingUtilities
         });
     }
 
-    protected static OldPrice MakePrice(int value, Composite composite)
+    protected static OldPrice MakePrice(double value, Composite composite)
     {
         return MakeEntity(() => new OldPrice
         {
@@ -90,7 +176,7 @@ public class MockingUtilities
         });
     }
 
-    protected static OldPrice MakePrice(int value, Element element)
+    protected static OldPrice MakePrice(double value, Element element)
     {
         return MakeEntity(() => new OldPrice
         {

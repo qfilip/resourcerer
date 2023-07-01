@@ -31,7 +31,7 @@ public static class ChangePrice
                 UnitValue = request.Value
             };
 
-            _appDbContext.Prices.Add(entity);
+            _appDbContext.OldPrices.Add(entity);
 
             await _appDbContext.SaveChangesAsync();
 

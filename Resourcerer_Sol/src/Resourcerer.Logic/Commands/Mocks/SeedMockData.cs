@@ -19,7 +19,7 @@ public static class SeedMockData
             _dbContext.Categories.AddRange(dbData.Categories!);
             _dbContext.UnitsOfMeasure.AddRange(dbData.UnitOfMeasures!);
             _dbContext.Excerpts.AddRange(dbData.Excerpts!);
-            _dbContext.Prices.AddRange(dbData.Prices!);
+            _dbContext.OldPrices.AddRange(dbData.OldPrices!);
 
             _dbContext.Composites.AddRange(dbData.Composites!);
             _dbContext.CompositeSoldEvents.AddRange(dbData.CompositeSoldEvents!);

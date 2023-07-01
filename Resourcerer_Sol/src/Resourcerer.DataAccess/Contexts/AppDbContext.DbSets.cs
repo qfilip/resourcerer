@@ -14,7 +14,7 @@ public partial class AppDbContext : DbContext, IAppDbContext
     public virtual DbSet<Category> Categories { get; set; }
     public virtual DbSet<Excerpt> Excerpts { get; set; }
     public virtual DbSet<UnitOfMeasure> UnitsOfMeasure { get; set; }
-    public virtual DbSet<OldPrice> Prices { get; set; }
+    public virtual DbSet<OldPrice> OldPrices { get; set; }
 
     public virtual DbSet<Composite> Composites { get; set; }
     public virtual DbSet<CompositeSoldEvent> CompositeSoldEvents { get; set; }
