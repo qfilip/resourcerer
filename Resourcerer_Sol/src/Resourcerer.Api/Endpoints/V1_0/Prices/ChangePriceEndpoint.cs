@@ -11,11 +11,11 @@ namespace Resourcerer.Api.Endpoints.V1_0.Prices;
 public class ChangePriceEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] PriceDto dto,
+        [FromBody] OldPriceDto dto,
         [FromServices] Pipeline pipeline,
         [FromServices] ChangePrice.Handler handler)
     {
-        return await pipeline.Pipe<PriceDto, PriceDtoValidator, Unit>(handler, dto);
+        return await pipeline.Pipe<OldPriceDto, PriceDtoValidator, Unit>(handler, dto);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
@@ -24,7 +24,7 @@ public class ChangePriceEndpoint
 
         EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
         {
-            (nameof(Price), new[] { ePermission.Write.ToString() })
+            (nameof(OldPrice), new[] { ePermission.Write.ToString() })
         });
     }
 }

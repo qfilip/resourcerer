@@ -81,18 +81,18 @@ public class MockingUtilities
         });
     }
 
-    protected static Price MakePrice(int value, Composite composite)
+    protected static OldPrice MakePrice(int value, Composite composite)
     {
-        return MakeEntity(() => new Price
+        return MakeEntity(() => new OldPrice
         {
             UnitValue = value,
             CompositeId = composite.Id
         });
     }
 
-    protected static Price MakePrice(int value, Element element)
+    protected static OldPrice MakePrice(int value, Element element)
     {
-        return MakeEntity(() => new Price
+        return MakeEntity(() => new OldPrice
         {
             UnitValue = value,
             ElementId = element.Id

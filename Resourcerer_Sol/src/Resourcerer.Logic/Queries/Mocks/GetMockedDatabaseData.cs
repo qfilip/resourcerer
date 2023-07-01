@@ -48,7 +48,7 @@ public class GetMockedDatabaseData
             var p3 = MakePrice(4, ginFizz);
             var p4 = MakePrice(2, sparklingWater);
 
-            var prices = new Price[] { p1, p2, p3, p4 };
+            var prices = new OldPrice[] { p1, p2, p3, p4 };
 
             var pur1 = MakeElementPurchasedEvent(vodka, 1, 10, liter, Now.AddDays(1));
             var pur2 = MakeElementPurchasedEvent(vodka, 1, 10, liter, Now.AddDays(2));

@@ -5,6 +5,7 @@ namespace Resourcerer.Dtos.Elements;
 public class CreateElementDto
 {
     public string? Name { get; set; }
+    public double CurrentSellPrice { get; set; }
     public Guid CategoryId { get; set; }
     public Guid UnitOfMeasureId { get; set; }
     public double UnitPrice { get; set; }
@@ -17,6 +18,10 @@ public class CreateElementDtoValidator : AbstractValidator<CreateElementDto>
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Element name cannot be empty")
             .Length(min: 3, max: 50).WithMessage("Element name must be between 3 and 50 characters long");
+
+        RuleFor(x => x.CurrentSellPrice)
+            .GreaterThan(0)
+            .WithMessage("Element price cannot be 0");
 
         RuleFor(x => x.CategoryId)
             .NotEmpty().WithMessage("Element's category cannot be empty");

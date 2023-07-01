@@ -54,12 +54,12 @@ public partial class AppDbContext
             e.HasOne(x => x.Element).WithMany(x => x.ElementSoldEvents);
          });
 
-        modelBuilder.Entity<Price>(e =>
+        modelBuilder.Entity<OldPrice>(e =>
         {
-            e.ToTable(nameof(Price));
+            e.ToTable(nameof(OldPrice));
             e.Property(x => x.UnitValue).IsRequired();
-            e.HasOne(x => x.Element).WithMany(x => x.Prices);
-            e.HasOne(x => x.Composite).WithMany(x => x.Prices);
+            e.HasOne(x => x.Element).WithMany(x => x.OldPrices);
+            e.HasOne(x => x.Composite).WithMany(x => x.OldPrices);
             e.HasQueryFilter(x => x.EntityStatus != eEntityStatus.Deleted);
         });
 

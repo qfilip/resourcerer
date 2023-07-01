@@ -7,7 +7,7 @@ namespace Resourcerer.Logic.Commands.Prices;
 
 public static class ChangePrice
 {
-    public class Handler : IRequestHandler<PriceDto, Unit>
+    public class Handler : IRequestHandler<OldPriceDto, Unit>
     {
         private readonly IAppDbContext _appDbContext;
         public Handler(IAppDbContext appDbContext)
@@ -15,7 +15,7 @@ public static class ChangePrice
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(PriceDto request)
+        public async Task<HandlerResult<Unit>> Handle(OldPriceDto request)
         {
             var composite = await _appDbContext.Composites
                 .FirstOrDefaultAsync(x => x.Id == request.CompositeId);
@@ -25,7 +25,7 @@ public static class ChangePrice
                 HandlerResult<Unit>.ValidationError("Cannot find supplied composite");
             }
 
-            var entity = new Price
+            var entity = new OldPrice
             {
                 CompositeId = request.CompositeId,
                 UnitValue = request.Value

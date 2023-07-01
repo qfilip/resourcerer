@@ -49,7 +49,7 @@ public static class GetMockedNonEventDatabaseData
             var p3 = MakePrice(4, ginFizz);
             var p4 = MakePrice(2, sparklingWater);
 
-            var prices = new Price[] { p1, p2, p3, p4 };
+            var prices = new OldPrice[] { p1, p2, p3, p4 };
 
             var excerptData = new List<(Composite, List<(Element, double)>)>
             {

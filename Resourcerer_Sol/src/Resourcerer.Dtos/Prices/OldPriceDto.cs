@@ -3,7 +3,7 @@ using Resourcerer.Dtos.Composites;
 
 namespace Resourcerer.Dtos.Prices;
 
-public class PriceDto : EntityDto
+public class OldPriceDto : EntityDto
 {
     public Guid CompositeId { get; set; }
     public double Value { get; set; }
@@ -11,7 +11,7 @@ public class PriceDto : EntityDto
     public CompositeDto? Composite { get; set; }
 }
 
-public class PriceDtoValidator : AbstractValidator<PriceDto>
+public class PriceDtoValidator : AbstractValidator<OldPriceDto>
 {
     public PriceDtoValidator()
     {

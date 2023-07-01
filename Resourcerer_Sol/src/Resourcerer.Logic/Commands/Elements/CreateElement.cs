@@ -26,7 +26,7 @@ public static class CreateElement
                 UnitOfMeasureId = request.UnitOfMeasureId
             };
 
-            var price = new Price
+            var price = new OldPrice
             {
                 ElementId = element.Id,
                 UnitValue = request.UnitPrice
