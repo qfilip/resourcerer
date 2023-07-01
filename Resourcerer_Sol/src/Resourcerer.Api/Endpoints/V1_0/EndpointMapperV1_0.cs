@@ -32,6 +32,7 @@ public class EndpointMapperV1_0
     {
         var g = EndpointMapper.GetGroup(app, Version, "Composites");
 
+        ChangeCompositePriceEndpoint.MapToGroup(g);
         CreateCompositeEndpoint.MapToGroup(g);
     }
 
