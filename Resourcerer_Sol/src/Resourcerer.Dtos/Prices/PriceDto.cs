@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Resourcerer.Dtos.Composites;
-using Resourcerer.Dtos.CompositeSoldEvents;
 
 namespace Resourcerer.Dtos.Prices;
 
@@ -10,7 +9,6 @@ public class PriceDto : EntityDto
     public double Value { get; set; }
 
     public CompositeDto? Composite { get; set; }
-    public List<CompositeSoldEventDto> CompositeSoldEvents { get; set; } = new();
 }
 
 public class PriceDtoValidator : AbstractValidator<PriceDto>

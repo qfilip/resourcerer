@@ -11,11 +11,11 @@ namespace Resourcerer.Api.Endpoints.V1_0.Composites;
 public class CreateCompositeEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] CompositeDto dto,
+        [FromBody] CreateCompositeDto dto,
         [FromServices] Pipeline pipeline,
         [FromServices] CreateComposite.Handler handler)
     {
-        return await pipeline.Pipe<CompositeDto, CompositeDtoValidator, Unit>(handler, dto);
+        return await pipeline.Pipe<CreateCompositeDto, CreateCompositeDtoValidator, Unit>(handler, dto);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
