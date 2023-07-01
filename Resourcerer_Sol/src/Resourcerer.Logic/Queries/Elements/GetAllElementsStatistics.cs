@@ -3,9 +3,9 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.Elements;
 
 namespace Resourcerer.Logic.Queries.Elements;
-public static class GetAllElementsOverview
+public static class GetAllElementsStatistics
 {
-    public class Handler : IRequestHandler<Unit, List<ElementUsageDetailsDto>>
+    public class Handler : IRequestHandler<Unit, List<ElementStatisticsDto>>
     {
         private readonly IAppDbContext _appDbContext;
 
@@ -14,7 +14,7 @@ public static class GetAllElementsOverview
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<List<ElementUsageDetailsDto>>> Handle(Unit _)
+        public async Task<HandlerResult<List<ElementStatisticsDto>>> Handle(Unit _)
         {
             var elementsData = await _appDbContext.Elements
                 .IgnoreQueryFilters()
@@ -78,20 +78,20 @@ public static class GetAllElementsOverview
                     })
                     .Sum(x => x.ElementQuantity);
 
-                return new ElementUsageDetailsDto
+                return new ElementStatisticsDto
                 {
                     ElementId = x.Id,
                     ElementName = x.Name,
                     Unit = x.UnitOfMeasure!.Name,
                     UnitsPurchased = unitsPurchased,
                     PurchaseCosts = purchaseCosts,
-                    UnitsUsed = unitsUsedInComposites,
+                    UnitsUsedInComposites = unitsUsedInComposites,
                     UnitsInStock = unitsPurchased - unitsUsedInComposites - unitsSoldRaw
                 };
             })
             .ToList();
 
-            return HandlerResult<List<ElementUsageDetailsDto>>.Ok(usageDetails);
+            return HandlerResult<List<ElementStatisticsDto>>.Ok(usageDetails);
         }
     }
 }

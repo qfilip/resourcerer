@@ -2,16 +2,16 @@
 using System.Security.Claims;
 
 namespace Resourcerer.Dtos.Users;
-public class UserDto : EntityDto
+public class AppUserDto : EntityDto
 {
     public string? Name { get; set; }
     public string? Password { get; set; }
     public List<Claim>? Claims { get; set; }
 }
 
-public class UserDtoValidator : AbstractValidator<UserDto>
+public class AppUserDtoValidator : AbstractValidator<AppUserDto>
 {
-    public UserDtoValidator()
+    public AppUserDtoValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty()

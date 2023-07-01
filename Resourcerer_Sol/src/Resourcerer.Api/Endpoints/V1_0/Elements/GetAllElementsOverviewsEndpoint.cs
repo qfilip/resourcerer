@@ -10,7 +10,7 @@ public class GetAllElementsOverviewsEndpoint
 {
     public static async Task<IResult> Action(
         Pipeline pipeline,
-        GetAllElementsOverview.Handler handler)
+        GetAllElementsStatistics.Handler handler)
     {
         return await pipeline.Pipe(handler, new Unit());
     }

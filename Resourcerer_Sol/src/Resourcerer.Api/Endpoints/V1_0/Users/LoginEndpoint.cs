@@ -10,11 +10,11 @@ namespace Resourcerer.Api.Endpoints.V1_0.Users;
 public class LoginEndpoint
 {
     public static async Task<IResult> Action(
-       [FromBody] UserDto dto,
+       [FromBody] AppUserDto dto,
        [FromServices] Pipeline pipeline,
        [FromServices] Login.Handler handler)
     {
-        return await pipeline.Pipe<UserDto, UserDtoValidator, UserDto>(handler, dto, (result) =>
+        return await pipeline.Pipe<AppUserDto, AppUserDtoValidator, AppUserDto>(handler, dto, (result) =>
         {
             var jwt = JwtService.GenerateToken(result.Claims!);
             return Results.Ok(jwt);

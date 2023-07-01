@@ -35,7 +35,7 @@ public class Showcase
         A.CallTo(() => _appDbContext.Elements).Returns(elementsMock);
         A.CallTo(() => _appDbContext.CompositeSoldEvents).Returns(new List<CompositeSoldEvent>().AsQueryable().BuildMockDbSet());
 
-        var handler = new GetAllElementsOverview.Handler(_appDbContext);
+        var handler = new GetAllElementsStatistics.Handler(_appDbContext);
         var result = await handler.Handle(new Unit());
 
         Assert.Equal(HandlerResultStatus.Ok, result.Status);
@@ -88,7 +88,7 @@ public class Showcase
                 }
             }.AsQueryable().BuildMockDbSet());
 
-        var handler = new GetAllElementsOverview.Handler(_appDbContext);
+        var handler = new GetAllElementsStatistics.Handler(_appDbContext);
         var result = await handler.Handle(new Unit());
 
         Assert.Equal(HandlerResultStatus.Ok, result.Status);
@@ -122,7 +122,7 @@ public class Showcase
         A.CallTo(() => _appDbContext.CompositeSoldEvents)
             .Returns(new List<CompositeSoldEvent>().AsQueryable().BuildMockDbSet());
 
-        var handler = new GetAllElementsOverview.Handler(_appDbContext);
+        var handler = new GetAllElementsStatistics.Handler(_appDbContext);
         var result = await handler.Handle(new Unit());
 
         Assert.Equal(HandlerResultStatus.Ok, result.Status);

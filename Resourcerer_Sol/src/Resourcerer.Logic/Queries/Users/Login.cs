@@ -16,9 +16,9 @@ public static class Login
         Permissions = JsonSerializer.Serialize(Permission.GetAllPermissionsDictionary())
     };
 
-    public class Handler : IRequestHandler<UserDto, UserDto>
+    public class Handler : IRequestHandler<AppUserDto, AppUserDto>
     {
-        public Task<HandlerResult<UserDto>> Handle(UserDto request)
+        public Task<HandlerResult<AppUserDto>> Handle(AppUserDto request)
         {
             if(request.Name == FakeAdmin.Name && Hasher.GetSha256Hash(request.Password!) == FakeAdmin.PasswordHash)
             {
@@ -27,17 +27,17 @@ public static class Login
                 claimsDict!.Add("name", FakeAdmin.Name!);
                 claimsDict!.Add("pwdhash", FakeAdmin.PasswordHash!);
 
-                var dto = new UserDto
+                var dto = new AppUserDto
                 {
                     Name = FakeAdmin.Name,
                     Claims = Permission.GetClaimsFromDictionary(claimsDict!)
                 };
 
-                return Task.FromResult(HandlerResult<UserDto>.Ok(dto));
+                return Task.FromResult(HandlerResult<AppUserDto>.Ok(dto));
             }
             else
             {
-                return Task.FromResult(HandlerResult<UserDto>.NotFound());
+                return Task.FromResult(HandlerResult<AppUserDto>.NotFound());
             }
         }
     }

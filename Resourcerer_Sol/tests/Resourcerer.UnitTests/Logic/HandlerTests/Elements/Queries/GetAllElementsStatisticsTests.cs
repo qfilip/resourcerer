@@ -8,26 +8,28 @@ using Resourcerer.UnitTests.Utilities;
 
 namespace Resourcerer.UnitTests.Logic.HandlerTests.Elements.Queries;
 
-public class GetAllElementsOverviewTests
+public class GetAllElementsStatisticsTests
 {
     private readonly IAppDbContext _testDbContext;
-    private readonly GetAllElementsOverview.Handler _handler;
+    private readonly GetAllElementsStatistics.Handler _handler;
 
-    public GetAllElementsOverviewTests()
+    public GetAllElementsStatisticsTests()
     {
         _testDbContext = new ContextCreator(seedEvents: false).GetTestDbContext();
-        _handler = new GetAllElementsOverview.Handler(_testDbContext);
+        _handler = new GetAllElementsStatistics.Handler(_testDbContext);
     }
 
     [Fact]
     public async Task CorrectlySums_UsageDetails_When_ElementsArePurchased()
     {
+        // arrange
         var (rum, gin, lime) = GetRumGinAndLime(_testDbContext);
         var purchases = GetTestElementPurchases(rum, gin, lime);
 
         _testDbContext.ElementPurchasedEvents.AddRange(purchases);
         await _testDbContext.BaseSaveChangesAsync();
 
+        // assert
         var hResult = await _handler.Handle(new Unit());
 
         Assert.Equal(HandlerResultStatus.Ok, hResult.Status);
@@ -36,14 +38,47 @@ public class GetAllElementsOverviewTests
         var ginStats = hResult.Object!.First(x => x.ElementName == "gin");
         var limeStats = hResult.Object!.First(x => x.ElementName == "lime");
 
-        AssertUsageDetails(rumStats, unitsUsed: 0, unitsInStock: 3, unitsPurchased: 3, purchaseCosts: 25);
-        AssertUsageDetails(ginStats, unitsUsed: 0, unitsInStock: 1, unitsPurchased: 1, purchaseCosts: 5);
-        AssertUsageDetails(limeStats, unitsUsed: 0, unitsInStock: 1, unitsPurchased: 1, purchaseCosts: 10);
+        AssertUsageDetails(rumStats, unitsUsedInComposites: 0, unitsInStock: 3, unitsPurchased: 3, purchaseCosts: 25);
+        AssertUsageDetails(ginStats, unitsUsedInComposites: 0, unitsInStock: 1, unitsPurchased: 1, purchaseCosts: 5);
+        AssertUsageDetails(limeStats, unitsUsedInComposites: 0, unitsInStock: 1, unitsPurchased: 1, purchaseCosts: 10);
+    }
+
+    [Fact]
+    public async void CorrectlySumsUsageDetails_When_ElementIsSold()
+    {
+        // arrange
+        var (rum, gin, lime) = GetRumGinAndLime(_testDbContext);
+        var purchases = GetTestElementPurchases(rum, gin, lime);
+        var sales = purchases.Select(x => new ElementSoldEvent
+        {
+            ElementId = x.ElementId,
+            PriceByUnit = x.PriceByUnit,
+            UnitsSold = x.UnitsBought,
+            UnitOfMeasure = x.UnitOfMeasure
+        });
+
+        _testDbContext.ElementPurchasedEvents.AddRange(purchases);
+        _testDbContext.ElementSoldEvents.AddRange(sales);
+        await _testDbContext.BaseSaveChangesAsync();
+
+        // assert
+        var hResult = await _handler.Handle(new Unit());
+
+        Assert.Equal(HandlerResultStatus.Ok, hResult.Status);
+
+        var rumStats = hResult.Object!.First(x => x.ElementName == "rum");
+        var ginStats = hResult.Object!.First(x => x.ElementName == "gin");
+        var limeStats = hResult.Object!.First(x => x.ElementName == "lime");
+
+        AssertUsageDetails(rumStats, unitsUsedInComposites: 0, unitsInStock: 0, unitsPurchased: 3, purchaseCosts: 25);
+        AssertUsageDetails(ginStats, unitsUsedInComposites: 0, unitsInStock: 0, unitsPurchased: 1, purchaseCosts: 5);
+        AssertUsageDetails(limeStats, unitsUsedInComposites: 0, unitsInStock: 0, unitsPurchased: 1, purchaseCosts: 10);
     }
 
     [Fact]
     public async void CorrectlySumsUsageDetails_When_CompositeIsSold()
     {
+        // arrange
         var darkNstormy = _testDbContext
             .Composites
             .First(x => x.Name == "dark n stormy");
@@ -54,32 +89,13 @@ public class GetAllElementsOverviewTests
 
         var (rum, gin, lime) = GetRumGinAndLime(_testDbContext);
         var purchases = GetTestElementPurchases(rum, gin, lime);
-        var compositeSoldEvents = new List<CompositeSoldEvent>
-        {
-            new()
-            {
-                CompositeId = darkNstormy.Id,
-                PriceByUnit = 1,
-                UnitsSold = 1
-            },
-            new()
-            {
-                CompositeId = darkNstormy.Id,
-                PriceByUnit = 1,
-                UnitsSold = 2
-            },
-            new()
-            {
-                CompositeId = ginFizz.Id,
-                PriceByUnit = 1,
-                UnitsSold = 1
-            }
-        };
+        var compositeSoldEvents = GetTestCompositeSoldEvents(darkNstormy, ginFizz);
 
         _testDbContext.ElementPurchasedEvents.AddRange(purchases);
         _testDbContext.CompositeSoldEvents.AddRange(compositeSoldEvents);
         await _testDbContext.BaseSaveChangesAsync();
 
+        // assert
         var hResult = await _handler.Handle(new Unit());
 
         Assert.Equal(HandlerResultStatus.Ok, hResult.Status);
@@ -88,19 +104,19 @@ public class GetAllElementsOverviewTests
         var ginStats = hResult.Object!.First(x => x.ElementName == "gin");
         var limeStats = hResult.Object!.First(x => x.ElementName == "lime");
 
-        AssertUsageDetails(rumStats, unitsUsed: 0.015, unitsInStock: 2.985, unitsPurchased: 3, purchaseCosts: 25);
-        AssertUsageDetails(ginStats, unitsUsed: 0.005, unitsInStock: 0.995, unitsPurchased: 1, purchaseCosts: 5);
-        AssertUsageDetails(limeStats, unitsUsed: 0.1, unitsInStock: 0.9, unitsPurchased: 1, purchaseCosts: 10);
+        AssertUsageDetails(rumStats, unitsUsedInComposites: 0.015, unitsInStock: 2.985, unitsPurchased: 3, purchaseCosts: 25);
+        AssertUsageDetails(ginStats, unitsUsedInComposites: 0.005, unitsInStock: 0.995, unitsPurchased: 1, purchaseCosts: 5);
+        AssertUsageDetails(limeStats, unitsUsedInComposites: 0.1, unitsInStock: 0.9, unitsPurchased: 1, purchaseCosts: 10);
     }
 
     private static void AssertUsageDetails(
-        ElementUsageDetailsDto details,
-        double unitsUsed,
+        ElementStatisticsDto details,
+        double unitsUsedInComposites,
         double unitsInStock,
         int unitsPurchased,
         double purchaseCosts)
     {
-        Assert.Equal(unitsUsed, details.UnitsUsed);
+        Assert.Equal(unitsUsedInComposites, details.UnitsUsedInComposites);
         Assert.Equal(unitsInStock, details.UnitsInStock);
         Assert.Equal(unitsPurchased, details.UnitsPurchased);
         Assert.Equal(purchaseCosts, details.PurchaseCosts);
@@ -153,4 +169,29 @@ public class GetAllElementsOverviewTests
             }
         };
     }
+    private static List<CompositeSoldEvent> GetTestCompositeSoldEvents(Composite darkNstormy, Composite ginFizz)
+    {
+        return new List<CompositeSoldEvent>
+        {
+            new()
+            {
+                CompositeId = darkNstormy.Id,
+                PriceByUnit = 1,
+                UnitsSold = 1
+            },
+            new()
+            {
+                CompositeId = darkNstormy.Id,
+                PriceByUnit = 1,
+                UnitsSold = 2
+            },
+            new()
+            {
+                CompositeId = ginFizz.Id,
+                PriceByUnit = 1,
+                UnitsSold = 1
+            }
+        };
+    }
+    
 }
