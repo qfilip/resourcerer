@@ -52,7 +52,7 @@ public class GetAllElementsStatisticsTests
         var sales = purchases.Select(x => new ElementSoldEvent
         {
             ElementId = x.ElementId,
-            PriceByUnit = x.PriceByUnit,
+            UnitPrice = x.UnitPrice,
             UnitsSold = x.UnitsBought,
             UnitOfMeasure = x.UnitOfMeasure
         });
@@ -142,28 +142,28 @@ public class GetAllElementsStatisticsTests
             new ElementPurchasedEvent
             {
                 ElementId = rum.Id,
-                PriceByUnit = 10,
+                UnitPrice = 10,
                 UnitsBought = 2,
                 UnitOfMeasure = rum.UnitOfMeasure
             },
             new ElementPurchasedEvent
             {
                 ElementId = rum.Id,
-                PriceByUnit = 5,
+                UnitPrice = 5,
                 UnitsBought = 1,
                 UnitOfMeasure = rum.UnitOfMeasure
             },
             new ElementPurchasedEvent
             {
                 ElementId = gin.Id,
-                PriceByUnit = 5,
+                UnitPrice = 5,
                 UnitsBought = 1,
                 UnitOfMeasure = gin.UnitOfMeasure
             },
             new ElementPurchasedEvent
             {
                 ElementId = lime.Id,
-                PriceByUnit = 10,
+                UnitPrice = 10,
                 UnitsBought = 1,
                 UnitOfMeasure = lime.UnitOfMeasure
             }
@@ -176,19 +176,19 @@ public class GetAllElementsStatisticsTests
             new()
             {
                 CompositeId = darkNstormy.Id,
-                PriceByUnit = 1,
+                UnitPrice = 1,
                 UnitsSold = 1
             },
             new()
             {
                 CompositeId = darkNstormy.Id,
-                PriceByUnit = 1,
+                UnitPrice = 1,
                 UnitsSold = 2
             },
             new()
             {
                 CompositeId = ginFizz.Id,
-                PriceByUnit = 1,
+                UnitPrice = 1,
                 UnitsSold = 1
             }
         };

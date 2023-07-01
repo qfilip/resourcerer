@@ -71,19 +71,19 @@ public class Showcase
                 new CompositeSoldEvent
                 {
                     CompositeId = compositeId,
-                    PriceByUnit = 1,
+                    UnitPrice = 1,
                     UnitsSold = 1
                 },
                 new CompositeSoldEvent
                 {
                     CompositeId = compositeId,
-                    PriceByUnit = 1,
+                    UnitPrice = 1,
                     UnitsSold = 1
                 },
                 new CompositeSoldEvent
                 {
                     CompositeId = Guid.Empty,
-                    PriceByUnit = 1,
+                    UnitPrice = 1,
                     UnitsSold = 1
                 }
             }.AsQueryable().BuildMockDbSet());

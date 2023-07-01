@@ -2,7 +2,6 @@
 using Resourcerer.Api.Endpoints.V1_0.Composites;
 using Resourcerer.Api.Endpoints.V1_0.Elements;
 using Resourcerer.Api.Endpoints.V1_0.Mocks;
-using Resourcerer.Api.Endpoints.V1_0.Prices;
 using Resourcerer.Api.Endpoints.V1_0.UnitsOfMeasure;
 using Resourcerer.Api.Endpoints.V1_0.Users;
 
@@ -11,13 +10,12 @@ namespace Resourcerer.Api.Endpoints.V1_0;
 public class EndpointMapperV1_0
 {
     private const string Version = "1.0";
-    public static void MapV1_0(WebApplication app)
+    public static void Map(WebApplication app)
     {
         MapCategories(app);
         MapComposites(app);
         MapElements(app);
         MapMocks(app);
-        MapPrices(app);
         MapUnitsOfMeasure(app);
         MapUsers(app);
     }
@@ -49,12 +47,6 @@ public class EndpointMapperV1_0
     {
         var g = EndpointMapper.GetGroup(app, Version, "Mocks");
         SeedDatabaseEndpoint.MapToGroup(g);
-    }
-
-    private static void MapPrices(WebApplication app)
-    {
-        var g = EndpointMapper.GetGroup(app, Version, "Prices");
-        ChangePriceEndpoint.MapToGroup(g);
     }
 
     private static void MapUnitsOfMeasure(WebApplication app)

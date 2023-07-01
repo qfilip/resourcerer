@@ -1,14 +1,18 @@
 ﻿using FluentValidation;
 using Resourcerer.Dtos.Composites;
+using Resourcerer.Dtos.Elements;
 
-namespace Resourcerer.Dtos.Prices;
+namespace Resourcerer.Dtos.OldPrices;
 
 public class OldPriceDto : EntityDto
 {
-    public Guid CompositeId { get; set; }
-    public double Value { get; set; }
+    public double UnitValue { get; set; }
 
-    public CompositeDto? Composite { get; set; }
+    public Guid? ElementId { get; set; }
+    public ElementDto? Element { get; set; }
+
+    public Guid? CompositeId { get; set; }
+    public virtual CompositeDto? Composite { get; set; }
 }
 
 public class PriceDtoValidator : AbstractValidator<OldPriceDto>
@@ -18,7 +22,7 @@ public class PriceDtoValidator : AbstractValidator<OldPriceDto>
         RuleFor(x => x.CompositeId)
             .NotEmpty().WithMessage("CompositeId cannot be emmpty value");
 
-        RuleFor(x => x.Value)
+        RuleFor(x => x.UnitValue)
             .GreaterThan(0).WithMessage("Price value must be bigger than 0");
     }
 }

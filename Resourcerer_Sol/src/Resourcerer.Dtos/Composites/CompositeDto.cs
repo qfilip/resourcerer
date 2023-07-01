@@ -2,7 +2,7 @@
 using Resourcerer.Dtos.Categories;
 using Resourcerer.Dtos.CompositeSoldEvents;
 using Resourcerer.Dtos.Excerpts;
-using Resourcerer.Dtos.Prices;
+using Resourcerer.Dtos.OldPrices;
 
 namespace Resourcerer.Dtos.Composites;
 

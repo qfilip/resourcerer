@@ -42,7 +42,7 @@ public class FluentElementMocker : IFluentElementMocker
             .Select(x => new ElementSoldEvent
             {
                 ElementId = _element.Id,
-                PriceByUnit = x.priceByUnit,
+                UnitPrice = x.priceByUnit,
                 UnitsSold = x.unitsSold
             })
             .ToList()
@@ -57,7 +57,7 @@ public class FluentElementMocker : IFluentElementMocker
             .Select(x => new ElementPurchasedEvent
             {
                 ElementId = _element.Id,
-                PriceByUnit = x.priceByUnit,
+                UnitPrice = x.priceByUnit,
                 UnitsBought = x.unitsBought
             })
             .ToList()

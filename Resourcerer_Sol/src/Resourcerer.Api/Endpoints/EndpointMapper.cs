@@ -7,7 +7,7 @@ public static class EndpointMapper
 {
     public static void Map(WebApplication app)
     {
-        EndpointMapperV1_0.MapV1_0(app);
+        EndpointMapperV1_0.Map(app);
     }
 
     public static void AddAuthorization(

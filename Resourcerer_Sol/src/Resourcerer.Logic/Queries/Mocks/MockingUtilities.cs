@@ -161,7 +161,7 @@ public class MockingUtilities
         {
             CompositeId = composite.Id,
             UnitsSold = unitsSold,
-            PriceByUnit = priceByUnit,
+            UnitPrice = priceByUnit,
 
             CreatedAt = createdAt
         });
@@ -191,7 +191,7 @@ public class MockingUtilities
         {
             ElementId = element.Id,
             UnitsBought = unitsBought,
-            PriceByUnit = priceByUnit,
+            UnitPrice = priceByUnit,
             UnitOfMeasure = unitOfMeasure,
 
             CreatedAt = createdAt
@@ -203,7 +203,7 @@ public class MockingUtilities
         return MakeEntity(() => new ElementSoldEvent
         {
             ElementId = element.Id,
-            PriceByUnit = priceByUnit,
+            UnitPrice = priceByUnit,
             UnitsSold = unitsSold,
             UnitOfMeasure = unitOfMeasure,
 
