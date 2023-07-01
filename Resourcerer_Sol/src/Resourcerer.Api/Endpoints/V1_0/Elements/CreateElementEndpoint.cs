@@ -11,12 +11,12 @@ namespace Resourcerer.Api.Endpoints.V1_0.Elements;
 public class CreateElementEndpoint
 {
     public static async Task<IResult> Action(
-       [FromBody] ElementDto dto,
+       [FromBody] CreateElementDto dto,
        [FromServices] Pipeline pipeline,
        [FromServices] CreateElement.Handler handler)
     {
         return await pipeline
-            .Pipe<ElementDto, ElementDtoValidator, Unit>(handler, dto);
+            .Pipe<CreateElementDto, CreateElementDtoValidator, Unit>(handler, dto);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

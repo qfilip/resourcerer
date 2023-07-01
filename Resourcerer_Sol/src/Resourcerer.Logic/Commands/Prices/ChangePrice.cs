@@ -28,7 +28,7 @@ public static class ChangePrice
             var entity = new Price
             {
                 CompositeId = request.CompositeId,
-                Value = request.Value
+                UnitValue = request.Value
             };
 
             _appDbContext.Prices.Add(entity);

@@ -2,7 +2,7 @@
 
 public class Price : EntityBase
 {
-    public double Value { get; set; }
+    public double UnitValue { get; set; }
 
     public Guid? ElementId { get; set; }
     public virtual Element? Element { get; set; }

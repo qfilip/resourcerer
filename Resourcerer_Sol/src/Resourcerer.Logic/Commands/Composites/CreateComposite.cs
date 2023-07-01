@@ -47,7 +47,7 @@ public static class CreateComposite
             var price = new Price
             {
                 CompositeId = composite.Id,
-                Value = request.PriceByUnit
+                UnitValue = request.PriceByUnit
             };
 
             var excerpts = request.Elements!

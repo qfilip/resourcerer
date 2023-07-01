@@ -60,13 +60,13 @@ public class GetMockedDatabaseData
 
             var purchases = new ElementPurchasedEvent[] { pur1, pur2, pur3, pur4, pur5, pur6, pur7 };
 
-            var rese = MakeElementSoldEvent(sparklingWater, liter, 1, p4.Value, Now.AddDays(7));
+            var rese = MakeElementSoldEvent(sparklingWater, liter, 1, p4.UnitValue, Now.AddDays(7));
 
             var elementSoldEvents = new ElementSoldEvent[] { rese };
 
-            var cse1 = MakeCompositeSoldEvent(moscowMule, 1, p1.Value, Now.AddMonths(1));
-            var cse2 = MakeCompositeSoldEvent(moscowMule, 1, p1.Value, Now.AddMonths(1));
-            var cse3 = MakeCompositeSoldEvent(darkNstormy, 1, p1.Value, Now.AddMonths(1));
+            var cse1 = MakeCompositeSoldEvent(moscowMule, 1, p1.UnitValue, Now.AddMonths(1));
+            var cse2 = MakeCompositeSoldEvent(moscowMule, 1, p1.UnitValue, Now.AddMonths(1));
+            var cse3 = MakeCompositeSoldEvent(darkNstormy, 1, p1.UnitValue, Now.AddMonths(1));
 
             var sales = new CompositeSoldEvent[] { cse1, cse2, cse3 };
 

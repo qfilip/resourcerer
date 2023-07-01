@@ -57,7 +57,7 @@ public partial class AppDbContext
         modelBuilder.Entity<Price>(e =>
         {
             e.ToTable(nameof(Price));
-            e.Property(x => x.Value).IsRequired();
+            e.Property(x => x.UnitValue).IsRequired();
             e.HasOne(x => x.Element).WithMany(x => x.Prices);
             e.HasOne(x => x.Composite).WithMany(x => x.Prices);
             e.HasQueryFilter(x => x.EntityStatus != eEntityStatus.Deleted);

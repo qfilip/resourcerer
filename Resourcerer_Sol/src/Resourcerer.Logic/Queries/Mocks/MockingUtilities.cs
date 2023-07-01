@@ -85,7 +85,7 @@ public class MockingUtilities
     {
         return MakeEntity(() => new Price
         {
-            Value = value,
+            UnitValue = value,
             CompositeId = composite.Id
         });
     }
@@ -94,7 +94,7 @@ public class MockingUtilities
     {
         return MakeEntity(() => new Price
         {
-            Value = value,
+            UnitValue = value,
             ElementId = element.Id
         });
     }

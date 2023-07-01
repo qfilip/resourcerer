@@ -7,7 +7,7 @@ namespace Resourcerer.Logic.Commands.Elements;
 
 public static class CreateElement
 {
-    public class Handler : IRequestHandler<ElementDto, Unit>
+    public class Handler : IRequestHandler<CreateElementDto, Unit>
     {
         private readonly IAppDbContext _appDbContext;
 
@@ -16,32 +16,25 @@ public static class CreateElement
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(ElementDto request)
+        public async Task<HandlerResult<Unit>> Handle(CreateElementDto request)
         {
-            var category = await _appDbContext.Categories
-                .FirstOrDefaultAsync(x => x.Id == request.CategoryId);
-
-            if (category == null)
+            var element = new Element
             {
-                HandlerResult<Unit>.ValidationError("Cannot find supplied category");
-            }
-
-            var unitOfMeasure = await _appDbContext.UnitsOfMeasure
-                .FirstOrDefaultAsync(x => x.Id == request.UnitOfMeasureId);
-
-            if (unitOfMeasure == null)
-            {
-                HandlerResult<Unit>.ValidationError("Cannot find supplied unit of measure");
-            }
-
-            var entity = new Element
-            {
+                Id = Guid.NewGuid(),
                 Name = request.Name,
                 CategoryId = request.CategoryId,
                 UnitOfMeasureId = request.UnitOfMeasureId
             };
 
-            _appDbContext.Elements.Add(entity);
+            var price = new Price
+            {
+                ElementId = element.Id,
+                UnitValue = request.UnitPrice
+            };
+
+            _appDbContext.Elements.Add(element);
+            _appDbContext.Prices.Add(price);
+
             await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());
