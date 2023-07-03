@@ -8,7 +8,7 @@ using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.TestDatabaseMocks;
 using EvMock = Resourcerer.UnitTests.Utilities.TestDatabaseMocks.CarpenterDbEventMocker;
 
-namespace Resourcerer.UnitTests.Logic.HandlerTests.Elements.Queries;
+namespace Resourcerer.UnitTests.Logic.Queries.Elements;
 
 public class GetAllElementsStatisticsTests
 {
@@ -25,7 +25,7 @@ public class GetAllElementsStatisticsTests
     public async Task CorrectlySums_UsageDetails_When_ElementsArePurchased()
     {
         // arrange
-        var (glass, metal) = GetGlassAndMetal(_testDbContext);
+        var (glass, metal) = EvMock.GetGlassAndMetal(_testDbContext);
         var purchases = EvMock.GetTestElementPurchases(glass, metal);
 
         _testDbContext.ElementPurchasedEvents.AddRange(purchases);
@@ -34,7 +34,7 @@ public class GetAllElementsStatisticsTests
         // assert
         var hResult = await _handler.Handle(new Unit());
 
-        Assert.Equal(HandlerResultStatus.Ok, hResult.Status);
+        Assert.Equal(eHandlerResultStatus.Ok, hResult.Status);
 
         var glassStats = hResult.Object!.First(x => x.Name == "glass");
         var metalStats = hResult.Object!.First(x => x.Name == "metal");
@@ -48,27 +48,27 @@ public class GetAllElementsStatisticsTests
             }, new List<ElementSoldEvent>());
 
         Assert.Equivalent(glassStatsExpected, glassStats);
-        Assert.Equivalent(metalStatsExpected, metalStats);        
+        Assert.Equivalent(metalStatsExpected, metalStats);
     }
 
     [Fact]
     public async void CorrectlySumsUsageDetails_When_ElementIsSold()
     {
         // arrange
-        var (glass, metal) = GetGlassAndMetal(_testDbContext);
-        
+        var (glass, metal) = EvMock.GetGlassAndMetal(_testDbContext);
+
         var purchases = EvMock.GetTestElementPurchases(glass, metal);
         var sales = EvMock.GetTestElementSoldEvents(glass, metal);
 
         _testDbContext.ElementPurchasedEvents.AddRange(purchases);
         _testDbContext.ElementSoldEvents.AddRange(sales);
-        
+
         await _testDbContext.BaseSaveChangesAsync();
 
         // assert
         var hResult = await _handler.Handle(new Unit());
 
-        Assert.Equal(HandlerResultStatus.Ok, hResult.Status);
+        Assert.Equal(eHandlerResultStatus.Ok, hResult.Status);
 
         var glassStats = hResult.Object!.First(x => x.Name == "glass");
         var metalStats = hResult.Object!.First(x => x.Name == "metal");
@@ -91,20 +91,20 @@ public class GetAllElementsStatisticsTests
         var window = _testDbContext.Composites.First(x => x.Name == "window");
         var boat = _testDbContext.Composites.First(x => x.Name == "boat");
 
-        var (glass, metal) = GetGlassAndMetal(_testDbContext);
-        
+        var (glass, metal) = EvMock.GetGlassAndMetal(_testDbContext);
+
         var purchases = EvMock.GetTestElementPurchases(glass, metal);
         var compositeSoldEvents = EvMock.GetTestCompositeSoldEvents(window, boat);
 
         _testDbContext.ElementPurchasedEvents.AddRange(purchases);
         _testDbContext.CompositeSoldEvents.AddRange(compositeSoldEvents);
-        
+
         await _testDbContext.BaseSaveChangesAsync();
 
         // assert
         var hResult = await _handler.Handle(new Unit());
 
-        Assert.Equal(HandlerResultStatus.Ok, hResult.Status);
+        Assert.Equal(eHandlerResultStatus.Ok, hResult.Status);
 
         var glassStats = hResult.Object!.First(x => x.Name == "glass");
         var metalStats = hResult.Object!.First(x => x.Name == "metal");
@@ -127,8 +127,8 @@ public class GetAllElementsStatisticsTests
         var window = _testDbContext.Composites.First(x => x.Name == "window");
         var boat = _testDbContext.Composites.First(x => x.Name == "boat");
 
-        var (glass, metal) = GetGlassAndMetal(_testDbContext);
-        
+        var (glass, metal) = EvMock.GetGlassAndMetal(_testDbContext);
+
         var purchases = EvMock.GetTestElementPurchases(glass, metal);
         var sales = EvMock.GetTestElementSoldEvents(glass, metal);
         var compositeSoldEvents = EvMock.GetTestCompositeSoldEvents(window, boat);
@@ -142,7 +142,7 @@ public class GetAllElementsStatisticsTests
         // assert
         var hResult = await _handler.Handle(new Unit());
 
-        Assert.Equal(HandlerResultStatus.Ok, hResult.Status);
+        Assert.Equal(eHandlerResultStatus.Ok, hResult.Status);
 
         var glassStats = hResult.Object!.First(x => x.Name == "glass");
         var metalStats = hResult.Object!.First(x => x.Name == "metal");
@@ -192,21 +192,9 @@ public class GetAllElementsStatisticsTests
 
         var glassExpected = Compute(glass.E, glass.UnitsUsedInComposites, glass.UsedInComposites);
         var metalExpected = Compute(metal.E, metal.UnitsUsedInComposites, metal.UsedInComposites);
-        
+
         return (glassExpected, metalExpected);
     }
 
-    private static (Element glass, Element metal) GetGlassAndMetal(IAppDbContext testDbContext)
-    {
-        var drinks = testDbContext.Elements
-            .Where(x => x.Name == "glass" || x.Name == "metal")
-            .Include(x => x.UnitOfMeasure)
-            .Include(x => x.Prices)
-            .ToList();
-
-        var glass = drinks.First(x => x.Name == "glass");
-        var metal = drinks.First(x => x.Name == "metal");
-
-        return (glass, metal);
-    }
+    
 }

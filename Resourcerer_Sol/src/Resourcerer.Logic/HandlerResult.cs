@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.Logic;
 
-public enum HandlerResultStatus
+public enum eHandlerResultStatus
 {
     Ok, NotFound, ValidationError
 }
@@ -14,32 +14,32 @@ public class HandlerResult<T>
 
     public static HandlerResult<T> NotFound(string message)
     {
-        return new HandlerResult<T>(HandlerResultStatus.NotFound, new string[] { message });
+        return new HandlerResult<T>(eHandlerResultStatus.NotFound, new string[] { message });
     }
 
     public static HandlerResult<T> NotFound()
     {
-        return new HandlerResult<T>(HandlerResultStatus.NotFound, Array.Empty<string>());
+        return new HandlerResult<T>(eHandlerResultStatus.NotFound, Array.Empty<string>());
     }
 
     public static HandlerResult<T> ValidationError(string error)
     {
-        return new HandlerResult<T>(HandlerResultStatus.ValidationError, new string[] { error });
+        return new HandlerResult<T>(eHandlerResultStatus.ValidationError, new string[] { error });
     }
 
     public static HandlerResult<T> ValidationError(string[] errors)
     {
-        return new HandlerResult<T>(HandlerResultStatus.ValidationError, errors);
+        return new HandlerResult<T>(eHandlerResultStatus.ValidationError, errors);
     }
 
     private HandlerResult(T? obj)
     {
         Object = obj;
-        Status = HandlerResultStatus.Ok;
+        Status = eHandlerResultStatus.Ok;
         Errors = Array.Empty<string>();
     }
 
-    private HandlerResult(HandlerResultStatus status, string[] errors)
+    private HandlerResult(eHandlerResultStatus status, string[] errors)
     {
         Status = status;
         Errors = errors;
@@ -47,7 +47,7 @@ public class HandlerResult<T>
 
     public T? Object { get; private set; }
     public string[] Errors { get; private set; }
-    public HandlerResultStatus Status { get; private set; }
+    public eHandlerResultStatus Status { get; private set; }
 
     public HandlerResult<TTarget> MapSelfTo<TTarget>()
     {

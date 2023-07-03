@@ -1,4 +1,6 @@
-﻿using Resourcerer.DataAccess.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Contexts;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
 
 namespace Resourcerer.UnitTests.Utilities.TestDatabaseMocks;
@@ -85,5 +87,31 @@ public class CarpenterDbEventMocker
                 TotalDiscountPercent = 10
             }
         };
+    }
+
+    public static (Element glass, Element metal) GetGlassAndMetal(IAppDbContext testDbContext)
+    {
+        var elements = testDbContext.Elements
+            .Where(x => x.Name == "glass" || x.Name == "metal")
+            .Include(x => x.UnitOfMeasure)
+            .Include(x => x.Prices)
+            .ToList();
+
+        var glass = elements.First(x => x.Name == "glass");
+        var metal = elements.First(x => x.Name == "metal");
+
+        return (glass, metal);
+    }
+    public static (Composite window, Composite boat) GetWindowAndBoat(IAppDbContext testDbContext)
+    {
+        var composites = testDbContext.Composites
+            .Where(x => x.Name == "window" || x.Name == "boat")
+            .Include(x => x.Prices)
+            .ToList();
+
+        var window = composites.First(x => x.Name == "window");
+        var boat = composites.First(x => x.Name == "boat");
+
+        return (window, boat);
     }
 }

@@ -29,7 +29,7 @@ public class Showcase
         var handler = new GetAllElementsStatistics.Handler(_appDbContext);
         var result = await handler.Handle(new Unit());
 
-        Assert.Equal(HandlerResultStatus.Ok, result.Status);
+        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
 
         Assert.Equal(10, result.Object![0].UnitsPurchased);
         Assert.Equal(10d, result.Object![0].PurchaseCosts);
@@ -70,7 +70,7 @@ public class Showcase
         var handler = new GetAllElementsStatistics.Handler(_appDbContext);
         var result = await handler.Handle(new Unit());
 
-        Assert.Equal(HandlerResultStatus.Ok, result.Status);
+        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
 
         Assert.Equal(6, result.Object![0].UnitsPurchased);
         Assert.Equal(6d, result.Object![0].PurchaseCosts);
@@ -91,7 +91,7 @@ public class Showcase
         var handler = new GetAllElementsStatistics.Handler(_appDbContext);
         var result = await handler.Handle(new Unit());
 
-        Assert.Equal(HandlerResultStatus.Ok, result.Status);
+        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
 
         Assert.Equal(6, result.Object![0].UnitsPurchased);
         Assert.Equal(6d, result.Object![0].PurchaseCosts);

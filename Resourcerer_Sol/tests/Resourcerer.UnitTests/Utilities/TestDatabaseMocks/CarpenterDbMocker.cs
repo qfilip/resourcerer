@@ -39,7 +39,6 @@ public class CarpenterDbMocker : DbMockingFuncs
 
         MarkDeleted(glassPriceOld, metalPriceOld, windowPriceOld, boatPriceOld);
 
-
         var excerptData = new List<(Composite, List<(Element, double)>)>
         {
             (window, new List<(Element, double)>()

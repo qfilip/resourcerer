@@ -25,10 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Logic\HandlerTests\Mocks\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\src\Resourcerer.Api\Resourcerer.Api.csproj" />
     <ProjectReference Include="..\..\src\Resourcerer.DataAccess\Resourcerer.DataAccess.csproj" />
     <ProjectReference Include="..\..\src\Resourcerer.Logic\Resourcerer.Logic.csproj" />

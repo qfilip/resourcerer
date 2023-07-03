@@ -58,10 +58,10 @@ public class Pipeline
     {
         return (handlerResult.Status, customOkResultMapper) switch
         {
-            (HandlerResultStatus.Ok, null) => Results.Ok(handlerResult.Object),
-            (HandlerResultStatus.Ok, _) => customOkResultMapper.Invoke(handlerResult.Object!),
-            (HandlerResultStatus.NotFound, _) => Results.NotFound(handlerResult.Object),
-            (HandlerResultStatus.ValidationError, _) => Results.BadRequest(handlerResult.Errors),
+            (eHandlerResultStatus.Ok, null) => Results.Ok(handlerResult.Object),
+            (eHandlerResultStatus.Ok, _) => customOkResultMapper.Invoke(handlerResult.Object!),
+            (eHandlerResultStatus.NotFound, _) => Results.NotFound(handlerResult.Object),
+            (eHandlerResultStatus.ValidationError, _) => Results.BadRequest(handlerResult.Errors),
             _ =>
                 throw new NotImplementedException($"Cannot handle status of {handlerResult.Status}")
         };

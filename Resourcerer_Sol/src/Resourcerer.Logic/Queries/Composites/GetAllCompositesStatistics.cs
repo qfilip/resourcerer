@@ -34,8 +34,7 @@ public static class GetAllCompositesStatistics
                     .ToArray();
 
                 var makingCosts = c.Excerpts
-                    .SelectMany(x => x.Element!.Prices)
-                    .Sum(x => x.UnitValue);
+                    .Sum(x => x.Element!.Prices.Single().UnitValue * x.Quantity);
 
                 return new CompositeStatisticsDto
                 {
