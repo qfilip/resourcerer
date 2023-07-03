@@ -5,7 +5,7 @@ using Resourcerer.Dtos.Elements;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Queries.Elements;
 using Resourcerer.UnitTests.Utilities;
-using System.Diagnostics.Metrics;
+using Resourcerer.UnitTests.Utilities.TestDatabaseMocks;
 
 namespace Resourcerer.UnitTests.Logic.HandlerTests.Elements.Queries;
 
@@ -16,7 +16,7 @@ public class GetAllElementsStatisticsTests
 
     public GetAllElementsStatisticsTests()
     {
-        _testDbContext = new ContextCreator(seedEvents: false).GetTestDbContext();
+        _testDbContext = new ContextCreator(CarpenterDbMocker.SeedAsync).GetTestDbContext();
         _handler = new GetAllElementsStatistics.Handler(_testDbContext);
     }
 

@@ -2,9 +2,9 @@
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Logic.Queries.Mocks;
 
-namespace Resourcerer.UnitTests.Utilities;
+namespace Resourcerer.UnitTests.Utilities.TestDatabaseMocks;
 
-public class CarpenterDbMock : MockingUtilities
+public class CarpenterDbMocker : DbMockingFuncs
 {
     public static async Task SeedAsync(IAppDbContext context)
     {

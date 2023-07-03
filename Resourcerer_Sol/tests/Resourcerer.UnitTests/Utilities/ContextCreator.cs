@@ -8,7 +8,7 @@ public class ContextCreator: IDisposable
 {
     private readonly SqliteConnection _connection;
     private readonly DbContextOptions<AppDbContext> _options;
-    public ContextCreator(bool seedEvents)
+    public ContextCreator(Func<IAppDbContext, Task> seeder)
     {
         _connection = new SqliteConnection("Filename=:memory:");
         _connection.Open();
@@ -20,17 +20,12 @@ public class ContextCreator: IDisposable
         var context = new AppDbContext(_options);
         if (context.Database.EnsureCreated())
         {
-            SeedMockData(context, seedEvents);
+            seeder(context).GetAwaiter().GetResult();
         }
     }
     public IAppDbContext GetTestDbContext()
     {
         return new AppDbContext(_options);
-    }
-
-    private void SeedMockData(AppDbContext context, bool seedEvents = false)
-    {
-        CarpenterDbMock.SeedAsync(context).GetAwaiter().GetResult();
     }
 
     public void Dispose()
