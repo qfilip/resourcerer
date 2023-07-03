@@ -1,30 +1,21 @@
 ﻿using Resourcerer.Api.Services;
-using Resourcerer.Logic;
+using Resourcerer.DataAccess.Mocks;
 using Resourcerer.Logic.Commands.Mocks;
-using Resourcerer.Logic.Queries.Mocks;
 
 namespace Resourcerer.Api.Endpoints.V1_0.Mocks;
 
 public class SeedDatabaseEndpoint
 {
     public static async Task<IResult> Action(
+        DatabaseData dto,
         Pipeline pipeline,
-        GetMockedDatabaseData.Handler mockHandler,
         SeedMockData.Handler seedHandler)
     {
-        var dbData = await mockHandler.Handle(new Unit());
-        if (dbData.Object != null)
-        {
-            return await pipeline.Pipe(seedHandler, dbData.Object);
-        }
-        else
-        {
-            return Results.BadRequest();
-        }
+        return await pipeline.Pipe(seedHandler, dto);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        group.MapGet("/seed", Action);
+        group.MapPost("/seed", Action);
     }
 }
