@@ -61,6 +61,8 @@ public static class GetAllElementsStatistics
                 var purchaseCosts = x.ElementPurchasedEvents
                     .Sum(epe => Discount.Compute(epe.UnitPrice * epe.UnitsBought, epe.TotalDiscountPercent));
 
+                var averagePurchaseDiscount = x.ElementPurchasedEvents.Average(epe => epe.TotalDiscountPercent);
+
                 var elementCompositeIds = idLookup
                     .Where(il => il.ElementId == x.Id)
                     .SelectMany(i => i.ElementCompositeIds)
@@ -70,6 +72,8 @@ public static class GetAllElementsStatistics
 
                 var salesEarnings = x.ElementSoldEvents
                 .Sum(ese => Discount.Compute(ese.UnitsSold * ese.UnitPrice, ese.TotalDiscountPercent));
+
+                var averageSaleDiscount = x.ElementSoldEvents.Average(ese => ese.TotalDiscountPercent);
 
                 var unitsUsedInComposites = x.Excerpts
                     .Select(e => {
@@ -89,8 +93,10 @@ public static class GetAllElementsStatistics
                     Unit = x.UnitOfMeasure!.Name,
                     UnitsPurchased = unitsPurchased,
                     PurchaseCosts = purchaseCosts,
+                    AveragePurchaseDiscount = averagePurchaseDiscount,
                     UnitsSold = unitsSoldRaw,
                     SalesEarning = salesEarnings,
+                    AverageSaleDiscount = averageSaleDiscount,
                     UnitsUsedInComposites = unitsUsedInComposites,
                     UnitsInStock = unitsPurchased - unitsUsedInComposites - unitsSoldRaw
                 };

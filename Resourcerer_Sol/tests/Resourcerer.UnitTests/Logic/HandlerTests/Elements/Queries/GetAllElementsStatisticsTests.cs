@@ -17,7 +17,7 @@ public class GetAllElementsStatisticsTests
 
     public GetAllElementsStatisticsTests()
     {
-        _testDbContext = new ContextCreator(CarpenterDbMocker.SeedAsync).GetTestDbContext();
+        _testDbContext = new ContextCreator(CarpenterDbMocker.GetSeed).GetTestDbContext();
         _handler = new GetAllElementsStatistics.Handler(_testDbContext);
     }
 

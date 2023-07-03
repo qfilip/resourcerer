@@ -6,7 +6,7 @@ public class DatabaseData
     public IEnumerable<AppUser>? AppUsers { get; set; }
     public IEnumerable<Category>? Categories { get; set; }
     public IEnumerable<Excerpt>? Excerpts { get; set; }
-    public IEnumerable<UnitOfMeasure>? UnitOfMeasures { get; set; }
+    public IEnumerable<UnitOfMeasure>? UnitsOfMeasure { get; set; }
     public IEnumerable<Price>? Prices { get; set; }
 
     public IEnumerable<Composite>? Composites { get; set; }

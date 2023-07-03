@@ -1,12 +1,12 @@
-﻿using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Mocks;
 using Resourcerer.Logic.Queries.Mocks;
 
 namespace Resourcerer.UnitTests.Utilities.TestDatabaseMocks;
 
 public class CarpenterDbMocker : DbMockingFuncs
 {
-    public static async Task SeedAsync(IAppDbContext context)
+    public static DatabaseData GetSeed()
     {
         // users
         var admin = MakeUser("admin", "admin", true);
@@ -49,18 +49,18 @@ public class CarpenterDbMocker : DbMockingFuncs
             .Select(x => MakeExcerpts(x.Item1, x.Item2))
             .SelectMany(x => x);
 
-
-        context.AppUsers.Add(admin);
-        context.Categories.AddRange(material, product);
-        context.Excerpts.AddRange(excerpts);
-        context.UnitsOfMeasure.AddRange(uom);
-        context.Prices.AddRange(glassPrice, metalPrice, windowPrice, boatPrice);
-        context.Composites.AddRange(window, boat);
-        context.CompositeSoldEvents.AddRange();
-        context.Elements.AddRange(glass, metal);
-        context.ElementSoldEvents.AddRange();
-        context.ElementPurchasedEvents.AddRange();
-
-        await context.SaveChangesAsync();
+        return new DatabaseData
+        {
+            AppUsers = new[] { admin },
+            Categories = new[] { material, product },
+            Excerpts = excerpts,
+            UnitsOfMeasure = new[] { uom },
+            Prices = new[] { glassPrice, metalPrice, windowPrice, boatPrice },
+            Composites = new[] { window, boat },
+            CompositeSoldEvents = Array.Empty<CompositeSoldEvent>(),
+            Elements = new[] { glass, metal },
+            ElementSoldEvents = Array.Empty<ElementSoldEvent>(),
+            ElementPurchasedEvents = Array.Empty<ElementPurchasedEvent>()
+        };
     }
 }

@@ -1,12 +1,12 @@
-﻿using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Mocks;
 using Resourcerer.Logic.Queries.Mocks;
 
 namespace Resourcerer.UnitTests.Utilities.TestDatabaseMocks;
 
 public class CocktailDbMocker : DbMockingFuncs
 {
-    public static async Task SeedAsync(IAppDbContext context)
+    public static DatabaseData GetSeed()
     {
         // users
         var adminUser = MakeUser("admin", "admin", true);
@@ -71,17 +71,18 @@ public class CocktailDbMocker : DbMockingFuncs
             .Select(x => MakeExcerpts(x.Item1, x.Item2))
             .SelectMany(x => x);
 
-        context.AppUsers.AddRange(adminUser, loserUser);
-        context.Categories.AddRange(bar, spirits, ales, waters, veggies, cocktails, tikiCocktails);
-        context.Excerpts.AddRange(excerpts);
-        context.UnitsOfMeasure.AddRange(liter, kg);
-        context.Prices.AddRange(vodkaPrice, rumPrice, ginPrice, gingerAlePrice, sparklingWaterPrice, limePrice, moscowMulePrice, darkNstormyPrice, ginFizzPrice);
-        context.Composites.AddRange(moscowMule, darkNstormy, ginFizz);
-        context.CompositeSoldEvents.AddRange();
-        context.Elements.AddRange(vodka, rum, gin, gingerAle, sparklingWater, lime);
-        context.ElementSoldEvents.AddRange();
-        context.ElementPurchasedEvents.AddRange();
-
-        await context.SaveChangesAsync();
+        return new DatabaseData
+        {
+            AppUsers = new[] { adminUser, loserUser },
+            Categories = new[] { bar, spirits, ales, waters, veggies, cocktails, tikiCocktails },
+            Excerpts = excerpts,
+            UnitsOfMeasure = new[] { liter, kg },
+            Prices = new[] { vodkaPrice, rumPrice, ginPrice, gingerAlePrice, sparklingWaterPrice, limePrice, moscowMulePrice, darkNstormyPrice, ginFizzPrice },
+            Composites = new[] { moscowMule, darkNstormy, ginFizz },
+            CompositeSoldEvents = Array.Empty<CompositeSoldEvent>(),
+            Elements = new[] { vodka, rum, gin, gingerAle, sparklingWater, lime },
+            ElementSoldEvents = Array.Empty<ElementSoldEvent>(),
+            ElementPurchasedEvents = Array.Empty<ElementPurchasedEvent>()
+        };
     }
 }

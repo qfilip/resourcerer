@@ -17,7 +17,7 @@ public static class SeedMockData
         {
             _dbContext.AppUsers.AddRange(dbData.AppUsers!);
             _dbContext.Categories.AddRange(dbData.Categories!);
-            _dbContext.UnitsOfMeasure.AddRange(dbData.UnitOfMeasures!);
+            _dbContext.UnitsOfMeasure.AddRange(dbData.UnitsOfMeasure!);
             _dbContext.Excerpts.AddRange(dbData.Excerpts!);
             _dbContext.Prices.AddRange(dbData.Prices!);
 
