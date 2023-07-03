@@ -1,10 +1,10 @@
 ﻿using Resourcerer.Api.Endpoints.V1_0.Categories;
 using Resourcerer.Api.Endpoints.V1_0.Composites;
+using Resourcerer.Api.Endpoints.V1_0.ElementPurchaseEvents;
 using Resourcerer.Api.Endpoints.V1_0.Elements;
 using Resourcerer.Api.Endpoints.V1_0.Mocks;
 using Resourcerer.Api.Endpoints.V1_0.UnitsOfMeasure;
 using Resourcerer.Api.Endpoints.V1_0.Users;
-using Resourcerer.Logic.Queries.Composites;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
 
@@ -15,6 +15,7 @@ public class EndpointMapperV1_0
     {
         MapCategories(app);
         MapComposites(app);
+        MapElementPurchasedEvents(app);
         MapElements(app);
         MapMocks(app);
         MapUnitsOfMeasure(app);
@@ -36,6 +37,13 @@ public class EndpointMapperV1_0
         ChangeCompositePriceEndpoint.MapToGroup(g);
         CreateCompositeEndpoint.MapToGroup(g);
         GetAllCompositesStatisticsEndpoint.MapToGroup(g);
+    }
+
+    private static void MapElementPurchasedEvents(WebApplication app)
+    {
+        var g = EndpointMapper.GetGroup(app, Version, "ElementPurchasedEvents");
+
+        CreateElementPurchaseEndpoint.MapToGroup(g);
     }
 
     private static void MapElements(WebApplication app)
