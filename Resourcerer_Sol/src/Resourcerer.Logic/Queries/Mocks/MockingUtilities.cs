@@ -78,7 +78,7 @@ public class MockingUtilities
             Categories = categories,
             Excerpts = excerpts,
             UnitOfMeasures = uoms,
-            OldPrices = prices,
+            Prices = prices,
 
             Composites = composites,
             CompositeSoldEvents = Array.Empty<CompositeSoldEvent>(),

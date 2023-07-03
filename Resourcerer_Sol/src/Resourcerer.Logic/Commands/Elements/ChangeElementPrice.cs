@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos.Prices;
 
 namespace Resourcerer.Logic.Commands.Elements;
@@ -16,19 +17,26 @@ public class ChangeElementPrice
         }
 
         public async Task<HandlerResult<Unit>> Handle(ChangePriceDto request)
-        {
-            var element = await _appDbContext.Elements
-                .Include(x => x.Prices)
-                .FirstOrDefaultAsync(x => x.Id == request.EntityId);
+        {   
+            var prices = await _appDbContext.Prices
+                .Where(x => x.ElementId == request.EntityId)
+                .ToListAsync();
 
-            if (element == null)
+            if(!prices.Any())
             {
-                return HandlerResult<Unit>.NotFound($"Entity with id {request.EntityId} not found");
+                return HandlerResult<Unit>.NotFound($"Price for entity with id {request.EntityId} not found");
             }
+
+            if(prices.Count > 1)
+            {
+                // report error
+            }
+
+            prices.ForEach(x => x.EntityStatus = eEntityStatus.Deleted);
 
             var price = new Price
             {
-                ElementId = element.Id,
+                ElementId = request.EntityId,
                 UnitValue = request.UnitPrice
             };
 

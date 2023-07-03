@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos.Prices;
 
 namespace Resourcerer.Logic.Commands.Composites;
@@ -17,17 +18,25 @@ public static class ChangeCompositePrice
 
         public async Task<HandlerResult<Unit>> Handle(ChangePriceDto request)
         {
-            var composite = await _appDbContext.Composites
-                .FirstOrDefaultAsync(x => x.Id == request.EntityId);
+            var prices = await _appDbContext.Prices
+                .Where(x => x.CompositeId == request.EntityId)
+                .ToListAsync();
 
-            if(composite == null)
+            if (!prices.Any())
             {
-                return HandlerResult<Unit>.NotFound($"Entity with id {request.EntityId} not found");
+                return HandlerResult<Unit>.NotFound($"Price for entity with id {request.EntityId} not found");
             }
+
+            if (prices.Count > 1)
+            {
+                // report error
+            }
+
+            prices.ForEach(x => x.EntityStatus = eEntityStatus.Deleted);
 
             var price = new Price
             {
-                CompositeId = composite.Id,
+                CompositeId = request.EntityId,
                 UnitValue = request.UnitPrice
             };
 
