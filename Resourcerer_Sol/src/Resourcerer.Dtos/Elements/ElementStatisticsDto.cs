@@ -12,5 +12,6 @@ public class ElementStatisticsDto : BaseDto
     public double SalesEarning { get; set; }
     public double AverageSaleDiscount { get; set; }
     public double UnitsUsedInComposites { get; set; }
+    public int UsedInComposites { get; set; }
     public double UnitsInStock { get; set; }
 }

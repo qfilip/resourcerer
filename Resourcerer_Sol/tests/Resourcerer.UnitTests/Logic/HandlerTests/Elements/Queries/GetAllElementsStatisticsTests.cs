@@ -40,8 +40,13 @@ public class GetAllElementsStatisticsTests
         var glassStats = hResult.Object!.First(x => x.Name == "glass");
         var metalStats = hResult.Object!.First(x => x.Name == "metal");
 
+
         var (glassStatsExpected, metalStatsExpected) =
-            GetExpectedValues(glass, 0, metal, 0, new List<ElementSoldEvent>());
+            GetExpectedValues(new List<(Element E, double UnitsUsedInComposites, int UsedInComposites)>
+            {
+                (glass, 0d, 2),
+                (metal, 0d, 1)
+            }, new List<ElementSoldEvent>());
 
         Assert.Equivalent(glassStatsExpected, glassStats);
         Assert.Equivalent(metalStatsExpected, metalStats);        
@@ -70,7 +75,11 @@ public class GetAllElementsStatisticsTests
         var metalStats = hResult.Object!.First(x => x.Name == "metal");
 
         var (glassStatsExpected, metalStatsExpected) =
-            GetExpectedValues(glass, 0, metal, 0, sales);
+            GetExpectedValues(new List<(Element E, double UnitsUsedInComposites, int UsedInComposites)>
+            {
+                (glass, 0d, 2),
+                (metal, 0d, 1)
+            }, sales);
 
         Assert.Equivalent(glassStatsExpected, glassStats);
         Assert.Equivalent(metalStatsExpected, metalStats);
@@ -102,7 +111,11 @@ public class GetAllElementsStatisticsTests
         var metalStats = hResult.Object!.First(x => x.Name == "metal");
 
         var (glassStatsExpected, metalStatsExpected) =
-            GetExpectedValues(glass, 12, metal, 20, new List<ElementSoldEvent>());
+            GetExpectedValues(new List<(Element E, double UnitsUsedInComposites, int UsedInComposites)>
+            {
+                (glass, 12d, 2),
+                (metal, 20d, 1)
+            }, new List<ElementSoldEvent>());
 
         Assert.Equivalent(glassStatsExpected, glassStats);
         Assert.Equivalent(metalStatsExpected, metalStats);
@@ -136,21 +149,27 @@ public class GetAllElementsStatisticsTests
         var metalStats = hResult.Object!.First(x => x.Name == "metal");
 
         var (glassStatsExpected, metalStatsExpected) =
-            GetExpectedValues(glass, 12, metal, 20, sales);
+            GetExpectedValues(new List<(Element E, double UnitsUsedInComposites, int UsedInComposites)>
+            {
+                (glass, 12d, 2),
+                (metal, 20d, 1)
+            }, sales);
 
         Assert.Equivalent(glassStatsExpected, glassStats);
         Assert.Equivalent(metalStatsExpected, metalStats);
     }
 
     private static (ElementStatisticsDto glassExpected, ElementStatisticsDto metalExpected)
-        GetExpectedValues(Element glass, int glassUsedInComposites, Element metal, int metalUsedInComposites, List<ElementSoldEvent> soldEvents)
+        GetExpectedValues(List<(Element E, double UnitsUsedInComposites, int UsedInComposites)> elementData, List<ElementSoldEvent> soldEvents)
     {
-        var purchaseEvents = GetTestElementPurchases(glass, metal);
+        var glass = elementData.Single(x => x.E.Name == "glass");
+        var metal = elementData.Single(x => x.E.Name == "metal");
+        var purchaseEvents = GetTestElementPurchases(glass.E, metal.E);
 
         double SafeAverage<T>(List<T> xs, Func<T, double> selector) =>
             xs.Count > 0 ? xs.Average(selector) : 0d;
 
-        ElementStatisticsDto Compute(Element el, int unitsUsedInComposites)
+        ElementStatisticsDto Compute(Element el, double unitsUsedInComposites, int usedInComposites)
         {
             var xp = purchaseEvents.Where(e => e.ElementId == el.Id).ToList();
             var xs = soldEvents.Where(e => e.ElementId == el.Id).ToList();
@@ -161,6 +180,7 @@ public class GetAllElementsStatisticsTests
                 Name = el.Name,
                 Unit = el.UnitOfMeasure!.Name,
                 UnitsUsedInComposites = unitsUsedInComposites,
+                UsedInComposites = usedInComposites,
                 UnitsInStock = xp.Sum(p => p.UnitsBought) - xs.Sum(s => s.UnitsSold) - unitsUsedInComposites,
                 UnitsPurchased = xp.Sum(p => p.UnitsBought),
                 PurchaseCosts = xp.Sum(p => Discount.Compute(p.UnitsBought * p.UnitPrice, p.TotalDiscountPercent)),
@@ -171,8 +191,8 @@ public class GetAllElementsStatisticsTests
             };
         }
 
-        var glassExpected = Compute(glass, glassUsedInComposites);
-        var metalExpected = Compute(metal, metalUsedInComposites);
+        var glassExpected = Compute(glass.E, glass.UnitsUsedInComposites, glass.UsedInComposites);
+        var metalExpected = Compute(metal.E, metal.UnitsUsedInComposites, metal.UsedInComposites);
         
         return (glassExpected, metalExpected);
     }

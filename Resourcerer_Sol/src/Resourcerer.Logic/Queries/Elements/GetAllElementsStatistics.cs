@@ -102,6 +102,8 @@ public static class GetAllElementsStatistics
                     })
                     .Sum(x => x.ElementQuantity);
 
+                var usedInComposites = x.Excerpts.DistinctBy(e => e.CompositeId).Count();
+
                 return new ElementStatisticsDto
                 {
                     ElementId = x.Id,
@@ -114,6 +116,7 @@ public static class GetAllElementsStatistics
                     SalesEarning = salesEarnings,
                     AverageSaleDiscount = averageSaleDiscount,
                     UnitsUsedInComposites = unitsUsedInComposites,
+                    UsedInComposites = usedInComposites,
                     UnitsInStock = unitsPurchased - unitsUsedInComposites - unitsSoldRaw
                 };
             })
