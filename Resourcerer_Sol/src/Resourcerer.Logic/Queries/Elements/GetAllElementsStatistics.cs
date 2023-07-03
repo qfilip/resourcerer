@@ -2,7 +2,7 @@
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Elements;
-using Resourcerer.Utilities.Math;
+using Resourcerer.Utilities;
 
 namespace Resourcerer.Logic.Queries.Elements;
 public static class GetAllElementsStatistics
@@ -62,21 +62,21 @@ public static class GetAllElementsStatistics
                 {
                     Purchases = elementsPurchases
                         .Where(e => e.ElementId == x.Id)
-                        .ToArray() ?? Array.Empty<ElementPurchasedEvent>(),
+                        .ToArray(),
 
                     Sales = elementsSales
                         .Where(e => e.ElementId == x.Id)
-                        .ToArray() ?? Array.Empty<ElementSoldEvent>()
+                        .ToArray()
                 };
 
                 var unitsPurchased = events.Purchases
                     .Sum(epe => epe.UnitsBought);
 
                 var purchaseCosts = events.Purchases
-                    .Sum(epe => Discount.Compute(epe.UnitPrice * epe.UnitsBought, epe.TotalDiscountPercent));
+                    .Sum(epe => Maths.Discount(epe.UnitPrice * epe.UnitsBought, epe.TotalDiscountPercent));
 
-                var averagePurchaseDiscount = events.Purchases.Length > 0 ?
-                    events.Purchases.Average(epe => epe.TotalDiscountPercent) : 0d;
+                var averagePurchaseDiscount =
+                    Maths.SafeAverage(events.Purchases, x => x.TotalDiscountPercent);
 
                 var elementCompositeIds = idLookup
                     .Where(il => il.ElementId == x.Id)
@@ -86,10 +86,9 @@ public static class GetAllElementsStatistics
                 var unitsSoldRaw = events.Sales.Sum(ese => ese.UnitsSold);
 
                 var salesEarnings = events.Sales
-                .Sum(ese => Discount.Compute(ese.UnitsSold * ese.UnitPrice, ese.TotalDiscountPercent));
+                .Sum(ese => Maths.Discount(ese.UnitsSold * ese.UnitPrice, ese.TotalDiscountPercent));
 
-                var averageSaleDiscount = events.Sales.Length > 0 ?
-                    events.Sales.Average(ese => ese.TotalDiscountPercent) : 0d;
+                var averageSaleDiscount = Maths.SafeAverage(events.Sales, e => e.TotalDiscountPercent);
 
                 var unitsUsedInComposites = x.Excerpts
                     .Select(e => {

@@ -7,7 +7,6 @@ using Resourcerer.Logic;
 using Resourcerer.Logic.Queries.Elements;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.TestDatabaseMocks;
-using Resourcerer.Utilities.Math;
 
 namespace Resourcerer.UnitTests.Logic.HandlerTests.Elements.Queries;
 
@@ -183,10 +182,10 @@ public class GetAllElementsStatisticsTests
                 UsedInComposites = usedInComposites,
                 UnitsInStock = xp.Sum(p => p.UnitsBought) - xs.Sum(s => s.UnitsSold) - unitsUsedInComposites,
                 UnitsPurchased = xp.Sum(p => p.UnitsBought),
-                PurchaseCosts = xp.Sum(p => Discount.Compute(p.UnitsBought * p.UnitPrice, p.TotalDiscountPercent)),
+                PurchaseCosts = xp.Sum(p => Resourcerer.Utilities.Maths.Discount(p.UnitsBought * p.UnitPrice, p.TotalDiscountPercent)),
                 AveragePurchaseDiscount = SafeAverage(xp, p => p.TotalDiscountPercent),
                 UnitsSold = xs.Sum(s => s.UnitsSold),
-                SalesEarning = xs.Sum(s => Discount.Compute(s.UnitsSold * s.UnitPrice, s.TotalDiscountPercent)),
+                SalesEarning = xs.Sum(s => Resourcerer.Utilities.Maths.Discount(s.UnitsSold * s.UnitPrice, s.TotalDiscountPercent)),
                 AverageSaleDiscount = SafeAverage(xs, s => s.TotalDiscountPercent)
             };
         }
