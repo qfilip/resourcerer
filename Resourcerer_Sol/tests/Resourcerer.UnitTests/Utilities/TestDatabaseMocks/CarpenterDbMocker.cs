@@ -30,12 +30,12 @@ public class CarpenterDbMocker : DbMockingFuncs
         var glassPrice = MakePrice(5, glass);
         var metalPrice = MakePrice(10, metal);
         var windowPrice = MakePrice(10, window);
-        var boatPrice = MakePrice(20, boat);
+        var boatPrice = MakePrice(150, boat);
 
         var glassPriceOld = MakePrice(7, glass);
         var metalPriceOld = MakePrice(12, metal);
         var windowPriceOld = MakePrice(12, window);
-        var boatPriceOld = MakePrice(22, boat);
+        var boatPriceOld = MakePrice(152, boat);
 
         MarkDeleted(glassPriceOld, metalPriceOld, windowPriceOld, boatPriceOld);
 
