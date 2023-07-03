@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos.Elements;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Queries.Elements;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.TestDatabaseMocks;
+using EvMock = Resourcerer.UnitTests.Utilities.TestDatabaseMocks.CarpenterDbEventMocker;
 
 namespace Resourcerer.UnitTests.Logic.HandlerTests.Elements.Queries;
 
@@ -26,7 +26,7 @@ public class GetAllElementsStatisticsTests
     {
         // arrange
         var (glass, metal) = GetGlassAndMetal(_testDbContext);
-        var purchases = GetTestElementPurchases(glass, metal);
+        var purchases = EvMock.GetTestElementPurchases(glass, metal);
 
         _testDbContext.ElementPurchasedEvents.AddRange(purchases);
         await _testDbContext.BaseSaveChangesAsync();
@@ -57,8 +57,8 @@ public class GetAllElementsStatisticsTests
         // arrange
         var (glass, metal) = GetGlassAndMetal(_testDbContext);
         
-        var purchases = GetTestElementPurchases(glass, metal);
-        var sales = GetTestElementSoldEvents(glass, metal);
+        var purchases = EvMock.GetTestElementPurchases(glass, metal);
+        var sales = EvMock.GetTestElementSoldEvents(glass, metal);
 
         _testDbContext.ElementPurchasedEvents.AddRange(purchases);
         _testDbContext.ElementSoldEvents.AddRange(sales);
@@ -93,8 +93,8 @@ public class GetAllElementsStatisticsTests
 
         var (glass, metal) = GetGlassAndMetal(_testDbContext);
         
-        var purchases = GetTestElementPurchases(glass, metal);
-        var compositeSoldEvents = GetTestCompositeSoldEvents(window, boat);
+        var purchases = EvMock.GetTestElementPurchases(glass, metal);
+        var compositeSoldEvents = EvMock.GetTestCompositeSoldEvents(window, boat);
 
         _testDbContext.ElementPurchasedEvents.AddRange(purchases);
         _testDbContext.CompositeSoldEvents.AddRange(compositeSoldEvents);
@@ -129,9 +129,9 @@ public class GetAllElementsStatisticsTests
 
         var (glass, metal) = GetGlassAndMetal(_testDbContext);
         
-        var purchases = GetTestElementPurchases(glass, metal);
-        var sales = GetTestElementSoldEvents(glass, metal);
-        var compositeSoldEvents = GetTestCompositeSoldEvents(window, boat);
+        var purchases = EvMock.GetTestElementPurchases(glass, metal);
+        var sales = EvMock.GetTestElementSoldEvents(glass, metal);
+        var compositeSoldEvents = EvMock.GetTestCompositeSoldEvents(window, boat);
 
         _testDbContext.ElementPurchasedEvents.AddRange(purchases);
         _testDbContext.ElementSoldEvents.AddRange(sales);
@@ -163,7 +163,7 @@ public class GetAllElementsStatisticsTests
     {
         var glass = elementData.Single(x => x.E.Name == "glass");
         var metal = elementData.Single(x => x.E.Name == "metal");
-        var purchaseEvents = GetTestElementPurchases(glass.E, metal.E);
+        var purchaseEvents = EvMock.GetTestElementPurchases(glass.E, metal.E);
 
         double SafeAverage<T>(List<T> xs, Func<T, double> selector) =>
             xs.Count > 0 ? xs.Average(selector) : 0d;
@@ -208,87 +208,5 @@ public class GetAllElementsStatisticsTests
         var metal = drinks.First(x => x.Name == "metal");
 
         return (glass, metal);
-    }
-
-    private static List<ElementPurchasedEvent> GetTestElementPurchases(Element glass, Element metal)
-    {
-        return new()
-        {
-            new()
-            {
-                ElementId = glass.Id,
-                UnitOfMeasure = glass.UnitOfMeasure,
-                UnitPrice = 1,
-                UnitsBought = 15
-            },
-            new()
-            {
-                ElementId = glass.Id,
-                UnitOfMeasure = glass.UnitOfMeasure,
-                UnitPrice = 1,
-                UnitsBought = 10,
-                TotalDiscountPercent = 10
-            },
-            new()
-            {
-                ElementId = metal.Id,
-                UnitOfMeasure = metal.UnitOfMeasure,
-                UnitPrice = 2,
-                UnitsBought = 25
-            }
-        };
-    }
-    private static List<ElementSoldEvent> GetTestElementSoldEvents(Element glass, Element metal)
-    {
-        return new()
-        {
-            new()
-            {
-                ElementId = glass.Id,
-                UnitOfMeasure = glass.UnitOfMeasure,
-                UnitPrice = glass.Prices.Single(x => x.EntityStatus == eEntityStatus.Active).UnitValue,
-                UnitsSold = 5
-            },
-            new()
-            {
-                ElementId = glass.Id,
-                UnitOfMeasure = glass.UnitOfMeasure,
-                UnitPrice = glass.Prices.Single(x => x.EntityStatus == eEntityStatus.Active).UnitValue,
-                UnitsSold = 5
-            },
-            new()
-            {
-                ElementId = metal.Id,
-                UnitOfMeasure = metal.UnitOfMeasure,
-                UnitPrice = metal.Prices.Single(x => x.EntityStatus == eEntityStatus.Active).UnitValue,
-                UnitsSold = 5,
-                TotalDiscountPercent = 20
-            }
-        };
-    }
-    private static List<CompositeSoldEvent> GetTestCompositeSoldEvents(Composite window, Composite boat)
-    {
-        return new()
-        {
-            new()
-            {
-                CompositeId = window.Id,
-                UnitPrice = 5,
-                UnitsSold = 1
-            },
-            new()
-            {
-                CompositeId = window.Id,
-                UnitPrice = 5,
-                UnitsSold = 1
-            },
-            new()
-            {
-                CompositeId = boat.Id,
-                UnitPrice = 10,
-                UnitsSold = 2,
-                TotalDiscountPercent = 10
-            }
-        };
     }
 }

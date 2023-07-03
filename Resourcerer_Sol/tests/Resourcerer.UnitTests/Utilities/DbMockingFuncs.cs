@@ -1,4 +1,5 @@
 ﻿using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos;
 using Resourcerer.Utilities.Cryptography;
 using System.Text.Json;
@@ -8,6 +9,11 @@ namespace Resourcerer.Logic.Queries.Mocks;
 public class DbMockingFuncs
 {
     protected static DateTime Now = new DateTime(2000, 1, 1);
+    protected static void MarkDeleted<T>(params T[] items) where T : EntityBase
+    {
+        foreach (var i in items)
+            i.EntityStatus = eEntityStatus.Deleted;
+    }
     protected static T MakeEntity<T>(Func<T> retn) where T : EntityBase
     {
         var e = retn();
@@ -15,7 +21,7 @@ public class DbMockingFuncs
         e.CreatedAt = Now;
         e.ModifiedAt = Now;
 
-        return e as T;
+        return e;
     }
 
     protected static AppUser MakeUser(string name, string password, bool allPermissions, Dictionary<string, string>? permissions = null)

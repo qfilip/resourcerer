@@ -32,6 +32,13 @@ public class CarpenterDbMocker : DbMockingFuncs
         var windowPrice = MakePrice(10, window);
         var boatPrice = MakePrice(20, boat);
 
+        var glassPriceOld = MakePrice(7, glass);
+        var metalPriceOld = MakePrice(12, metal);
+        var windowPriceOld = MakePrice(12, window);
+        var boatPriceOld = MakePrice(22, boat);
+
+        MarkDeleted(glassPriceOld, metalPriceOld, windowPriceOld, boatPriceOld);
+
 
         var excerptData = new List<(Composite, List<(Element, double)>)>
         {
@@ -55,7 +62,7 @@ public class CarpenterDbMocker : DbMockingFuncs
             Categories = new[] { material, product },
             Excerpts = excerpts,
             UnitsOfMeasure = new[] { uom },
-            Prices = new[] { glassPrice, metalPrice, windowPrice, boatPrice },
+            Prices = new[] { glassPrice, metalPrice, windowPrice, boatPrice, glassPriceOld, metalPriceOld, windowPriceOld, boatPriceOld },
             Composites = new[] { window, boat },
             CompositeSoldEvents = Array.Empty<CompositeSoldEvent>(),
             Elements = new[] { glass, metal },
