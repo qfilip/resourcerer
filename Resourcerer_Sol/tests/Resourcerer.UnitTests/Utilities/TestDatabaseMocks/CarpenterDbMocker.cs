@@ -28,7 +28,7 @@ public class CarpenterDbMocker : DbMockingFuncs
 
         // prices
         var glassPrice = MakePrice(5, glass);
-        var metalPrice = MakePrice(10, glass);
+        var metalPrice = MakePrice(10, metal);
         var windowPrice = MakePrice(10, window);
         var boatPrice = MakePrice(20, boat);
 
