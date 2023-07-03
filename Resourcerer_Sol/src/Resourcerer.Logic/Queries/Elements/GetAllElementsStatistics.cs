@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.Elements;
+using Resourcerer.Utilities.Math;
 
 namespace Resourcerer.Logic.Queries.Elements;
 public static class GetAllElementsStatistics
@@ -58,15 +59,7 @@ public static class GetAllElementsStatistics
                     .Sum(epe => epe.UnitsBought);
 
                 var purchaseCosts = x.ElementPurchasedEvents
-                    .Sum(epe =>
-                    {
-                        var fullPrice = epe.UnitPrice * epe.UnitsBought;
-                        if (epe.TotalDiscountPercent > 0)
-                        {
-                            return fullPrice - (fullPrice * epe.TotalDiscountPercent / 100);
-                        }
-                        else return fullPrice;
-                    });
+                    .Sum(epe => Discount.Compute(epe.UnitPrice * epe.UnitsBought, epe.TotalDiscountPercent));
 
                 var elementCompositeIds = idLookup
                     .Where(il => il.ElementId == x.Id)
@@ -74,6 +67,9 @@ public static class GetAllElementsStatistics
                     .ToList();
 
                 var unitsSoldRaw = x.ElementSoldEvents.Sum(ese => ese.UnitsSold);
+
+                var salesEarnings = x.ElementSoldEvents
+                .Sum(ese => Discount.Compute(ese.UnitsSold * ese.UnitPrice, ese.TotalDiscountPercent));
 
                 var unitsUsedInComposites = x.Excerpts
                     .Select(e => {
@@ -89,10 +85,12 @@ public static class GetAllElementsStatistics
                 return new ElementStatisticsDto
                 {
                     ElementId = x.Id,
-                    ElementName = x.Name,
+                    Name = x.Name,
                     Unit = x.UnitOfMeasure!.Name,
                     UnitsPurchased = unitsPurchased,
                     PurchaseCosts = purchaseCosts,
+                    UnitsSold = unitsSoldRaw,
+                    SalesEarning = salesEarnings,
                     UnitsUsedInComposites = unitsUsedInComposites,
                     UnitsInStock = unitsPurchased - unitsUsedInComposites - unitsSoldRaw
                 };

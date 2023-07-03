@@ -4,7 +4,7 @@ public class ElementSoldEvent : EntityBase
 {
     public double UnitsSold { get; set; }
     public double UnitPrice { get; set; }
-    public double TotalDiscountPercent { get; set; }
+    public int TotalDiscountPercent { get; set; }
     public UnitOfMeasure? UnitOfMeasure { get; set; }
 
     public Guid ElementId { get; set; }
