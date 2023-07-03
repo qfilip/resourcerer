@@ -19,18 +19,9 @@ public class Showcase
     [Fact(Skip = "Showcasing how to mock DbSet on fake DbContext")]
     public async void CorrectlySumsUsageDetails_When_ElementsArePurchased()
     {
-        var elementsMock = new List<Element>
-        {
-            FluentElementMocker
-            .Create("5th-element")
-            .AddElementPurchasedEvents(new List<(double priceByUnit, int unitsBought)>
-            {
-                (1d, 5),
-                (1d, 5)
-            })
-            .AddUnitOfMeasure("Foo", "f")
-            .Build()
-        }.AsQueryable().BuildMockDbSet();
+        var elementsMock = new List<Element> {}
+            .AsQueryable()
+            .BuildMockDbSet();
 
         A.CallTo(() => _appDbContext.Elements).Returns(elementsMock);
         A.CallTo(() => _appDbContext.CompositeSoldEvents).Returns(new List<CompositeSoldEvent>().AsQueryable().BuildMockDbSet());
@@ -49,21 +40,9 @@ public class Showcase
     public async void CorrectlySumsUsageDetails_When_CompositeIsSold()
     {
         var compositeId = Guid.NewGuid();
-        var elementsMock = new List<Element>
-        {
-            FluentElementMocker
-            .Create("5th-element")
-            .AddUnitOfMeasure("Foo", "f")
-            .AddElementPurchasedEvents(new List<(double priceByUnit, int unitsBought)>
-            {
-                (1d, 6)
-            })
-            .AddExcerpts(new List<(Guid compositeId, double quantity)>
-            {
-                (compositeId, 3)
-            })
-            .Build()
-        }.AsQueryable().BuildMockDbSet();
+        var elementsMock = new List<Element> {}
+            .AsQueryable()
+            .BuildMockDbSet();
 
         A.CallTo(() => _appDbContext.Elements).Returns(elementsMock);
         A.CallTo(() => _appDbContext.CompositeSoldEvents)
@@ -101,22 +80,9 @@ public class Showcase
     [Fact(Skip = "Showcasing how to mock DbSet on fake DbContext")]
     public async void CorrectlySumsUsageDetails_When_ElementIsSold()
     {
-        var elementsMock = new List<Element>
-        {
-            FluentElementMocker
-            .Create("5th-element")
-            .AddUnitOfMeasure("Foo", "f")
-            .AddElementPurchasedEvents(new List<(double priceByUnit, int unitsBought)>
-            {
-                (1d, 6)
-            })
-            .AddElementSoldEvents(new List<(double priceByUnit, int unitsSold)>
-            {
-                (1d, 3),
-                (1d, 3)
-            })
-            .Build()
-        }.AsQueryable().BuildMockDbSet();
+        var elementsMock = new List<Element> {}
+            .AsQueryable()
+            .BuildMockDbSet();
 
         A.CallTo(() => _appDbContext.Elements).Returns(elementsMock);
         A.CallTo(() => _appDbContext.CompositeSoldEvents)

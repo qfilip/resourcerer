@@ -29,7 +29,6 @@ public partial class AppDbContext
         modelBuilder.Entity<CompositeSoldEvent>(e =>
         {
             e.ToTable(nameof(CompositeSoldEvent));
-            e.HasOne(x => x.Composite).WithMany(x => x.CompositeSoldEvents);
         });
 
         modelBuilder.Entity<Element>(e =>
@@ -45,13 +44,11 @@ public partial class AppDbContext
         modelBuilder.Entity<ElementPurchasedEvent>(e =>
         {
             e.ToTable(nameof(ElementPurchasedEvent));
-            e.HasOne(x => x.Element).WithMany(x => x.ElementPurchasedEvents);
         });
 
         modelBuilder.Entity<ElementSoldEvent>(e =>
         {
             e.ToTable(nameof(ElementSoldEvent));
-            e.HasOne(x => x.Element).WithMany(x => x.ElementSoldEvents);
          });
 
         modelBuilder.Entity<Price>(e =>

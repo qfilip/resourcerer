@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Elements;
 using Resourcerer.Utilities.Math;
 
@@ -17,15 +18,17 @@ public static class GetAllElementsStatistics
 
         public async Task<HandlerResult<List<ElementStatisticsDto>>> Handle(Unit _)
         {
+            var elementsSales = await _appDbContext.ElementSoldEvents.ToListAsync();
+            var elementsPurchases = await _appDbContext.ElementPurchasedEvents.ToListAsync();
+
             var elementsData = await _appDbContext.Elements
                 .IgnoreQueryFilters()
-                .Include(x => x.ElementSoldEvents)
-                .Include(x => x.ElementPurchasedEvents)
                 .Include(x => x.UnitOfMeasure)
                 .IgnoreQueryFilters()
                 .Include(x => x.Excerpts)
                 .IgnoreQueryFilters()
                 .ToListAsync();
+
 
             var idLookup = elementsData
                 .Select(x => new
@@ -55,25 +58,38 @@ public static class GetAllElementsStatistics
 
             var usageDetails = elementsData.Select(x =>
             {
-                var unitsPurchased = x.ElementPurchasedEvents
+                var events = new
+                {
+                    Purchases = elementsPurchases
+                        .Where(e => e.ElementId == x.Id)
+                        .ToArray() ?? Array.Empty<ElementPurchasedEvent>(),
+
+                    Sales = elementsSales
+                        .Where(e => e.ElementId == x.Id)
+                        .ToArray() ?? Array.Empty<ElementSoldEvent>()
+                };
+
+                var unitsPurchased = events.Purchases
                     .Sum(epe => epe.UnitsBought);
 
-                var purchaseCosts = x.ElementPurchasedEvents
+                var purchaseCosts = events.Purchases
                     .Sum(epe => Discount.Compute(epe.UnitPrice * epe.UnitsBought, epe.TotalDiscountPercent));
 
-                var averagePurchaseDiscount = x.ElementPurchasedEvents.Average(epe => epe.TotalDiscountPercent);
+                var averagePurchaseDiscount = events.Purchases.Length > 0 ?
+                    events.Purchases.Average(epe => epe.TotalDiscountPercent) : 0d;
 
                 var elementCompositeIds = idLookup
                     .Where(il => il.ElementId == x.Id)
                     .SelectMany(i => i.ElementCompositeIds)
                     .ToList();
 
-                var unitsSoldRaw = x.ElementSoldEvents.Sum(ese => ese.UnitsSold);
+                var unitsSoldRaw = events.Sales.Sum(ese => ese.UnitsSold);
 
-                var salesEarnings = x.ElementSoldEvents
+                var salesEarnings = events.Sales
                 .Sum(ese => Discount.Compute(ese.UnitsSold * ese.UnitPrice, ese.TotalDiscountPercent));
 
-                var averageSaleDiscount = x.ElementSoldEvents.Average(ese => ese.TotalDiscountPercent);
+                var averageSaleDiscount = events.Sales.Length > 0 ?
+                    events.Sales.Average(ese => ese.TotalDiscountPercent) : 0d;
 
                 var unitsUsedInComposites = x.Excerpts
                     .Select(e => {

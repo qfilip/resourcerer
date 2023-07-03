@@ -6,7 +6,6 @@ public class Composite : EntityBase
     {
         Prices = new HashSet<Price>();
         Excerpts = new HashSet<Excerpt>();
-        CompositeSoldEvents = new HashSet<CompositeSoldEvent>();
     }
 
     public string? Name { get; set; }
@@ -16,6 +15,5 @@ public class Composite : EntityBase
     
     public ICollection<Excerpt> Excerpts { get; set; }
     public ICollection<Price> Prices { get; set; }
-    public ICollection<CompositeSoldEvent> CompositeSoldEvents { get; set; }
 }
 
