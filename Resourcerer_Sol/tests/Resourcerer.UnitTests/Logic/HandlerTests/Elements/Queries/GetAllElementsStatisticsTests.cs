@@ -5,6 +5,7 @@ using Resourcerer.Dtos.Elements;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Queries.Elements;
 using Resourcerer.UnitTests.Utilities;
+using System.Diagnostics.Metrics;
 
 namespace Resourcerer.UnitTests.Logic.HandlerTests.Elements.Queries;
 
@@ -23,8 +24,8 @@ public class GetAllElementsStatisticsTests
     public async Task CorrectlySums_UsageDetails_When_ElementsArePurchased()
     {
         // arrange
-        var (rum, gin, lime) = GetRumGinAndLime(_testDbContext);
-        var purchases = GetTestElementPurchases(rum, gin, lime);
+        var (glass, metal) = GetGlassAndMetal(_testDbContext);
+        var purchases = GetTestElementPurchases(glass, metal);
 
         _testDbContext.ElementPurchasedEvents.AddRange(purchases);
         await _testDbContext.BaseSaveChangesAsync();
@@ -34,21 +35,20 @@ public class GetAllElementsStatisticsTests
 
         Assert.Equal(HandlerResultStatus.Ok, hResult.Status);
 
-        var rumStats = hResult.Object!.First(x => x.ElementName == "rum");
-        var ginStats = hResult.Object!.First(x => x.ElementName == "gin");
-        var limeStats = hResult.Object!.First(x => x.ElementName == "lime");
+        var glassStats = hResult.Object!.First(x => x.ElementName == "glass");
+        var metalStats = hResult.Object!.First(x => x.ElementName == "metal");
 
-        AssertUsageDetails(rumStats, unitsUsedInComposites: 0, unitsInStock: 3, unitsPurchased: 3, purchaseCosts: 25);
-        AssertUsageDetails(ginStats, unitsUsedInComposites: 0, unitsInStock: 1, unitsPurchased: 1, purchaseCosts: 5);
-        AssertUsageDetails(limeStats, unitsUsedInComposites: 0, unitsInStock: 1, unitsPurchased: 1, purchaseCosts: 10);
+        AssertStats(glassStats, unitsUsedInComposites: 0, unitsInStock: 20, unitsPurchased: 20, purchaseCosts: 20);
+        AssertStats(metalStats, unitsUsedInComposites: 0, unitsInStock: 20, unitsPurchased: 20, purchaseCosts: 40);
     }
 
     [Fact]
     public async void CorrectlySumsUsageDetails_When_ElementIsSold()
     {
         // arrange
-        var (rum, gin, lime) = GetRumGinAndLime(_testDbContext);
-        var purchases = GetTestElementPurchases(rum, gin, lime);
+        var (glass, metal) = GetGlassAndMetal(_testDbContext);
+        var purchases = GetTestElementPurchases(glass, metal);
+
         var sales = purchases.Select(x => new ElementSoldEvent
         {
             ElementId = x.ElementId,
@@ -66,30 +66,24 @@ public class GetAllElementsStatisticsTests
 
         Assert.Equal(HandlerResultStatus.Ok, hResult.Status);
 
-        var rumStats = hResult.Object!.First(x => x.ElementName == "rum");
-        var ginStats = hResult.Object!.First(x => x.ElementName == "gin");
-        var limeStats = hResult.Object!.First(x => x.ElementName == "lime");
+        var glassStats = hResult.Object!.First(x => x.ElementName == "glass");
+        var metalStats = hResult.Object!.First(x => x.ElementName == "metal");
 
-        AssertUsageDetails(rumStats, unitsUsedInComposites: 0, unitsInStock: 0, unitsPurchased: 3, purchaseCosts: 25);
-        AssertUsageDetails(ginStats, unitsUsedInComposites: 0, unitsInStock: 0, unitsPurchased: 1, purchaseCosts: 5);
-        AssertUsageDetails(limeStats, unitsUsedInComposites: 0, unitsInStock: 0, unitsPurchased: 1, purchaseCosts: 10);
+        AssertStats(glassStats, unitsUsedInComposites: 0, unitsInStock: 0, unitsPurchased: 20, purchaseCosts: 20);
+        AssertStats(metalStats, unitsUsedInComposites: 0, unitsInStock: 0, unitsPurchased: 20, purchaseCosts: 40);
     }
 
     [Fact]
     public async void CorrectlySumsUsageDetails_When_CompositeIsSold()
     {
         // arrange
-        var darkNstormy = _testDbContext
-            .Composites
-            .First(x => x.Name == "dark n stormy");
-        
-        var ginFizz = _testDbContext
-            .Composites
-            .First(x => x.Name == "gin fizz");
+        var window = _testDbContext.Composites.First(x => x.Name == "window");
+        var boat = _testDbContext.Composites.First(x => x.Name == "boat");
 
-        var (rum, gin, lime) = GetRumGinAndLime(_testDbContext);
-        var purchases = GetTestElementPurchases(rum, gin, lime);
-        var compositeSoldEvents = GetTestCompositeSoldEvents(darkNstormy, ginFizz);
+        var (glass, metal) = GetGlassAndMetal(_testDbContext);
+        var purchases = GetTestElementPurchases(glass, metal);
+
+        var compositeSoldEvents = GetTestCompositeSoldEvents(window, boat);
 
         _testDbContext.ElementPurchasedEvents.AddRange(purchases);
         _testDbContext.CompositeSoldEvents.AddRange(compositeSoldEvents);
@@ -100,16 +94,14 @@ public class GetAllElementsStatisticsTests
 
         Assert.Equal(HandlerResultStatus.Ok, hResult.Status);
 
-        var rumStats = hResult.Object!.First(x => x.ElementName == "rum");
-        var ginStats = hResult.Object!.First(x => x.ElementName == "gin");
-        var limeStats = hResult.Object!.First(x => x.ElementName == "lime");
+        var glassStats = hResult.Object!.First(x => x.ElementName == "glass");
+        var metalStats = hResult.Object!.First(x => x.ElementName == "metal");
 
-        AssertUsageDetails(rumStats, unitsUsedInComposites: 0.015, unitsInStock: 2.985, unitsPurchased: 3, purchaseCosts: 25);
-        AssertUsageDetails(ginStats, unitsUsedInComposites: 0.005, unitsInStock: 0.995, unitsPurchased: 1, purchaseCosts: 5);
-        AssertUsageDetails(limeStats, unitsUsedInComposites: 0.1, unitsInStock: 0.9, unitsPurchased: 1, purchaseCosts: 10);
+        AssertStats(glassStats, unitsUsedInComposites: 7, unitsInStock: 13, unitsPurchased: 20, purchaseCosts: 20);
+        AssertStats(metalStats, unitsUsedInComposites: 10, unitsInStock: 10, unitsPurchased: 20, purchaseCosts: 40);
     }
 
-    private static void AssertUsageDetails(
+    private static void AssertStats(
         ElementStatisticsDto details,
         double unitsUsedInComposites,
         double unitsInStock,
@@ -122,76 +114,69 @@ public class GetAllElementsStatisticsTests
         Assert.Equal(purchaseCosts, details.PurchaseCosts);
     }
 
-    private static (Element rum, Element gin, Element lime) GetRumGinAndLime(IAppDbContext testDbContext)
+    private static (Element glass, Element metal) GetGlassAndMetal(IAppDbContext testDbContext)
     {
         var drinks = testDbContext.Elements
-            .Where(x => x.Name == "rum" || x.Name == "gin" || x.Name == "lime")
+            .Where(x => x.Name == "glass" || x.Name == "metal")
             .Include(x => x.UnitOfMeasure)
             .ToList();
 
-        var rum = drinks.First(x => x.Name == "rum");
-        var gin = drinks.First(x => x.Name == "gin");
-        var lime = drinks.First(x => x.Name == "lime");
+        var glass = drinks.First(x => x.Name == "glass");
+        var metal = drinks.First(x => x.Name == "metal");
 
-        return (rum, gin, lime);
+        return (glass, metal);
     }
-    private static List<ElementPurchasedEvent> GetTestElementPurchases(Element rum, Element gin, Element lime)
+
+    private static List<ElementPurchasedEvent> GetTestElementPurchases(Element glass, Element metal)
     {
-        return new List<ElementPurchasedEvent>
-        {
-            new ElementPurchasedEvent
-            {
-                ElementId = rum.Id,
-                UnitPrice = 10,
-                UnitsBought = 2,
-                UnitOfMeasure = rum.UnitOfMeasure
-            },
-            new ElementPurchasedEvent
-            {
-                ElementId = rum.Id,
-                UnitPrice = 5,
-                UnitsBought = 1,
-                UnitOfMeasure = rum.UnitOfMeasure
-            },
-            new ElementPurchasedEvent
-            {
-                ElementId = gin.Id,
-                UnitPrice = 5,
-                UnitsBought = 1,
-                UnitOfMeasure = gin.UnitOfMeasure
-            },
-            new ElementPurchasedEvent
-            {
-                ElementId = lime.Id,
-                UnitPrice = 10,
-                UnitsBought = 1,
-                UnitOfMeasure = lime.UnitOfMeasure
-            }
-        };
-    }
-    private static List<CompositeSoldEvent> GetTestCompositeSoldEvents(Composite darkNstormy, Composite ginFizz)
-    {
-        return new List<CompositeSoldEvent>
+        return new()
         {
             new()
             {
-                CompositeId = darkNstormy.Id,
+                ElementId = glass.Id,
+                UnitOfMeasure = glass.UnitOfMeasure,
                 UnitPrice = 1,
+                UnitsBought = 10
+            },
+            new()
+            {
+                ElementId = glass.Id,
+                UnitOfMeasure = glass.UnitOfMeasure,
+                UnitPrice = 1,
+                UnitsBought = 10
+            },
+            new()
+            {
+                ElementId = metal.Id,
+                UnitOfMeasure = metal.UnitOfMeasure,
+                UnitPrice = 2,
+                UnitsBought = 20
+            }
+        };
+    }
+    private static List<CompositeSoldEvent> GetTestCompositeSoldEvents(Composite window, Composite boat)
+    {
+        return new()
+        {
+            new()
+            {
+                CompositeId = window.Id,
+                UnitPrice = window.CurrentSellPrice,
                 UnitsSold = 1
             },
             new()
             {
-                CompositeId = darkNstormy.Id,
-                UnitPrice = 1,
-                UnitsSold = 2
+                CompositeId = window.Id,
+                UnitPrice = window.CurrentSellPrice,
+                UnitsSold = 1
             },
             new()
             {
-                CompositeId = ginFizz.Id,
-                UnitPrice = 1,
-                UnitsSold = 1
+                CompositeId = boat.Id,
+                UnitPrice = window.CurrentSellPrice,
+                UnitsSold = 1,
+                TotalDiscountPercent = 10
             }
         };
     }
-    
 }

@@ -1,14 +1,10 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Mocks;
-using Resourcerer.Logic;
-using Resourcerer.Logic.Commands.Mocks;
-using Resourcerer.Logic.Queries.Mocks;
 
 namespace Resourcerer.UnitTests.Utilities;
 
-public class ContextCreator : IDisposable
+public class ContextCreator: IDisposable
 {
     private readonly SqliteConnection _connection;
     private readonly DbContextOptions<AppDbContext> _options;
@@ -32,17 +28,9 @@ public class ContextCreator : IDisposable
         return new AppDbContext(_options);
     }
 
-    private void SeedMockData(AppDbContext context, bool seedEvents)
+    private void SeedMockData(AppDbContext context, bool seedEvents = false)
     {
-        IRequestHandler<Unit, DatabaseData> getMocksHandler =
-            seedEvents ?
-            new GetMockedDatabaseData.Handler() :
-            new GetMockedNonEventDatabaseData.Handler();
-
-        var dbData = getMocksHandler.Handle(new Unit()).GetAwaiter().GetResult().Object!;
-
-        var seedMocksHandler = new SeedMockData.Handler(context);
-        seedMocksHandler.Handle(dbData).GetAwaiter().GetResult();
+        CarpenterDbMock.SeedAsync(context).GetAwaiter().GetResult();
     }
 
     public void Dispose()

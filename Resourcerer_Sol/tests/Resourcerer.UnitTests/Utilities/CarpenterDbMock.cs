@@ -6,7 +6,7 @@ namespace Resourcerer.UnitTests.Utilities;
 
 public class CarpenterDbMock : MockingUtilities
 {
-    public async Task SeedAsync(IAppDbContext context)
+    public static async Task SeedAsync(IAppDbContext context)
     {
         var admin = MakeUser("admin", "admin", true);
 
@@ -25,11 +25,11 @@ public class CarpenterDbMock : MockingUtilities
         {
             (window, new List<(Element, double)>()
             {
-                (glass, 10)
+                (glass, 1)
             }),
             (boat, new List<(Element, double)>()
             {
-                (metal, 10), (glass, 1)
+                (metal, 10), (glass, 5)
             })
         };
 
