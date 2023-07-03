@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Resourcerer.DataAccess\Resourcerer.DataAccess.csproj" />
     <ProjectReference Include="..\Resourcerer.Dtos\Resourcerer.Dtos.csproj" />
     <ProjectReference Include="..\Resourcerer.Logic\Resourcerer.Logic.csproj" />

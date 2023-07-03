@@ -1,0 +1,1 @@
+﻿This file is used to ignore database but not wwwroot in gitignore
