@@ -15,11 +15,11 @@ public class CarpenterDbMocker : DbMockingFuncs
 
         var uom = MakeUnitOfMeasure("unit", "u");
 
-        var glass = MakeElement("glass", 5, material, uom);
-        var metal = MakeElement("metal", 10, material, uom);
+        var glass = MakeElement("glass", material, uom);
+        var metal = MakeElement("metal", material, uom);
 
-        var window = MakeComposite("window", 50, product);
-        var boat = MakeComposite("boat", 100, product);
+        var window = MakeComposite("window", product);
+        var boat = MakeComposite("boat", product);
 
         var excerptData = new List<(Composite, List<(Element, double)>)>
         {
@@ -42,7 +42,7 @@ public class CarpenterDbMocker : DbMockingFuncs
         context.Categories.AddRange(material, product);
         context.Excerpts.AddRange(excerpts);
         context.UnitsOfMeasure.AddRange(uom);
-        context.OldPrices.AddRange();
+        context.Prices.AddRange();
         context.Composites.AddRange(window, boat);
         context.CompositeSoldEvents.AddRange();
         context.Elements.AddRange(glass, metal);

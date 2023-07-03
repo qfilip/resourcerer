@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.DataAccess.Entities;
 
-public class OldPrice : EntityBase
+public class Price : EntityBase
 {
     public double UnitValue { get; set; }
 

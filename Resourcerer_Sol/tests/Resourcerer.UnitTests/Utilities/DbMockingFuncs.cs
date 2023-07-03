@@ -30,18 +30,18 @@ public class DbMockingFuncs
 
         var uoms = new UnitOfMeasure[] { liter, kg };
 
-        var vodka = MakeElement("vodka", 2, spirits, liter);
-        var rum = MakeElement("rum", 2, spirits, liter);
-        var gin = MakeElement("gin", 2, spirits, liter);
-        var gingerAle = MakeElement("ginger ale", 3, ales, liter);
-        var sparklingWater = MakeElement("sparkling water", 1, waters, liter);
-        var lime = MakeElement("lime", 3, veggies, kg);
+        var vodka = MakeElement("vodka", spirits, liter);
+        var rum = MakeElement("rum", spirits, liter);
+        var gin = MakeElement("gin", spirits, liter);
+        var gingerAle = MakeElement("ginger ale", ales, liter);
+        var sparklingWater = MakeElement("sparkling water", waters, liter);
+        var lime = MakeElement("lime", veggies, kg);
 
         var elements = new Element[] { vodka, rum, gin, gingerAle, sparklingWater, lime };
 
-        var moscowMule = MakeComposite("moscow mule", 5, cocktails);
-        var darkNstormy = MakeComposite("dark n stormy", 5, cocktails);
-        var ginFizz = MakeComposite("gin fizz", 5, cocktails);
+        var moscowMule = MakeComposite("moscow mule", cocktails);
+        var darkNstormy = MakeComposite("dark n stormy", cocktails);
+        var ginFizz = MakeComposite("gin fizz", cocktails);
 
         var composites = new Composite[] { moscowMule, darkNstormy, ginFizz };
 
@@ -50,7 +50,7 @@ public class DbMockingFuncs
         var p3 = MakePrice(4, ginFizz);
         var p4 = MakePrice(2, sparklingWater);
 
-        var prices = new OldPrice[] { p1, p2, p3, p4 };
+        var prices = new Price[] { p1, p2, p3, p4 };
 
         var excerptData = new List<(Composite, List<(Element, double)>)>
             {
@@ -134,23 +134,21 @@ public class DbMockingFuncs
         });
     }
 
-    protected static Element MakeElement(string name, double currentSellPrice, Category category, UnitOfMeasure uom)
+    protected static Element MakeElement(string name, Category category, UnitOfMeasure uom)
     {
         return MakeEntity(() => new Element
         {
             Name = name,
-            CurrentSellPrice = currentSellPrice,
             CategoryId = category.Id,
             UnitOfMeasureId = uom.Id
         });
     }
 
-    protected static Composite MakeComposite(string name, double currentSellPrice, Category category)
+    protected static Composite MakeComposite(string name, Category category)
     {
         return MakeEntity(() => new Composite
         {
             Name = name,
-            CurrentSellPrice = currentSellPrice,
             CategoryId = category.Id
         });
     }
@@ -167,18 +165,18 @@ public class DbMockingFuncs
         });
     }
 
-    protected static OldPrice MakePrice(double value, Composite composite)
+    protected static Price MakePrice(double value, Composite composite)
     {
-        return MakeEntity(() => new OldPrice
+        return MakeEntity(() => new Price
         {
             UnitValue = value,
             CompositeId = composite.Id
         });
     }
 
-    protected static OldPrice MakePrice(double value, Element element)
+    protected static Price MakePrice(double value, Element element)
     {
-        return MakeEntity(() => new OldPrice
+        return MakeEntity(() => new Price
         {
             UnitValue = value,
             ElementId = element.Id

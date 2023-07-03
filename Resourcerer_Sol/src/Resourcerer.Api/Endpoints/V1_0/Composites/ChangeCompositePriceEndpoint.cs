@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Composites;
 using Resourcerer.Dtos;
-using Resourcerer.Logic.Commands.Composites;
+using Resourcerer.Dtos.Prices;
 using Resourcerer.Logic;
-using Resourcerer.Dtos.OldPrices;
+using Resourcerer.Logic.Commands.Composites;
 
 namespace Resourcerer.Api.Endpoints.V1_0.Composites;
 

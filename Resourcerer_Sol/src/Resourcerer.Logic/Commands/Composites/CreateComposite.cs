@@ -22,8 +22,7 @@ public static class CreateComposite
             {
                 Id = Guid.NewGuid(),
                 CategoryId = request.CategoryId,
-                Name = request.Name,
-                CurrentSellPrice = request.CurrentSellPrice
+                Name = request.Name
             };
 
             var excerpts = request.Elements!
@@ -34,8 +33,15 @@ public static class CreateComposite
                     Quantity = x.Quantity
                 });
 
+            var price = new Price
+            {
+                CompositeId = composite.Id,
+                UnitValue = request.UnitPrice
+            };
+
             _appDbContext.Composites.Add(composite);
             _appDbContext.Excerpts.AddRange(excerpts);
+            _appDbContext.Prices.Add(price);
 
             await _appDbContext.SaveChangesAsync();
 

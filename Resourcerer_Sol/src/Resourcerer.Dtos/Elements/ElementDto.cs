@@ -9,7 +9,6 @@ namespace Resourcerer.Dtos.Elements;
 public class ElementDto : EntityDto
 {
     public string? Name { get; set; }
-    public double CurrentSellPrice { get; set; }
 
     public Guid? CategoryId { get; set; }
     public CategoryDto? Category { get; set; }
@@ -18,7 +17,7 @@ public class ElementDto : EntityDto
     public UnitOfMeasureDto? UnitOfMeasure { get; set; }
 
     public List<ExcerptDto>? Excerpts { get; set; }
-    public List<OldPrice>? OldPrices { get; set; }
+    public List<Price>? Prices { get; set; }
     public List<ElementPurchasedEvent>? ElementPurchasedEvents { get; set; }
     public List<ElementSoldEvent>? ElementSoldEvents { get; set; }
 }

@@ -27,17 +27,17 @@ public class CocktailDbMocker : DbMockingFuncs
         var kg = MakeUnitOfMeasure("Kilogram", "kg");
 
         // elements
-        var vodka = MakeElement("vodka", 2, spirits, liter);
-        var rum = MakeElement("rum", 2, spirits, liter);
-        var gin = MakeElement("gin", 2, spirits, liter);
-        var gingerAle = MakeElement("ginger ale", 3, ales, liter);
-        var sparklingWater = MakeElement("sparkling water", 1, waters, liter);
-        var lime = MakeElement("lime", 3, veggies, kg);
+        var vodka = MakeElement("vodka", spirits, liter);
+        var rum = MakeElement("rum", spirits, liter);
+        var gin = MakeElement("gin", spirits, liter);
+        var gingerAle = MakeElement("ginger ale", ales, liter);
+        var sparklingWater = MakeElement("sparkling water", waters, liter);
+        var lime = MakeElement("lime", veggies, kg);
 
         // composites
-        var moscowMule = MakeComposite("moscow mule", 5, cocktails);
-        var darkNstormy = MakeComposite("dark n stormy", 5, cocktails);
-        var ginFizz = MakeComposite("gin fizz", 5, cocktails);
+        var moscowMule = MakeComposite("moscow mule", cocktails);
+        var darkNstormy = MakeComposite("dark n stormy", cocktails);
+        var ginFizz = MakeComposite("gin fizz", cocktails);
 
         // prices
         var p1 = MakePrice(6, moscowMule);
@@ -70,7 +70,7 @@ public class CocktailDbMocker : DbMockingFuncs
         context.Categories.AddRange(bar, spirits, ales, waters, veggies, cocktails, tikiCocktails);
         context.Excerpts.AddRange(excerpts);
         context.UnitsOfMeasure.AddRange(liter, kg);
-        context.OldPrices.AddRange(p1, p2, p3, p4);
+        context.Prices.AddRange(p1, p2, p3, p4);
         context.Composites.AddRange(moscowMule, darkNstormy, ginFizz);
         context.CompositeSoldEvents.AddRange();
         context.Elements.AddRange(vodka, rum, gin, gingerAle, sparklingWater, lime);

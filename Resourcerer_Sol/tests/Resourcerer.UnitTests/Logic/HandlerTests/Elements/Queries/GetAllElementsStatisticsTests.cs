@@ -161,19 +161,19 @@ public class GetAllElementsStatisticsTests
             new()
             {
                 CompositeId = window.Id,
-                UnitPrice = window.CurrentSellPrice,
+                UnitPrice = 5,
                 UnitsSold = 1
             },
             new()
             {
                 CompositeId = window.Id,
-                UnitPrice = window.CurrentSellPrice,
+                UnitPrice = 5,
                 UnitsSold = 1
             },
             new()
             {
                 CompositeId = boat.Id,
-                UnitPrice = window.CurrentSellPrice,
+                UnitPrice = 10,
                 UnitsSold = 1,
                 TotalDiscountPercent = 10
             }

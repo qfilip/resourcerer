@@ -15,7 +15,7 @@ public class Permission
         nameof(Element),
         nameof(ElementSoldEvent),
         nameof(Excerpt),
-        nameof(OldPrice),
+        nameof(Price),
         nameof(UnitOfMeasure)
     };
 

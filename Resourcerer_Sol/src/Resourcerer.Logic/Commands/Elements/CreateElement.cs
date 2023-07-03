@@ -26,14 +26,14 @@ public static class CreateElement
                 UnitOfMeasureId = request.UnitOfMeasureId
             };
 
-            var price = new OldPrice
+            var price = new Price
             {
                 ElementId = element.Id,
                 UnitValue = request.UnitPrice
             };
 
             _appDbContext.Elements.Add(element);
-            _appDbContext.OldPrices.Add(price);
+            _appDbContext.Prices.Add(price);
 
             await _appDbContext.SaveChangesAsync();
 

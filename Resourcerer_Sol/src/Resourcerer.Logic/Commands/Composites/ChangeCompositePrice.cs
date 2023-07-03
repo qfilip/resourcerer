@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.OldPrices;
+using Resourcerer.Dtos.Prices;
 
 namespace Resourcerer.Logic.Commands.Composites;
 
@@ -25,15 +25,13 @@ public static class ChangeCompositePrice
                 return HandlerResult<Unit>.NotFound($"Entity with id {request.EntityId} not found");
             }
 
-            var oldPrice = new OldPrice
+            var price = new Price
             {
                 CompositeId = composite.Id,
-                UnitValue = composite.CurrentSellPrice
+                UnitValue = request.UnitPrice
             };
 
-            composite.CurrentSellPrice = request.NewPrice;
-
-            _appDbContext.OldPrices.Add(oldPrice);
+            _appDbContext.Prices.Add(price);
             await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());

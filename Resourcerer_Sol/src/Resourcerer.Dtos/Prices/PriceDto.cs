@@ -2,9 +2,9 @@
 using Resourcerer.Dtos.Composites;
 using Resourcerer.Dtos.Elements;
 
-namespace Resourcerer.Dtos.OldPrices;
+namespace Resourcerer.Dtos.Prices;
 
-public class OldPriceDto : EntityDto
+public class PriceDto : EntityDto
 {
     public double UnitValue { get; set; }
 
@@ -15,7 +15,7 @@ public class OldPriceDto : EntityDto
     public virtual CompositeDto? Composite { get; set; }
 }
 
-public class PriceDtoValidator : AbstractValidator<OldPriceDto>
+public class PriceDtoValidator : AbstractValidator<PriceDto>
 {
     public PriceDtoValidator()
     {

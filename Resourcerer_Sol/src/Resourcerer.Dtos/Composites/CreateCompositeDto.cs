@@ -6,7 +6,7 @@ public class CreateCompositeDto : BaseDto
 {
     public string? Name { get; set; }
     public Guid CategoryId { get; set; }
-    public double CurrentSellPrice { get; set; }
+    public double UnitPrice { get; set; }
     public List<CompositeElementsDto>? Elements { get; set; }
 }
 
@@ -22,7 +22,7 @@ public class CreateCompositeDtoValidator : AbstractValidator<CreateCompositeDto>
             .NotEmpty()
             .WithMessage("Composite category must be set");
 
-        RuleFor(x => x.CurrentSellPrice)
+        RuleFor(x => x.UnitPrice)
             .GreaterThan(0)
             .WithMessage("Composite price cannot be 0");
 
