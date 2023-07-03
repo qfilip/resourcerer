@@ -1,7 +1,6 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Logic.Queries.Mocks;
-using System.Diagnostics.Metrics;
 
 namespace Resourcerer.UnitTests.Utilities.TestDatabaseMocks;
 
@@ -40,10 +39,16 @@ public class CocktailDbMocker : DbMockingFuncs
         var ginFizz = MakeComposite("gin fizz", cocktails);
 
         // prices
-        var p1 = MakePrice(6, moscowMule);
-        var p2 = MakePrice(7, darkNstormy);
-        var p3 = MakePrice(4, ginFizz);
-        var p4 = MakePrice(2, sparklingWater);
+        var vodkaPrice = MakePrice(10, vodka);
+        var rumPrice = MakePrice(12, rum);
+        var ginPrice = MakePrice(8, gin);
+        var gingerAlePrice = MakePrice(10, gingerAle);
+        var sparklingWaterPrice = MakePrice(3, sparklingWater);
+        var limePrice = MakePrice(5, lime);
+
+        var moscowMulePrice = MakePrice(6, moscowMule);
+        var darkNstormyPrice = MakePrice(8, darkNstormy);
+        var ginFizzPrice = MakePrice(5, ginFizz);
 
         // excerpts
         var excerptData = new List<(Composite, List<(Element, double)>)>
@@ -70,7 +75,7 @@ public class CocktailDbMocker : DbMockingFuncs
         context.Categories.AddRange(bar, spirits, ales, waters, veggies, cocktails, tikiCocktails);
         context.Excerpts.AddRange(excerpts);
         context.UnitsOfMeasure.AddRange(liter, kg);
-        context.Prices.AddRange(p1, p2, p3, p4);
+        context.Prices.AddRange(vodkaPrice, rumPrice, ginPrice, gingerAlePrice, sparklingWaterPrice, limePrice, moscowMulePrice, darkNstormyPrice, ginFizzPrice);
         context.Composites.AddRange(moscowMule, darkNstormy, ginFizz);
         context.CompositeSoldEvents.AddRange();
         context.Elements.AddRange(vodka, rum, gin, gingerAle, sparklingWater, lime);
