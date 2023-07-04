@@ -33,11 +33,6 @@ public partial class AppDbContext
             e.HasOne(x => x.UnitOfMeasure).WithMany(x => x.Elements);
         });
 
-        ConfigureEntity<ElementInstance>(modelBuilder, e =>
-        {
-            e.HasOne(x => x.Element).WithMany(x => x.ElementInstances);
-        });
-
         ConfigureEntity<ElementPurchasedEvent>(modelBuilder);
 
         ConfigureEntity<ElementPurchaseCancelledEvent>(modelBuilder);
@@ -54,6 +49,13 @@ public partial class AppDbContext
             e.Property(x => x.UnitValue).IsRequired();
             e.HasOne(x => x.Element).WithMany(x => x.Prices);
             e.HasOne(x => x.Composite).WithMany(x => x.Prices);
+        });
+
+        ConfigureEntity<Instance>(modelBuilder, (e) =>
+        {
+            e.Property(x => x.Quantity).IsRequired();
+            e.HasOne(x => x.Element).WithMany(x => x.ElementInstances);
+            e.HasOne(x => x.Composite).WithMany(x => x.CompositeInstances);
         });
 
         ConfigureEntity<Excerpt>(modelBuilder, (e) =>

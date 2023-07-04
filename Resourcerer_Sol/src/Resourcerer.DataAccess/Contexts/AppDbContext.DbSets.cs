@@ -15,12 +15,12 @@ public partial class AppDbContext : DbContext, IAppDbContext
     public virtual DbSet<Excerpt> Excerpts { get; set; }
     public virtual DbSet<UnitOfMeasure> UnitsOfMeasure { get; set; }
     public virtual DbSet<Price> Prices { get; set; }
+    public virtual DbSet<Instance> Instances { get; set; }
 
     public virtual DbSet<Composite> Composites { get; set; }
     public virtual DbSet<CompositeSoldEvent> CompositeSoldEvents { get; set; }
     
     public virtual DbSet<Element> Elements { get; set; }
-    public virtual DbSet<ElementInstance> ElementInstances { get; set; }
     public virtual DbSet<ElementPurchasedEvent> ElementPurchasedEvents { get; set; }
     public virtual DbSet<ElementPurchaseCancelledEvent> ElementPurchaseCancelledEvents { get; set; }
     public virtual DbSet<ElementDeliveredEvent> ElementDeliveredEvents { get; set; }

@@ -6,7 +6,7 @@ public class Element : EntityBase
     {
         Excerpts = new HashSet<Excerpt>();
         Prices = new HashSet<Price>();
-        ElementInstances = new HashSet<ElementInstance>();
+        ElementInstances = new HashSet<Instance>();
     }
 
     public string? Name { get; set; }
@@ -19,6 +19,6 @@ public class Element : EntityBase
     
     public ICollection<Excerpt> Excerpts { get; set; }
     public ICollection<Price> Prices { get; set; }
-    public ICollection<ElementInstance> ElementInstances { get; set; }
+    public ICollection<Instance> ElementInstances { get; set; }
 }
 

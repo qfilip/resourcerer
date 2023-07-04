@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Resourcerer.Logic;
+namespace Resourcerer.Dtos;
 
 public class DtoValidator
 {
