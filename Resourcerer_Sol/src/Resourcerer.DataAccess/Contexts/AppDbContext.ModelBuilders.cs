@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
 
@@ -7,109 +8,86 @@ public partial class AppDbContext
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Category>(e =>
+        ConfigureEntity<Category>(modelBuilder, e =>
         {
-            e.ToTable(nameof(Category));
-            e.HasKey(x => x.Id);
             e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
-            e.HasOne(x => x.ParentCategory)
-                .WithMany(x => x.ChildCategories);
-            e.HasQueryFilter(x => x.EntityStatus != eEntityStatus.Deleted);
+            e.HasOne(x => x.ParentCategory).WithMany(x => x.ChildCategories);
         });
 
-        modelBuilder.Entity<Composite>(e =>
+
+        ConfigureEntity<Composite>(modelBuilder, e =>
         {
-            e.ToTable(nameof(Composite));
-            e.HasKey(x => x.Id);
             e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
             e.HasOne(x => x.Category).WithMany(x => x.Composites);
-            e.HasQueryFilter(x => x.EntityStatus != eEntityStatus.Deleted);
         });
 
-        modelBuilder.Entity<CompositeSoldEvent>(e =>
-        {
-            e.ToTable(nameof(CompositeSoldEvent));
-            e.HasKey(x => x.Id);
-        });
+        ConfigureEntity<CompositeSoldEvent>(modelBuilder);
 
-        modelBuilder.Entity<Element>(e =>
+        ConfigureEntity<Element>(modelBuilder, e =>
         {
-            e.ToTable(nameof(Element));
-            e.HasKey(x => x.Id);
             e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
             e.HasOne(x => x.Category).WithMany(x => x.Elements);
             e.HasOne(x => x.UnitOfMeasure).WithMany(x => x.Elements);
-            e.HasQueryFilter(x => x.EntityStatus != eEntityStatus.Deleted);
         });
 
-        modelBuilder.Entity<ElementInstance>(e =>
+        ConfigureEntity<ElementInstance>(modelBuilder, e =>
         {
-            e.ToTable(nameof(ElementInstance));
-            e.HasKey(x => x.Id);
             e.HasOne(x => x.Element).WithMany(x => x.ElementInstances);
-            e.HasQueryFilter(x => x.EntityStatus != eEntityStatus.Deleted);
         });
 
-        modelBuilder.Entity<ElementPurchasedEvent>(e =>
-        {
-            e.ToTable(nameof(ElementPurchasedEvent));
-            e.HasKey(x => x.Id);
-        });
+        ConfigureEntity<ElementPurchasedEvent>(modelBuilder);
 
-        modelBuilder.Entity<ElementDeliveredEvent>(e =>
-        {
-            e.ToTable(nameof(ElementPurchasedEvent));
-            e.HasKey(x => x.Id);
-        });
+        ConfigureEntity<ElementPurchaseCancelledEvent>(modelBuilder);
 
-        modelBuilder.Entity<ElementSoldEvent>(e =>
-        {
-            e.ToTable(nameof(ElementSoldEvent));
-            e.HasKey(x => x.Id);
-        });
+        ConfigureEntity<ElementDeliveredEvent>(modelBuilder);
 
-        modelBuilder.Entity<Price>(e =>
+        ConfigureEntity<ElementDiscardedEvent>(modelBuilder);
+
+        ConfigureEntity<ElementSoldEvent>(modelBuilder);
+
+
+        ConfigureEntity<Price>(modelBuilder, (e) =>
         {
-            e.ToTable(nameof(Price));
-            e.HasKey(x => x.Id);
             e.Property(x => x.UnitValue).IsRequired();
             e.HasOne(x => x.Element).WithMany(x => x.Prices);
             e.HasOne(x => x.Composite).WithMany(x => x.Prices);
-            e.HasQueryFilter(x => x.EntityStatus != eEntityStatus.Deleted);
         });
 
-        modelBuilder.Entity<Excerpt>(e =>
+        ConfigureEntity<Excerpt>(modelBuilder, (e) =>
         {
-            e.ToTable(nameof(Excerpt));
-            e.HasKey(x => x.Id);
             e.HasOne(x => x.Composite).WithMany(x => x.Excerpts);
             e.HasOne(x => x.Element).WithMany(x => x.Excerpts);
-            e.HasQueryFilter(x => x.EntityStatus != eEntityStatus.Deleted);
         });
 
-        modelBuilder.Entity<UnitOfMeasure>(e =>
+        ConfigureEntity<UnitOfMeasure>(modelBuilder, (e) =>
         {
-            e.ToTable(nameof(UnitOfMeasure));
-            e.HasKey(x => x.Id);
             e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
             e.Property(x => x.Symbol).IsRequired();
-            e.HasQueryFilter(x => x.EntityStatus != eEntityStatus.Deleted);
         });
 
-        modelBuilder.Entity<AppUser>(e =>
+        ConfigureEntity<AppUser>(modelBuilder, (e) =>
         {
-            e.ToTable(nameof(AppUser));
-            e.HasKey(x => x.Id);
             e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
-            e.HasQueryFilter(x => x.EntityStatus != eEntityStatus.Deleted);
         });
 
         base.OnModelCreating(modelBuilder);
+    }
+
+    private void ConfigureEntity<T>(ModelBuilder mb, Action<EntityTypeBuilder<T>>? customConfiguration = null) where T : EntityBase
+    {
+        var name = typeof(T).Name;
+        mb.Entity<T>(e =>
+        {
+            e.ToTable(name);
+            e.HasKey(x => x.Id);
+            customConfiguration?.Invoke(e);
+            e.HasQueryFilter(x => x.EntityStatus != eEntityStatus.Deleted);
+        });
     }
 }
 
