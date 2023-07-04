@@ -15,13 +15,12 @@ public partial class AppDbContext
             e.HasOne(x => x.ParentCategory).WithMany(x => x.ChildCategories);
         });
 
-
         ConfigureEntity<Composite>(modelBuilder, e =>
         {
             e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
             e.HasOne(x => x.Category).WithMany(x => x.Composites);
-            e.HasOne(x => x.UnitOfMeasure);
+            e.HasOne(x => x.UnitOfMeasure).WithMany(x => x.Composites);
         });
 
         ConfigureEntity<CompositeSoldEvent>(modelBuilder);
@@ -31,7 +30,7 @@ public partial class AppDbContext
             e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
             e.HasOne(x => x.Category).WithMany(x => x.Elements);
-            e.HasOne(x => x.UnitOfMeasure);//.WithMany(x => x.Elements);
+            e.HasOne(x => x.UnitOfMeasure).WithMany(x => x.Elements);
         });
 
         ConfigureEntity<ElementPurchasedEvent>(modelBuilder);
@@ -43,7 +42,6 @@ public partial class AppDbContext
         ConfigureEntity<ElementDiscardedEvent>(modelBuilder);
 
         ConfigureEntity<ElementSoldEvent>(modelBuilder);
-
 
         ConfigureEntity<Price>(modelBuilder, (e) =>
         {
