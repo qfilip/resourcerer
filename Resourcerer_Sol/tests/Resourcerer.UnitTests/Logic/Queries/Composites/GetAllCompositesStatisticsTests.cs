@@ -1,6 +1,6 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Composites;
+using Resourcerer.Dtos;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Queries.Composites;
 using Resourcerer.UnitTests.Utilities;

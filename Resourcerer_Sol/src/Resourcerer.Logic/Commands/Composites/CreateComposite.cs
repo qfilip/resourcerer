@@ -1,6 +1,6 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Composites;
+using Resourcerer.Dtos;
 
 namespace Resourcerer.Logic.Commands.Composites;
 

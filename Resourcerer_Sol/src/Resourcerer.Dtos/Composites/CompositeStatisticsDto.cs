@@ -1,4 +1,4 @@
-﻿namespace Resourcerer.Dtos.Composites;
+﻿namespace Resourcerer.Dtos;
 
 public class CompositeStatisticsDto : BaseDto
 {

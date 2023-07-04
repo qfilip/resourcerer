@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
-using Resourcerer.Dtos.Categories;
+using Resourcerer.Dtos;
 
 namespace Resourcerer.Logic.Queries.Categories;
 

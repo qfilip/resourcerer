@@ -1,10 +1,6 @@
 ﻿using FluentValidation;
-using Resourcerer.Dtos.Categories;
-using Resourcerer.Dtos.CompositeSoldEvents;
-using Resourcerer.Dtos.Excerpts;
-using Resourcerer.Dtos.Prices;
 
-namespace Resourcerer.Dtos.Composites;
+namespace Resourcerer.Dtos;
 
 public class CompositeDto : EntityDto
 {

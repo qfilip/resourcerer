@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Resourcerer.Dtos.Elements;
+namespace Resourcerer.Dtos;
 
 public class CreateElementDto
 {

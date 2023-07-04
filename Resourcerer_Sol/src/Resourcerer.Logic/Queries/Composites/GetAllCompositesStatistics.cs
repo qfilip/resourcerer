@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
-using Resourcerer.Dtos.Composites;
+using Resourcerer.Dtos;
 using Resourcerer.Utilities;
 
 namespace Resourcerer.Logic.Queries.Composites;

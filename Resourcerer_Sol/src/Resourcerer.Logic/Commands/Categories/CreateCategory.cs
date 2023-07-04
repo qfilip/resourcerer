@@ -1,6 +1,6 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Categories;
+using Resourcerer.Dtos;
 
 namespace Resourcerer.Logic.Commands.Categories;
 

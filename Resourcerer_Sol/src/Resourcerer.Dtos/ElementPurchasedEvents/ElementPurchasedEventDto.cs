@@ -1,6 +1,6 @@
 ﻿using Resourcerer.Dtos.Elements;
 
-namespace Resourcerer.Dtos.ElementPurchasedEvents;
+namespace Resourcerer.Dtos;
 
 public class ElementPurchasedEventDto : EntityDto
 {

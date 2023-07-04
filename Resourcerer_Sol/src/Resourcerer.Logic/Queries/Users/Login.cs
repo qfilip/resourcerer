@@ -1,6 +1,5 @@
 ﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
-using Resourcerer.Dtos.Users;
 using Resourcerer.Utilities.Cryptography;
 using System.Text.Json;
 

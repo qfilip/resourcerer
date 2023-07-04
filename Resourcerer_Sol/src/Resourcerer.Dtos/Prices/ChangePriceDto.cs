@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Resourcerer.Dtos.Prices;
+namespace Resourcerer.Dtos;
 
 public class ChangePriceDto : BaseDto
 {

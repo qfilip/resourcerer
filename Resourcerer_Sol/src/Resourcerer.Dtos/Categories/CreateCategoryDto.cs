@@ -1,4 +1,4 @@
-﻿namespace Resourcerer.Dtos.Categories;
+﻿namespace Resourcerer.Dtos;
 
 public class CreateCategoryDto : BaseDto
 {

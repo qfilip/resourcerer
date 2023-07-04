@@ -1,10 +1,7 @@
 ﻿using FluentValidation;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Categories;
-using Resourcerer.Dtos.Excerpts;
-using Resourcerer.Dtos.UnitsOfMeasure;
 
-namespace Resourcerer.Dtos.Elements;
+namespace Resourcerer.Dtos;
 
 public class ElementDto : EntityDto
 {

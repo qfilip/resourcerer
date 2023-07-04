@@ -1,6 +1,4 @@
-﻿using Resourcerer.Dtos.Elements;
-
-namespace Resourcerer.Dtos.ElementInstances;
+﻿namespace Resourcerer.Dtos;
 
 public class ElementInstanceDto : EntityDto
 {
