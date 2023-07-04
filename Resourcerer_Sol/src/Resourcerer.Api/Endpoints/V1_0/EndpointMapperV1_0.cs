@@ -14,7 +14,6 @@ public class EndpointMapperV1_0
     {
         MapCategories(app);
         MapComposites(app);
-        MapElementPurchasedEvents(app);
         MapElements(app);
         MapMocks(app);
         MapUnitsOfMeasure(app);
@@ -38,13 +37,6 @@ public class EndpointMapperV1_0
         GetAllCompositesStatisticsEndpoint.MapToGroup(g);
     }
 
-    private static void MapElementPurchasedEvents(WebApplication app)
-    {
-        var g = EndpointMapper.GetGroup(app, Version, "ElementPurchasedEvents");
-
-        CreateElementPurchasedEndpoint.MapToGroup(g);
-    }
-
     private static void MapElements(WebApplication app)
     {
         var g = EndpointMapper.GetGroup(app, Version, "Elements");
@@ -52,6 +44,7 @@ public class EndpointMapperV1_0
         ChangeElementPriceEndpoint.MapToGroup(g);
         CreateElementDeliveredEndpoint.MapToGroup(g);
         CreateElementEndpoint.MapToGroup(g);
+        CreateElementPurchaseCancelledEventEndpoint.MapToGroup(g);
         CreateElementPurchasedEndpoint.MapToGroup(g);
         GetAllElementsStatisticsEndpoint.MapToGroup(g);
     }

@@ -5,7 +5,7 @@ using Resourcerer.Dtos;
 
 namespace Resourcerer.Logic.Commands.Elements.Events;
 
-public class CreateElementDeliveredEvent
+public static class CreateElementDeliveredEvent
 {
     public class Handler : IRequestHandler<CreateElementDeliveredEventDto, Unit>
     {
@@ -17,6 +17,15 @@ public class CreateElementDeliveredEvent
 
         public async Task<HandlerResult<Unit>> Handle(CreateElementDeliveredEventDto request)
         {
+            var cancellationEvent = await _appDbContext.ElementPurchaseCancelledEvents
+                .FirstOrDefaultAsync(x => x.ElementPurchasedEventId == request.ElementPurchasedEventId);
+
+            if (cancellationEvent != null)
+            {
+                var error = "Purchase was cancelled, and cannot be delivered";
+                return HandlerResult<Unit>.ValidationError(error);
+            }
+
             var purchaseEvent = await _appDbContext.ElementPurchasedEvents
                 .FirstOrDefaultAsync(x => x.Id == request.ElementPurchasedEventId);
 

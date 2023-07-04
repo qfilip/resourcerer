@@ -5,19 +5,19 @@ using Resourcerer.Logic.Commands.Elements.Events;
 
 namespace Resourcerer.Api.Endpoints.V1_0.Elements;
 
-public class CreateElementDeliveredEndpoint
+public class CreateElementPurchaseCancelledEventEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] CreateElementDeliveredEventDto dto,
-        [FromServices] Pipeline pipeline,
-        [FromServices] CreateElementDeliveredEvent.Handler handler)
+       [FromBody] ElementPurchaseCancelledEventDto dto,
+       [FromServices] Pipeline pipeline,
+       [FromServices] CreateElementPurchaseCancelledEvent.Handler handler)
     {
         return await pipeline.Pipe(handler, dto);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/create-element-purchase-delivered", Action);
+        var endpoint = group.MapPost("/create-element-purchase-cancelled", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {
