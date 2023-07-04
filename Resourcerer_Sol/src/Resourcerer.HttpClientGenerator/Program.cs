@@ -36,6 +36,7 @@ public class Dependency { }
 public class TestDto
 {
     public Guid Id { get; set; }
+    public string? Oooh { get; set; }
     public Guid? MaybeId { get; set; }
     public DateTime DoB { get; set; }
     public List<int>? PrimitiveList { get; set; }

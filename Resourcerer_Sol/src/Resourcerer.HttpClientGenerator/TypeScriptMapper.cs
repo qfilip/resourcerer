@@ -9,15 +9,16 @@ public class TypeScriptMapper
     private List<string> _files = new();
     private StringBuilder _outer = new StringBuilder();
     private StringBuilder _inner = new StringBuilder();
-    private readonly Dictionary<string, string> _exportTypes = new()
+    private readonly Dictionary<string, ExportType> _exportTypes = new()
     {
-        { typeof(int).Name, "number" },
-        { typeof(double).Name, "number" },
-        { typeof(decimal).Name, "number" },
-        { typeof(bool).Name, "boolean" },
-        { typeof(Guid).Name, "string" },
-        { typeof(string).Name, "string" },
-        { typeof(DateTime).Name, "Date" }
+        { typeof(int).Name, new ExportType() { DataType = "number" } },
+        { typeof(double).Name, new ExportType() { DataType = "number" } },
+        { typeof(decimal).Name, new ExportType() { DataType = "number" } },
+        { typeof(bool).Name, new ExportType() { DataType = "boolean" } },
+        { typeof(Guid).Name, new ExportType() { DataType = "string" } },
+        { typeof(Guid?).Name, new ExportType() { DataType = "string", IsNullable = true } },
+        { typeof(string).Name, new ExportType() { DataType = "string" } },
+        { typeof(DateTime).Name, new ExportType() { DataType = "Date" } }
     };
     
     public TypeScriptMapper()
@@ -26,6 +27,8 @@ public class TypeScriptMapper
     }
     public void Export(Type t)
     {
+        var imports = new HashSet<string>();
+        
         var propInfo = t.GetProperties();
         var file = Path.Combine(_solutionPath, $"I{t.Name}.ts");
         
@@ -34,12 +37,27 @@ public class TypeScriptMapper
             var tsType = GetTsType(prop);
             _inner.Append("\t");
             _inner.Append(ToCamelCase(prop.Name));
-            // is nullable
+            
+            if(tsType.IsNullable)
+            {
+                _inner.Append("?");
+            }
+            
             _inner.Append(":");
-            _inner.Append($" {tsType};");
+            _inner.Append($" {tsType.DataType};");
             _inner.Append(Environment.NewLine);
+            
+            if(tsType.ForImport != null)
+            {
+                imports.Add(tsType.ForImport);
+            }
         }
-        // _outer add imports here
+
+        foreach(var i in imports)
+        {
+            _outer.Append($"import I{i} from blah");
+        }
+
         _outer.Append($"export default interface I{t.Name}");
         
         if (t.BaseType!.Name != typeof(Object).Name)
@@ -56,21 +74,23 @@ public class TypeScriptMapper
         
         _inner.Clear();
         _outer.Clear();
+        imports.Clear();
     }
 
-    private string GetTsType(PropertyInfo propInfo)
+    private ExportType GetTsType(PropertyInfo propInfo)
     {
         if (propInfo.PropertyType.IsGenericType && propInfo.PropertyType.GetGenericTypeDefinition()== typeof(List<>))
         {
             Type itemType = propInfo.PropertyType.GetGenericArguments()[0];
+            return new ExportType() { DataType = "blargh" };
         }
-        if (_exportTypes.TryGetValue(propInfo.PropertyType.Name, out string? val))
+        else if (_exportTypes.TryGetValue(propInfo.PropertyType.Name, out ExportType? val))
         {
             return val;
         }
         else
         {
-            return "blargh";
+            return new ExportType() { DataType = "blargh" };
         }
     }
 
@@ -78,4 +98,11 @@ public class TypeScriptMapper
     {
         return Char.ToLowerInvariant(s[0]) + s.Substring(1);
     }
+}
+
+public class ExportType
+{
+    public bool IsNullable { get; set; }
+    public string? DataType { get; set; }
+    public string? ForImport { get; set; }
 }
