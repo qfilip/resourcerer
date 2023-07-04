@@ -21,6 +21,7 @@ public partial class AppDbContext
             e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
             e.HasOne(x => x.Category).WithMany(x => x.Composites);
+            e.HasOne(x => x.UnitOfMeasure);
         });
 
         ConfigureEntity<CompositeSoldEvent>(modelBuilder);
@@ -30,7 +31,7 @@ public partial class AppDbContext
             e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
             e.HasOne(x => x.Category).WithMany(x => x.Elements);
-            e.HasOne(x => x.UnitOfMeasure).WithMany(x => x.Elements);
+            e.HasOne(x => x.UnitOfMeasure);//.WithMany(x => x.Elements);
         });
 
         ConfigureEntity<ElementPurchasedEvent>(modelBuilder);

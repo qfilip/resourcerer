@@ -13,7 +13,10 @@ public class Composite : EntityBase
 
     public Guid CategoryId { get; set; }
     public virtual Category? Category { get; set; }
-    
+
+    public Guid UnitOfMeasureId { get;set; }
+    public virtual UnitOfMeasure? UnitOfMeasure { get; set; }
+
     public ICollection<Excerpt> Excerpts { get; set; }
     public ICollection<Price> Prices { get; set; }
     public ICollection<Instance> CompositeInstances { get; set; }
