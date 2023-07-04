@@ -22,9 +22,9 @@ public class CreateElementPurchaseEndpoint
     {
         var endpoint = group.MapPost("/create-element-purchase", Action);
 
-        EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {
-            (nameof(ElementPurchasedEvent), new[] { ePermission.Write.ToString() })
+            (eSection.Element, new[] { ePermission.Write })
         });
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Resourcerer.Api.Endpoints.V1_0;
+using Resourcerer.Dtos;
 using System.Text.RegularExpressions;
 
 namespace Resourcerer.Api.Endpoints;
@@ -12,12 +13,17 @@ public static class EndpointMapper
 
     public static void AddAuthorization(
         RouteHandlerBuilder route,
-        List<(string claimType, string[] claimValues)> claims)
+        List<(eSection claimType, ePermission[] claimValues)> claims)
     {
         if (false)
         {
             route.RequireAuthorization(cfg =>
-                claims.ForEach(c => cfg.RequireClaim(c.claimType, c.claimValues)));
+                claims.ForEach(c =>
+                {
+                    var cType = c.claimType.ToString();
+                    var cValues = c.claimValues.Select(x => x.ToString());
+                    cfg.RequireClaim(cType, cValues);
+                }));
         }
     }
 

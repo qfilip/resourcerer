@@ -23,9 +23,9 @@ public class SetPermissionsEndpoint
     {
         var endpoint = group.MapPost("/set-permissions", Action);
 
-        EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {
-            (nameof(AppUser), new[] { ePermission.Write.ToString() })
+            (eSection.User, new[] { ePermission.Write })
         });
     }
 }

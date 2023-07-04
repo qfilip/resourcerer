@@ -21,9 +21,9 @@ public class CreateCompositeEndpoint
     {
         var endpoint = group.MapPost("/create", Action);
 
-        EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {
-            (nameof(Composite), new[] { ePermission.Write.ToString() })
+            (eSection.Composite, new[] { ePermission.Write })
         });
     }
 }

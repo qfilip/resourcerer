@@ -19,9 +19,9 @@ public class GetAllElementsStatisticsEndpoint
     {
         var endpoint = group.MapGet("/statistics", Action);
 
-        EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {
-            (nameof(Element), new[] { ePermission.Read.ToString() })
+            (eSection.Element, new[] { ePermission.Read })
         });
     }
 }

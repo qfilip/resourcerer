@@ -6,18 +6,9 @@ namespace Resourcerer.Dtos;
 public class Permission
 {
     private static List<ePermission> AllPermissions = Enum.GetValues<ePermission>().ToList();
-    private static List<string> AllSets = new List<string>
-    {
-        nameof(AppUser),
-        nameof(Category),
-        nameof(Composite),
-        nameof(CompositeSoldEvent),
-        nameof(Element),
-        nameof(ElementSoldEvent),
-        nameof(Excerpt),
-        nameof(Price),
-        nameof(UnitOfMeasure)
-    };
+    private static List<string> AllSections = Enum.GetValues<eSection>()
+        .Select(x => x.ToString())
+        .ToList();
 
     public static List<string> Validate(Dictionary<string, string> permissions)
     {
@@ -26,7 +17,7 @@ public class Permission
 
         foreach(var l in lookup)
         {
-            if(!AllSets.Contains(l.Key))
+            if(!AllSections.Contains(l.Key))
             {
                 errors.Add($"Permission of type {l.Key} doesn't exist");
             }
@@ -48,7 +39,7 @@ public class Permission
     public static Dictionary<string, string> GetAllPermissionsDictionary()
     {
         var dict = new Dictionary<string, string>();
-        AllSets.ForEach(s =>
+        AllSections.ForEach(s =>
         {
             var level = 0;
             AllPermissions.ForEach(p =>
@@ -64,7 +55,7 @@ public class Permission
     public static List<Claim> GetClaimsFromDictionary(Dictionary<string, string> permissionsDict)
     {
         var setPermissions = permissionsDict
-            .Where(x => AllSets.Contains(x.Key))
+            .Where(x => AllSections.Contains(x.Key))
             .ToList();
 
         var claims = new List<Claim>();
@@ -88,7 +79,7 @@ public class Permission
     public static Dictionary<string, string> GetPermissionDictionaryFromClaims(List<Claim> claims)
     {
         var lookup = claims
-            .Where(x => AllSets.Contains(x.Type))
+            .Where(x => AllSections.Contains(x.Type))
             .ToLookup(x => x.Type);
 
         var permissionsDict = new Dictionary<string, string>();
@@ -117,4 +108,12 @@ public enum ePermission
     Read = 1,
     Write = 2,
     Remove = 4
+}
+
+public enum eSection
+{
+    User,
+    Category,
+    Element,
+    Composite
 }

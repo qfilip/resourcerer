@@ -20,9 +20,9 @@ public class GetAllCompositesStatisticsEndpoint
     {
         var endpoint = group.MapGet("/statistics", Action);
 
-        EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {
-            (nameof(Composite), new[] { ePermission.Read.ToString() })
+            (eSection.Composite, new[] { ePermission.Read })
         });
     }
 }

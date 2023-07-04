@@ -22,9 +22,9 @@ public class CreateUnitOfMeasureEndpoint
     {
         var endpoint = group.MapPost("/create", Action);
 
-        EndpointMapper.AddAuthorization(endpoint, new List<(string claimType, string[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {
-            (nameof(UnitOfMeasure), new[] { ePermission.Write.ToString() })
+            (eSection.Element, new[] { ePermission.Write })
         });
     }
 }
