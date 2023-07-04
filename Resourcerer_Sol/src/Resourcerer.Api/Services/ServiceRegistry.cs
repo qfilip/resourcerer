@@ -64,7 +64,7 @@ public static partial class ServiceRegistry
         TwoWayMap<CompositeSoldEvent, CompositeSoldEventDto>();
         TwoWayMap<Element, ElementDto>();
         TwoWayMap<ElementPurchasedEvent, ElementPurchasedEventDto>();
-        TwoWayMap<ElementSoldEvent, ElementSoldEventDto>();
+        TwoWayMap<ElementInstanceSoldEvent, ElementSoldEventDto>();
         TwoWayMap<Excerpt, ExcerptDto>();
         TwoWayMap<Price, PriceDto>();
         TwoWayMap<UnitOfMeasure, UnitOfMeasureDto>();

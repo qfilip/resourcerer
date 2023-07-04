@@ -65,7 +65,7 @@ public class CarpenterDbMocker : DbMockingFuncs
             Composites = new[] { window, boat },
             CompositeSoldEvents = Array.Empty<CompositeSoldEvent>(),
             Elements = new[] { glass, metal },
-            ElementSoldEvents = Array.Empty<ElementSoldEvent>(),
+            ElementSoldEvents = Array.Empty<ElementInstanceSoldEvent>(),
             ElementPurchasedEvents = Array.Empty<ElementPurchasedEvent>()
         };
     }

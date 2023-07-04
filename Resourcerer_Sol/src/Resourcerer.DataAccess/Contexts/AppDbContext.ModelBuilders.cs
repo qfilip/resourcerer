@@ -23,7 +23,10 @@ public partial class AppDbContext
             e.HasOne(x => x.UnitOfMeasure).WithMany(x => x.Composites);
         });
 
-        ConfigureEntity<CompositeSoldEvent>(modelBuilder);
+        ConfigureEntity<CompositeSoldEvent>(modelBuilder, e =>
+        {
+            e.HasOne(x => x.Composite).WithMany(x => x.CompositeSoldEvents);
+        });
 
         ConfigureEntity<Element>(modelBuilder, e =>
         {
@@ -33,15 +36,27 @@ public partial class AppDbContext
             e.HasOne(x => x.UnitOfMeasure).WithMany(x => x.Elements);
         });
 
-        ConfigureEntity<ElementPurchasedEvent>(modelBuilder);
+        ConfigureEntity<ElementPurchasedEvent>(modelBuilder, e =>
+        {
+            e.HasOne(x => x.Element).WithMany(x => x.ElementPurchasedEvents);
+        });
 
-        ConfigureEntity<ElementPurchaseCancelledEvent>(modelBuilder);
+        ConfigureEntity<ElementPurchaseCancelledEvent>(modelBuilder, e =>
+        {
+            e.HasOne(x => x.ElementPurchasedEvent).WithOne(x => x.ElementPurchaseCancelledEvent);
+        });
 
-        ConfigureEntity<ElementDeliveredEvent>(modelBuilder);
+        ConfigureEntity<ElementDeliveredEvent>(modelBuilder, e =>
+        {
+            e.HasOne(x => x.ElementPurchasedEvent).WithOne(x => x.ElementDeliveredEvent);
+        });
 
-        ConfigureEntity<ElementDiscardedEvent>(modelBuilder);
+        ConfigureEntity<ElementInstanceDiscardedEvent>(modelBuilder);
 
-        ConfigureEntity<ElementSoldEvent>(modelBuilder);
+        ConfigureEntity<ElementInstanceSoldEvent>(modelBuilder, e =>
+        {
+            e.HasOne(x => x.ElementInstance).WithMany(x => x.ElementInstanceSoldEvents);
+        });
 
         ConfigureEntity<Price>(modelBuilder, (e) =>
         {

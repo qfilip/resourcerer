@@ -8,5 +8,9 @@ public class ElementPurchasedEvent : EntityBase
     public UnitOfMeasure? UnitOfMeasure { get; set; }
 
     public Guid ElementId { get; set; }
+    public virtual Element? Element { get; set; }
+
+    public virtual ElementPurchaseCancelledEvent? ElementPurchaseCancelledEvent { get; set; }
+    public virtual ElementDeliveredEvent? ElementDeliveredEvent { get; set; }
 }
 

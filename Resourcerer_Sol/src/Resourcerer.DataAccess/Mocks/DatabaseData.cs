@@ -13,6 +13,6 @@ public class DatabaseData
     public IEnumerable<CompositeSoldEvent>? CompositeSoldEvents { get; set; }
     
     public IEnumerable<Element>? Elements { get; set; }
-    public IEnumerable<ElementSoldEvent>? ElementSoldEvents { get; set; }
+    public IEnumerable<ElementInstanceSoldEvent>? ElementSoldEvents { get; set; }
     public IEnumerable<ElementPurchasedEvent>? ElementPurchasedEvents { get; set; }
 }

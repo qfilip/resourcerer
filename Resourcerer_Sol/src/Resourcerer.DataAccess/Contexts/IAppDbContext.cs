@@ -20,8 +20,8 @@ public interface IAppDbContext
     public DbSet<ElementPurchasedEvent> ElementPurchasedEvents { get; set; }
     public DbSet<ElementPurchaseCancelledEvent> ElementPurchaseCancelledEvents { get; set; }
     public DbSet<ElementDeliveredEvent> ElementDeliveredEvents { get; set; }
-    public DbSet<ElementDiscardedEvent> ElementDiscardedEvents { get; set; }
-    public DbSet<ElementSoldEvent> ElementSoldEvents { get; set; }
+    public DbSet<ElementInstanceDiscardedEvent> ElementDiscardedEvents { get; set; }
+    public DbSet<ElementInstanceSoldEvent> ElementSoldEvents { get; set; }
 
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     Task<int> BaseSaveChangesAsync(CancellationToken cancellationToken = default);

@@ -81,7 +81,7 @@ public class CocktailDbMocker : DbMockingFuncs
             Composites = new[] { moscowMule, darkNstormy, ginFizz },
             CompositeSoldEvents = Array.Empty<CompositeSoldEvent>(),
             Elements = new[] { vodka, rum, gin, gingerAle, sparklingWater, lime },
-            ElementSoldEvents = Array.Empty<ElementSoldEvent>(),
+            ElementSoldEvents = Array.Empty<ElementInstanceSoldEvent>(),
             ElementPurchasedEvents = Array.Empty<ElementPurchasedEvent>()
         };
     }

@@ -35,27 +35,27 @@ public class CarpenterDbEventMocker
             }
         };
     }
-    public static List<ElementSoldEvent> GetTestElementSoldEvents(Element glass, Element metal)
+    public static List<ElementInstanceSoldEvent> GetTestElementSoldEvents(Element glass, Element metal)
     {
         return new()
         {
             new()
             {
-                ElementId = glass.Id,
+                // ElementId = glass.Id,
                 UnitOfMeasure = glass.UnitOfMeasure,
                 UnitPrice = glass.Prices.Single(x => x.EntityStatus == eEntityStatus.Active).UnitValue,
                 UnitsSold = 5
             },
             new()
             {
-                ElementId = glass.Id,
+                // ElementId = glass.Id,
                 UnitOfMeasure = glass.UnitOfMeasure,
                 UnitPrice = glass.Prices.Single(x => x.EntityStatus == eEntityStatus.Active).UnitValue,
                 UnitsSold = 5
             },
             new()
             {
-                ElementId = metal.Id,
+                // ElementId = metal.Id,
                 UnitOfMeasure = metal.UnitOfMeasure,
                 UnitPrice = metal.Prices.Single(x => x.EntityStatus == eEntityStatus.Active).UnitValue,
                 UnitsSold = 5,

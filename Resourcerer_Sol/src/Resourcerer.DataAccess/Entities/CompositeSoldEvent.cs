@@ -6,5 +6,6 @@ public class CompositeSoldEvent : EntityBase
     public int TotalDiscountPercent { get; set; }
 
     public Guid CompositeId { get; set; }
+    public virtual Composite? Composite { get; set; }
 }
 

@@ -118,11 +118,11 @@ public class DbMockingFuncs
         });
     }
 
-    protected static ElementSoldEvent MakeElementSoldEvent(Element element, UnitOfMeasure unitOfMeasure, double unitsSold, double priceByUnit, DateTime createdAt)
+    protected static ElementInstanceSoldEvent MakeElementSoldEvent(Element element, UnitOfMeasure unitOfMeasure, double unitsSold, double priceByUnit, DateTime createdAt)
     {
-        return MakeEntity(() => new ElementSoldEvent
+        return MakeEntity(() => new ElementInstanceSoldEvent
         {
-            ElementId = element.Id,
+            // ElementId = element.Id,
             UnitPrice = priceByUnit,
             UnitsSold = unitsSold,
             UnitOfMeasure = unitOfMeasure,
