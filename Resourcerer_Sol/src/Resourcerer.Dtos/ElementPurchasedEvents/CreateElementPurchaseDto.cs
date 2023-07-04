@@ -7,6 +7,7 @@ public class CreateElementPurchaseDto : BaseDto
     public Guid ElementId { get; set; }
     public double UnitsBought { get; set; }
     public double UnitPrice { get; set; }
+    public DateTime ExpectedDeliveryTime { get; set; }
     public int TotalDiscountPercent { get; set; }
 }
 

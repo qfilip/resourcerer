@@ -3,7 +3,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 
-namespace Resourcerer.Logic.Commands.ElementPurchasedEvents;
+namespace Resourcerer.Logic.Commands.Elements.Events;
 
 public static class CreateElementPurchase
 {
@@ -20,7 +20,7 @@ public static class CreateElementPurchase
                 .Include(x => x.UnitOfMeasure)
                 .FirstOrDefaultAsync(x => x.Id == request.ElementId);
 
-            if(element == null)
+            if (element == null)
             {
                 return HandlerResult<Unit>
                     .NotFound($"Element with id: {request.ElementId} not found");
@@ -32,6 +32,7 @@ public static class CreateElementPurchase
                 UnitOfMeasure = element.UnitOfMeasure,
                 UnitPrice = request.UnitPrice,
                 UnitsBought = request.UnitsBought,
+                ExpectedDeliveryTime = request.ExpectedDeliveryTime,
                 TotalDiscountPercent = request.TotalDiscountPercent
             };
 

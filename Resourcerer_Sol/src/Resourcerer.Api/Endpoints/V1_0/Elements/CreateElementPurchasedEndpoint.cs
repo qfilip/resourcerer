@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
-using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 using Resourcerer.Logic;
-using Resourcerer.Logic.Commands.ElementPurchasedEvents;
+using Resourcerer.Logic.Commands.Elements.Events;
 
-namespace Resourcerer.Api.Endpoints.V1_0.ElementPurchaseEvents;
+namespace Resourcerer.Api.Endpoints.V1_0.Elements;
 
-public class CreateElementPurchaseEndpoint
+public class CreateElementPurchasedEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] CreateElementPurchaseDto dto,
@@ -20,7 +19,7 @@ public class CreateElementPurchaseEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/create-element-purchase", Action);
+        var endpoint = group.MapPost("/create-element-purchased", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {

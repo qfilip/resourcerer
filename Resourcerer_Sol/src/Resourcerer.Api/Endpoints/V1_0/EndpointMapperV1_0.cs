@@ -1,6 +1,5 @@
 ﻿using Resourcerer.Api.Endpoints.V1_0.Categories;
 using Resourcerer.Api.Endpoints.V1_0.Composites;
-using Resourcerer.Api.Endpoints.V1_0.ElementPurchaseEvents;
 using Resourcerer.Api.Endpoints.V1_0.Elements;
 using Resourcerer.Api.Endpoints.V1_0.Mocks;
 using Resourcerer.Api.Endpoints.V1_0.UnitsOfMeasure;
@@ -43,15 +42,18 @@ public class EndpointMapperV1_0
     {
         var g = EndpointMapper.GetGroup(app, Version, "ElementPurchasedEvents");
 
-        CreateElementPurchaseEndpoint.MapToGroup(g);
+        CreateElementPurchasedEndpoint.MapToGroup(g);
     }
 
     private static void MapElements(WebApplication app)
     {
         var g = EndpointMapper.GetGroup(app, Version, "Elements");
 
-        GetAllElementsStatisticsEndpoint.MapToGroup(g);
+        ChangeElementPriceEndpoint.MapToGroup(g);
+        CreateElementDeliveredEndpoint.MapToGroup(g);
         CreateElementEndpoint.MapToGroup(g);
+        CreateElementPurchasedEndpoint.MapToGroup(g);
+        GetAllElementsStatisticsEndpoint.MapToGroup(g);
     }
 
     private static void MapMocks(WebApplication app)
