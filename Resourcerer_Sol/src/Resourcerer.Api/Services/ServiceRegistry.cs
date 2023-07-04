@@ -8,6 +8,7 @@ using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Categories;
 using Resourcerer.Dtos.Composites;
 using Resourcerer.Dtos.CompositeSoldEvents;
+using Resourcerer.Dtos.ElementInstances;
 using Resourcerer.Dtos.ElementPurchasedEvents;
 using Resourcerer.Dtos.Elements;
 using Resourcerer.Dtos.ElementSoldEvents;
@@ -72,6 +73,7 @@ public static partial class ServiceRegistry
         TwoWayMap<Composite, CompositeDto>();
         TwoWayMap<CompositeSoldEvent, CompositeSoldEventDto>();
         TwoWayMap<Element, ElementDto>();
+        TwoWayMap<ElementInstance, ElementInstanceDto>();
         TwoWayMap<ElementPurchasedEvent, ElementPurchasedEventDto>();
         TwoWayMap<ElementSoldEvent, ElementSoldEventDto>();
         TwoWayMap<Excerpt, ExcerptDto>();

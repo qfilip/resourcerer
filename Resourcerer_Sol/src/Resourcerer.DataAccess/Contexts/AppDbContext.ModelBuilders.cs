@@ -41,6 +41,13 @@ public partial class AppDbContext
             e.HasQueryFilter(x => x.EntityStatus != eEntityStatus.Deleted);
         });
 
+        modelBuilder.Entity<ElementInstance>(e =>
+        {
+            e.ToTable(nameof(ElementInstance));
+            e.HasOne(x => x.Element).WithMany(x => x.ElementInstances);
+            e.HasQueryFilter(x => x.EntityStatus != eEntityStatus.Deleted);
+        });
+
         modelBuilder.Entity<ElementPurchasedEvent>(e =>
         {
             e.ToTable(nameof(ElementPurchasedEvent));
