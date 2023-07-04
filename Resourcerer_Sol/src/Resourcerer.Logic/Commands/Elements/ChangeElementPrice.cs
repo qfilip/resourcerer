@@ -2,7 +2,7 @@
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
-using Resourcerer.Dtos.Prices;
+using Resourcerer.Dtos;
 
 namespace Resourcerer.Logic.Commands.Elements;
 

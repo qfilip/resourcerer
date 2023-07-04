@@ -1,6 +1,4 @@
-﻿using Resourcerer.Dtos.Composites;
-
-namespace Resourcerer.Dtos.CompositeSoldEvents;
+﻿namespace Resourcerer.Dtos;
 
 public class CompositeSoldEventDto : EntityDto
 {

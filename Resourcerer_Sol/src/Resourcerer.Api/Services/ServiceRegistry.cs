@@ -5,16 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Categories;
-using Resourcerer.Dtos.Composites;
-using Resourcerer.Dtos.CompositeSoldEvents;
-using Resourcerer.Dtos.ElementPurchasedEvents;
-using Resourcerer.Dtos.Elements;
-using Resourcerer.Dtos.ElementSoldEvents;
-using Resourcerer.Dtos.Excerpts;
-using Resourcerer.Dtos.Prices;
-using Resourcerer.Dtos.UnitsOfMeasure;
-using Resourcerer.Dtos.Users;
+using Resourcerer.Dtos;
 using Resourcerer.Logic;
 
 namespace Resourcerer.Api.Services;
@@ -72,7 +63,9 @@ public static partial class ServiceRegistry
         TwoWayMap<Composite, CompositeDto>();
         TwoWayMap<CompositeSoldEvent, CompositeSoldEventDto>();
         TwoWayMap<Element, ElementDto>();
+        TwoWayMap<ElementInstance, ElementInstanceDto>();
         TwoWayMap<ElementPurchasedEvent, ElementPurchasedEventDto>();
+        TwoWayMap<ElementDeliveredEvent, ElementDeliveredEventDto>();
         TwoWayMap<ElementSoldEvent, ElementSoldEventDto>();
         TwoWayMap<Excerpt, ExcerptDto>();
         TwoWayMap<Price, PriceDto>();

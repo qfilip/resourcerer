@@ -1,7 +1,4 @@
-﻿using Resourcerer.Dtos.Elements;
-using Resourcerer.Dtos.UnitsOfMeasure;
-
-namespace Resourcerer.Dtos.ElementSoldEvents;
+﻿namespace Resourcerer.Dtos;
 
 public class ElementSoldEventDto : EntityDto
 {

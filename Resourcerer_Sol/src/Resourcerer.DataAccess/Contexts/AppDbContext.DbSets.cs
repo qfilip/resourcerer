@@ -20,7 +20,13 @@ public partial class AppDbContext : DbContext, IAppDbContext
     public virtual DbSet<CompositeSoldEvent> CompositeSoldEvents { get; set; }
     
     public virtual DbSet<Element> Elements { get; set; }
+    public virtual DbSet<ElementInstance> ElementInstances { get; set; }
     public virtual DbSet<ElementPurchasedEvent> ElementPurchasedEvents { get; set; }
+    public virtual DbSet<ElementPurchaseCancelledEvent> ElementPurchaseCancelledEvents { get; set; }
+    public virtual DbSet<ElementDeliveredEvent> ElementDeliveredEvents { get; set; }
+    public virtual DbSet<ElementDiscardedEvent> ElementDiscardedEvents { get; set; }
+    
+
     public virtual DbSet<ElementSoldEvent> ElementSoldEvents { get; set; }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -1,8 +1,6 @@
 ﻿using FluentValidation;
-using Resourcerer.Dtos.Elements;
-using Resourcerer.Dtos.Excerpts;
 
-namespace Resourcerer.Dtos.UnitsOfMeasure;
+namespace Resourcerer.Dtos;
 
 public class UnitOfMeasureDto : EntityDto
 {

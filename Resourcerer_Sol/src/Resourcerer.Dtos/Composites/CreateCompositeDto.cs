@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Resourcerer.Dtos.Composites;
+namespace Resourcerer.Dtos;
 
 public class CreateCompositeDto : BaseDto
 {

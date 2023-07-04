@@ -1,7 +1,4 @@
-﻿using Resourcerer.Dtos.Composites;
-using Resourcerer.Dtos.Elements;
-
-namespace Resourcerer.Dtos.Excerpts;
+﻿namespace Resourcerer.Dtos;
 
 public class ExcerptDto : EntityDto
 {

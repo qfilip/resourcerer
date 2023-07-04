@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos;
-using Resourcerer.Dtos.Users;
 using System.Text.Json;
 
 namespace Resourcerer.Logic.Commands.Users;

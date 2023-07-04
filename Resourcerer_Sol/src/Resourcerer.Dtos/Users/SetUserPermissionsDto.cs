@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Resourcerer.Dtos.Users;
+namespace Resourcerer.Dtos;
 
 public class SetUserPermissionsDto : BaseDto
 {

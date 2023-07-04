@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Resourcerer.Dtos.ElementPurchasedEvents;
+namespace Resourcerer.Dtos;
 
 public class CreateElementPurchaseDto : BaseDto
 {

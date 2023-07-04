@@ -1,8 +1,6 @@
 ﻿using FluentValidation;
-using Resourcerer.Dtos.Composites;
-using Resourcerer.Dtos.Elements;
 
-namespace Resourcerer.Dtos.Prices;
+namespace Resourcerer.Dtos;
 
 public class PriceDto : EntityDto
 {
