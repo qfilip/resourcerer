@@ -14,7 +14,7 @@ public class Pipeline
     }
 
     public async Task<IResult> Pipe<TRequest, TResponse>(
-        IRequestHandler<TRequest, TResponse> handler,
+        IAppHandler<TRequest, TResponse> handler,
         TRequest request,
         Func<TResponse, IResult>? customOkResultMapper = null)
     {
@@ -30,7 +30,7 @@ public class Pipeline
     }
 
     public async Task<IResult> Pipe<TRequest, TRequestValidator, TResponse>(
-        IRequestHandler<TRequest, TResponse> handler,
+        IAppHandler<TRequest, TResponse> handler,
         TRequest request,
         Func<TResponse, IResult>? customOkResultMapper = null)
         where TRequest : class

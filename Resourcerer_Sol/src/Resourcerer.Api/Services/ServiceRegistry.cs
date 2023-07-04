@@ -13,12 +13,12 @@ public static partial class ServiceRegistry
 {
     public static void AddAppServices(this IServiceCollection services)
     {
-        var assembly = typeof(IRequestHandler<,>).Assembly;
+        var assembly = typeof(IAppHandler<,>).Assembly;
         
         var handlers = assembly
         .GetTypes()
         .Where(x =>
-            x.GetInterface(typeof(IRequestHandler<,>).Name) != null &&
+            x.GetInterface(typeof(IAppHandler<,>).Name) != null &&
             !x.IsAbstract &&
             !x.IsInterface)
         .ToList();

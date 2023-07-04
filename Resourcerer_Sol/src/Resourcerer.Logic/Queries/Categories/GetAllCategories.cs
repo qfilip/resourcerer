@@ -6,7 +6,7 @@ namespace Resourcerer.Logic.Queries.Categories;
 
 public static class GetAllCategories
 {
-    public class Handler : IRequestHandler<Unit, List<CategoryDto>>
+    public class Handler : IAppHandler<Unit, List<CategoryDto>>
     {
         private readonly IAppDbContext _appDbContext;
 

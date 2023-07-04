@@ -7,7 +7,7 @@ namespace Resourcerer.Logic.Commands.Elements.Events;
 
 public static class CreateElementPurchaseCancelledEvent
 {
-    public class Handler : IRequestHandler<ElementPurchaseCancelledEventDto, Unit>
+    public class Handler : IAppHandler<ElementPurchaseCancelledEventDto, Unit>
     {
         private readonly IAppDbContext _appDbContext;
         public Handler(IAppDbContext appDbContext)

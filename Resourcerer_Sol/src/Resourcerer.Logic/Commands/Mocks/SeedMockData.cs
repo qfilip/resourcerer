@@ -4,7 +4,7 @@ using Resourcerer.DataAccess.Mocks;
 namespace Resourcerer.Logic.Commands.Mocks;
 public static class SeedMockData
 {
-    public class Handler : IRequestHandler<DatabaseData, Unit>
+    public class Handler : IAppHandler<DatabaseData, Unit>
     {
         private readonly IAppDbContext _dbContext;
 

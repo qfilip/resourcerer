@@ -6,7 +6,7 @@ namespace Resourcerer.Logic.Commands.Composites;
 
 public static class CreateComposite
 {
-    public class Handler : IRequestHandler<CreateCompositeDto, Unit>
+    public class Handler : IAppHandler<CreateCompositeDto, Unit>
     {
         private readonly IAppDbContext _appDbContext;
 

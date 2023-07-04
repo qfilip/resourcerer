@@ -7,7 +7,7 @@ namespace Resourcerer.Logic.Commands.Elements.Events;
 
 public static class CreateElementDeliveredEvent
 {
-    public class Handler : IRequestHandler<CreateElementDeliveredEventDto, Unit>
+    public class Handler : IAppHandler<CreateElementDeliveredEventDto, Unit>
     {
         private readonly IAppDbContext _appDbContext;
         public Handler(IAppDbContext appDbContext)

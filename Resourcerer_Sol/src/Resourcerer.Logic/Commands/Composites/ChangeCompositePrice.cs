@@ -8,7 +8,7 @@ namespace Resourcerer.Logic.Commands.Composites;
 
 public static class ChangeCompositePrice
 {
-    public class Handler : IRequestHandler<ChangePriceDto, Unit>
+    public class Handler : IAppHandler<ChangePriceDto, Unit>
     {
         private readonly IAppDbContext _appDbContext;
         public Handler(IAppDbContext appDbContext)

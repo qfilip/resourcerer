@@ -7,7 +7,7 @@ using Resourcerer.Utilities;
 namespace Resourcerer.Logic.Queries.Elements;
 public static class GetAllElementsStatistics
 {
-    public class Handler : IRequestHandler<Unit, List<ElementStatisticsDto>>
+    public class Handler : IAppHandler<Unit, List<ElementStatisticsDto>>
     {
         private readonly IAppDbContext _appDbContext;
 

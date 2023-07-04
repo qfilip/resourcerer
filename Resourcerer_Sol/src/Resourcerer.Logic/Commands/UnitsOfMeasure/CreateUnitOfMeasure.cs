@@ -6,7 +6,7 @@ namespace Resourcerer.Logic.Commands.UnitsOfMeasure;
 
 public class CreateUnitOfMeasure
 {
-    public class Handler : IRequestHandler<UnitOfMeasureDto, Unit>
+    public class Handler : IAppHandler<UnitOfMeasureDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
 

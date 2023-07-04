@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.Logic;
 
-public interface IRequestHandler<TRequest, TResponse>
+public interface IAppHandler<TRequest, TResponse>
 {
     Task<HandlerResult<TResponse>> Handle(TRequest request);
 }

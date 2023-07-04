@@ -5,7 +5,7 @@ namespace Resourcerer.UnitTests.Utilities.FluentMocks;
 
 public static class TestHandler
 {
-    public class Handler : IRequestHandler<TestDto, Unit>
+    public class Handler : IAppHandler<TestDto, Unit>
     {
         public Task<HandlerResult<Unit>> Handle(TestDto request)
         {

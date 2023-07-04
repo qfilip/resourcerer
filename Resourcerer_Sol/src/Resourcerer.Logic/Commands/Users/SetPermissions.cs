@@ -7,7 +7,7 @@ namespace Resourcerer.Logic.Commands.Users;
 
 public static class SetPermissions
 {
-    public class Handler : IRequestHandler<SetUserPermissionsDto, Unit>
+    public class Handler : IAppHandler<SetUserPermissionsDto, Unit>
     {
         private readonly IAppDbContext _appDbContext;
 

@@ -6,7 +6,7 @@ namespace Resourcerer.Logic.Commands.Categories;
 
 public class CreateCategory
 {
-    public class Handler : IRequestHandler<CategoryDto, Unit>
+    public class Handler : IAppHandler<CategoryDto, Unit>
     {
         private readonly IAppDbContext _appDbContext;
 

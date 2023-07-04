@@ -8,7 +8,7 @@ namespace Resourcerer.Logic.Commands.Elements;
 
 public class ChangeElementPrice
 {
-    public class Handler : IRequestHandler<ChangePriceDto, Unit>
+    public class Handler : IAppHandler<ChangePriceDto, Unit>
     {
         private readonly IAppDbContext _appDbContext;
         public Handler(IAppDbContext appDbContext)

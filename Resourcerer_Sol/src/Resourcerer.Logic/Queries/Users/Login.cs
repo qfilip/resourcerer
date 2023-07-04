@@ -15,7 +15,7 @@ public static class Login
         Permissions = JsonSerializer.Serialize(Permission.GetAllPermissionsDictionary())
     };
 
-    public class Handler : IRequestHandler<AppUserDto, AppUserDto>
+    public class Handler : IAppHandler<AppUserDto, AppUserDto>
     {
         public Task<HandlerResult<AppUserDto>> Handle(AppUserDto request)
         {

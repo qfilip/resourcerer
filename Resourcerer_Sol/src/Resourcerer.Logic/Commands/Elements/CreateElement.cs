@@ -6,7 +6,7 @@ namespace Resourcerer.Logic.Commands.Elements;
 
 public static class CreateElement
 {
-    public class Handler : IRequestHandler<CreateElementDto, Unit>
+    public class Handler : IAppHandler<CreateElementDto, Unit>
     {
         private readonly IAppDbContext _appDbContext;
 

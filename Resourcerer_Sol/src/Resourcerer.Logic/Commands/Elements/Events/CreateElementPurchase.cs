@@ -7,7 +7,7 @@ namespace Resourcerer.Logic.Commands.Elements.Events;
 
 public static class CreateElementPurchase
 {
-    public class Handler : IRequestHandler<CreateElementPurchaseDto, Unit>
+    public class Handler : IAppHandler<CreateElementPurchaseDto, Unit>
     {
         private readonly IAppDbContext _appDbContext;
         public Handler(IAppDbContext appDbContext)
