@@ -10,6 +10,18 @@ public class ContextCreator: IDisposable
 {
     private readonly SqliteConnection _connection;
     private readonly DbContextOptions<AppDbContext> _options;
+    public ContextCreator()
+    {
+        _connection = new SqliteConnection("Filename=:memory:");
+        _connection.Open();
+
+        _options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseSqlite(_connection)
+            .Options;
+
+        var context = new AppDbContext(_options);
+        context.Database.EnsureCreated();
+    }
     public ContextCreator(Func<DatabaseData> seeder)
     {
         _connection = new SqliteConnection("Filename=:memory:");
