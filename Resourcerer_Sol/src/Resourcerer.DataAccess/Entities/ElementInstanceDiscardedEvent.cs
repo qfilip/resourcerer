@@ -6,5 +6,5 @@ public class ElementInstanceDiscardedEvent : EntityBase
     public string? Reason { get; set; }
     
     public Guid ElementInstanceId { get; set; }
-    public virtual Instance? Instance { get; set; }
+    public virtual Instance? ElementInstance { get; set; }
 }

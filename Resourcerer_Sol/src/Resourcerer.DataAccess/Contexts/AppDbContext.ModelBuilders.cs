@@ -51,7 +51,10 @@ public partial class AppDbContext
             e.HasOne(x => x.ElementPurchasedEvent).WithOne(x => x.ElementDeliveredEvent);
         });
 
-        ConfigureEntity<ElementInstanceDiscardedEvent>(modelBuilder);
+        ConfigureEntity<ElementInstanceDiscardedEvent>(modelBuilder, e =>
+        {
+            e.HasOne(x => x.ElementInstance).WithMany(x => x.ElementInstanceDiscardedEvents);
+        });
 
         ConfigureEntity<ElementInstanceSoldEvent>(modelBuilder, e =>
         {
