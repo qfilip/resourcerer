@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
-using Resourcerer.Logic.Commands.Elements.Events;
+using Resourcerer.Logic.Commands.ElementEvents;
 
 namespace Resourcerer.Api.Endpoints.V1_0.Elements;
 
