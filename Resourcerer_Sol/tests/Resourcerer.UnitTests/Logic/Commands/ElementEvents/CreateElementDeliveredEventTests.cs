@@ -21,11 +21,11 @@ public class CreateElementDeliveredEventTests
     }
 
     [Fact]
-    public async Task Ok_ElementInstanceCreated_When_ElementPurchasedEvent_Exists()
+    public void When_ElementPurchasedEvent_Exists_Then_Ok_And_ElementInstance_Created()
     {
         // arrange
         _testDbContext.ElementPurchasedEvents.Add(_testPurchasedEvent);
-        await _testDbContext.SaveChangesAsync();
+        _testDbContext.SaveChanges();
 
         var dto = new CreateElementDeliveredEventDto
         {
@@ -33,16 +33,34 @@ public class CreateElementDeliveredEventTests
         };
 
         // act
-        var result = await _handler.Handle(dto);
+        var result = _handler.Handle(dto).GetAwaiter().GetResult();
+        var deliveredEventEntities = _testDbContext.ElementDeliveredEvents.ToList();
+        var instanceEntities = _testDbContext.Instances.ToList();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-        await _testDbContext.Instances
-            .FirstAsync(x => x.ElementId == _testPurchasedEvent.ElementId);
+        Assert.Single(deliveredEventEntities);
+        Assert.Single(instanceEntities);
+        Assert.Equal(_testPurchasedEvent.ElementId, instanceEntities[0].ElementId);
     }
 
     [Fact]
-    public async Task ValidationError_When_ElementPurchaseCancelledEvent_Exists()
+    public void When_ElementPurchasedEvent_NotExists_Then_ValidationError()
+    {
+        var dto = new CreateElementDeliveredEventDto
+        {
+            ElementPurchasedEventId = _testPurchasedEvent.Id
+        };
+
+        // act
+        var result = _handler.Handle(dto).GetAwaiter().GetResult();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.ValidationError, result.Status);
+    }
+
+    [Fact]
+    public void When_ElementPurchaseCancelledEvent_Exists_Then_ValidationError()
     {
         // arrange
         _testDbContext.ElementPurchasedEvents.Add(_testPurchasedEvent);
@@ -50,7 +68,7 @@ public class CreateElementDeliveredEventTests
         {
             ElementPurchasedEventId = _testPurchasedEvent.Id
         });
-        await _testDbContext.SaveChangesAsync();
+        _testDbContext.SaveChanges();
 
         var dto = new CreateElementDeliveredEventDto()
         {
@@ -58,24 +76,22 @@ public class CreateElementDeliveredEventTests
         };
 
         // act
-        var result = await _handler.Handle(dto);
-
+        var result = _handler.Handle(dto).GetAwaiter().GetResult();
+        var entites = _testDbContext.ElementDeliveredEvents.ToList();
+        
         // assert
         Assert.Equal(eHandlerResultStatus.ValidationError, result.Status);
+        Assert.Empty(entites);
     }
 
     [Fact]
-    public async Task IsIdempotent()
+    public void IsIdempotent()
     {
         // arrange
         _testDbContext.ElementPurchasedEvents.Add(_testPurchasedEvent);
-        await _testDbContext.SaveChangesAsync();
+        _testDbContext.SaveChanges();
 
-        var dto1 = new CreateElementDeliveredEventDto
-        {
-            ElementPurchasedEventId = _testPurchasedEvent.Id
-        };
-        var dto2 = new CreateElementDeliveredEventDto
+        var dto = new CreateElementDeliveredEventDto
         {
             ElementPurchasedEventId = _testPurchasedEvent.Id
         };
@@ -83,11 +99,13 @@ public class CreateElementDeliveredEventTests
         // act
         var results = new[]
         {
-            await _handler.Handle(dto1),
-            await _handler.Handle(dto2)
+            _handler.Handle(dto).GetAwaiter().GetResult(),
+            _handler.Handle(dto).GetAwaiter().GetResult()
         };
+        var entites = _testDbContext.ElementDeliveredEvents.ToList();
 
         // assert
         results.Every(x => Assert.Equal(eHandlerResultStatus.Ok, x.Status));
+        Assert.Single(entites);
     }
 }

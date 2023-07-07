@@ -26,7 +26,7 @@ public static class CreateElementDeliveredEvent
             if (purchaseEvent == null)
             {
                 var message = $"Purchase event with id {request.ElementPurchasedEventId} not found";
-                return HandlerResult<Unit>.NotFound(message);
+                return HandlerResult<Unit>.ValidationError(message);
             }
 
             if (purchaseEvent.ElementPurchaseCancelledEvent != null)
