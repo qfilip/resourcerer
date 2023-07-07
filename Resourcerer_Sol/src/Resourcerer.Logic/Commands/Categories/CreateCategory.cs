@@ -1,4 +1,5 @@
-﻿using Resourcerer.DataAccess.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 
@@ -17,10 +18,28 @@ public class CreateCategory
 
         public async Task<HandlerResult<Unit>> Handle(CategoryDto request)
         {
+            var existing = await _appDbContext.Categories
+                .Where(x =>
+                    x.Name == request.Name ||
+                    x.Id == request.ParentCategoryId)
+                .ToListAsync();
+
+            if(existing.Any(x => x.Name == request.Name))
+            {
+                var error = $"Category with name {request.Name} already exists";
+                return HandlerResult<Unit>.ValidationError(error);
+            }
+
+            if(request.ParentCategoryId != null && !existing.Any(x => x.Id == request.ParentCategoryId))
+            {
+                var error = $"Parent category with id {request.ParentCategoryId} doesn't exist";
+                return HandlerResult<Unit>.ValidationError(error);
+            }
+
             var entity = new Category
             {
                 Name = request.Name,
-                ParentCategoryId = request.ParentCategoryId,
+                ParentCategoryId = request.ParentCategoryId
             };
 
             _appDbContext.Categories.Add(entity);
