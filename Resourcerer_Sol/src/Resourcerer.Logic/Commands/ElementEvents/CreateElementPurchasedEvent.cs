@@ -5,16 +5,16 @@ using Resourcerer.Dtos;
 
 namespace Resourcerer.Logic.Commands.ElementEvents;
 
-public static class CreateElementPurchase
+public static class CreateElementPurchasedEvent
 {
-    public class Handler : IAppHandler<CreateElementPurchaseDto, Unit>
+    public class Handler : IAppHandler<CreateElementPurchasedEventDto, Unit>
     {
         private readonly IAppDbContext _appDbContext;
         public Handler(IAppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
-        public async Task<HandlerResult<Unit>> Handle(CreateElementPurchaseDto request)
+        public async Task<HandlerResult<Unit>> Handle(CreateElementPurchasedEventDto request)
         {
             var element = await _appDbContext.Elements
                 .Include(x => x.UnitOfMeasure)

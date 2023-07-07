@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class CreateElementPurchaseDto : BaseDto
+public class CreateElementPurchasedEventDto : BaseDto
 {
     public Guid ElementId { get; set; }
     public double UnitsBought { get; set; }
@@ -11,7 +11,7 @@ public class CreateElementPurchaseDto : BaseDto
     public int TotalDiscountPercent { get; set; }
 }
 
-public class CreateElementPurchaseDtoValidator: AbstractValidator<CreateElementPurchaseDto>
+public class CreateElementPurchaseDtoValidator: AbstractValidator<CreateElementPurchasedEventDto>
 {
     public CreateElementPurchaseDtoValidator()
     {

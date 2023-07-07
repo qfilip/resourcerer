@@ -9,11 +9,11 @@ namespace Resourcerer.Api.Endpoints.V1_0.Elements;
 public class CreateElementPurchasedEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] CreateElementPurchaseDto dto,
+        [FromBody] CreateElementPurchasedEventDto dto,
         [FromServices] Pipeline pipeline,
-        [FromServices] CreateElementPurchase.Handler handler)
+        [FromServices] CreateElementPurchasedEvent.Handler handler)
     {
-        return await pipeline.Pipe<CreateElementPurchaseDto, CreateElementPurchaseDtoValidator, Unit>
+        return await pipeline.Pipe<CreateElementPurchasedEventDto, CreateElementPurchaseDtoValidator, Unit>
             (handler, dto);
     }
 
