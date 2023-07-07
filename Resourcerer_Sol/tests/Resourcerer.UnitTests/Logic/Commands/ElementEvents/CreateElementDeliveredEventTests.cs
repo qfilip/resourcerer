@@ -45,16 +45,16 @@ public class CreateElementDeliveredEventTests
     public async Task ValidationError_When_ElementPurchaseCancelledEvent_Exists()
     {
         // arrange
-        var @event = new ElementDeliveredEvent
+        _testDbContext.ElementPurchasedEvents.Add(_testPurchasedEvent);
+        _testDbContext.ElementPurchaseCancelledEvents.Add(new()
         {
-            ElementPurchasedEventId= Guid.NewGuid()
-        };
-        _testDbContext.ElementDeliveredEvents.Add(@event);
+            ElementPurchasedEventId = _testPurchasedEvent.Id
+        });
         await _testDbContext.SaveChangesAsync();
 
         var dto = new CreateElementDeliveredEventDto()
         {
-            ElementPurchasedEventId = Guid.NewGuid()
+            ElementPurchasedEventId = _testPurchasedEvent.Id
         };
 
         // act
@@ -68,17 +68,16 @@ public class CreateElementDeliveredEventTests
     public async Task IsIdempotent()
     {
         // arrange
-        var epe = new ElementPurchasedEvent { Id = Guid.NewGuid() };
-        _testDbContext.ElementPurchasedEvents.Add(epe);
+        _testDbContext.ElementPurchasedEvents.Add(_testPurchasedEvent);
         await _testDbContext.SaveChangesAsync();
 
         var dto1 = new CreateElementDeliveredEventDto
         {
-            ElementPurchasedEventId = epe.Id
+            ElementPurchasedEventId = _testPurchasedEvent.Id
         };
         var dto2 = new CreateElementDeliveredEventDto
         {
-            ElementPurchasedEventId = epe.Id
+            ElementPurchasedEventId = _testPurchasedEvent.Id
         };
 
         // act
@@ -90,19 +89,6 @@ public class CreateElementDeliveredEventTests
 
         // assert
         results.Every(x => Assert.Equal(eHandlerResultStatus.Ok, x.Status));
-    }
-
-    [Fact]
-    public async Task ThrowsException_When_ElementPurchasedEvent_DoesntExist()
-    {
-        // arrange
-        var dto = new CreateElementDeliveredEventDto()
-        {
-            ElementPurchasedEventId = Guid.NewGuid()
-        };
-
-        // act & assert
-        await Assert.ThrowsAsync<Exception>(() => _handler.Handle(dto));
     }
 
     private static ElementPurchasedEvent PrepareData(IAppDbContext ctx)

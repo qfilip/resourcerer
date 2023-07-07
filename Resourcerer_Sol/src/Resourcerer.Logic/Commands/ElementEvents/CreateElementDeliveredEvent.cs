@@ -2,6 +2,7 @@
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
+using System.Diagnostics;
 
 namespace Resourcerer.Logic.Commands.ElementEvents;
 
@@ -17,21 +18,26 @@ public static class CreateElementDeliveredEvent
 
         public async Task<HandlerResult<Unit>> Handle(CreateElementDeliveredEventDto request)
         {
-            var cancellationEvent = await _appDbContext.ElementPurchaseCancelledEvents
-                .FirstOrDefaultAsync(x => x.ElementPurchasedEventId == request.ElementPurchasedEventId);
+            var purchaseEvent = await _appDbContext.ElementPurchasedEvents
+                .Include(x => x.ElementPurchaseCancelledEvent)
+                .Include(x => x.ElementPurchaseCancelledEvent)
+                .FirstOrDefaultAsync(x => x.Id == request.ElementPurchasedEventId);
+            
+            if (purchaseEvent == null)
+            {
+                var message = $"Purchase event with id {request.ElementPurchasedEventId} not found";
+                return HandlerResult<Unit>.NotFound(message);
+            }
 
-            if (cancellationEvent != null)
+            if (purchaseEvent.ElementPurchaseCancelledEvent != null)
             {
                 var error = "Purchase was cancelled, and cannot be delivered";
                 return HandlerResult<Unit>.ValidationError(error);
             }
 
-            var purchaseEvent = await _appDbContext.ElementPurchasedEvents
-                .FirstOrDefaultAsync(x => x.Id == request.ElementPurchasedEventId);
-
-            if (purchaseEvent == null)
+            if(purchaseEvent.ElementDeliveredEvent != null)
             {
-                return HandlerResult<Unit>.NotFound("Purchase event not found");
+                return HandlerResult<Unit>.Ok(new Unit());
             }
 
             var deliveredEvent = new ElementDeliveredEvent
