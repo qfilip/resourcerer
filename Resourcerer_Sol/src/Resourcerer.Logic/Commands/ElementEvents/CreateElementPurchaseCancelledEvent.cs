@@ -16,13 +16,26 @@ public static class CreateElementPurchaseCancelledEvent
         }
         public async Task<HandlerResult<Unit>> Handle(ElementPurchaseCancelledEventDto request)
         {
-            var deliveryEvent = await _appDbContext.ElementDeliveredEvents
-                .FirstOrDefaultAsync(x => x.ElementPurchasedEventId == request.ElementPurchasedEventId);
+            var purchaseEvent = await _appDbContext.ElementPurchasedEvents
+                .Include(x => x.ElementDeliveredEvent)
+                .Include(x => x.ElementPurchaseCancelledEvent)
+                .FirstOrDefaultAsync(x => x.Id == request.ElementPurchasedEventId);
 
-            if (deliveryEvent != null)
+            if(purchaseEvent == null)
+            {
+                var error = $"Purchase event with id {request.ElementPurchasedEventId} not found";
+                return HandlerResult<Unit>.ValidationError(error);
+            }
+
+            if (purchaseEvent.ElementDeliveredEvent != null)
             {
                 var error = "Purchase was delivered, and cannot be cancelled";
                 return HandlerResult<Unit>.ValidationError(error);
+            }
+
+            if (purchaseEvent.ElementPurchaseCancelledEvent != null)
+            {
+                return HandlerResult<Unit>.Ok(new Unit());
             }
 
             var entity = new ElementPurchaseCancelledEvent

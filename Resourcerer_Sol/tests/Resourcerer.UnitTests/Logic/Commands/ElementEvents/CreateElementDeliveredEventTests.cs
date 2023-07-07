@@ -16,7 +16,7 @@ public class CreateElementDeliveredEventTests
     public CreateElementDeliveredEventTests()
     {
         _testDbContext = new ContextCreator().GetTestDbContext();
-        _testPurchasedEvent = PrepareData(_testDbContext);
+        _testPurchasedEvent = Mocker.MockElementPurchasedEvent(_testDbContext);
         _handler = new CreateElementDeliveredEvent.Handler(_testDbContext);
     }
 
@@ -89,29 +89,5 @@ public class CreateElementDeliveredEventTests
 
         // assert
         results.Every(x => Assert.Equal(eHandlerResultStatus.Ok, x.Status));
-    }
-
-    private static ElementPurchasedEvent PrepareData(AppDbContext ctx)
-    {
-        var uom = new UnitOfMeasure
-        {
-            Id = Guid.NewGuid(),
-            Name = "foo",
-            Symbol = "f"
-        };
-        var element = new Element
-        {
-            Id = Guid.NewGuid(),
-            Name = "Foo",
-            UnitOfMeasureId = uom.Id
-        };
-        ctx.UnitsOfMeasure.Add(uom);
-        ctx.Elements.Add(element);
-        ctx.BaseSaveChangesAsync().GetAwaiter().GetResult();
-
-        return new()
-        {
-            ElementId = element.Id
-        };
     }
 }

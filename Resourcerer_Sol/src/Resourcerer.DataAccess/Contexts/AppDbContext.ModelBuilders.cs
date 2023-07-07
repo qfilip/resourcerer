@@ -64,7 +64,7 @@ public partial class AppDbContext
         {
             e.HasOne(x => x.ElementPurchasedEvent).WithOne(x => x.ElementDeliveredEvent)
                 .HasForeignKey<ElementDeliveredEvent>(x => x.ElementPurchasedEventId)
-                    .IsRequired();
+                .IsRequired();
         });
 
         ConfigureEntity<ElementInstanceDiscardedEvent>(modelBuilder, e =>
