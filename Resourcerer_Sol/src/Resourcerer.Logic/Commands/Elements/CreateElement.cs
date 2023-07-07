@@ -8,9 +8,9 @@ public static class CreateElement
 {
     public class Handler : IAppHandler<CreateElementDto, Unit>
     {
-        private readonly IAppDbContext _appDbContext;
+        private readonly AppDbContext _appDbContext;
 
-        public Handler(IAppDbContext appDbContext)
+        public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }

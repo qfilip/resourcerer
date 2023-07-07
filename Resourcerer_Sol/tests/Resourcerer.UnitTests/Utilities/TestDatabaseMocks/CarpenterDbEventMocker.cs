@@ -89,7 +89,7 @@ public class CarpenterDbEventMocker
         };
     }
 
-    public static (Element glass, Element metal) GetGlassAndMetal(IAppDbContext testDbContext)
+    public static (Element glass, Element metal) GetGlassAndMetal(AppDbContext testDbContext)
     {
         var elements = testDbContext.Elements
             .Where(x => x.Name == "glass" || x.Name == "metal")
@@ -102,7 +102,7 @@ public class CarpenterDbEventMocker
 
         return (glass, metal);
     }
-    public static (Composite window, Composite boat) GetWindowAndBoat(IAppDbContext testDbContext)
+    public static (Composite window, Composite boat) GetWindowAndBoat(AppDbContext testDbContext)
     {
         var composites = testDbContext.Composites
             .Where(x => x.Name == "window" || x.Name == "boat")

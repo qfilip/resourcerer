@@ -9,9 +9,9 @@ public static class SetPermissions
 {
     public class Handler : IAppHandler<SetUserPermissionsDto, Unit>
     {
-        private readonly IAppDbContext _appDbContext;
+        private readonly AppDbContext _appDbContext;
 
-        public Handler(IAppDbContext appDbContext)
+        public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }

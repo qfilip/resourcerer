@@ -3,7 +3,7 @@ using Resourcerer.DataAccess.Entities;
 
 namespace Resourcerer.DataAccess.Contexts;
 
-public partial class AppDbContext : DbContext, IAppDbContext
+public partial class AppDbContext : DbContext
 {
 	public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
 	{

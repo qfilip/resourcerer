@@ -10,10 +10,10 @@ namespace Resourcerer.UnitTests.Logic;
 
 public class Showcase
 {
-    private readonly IAppDbContext _appDbContext;
+    private readonly AppDbContext _appDbContext;
     public Showcase()
     {
-        _appDbContext = A.Fake<IAppDbContext>();
+        _appDbContext = A.Fake<AppDbContext>();
     }
 
     [Fact(Skip = "Showcasing how to mock DbSet on fake DbContext")]

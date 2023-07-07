@@ -8,9 +8,9 @@ public class CreateCategory
 {
     public class Handler : IAppHandler<CategoryDto, Unit>
     {
-        private readonly IAppDbContext _appDbContext;
+        private readonly AppDbContext _appDbContext;
 
-        public Handler(IAppDbContext appDbContext)
+        public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }

@@ -8,9 +8,9 @@ public static class GetAllCategories
 {
     public class Handler : IAppHandler<Unit, List<CategoryDto>>
     {
-        private readonly IAppDbContext _appDbContext;
+        private readonly AppDbContext _appDbContext;
 
-        public Handler(IAppDbContext appDbContext)
+        public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }

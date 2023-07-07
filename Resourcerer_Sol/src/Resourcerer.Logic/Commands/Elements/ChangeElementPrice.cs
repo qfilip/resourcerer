@@ -10,8 +10,8 @@ public class ChangeElementPrice
 {
     public class Handler : IAppHandler<ChangePriceDto, Unit>
     {
-        private readonly IAppDbContext _appDbContext;
-        public Handler(IAppDbContext appDbContext)
+        private readonly AppDbContext _appDbContext;
+        public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }

@@ -52,7 +52,7 @@ public class ContextCreator: IDisposable
             context.SaveChanges();
         }
     }
-    public IAppDbContext GetTestDbContext()
+    public AppDbContext GetTestDbContext()
     {
         return new AppDbContext(_options);
     }

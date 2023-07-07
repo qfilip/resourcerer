@@ -9,9 +9,9 @@ public static class GetAllElementsStatistics
 {
     public class Handler : IAppHandler<Unit, List<ElementStatisticsDto>>
     {
-        private readonly IAppDbContext _appDbContext;
+        private readonly AppDbContext _appDbContext;
 
-        public Handler(IAppDbContext appDbContext)
+        public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }

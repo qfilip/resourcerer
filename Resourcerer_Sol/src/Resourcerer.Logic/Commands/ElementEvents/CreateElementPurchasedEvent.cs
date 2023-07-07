@@ -9,8 +9,8 @@ public static class CreateElementPurchasedEvent
 {
     public class Handler : IAppHandler<CreateElementPurchasedEventDto, Unit>
     {
-        private readonly IAppDbContext _appDbContext;
-        public Handler(IAppDbContext appDbContext)
+        private readonly AppDbContext _appDbContext;
+        public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }

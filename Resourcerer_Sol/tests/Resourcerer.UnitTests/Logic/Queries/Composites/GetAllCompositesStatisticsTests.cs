@@ -12,7 +12,7 @@ namespace Resourcerer.UnitTests.Logic.Queries.Composites;
 
 public class GetAllCompositesStatisticsTests
 {
-    private readonly IAppDbContext _testDbContext;
+    private readonly AppDbContext _testDbContext;
     private readonly GetAllCompositesStatistics.Handler _handler;
     public GetAllCompositesStatisticsTests()
     {

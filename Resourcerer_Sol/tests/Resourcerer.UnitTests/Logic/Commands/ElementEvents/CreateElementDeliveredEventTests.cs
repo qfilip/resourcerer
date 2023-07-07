@@ -10,7 +10,7 @@ namespace Resourcerer.UnitTests.Logic.Commands.ElementEvents;
 
 public class CreateElementDeliveredEventTests
 {
-    private readonly IAppDbContext _testDbContext;
+    private readonly AppDbContext _testDbContext;
     private readonly ElementPurchasedEvent _testPurchasedEvent;
     private readonly CreateElementDeliveredEvent.Handler _handler;
     public CreateElementDeliveredEventTests()
@@ -91,7 +91,7 @@ public class CreateElementDeliveredEventTests
         results.Every(x => Assert.Equal(eHandlerResultStatus.Ok, x.Status));
     }
 
-    private static ElementPurchasedEvent PrepareData(IAppDbContext ctx)
+    private static ElementPurchasedEvent PrepareData(AppDbContext ctx)
     {
         var uom = new UnitOfMeasure
         {

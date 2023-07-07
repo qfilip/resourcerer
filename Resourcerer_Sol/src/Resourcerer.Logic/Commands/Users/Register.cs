@@ -9,8 +9,8 @@ public static class Register
 {
     public class Handler : IAppHandler<AppUserDto, string>
     {
-        private readonly IAppDbContext _appDbContext;
-        public Handler(IAppDbContext appDbContext)
+        private readonly AppDbContext _appDbContext;
+        public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }

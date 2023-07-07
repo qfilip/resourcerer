@@ -9,8 +9,8 @@ public static class GetAllCompositesStatistics
 {
     public class Handler : IAppHandler<Unit, List<CompositeStatisticsDto>>
     {
-        private readonly IAppDbContext _appDbContext;
-        public Handler(IAppDbContext appDbContext)
+        private readonly AppDbContext _appDbContext;
+        public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
