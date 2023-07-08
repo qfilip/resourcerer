@@ -3,6 +3,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos;
+using System.Diagnostics;
 
 namespace Resourcerer.Logic.Commands.Composites;
 
@@ -18,21 +19,18 @@ public static class ChangeCompositePrice
 
         public async Task<HandlerResult<Unit>> Handle(ChangePriceDto request)
         {
-            var prices = await _appDbContext.Prices
-                .Where(x => x.CompositeId == request.EntityId)
-                .ToListAsync();
+            var composite = await _appDbContext.Composites
+                .Include(x => x.Prices)
+                .FirstOrDefaultAsync(x => x.Id == request.EntityId);
 
-            if (!prices.Any())
+            if(composite == null)
             {
-                return HandlerResult<Unit>.NotFound($"Price for entity with id {request.EntityId} not found");
+                var error = $"Composite with id {request.EntityId} doesn't exist";
+                return HandlerResult<Unit>.ValidationError(error);
             }
 
-            if (prices.Count > 1)
-            {
-                // report error
-            }
-
-            prices.ForEach(x => x.EntityStatus = eEntityStatus.Deleted);
+            foreach (var p in composite.Prices)
+                p.EntityStatus = eEntityStatus.Deleted;
 
             var price = new Price
             {

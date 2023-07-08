@@ -12,4 +12,8 @@
     <ProjectReference Include="..\Resourcerer.Utilities\Resourcerer.Utilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\Prices\" />
+  </ItemGroup>
+
 </Project>
