@@ -10,73 +10,81 @@ public partial class AppDbContext
     {
         ConfigureEntity<Category>(modelBuilder, e =>
         {
-            e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
             
             e.HasOne(x => x.ParentCategory).WithMany(x => x.ChildCategories)
-                .HasForeignKey(x => x.ParentCategoryId);
+                .HasForeignKey(x => x.ParentCategoryId)
+                .HasConstraintName($"FK_{nameof(Category)}_{nameof(Category)}");
         });
 
         ConfigureEntity<Composite>(modelBuilder, e =>
         {
-            e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
             
             e.HasOne(x => x.Category).WithMany(x => x.Composites)
-                .HasForeignKey(x => x.CategoryId).IsRequired();
-            
+                .HasForeignKey(x => x.CategoryId).IsRequired()
+                .HasConstraintName($"FK_{nameof(Composite.Category)}_{nameof(Composite)}");
+
             e.HasOne(x => x.UnitOfMeasure).WithMany(x => x.Composites)
-                .HasForeignKey(x => x.UnitOfMeasureId).IsRequired();
+                .HasForeignKey(x => x.UnitOfMeasureId).IsRequired()
+                .HasConstraintName($"FK_{nameof(Composite.UnitOfMeasure)}_{nameof(Composite)}");
         });
 
         ConfigureEntity<CompositeSoldEvent>(modelBuilder, e =>
         {
             e.HasOne(x => x.Composite).WithMany(x => x.CompositeSoldEvents)
-                .HasForeignKey(x => x.CompositeId).IsRequired();
+                .HasForeignKey(x => x.CompositeId).IsRequired()
+                .HasConstraintName($"FK_{nameof(Composite)}_{nameof(CompositeSoldEvent)}");
         });
 
         ConfigureEntity<Element>(modelBuilder, e =>
         {
-            e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
             
             e.HasOne(x => x.Category).WithMany(x => x.Elements)
-                .HasForeignKey(x => x.CategoryId).IsRequired();
-            
+                .HasForeignKey(x => x.CategoryId).IsRequired()
+                .HasConstraintName($"FK_{nameof(Category)}_{nameof(Element)}");
+
             e.HasOne(x => x.UnitOfMeasure).WithMany(x => x.Elements)
-                .HasForeignKey(x => x.UnitOfMeasureId).IsRequired();
+                .HasForeignKey(x => x.UnitOfMeasureId).IsRequired()
+                .HasConstraintName($"FK_{nameof(UnitOfMeasure)}_{nameof(Element)}");
         });
 
         ConfigureEntity<ElementPurchasedEvent>(modelBuilder, e =>
         {
             e.HasOne(x => x.Element).WithMany(x => x.ElementPurchasedEvents)
-                .HasForeignKey(x => x.ElementId).IsRequired();
+                .HasForeignKey(x => x.ElementId).IsRequired()
+                .HasConstraintName($"FK_{nameof(Element)}_{nameof(ElementPurchasedEvent)}");
         });
 
         ConfigureEntity<ElementPurchaseCancelledEvent>(modelBuilder, e =>
         {
             e.HasOne(x => x.ElementPurchasedEvent).WithOne(x => x.ElementPurchaseCancelledEvent)
                 .HasForeignKey<ElementPurchaseCancelledEvent>(x => x.ElementPurchasedEventId)
-                .IsRequired();
+                .IsRequired()
+                .HasConstraintName($"FK_{nameof(ElementPurchaseCancelledEvent)}_{nameof(ElementPurchaseCancelledEvent)}");
         });
 
         ConfigureEntity<ElementDeliveredEvent>(modelBuilder, e =>
         {
             e.HasOne(x => x.ElementPurchasedEvent).WithOne(x => x.ElementDeliveredEvent)
                 .HasForeignKey<ElementDeliveredEvent>(x => x.ElementPurchasedEventId)
-                .IsRequired();
+                .IsRequired()
+                .HasConstraintName($"FK_{nameof(ElementPurchasedEvent)}_{nameof(ElementDeliveredEvent)}");
         });
 
         ConfigureEntity<ElementInstanceDiscardedEvent>(modelBuilder, e =>
         {
             e.HasOne(x => x.ElementInstance).WithMany(x => x.ElementInstanceDiscardedEvents)
-                .HasForeignKey(x => x.ElementInstanceId).IsRequired();
+                .HasForeignKey(x => x.ElementInstanceId).IsRequired()
+                .HasConstraintName($"FK_{nameof(Instance)}_{nameof(ElementInstanceDiscardedEvent)}");
         });
 
         ConfigureEntity<ElementInstanceSoldEvent>(modelBuilder, e =>
         {
             e.HasOne(x => x.ElementInstance).WithMany(x => x.ElementInstanceSoldEvents)
-                .HasForeignKey(x => x.ElementInstanceId).IsRequired();
+                .HasForeignKey(x => x.ElementInstanceId).IsRequired()
+                .HasConstraintName($"FK_{nameof(Instance)}_{nameof(ElementInstanceSoldEvent)}");
         });
 
         ConfigureEntity<Price>(modelBuilder, (e) =>
@@ -84,10 +92,12 @@ public partial class AppDbContext
             e.Property(x => x.UnitValue).IsRequired();
             
             e.HasOne(x => x.Element).WithMany(x => x.Prices)
-                .HasForeignKey(x => x.ElementId);
+                .HasForeignKey(x => x.ElementId)
+                .HasConstraintName($"FK_{nameof(Element)}_{nameof(Price)}");
 
             e.HasOne(x => x.Composite).WithMany(x => x.Prices)
-                .HasForeignKey(x => x.CompositeId);
+                .HasForeignKey(x => x.CompositeId)
+                .HasConstraintName($"FK_{nameof(Composite)}_{nameof(Price)}");
         });
 
         ConfigureEntity<Instance>(modelBuilder, (e) =>
@@ -95,16 +105,19 @@ public partial class AppDbContext
             e.Property(x => x.Quantity).IsRequired();
 
             e.HasOne(x => x.Element).WithMany(x => x.ElementInstances)
-                .HasForeignKey(x => x.ElementId);
+                .HasForeignKey(x => x.ElementId)
+                .HasConstraintName($"FK_{nameof(Element)}_{nameof(Instance)}");
 
             e.HasOne(x => x.Composite).WithMany(x => x.CompositeInstances)
-                .HasForeignKey(x => x.CompositeId);
+                .HasForeignKey(x => x.CompositeId)
+                .HasConstraintName($"FK_{nameof(Composite)}_{nameof(Instance)}");
         });
 
         ConfigureEntity<Excerpt>(modelBuilder, (e) =>
         {
             e.HasOne(x => x.Composite).WithMany(x => x.Excerpts)
-                .HasForeignKey(x => x.CompositeId).IsRequired();
+                .HasForeignKey(x => x.CompositeId).IsRequired()
+                .HasConstraintName($"FK_{nameof(Composite)}_{nameof(Excerpt)}");
 
             e.HasOne(x => x.Element).WithMany(x => x.Excerpts)
                 .HasForeignKey(x => x.ElementId).IsRequired();
