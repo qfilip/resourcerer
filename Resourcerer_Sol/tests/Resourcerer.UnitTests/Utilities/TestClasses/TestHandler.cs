@@ -1,7 +1,6 @@
 ﻿using Resourcerer.Logic;
-using Resourcerer.UnitTests.Utilities.TestClasses;
 
-namespace Resourcerer.UnitTests.Utilities.FluentMocks;
+namespace Resourcerer.UnitTests.Utilities.TestClasses;
 
 public static class TestHandler
 {
@@ -9,7 +8,7 @@ public static class TestHandler
     {
         public Task<HandlerResult<Unit>> Handle(TestDto request)
         {
-            if(request.Property == eHandlerResult.Ok)
+            if (request.Property == eHandlerResult.Ok)
             {
                 return Task.FromResult(HandlerResult<Unit>.Ok(new Unit()));
             }

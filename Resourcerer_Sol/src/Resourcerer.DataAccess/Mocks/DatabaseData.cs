@@ -3,16 +3,14 @@
 namespace Resourcerer.DataAccess.Mocks;
 public class DatabaseData
 {
-    public IEnumerable<AppUser>? AppUsers { get; set; }
-    public IEnumerable<Category>? Categories { get; set; }
-    public IEnumerable<Excerpt>? Excerpts { get; set; }
-    public IEnumerable<UnitOfMeasure>? UnitsOfMeasure { get; set; }
-    public IEnumerable<Price>? Prices { get; set; }
-
-    public IEnumerable<Composite>? Composites { get; set; }
-    public IEnumerable<CompositeSoldEvent>? CompositeSoldEvents { get; set; }
-    
-    public IEnumerable<Element>? Elements { get; set; }
-    public IEnumerable<ElementInstanceSoldEvent>? ElementSoldEvents { get; set; }
-    public IEnumerable<ElementPurchasedEvent>? ElementPurchasedEvents { get; set; }
+    public List<AppUser> AppUsers { get; set; } = new();
+    public List<Category> Categories { get; set; } = new();
+    public List<Excerpt> Excerpts { get; set; } = new();
+    public List<UnitOfMeasure> UnitsOfMeasure { get; set; } = new();
+    public List<Price> Prices { get; set; } = new();
+    public List<Composite> Composites { get; set; } = new();
+    public List<CompositeSoldEvent> CompositeSoldEvents { get; set; } = new();
+    public List<Element> Elements { get; set; } = new();
+    public List<ElementInstanceSoldEvent> ElementSoldEvents { get; set; } = new();
+    public List<ElementPurchasedEvent> ElementPurchasedEvents { get; set; } = new();
 }

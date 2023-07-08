@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Resourcerer.Api.Services;
 using Resourcerer.Logic;
 using Resourcerer.UnitTests.Utilities;
-using Resourcerer.UnitTests.Utilities.FluentMocks;
 using Resourcerer.UnitTests.Utilities.TestClasses;
 
 namespace Resourcerer.UnitTests.Api;

@@ -134,7 +134,7 @@ public partial class AppDbContext
             e.ToTable(name);
             e.HasKey(x => x.Id);
             customConfiguration?.Invoke(e);
-            e.HasQueryFilter(x => x.EntityStatus != eEntityStatus.Deleted);
+            e.HasQueryFilter(x => x.EntityStatus == eEntityStatus.Active);
         });
     }
 }

@@ -2,9 +2,8 @@
 using MockQueryable.FakeItEasy;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Logic.Queries.Elements;
 using Resourcerer.Logic;
-using Resourcerer.UnitTests.Utilities.FluentMocks;
+using Resourcerer.Logic.Queries.Elements;
 
 namespace Resourcerer.UnitTests.Logic;
 
