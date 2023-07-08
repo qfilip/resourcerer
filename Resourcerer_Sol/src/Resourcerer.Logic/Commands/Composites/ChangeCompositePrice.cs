@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos;
-using System.Diagnostics;
 
 namespace Resourcerer.Logic.Commands.Composites;
 
@@ -12,9 +12,12 @@ public static class ChangeCompositePrice
     public class Handler : IAppHandler<ChangePriceDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
-        public Handler(AppDbContext appDbContext)
+        private readonly ILogger<Handler> _logger;
+
+        public Handler(AppDbContext appDbContext, ILogger<Handler> logger)
         {
             _appDbContext = appDbContext;
+            _logger = logger;
         }
 
         public async Task<HandlerResult<Unit>> Handle(ChangePriceDto request)
@@ -27,6 +30,11 @@ public static class ChangeCompositePrice
             {
                 var error = $"Composite with id {request.EntityId} doesn't exist";
                 return HandlerResult<Unit>.ValidationError(error);
+            }
+
+            if(composite.Prices.Count > 1)
+            {
+                _logger.LogWarning("More than one active price found for composite {id}", composite.Id);
             }
 
             foreach (var p in composite.Prices)

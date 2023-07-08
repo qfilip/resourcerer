@@ -1,4 +1,6 @@
-﻿using Resourcerer.DataAccess.Contexts;
+﻿using FakeItEasy;
+using Microsoft.Extensions.Logging;
+using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Logic.Commands.Composites;
 using Resourcerer.UnitTests.Utilities;
 
@@ -11,6 +13,6 @@ public class ChangeCompositePriceTests
     public ChangeCompositePriceTests()
     {
         _testDbContext = new ContextCreator().GetTestDbContext();
-        _handler = new ChangeCompositePrice.Handler(_testDbContext);
+        _handler = new ChangeCompositePrice.Handler(_testDbContext, A.Fake<ILogger<ChangeCompositePrice.Handler>>());
     }
 }
