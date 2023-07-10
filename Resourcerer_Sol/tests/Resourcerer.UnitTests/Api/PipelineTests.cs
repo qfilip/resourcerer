@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Logging;
 using Resourcerer.Api.Services;
 using Resourcerer.Logic;
-using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.TestClasses;
 
 namespace Resourcerer.UnitTests.Api;
@@ -19,83 +18,53 @@ public class PipelineTests
     }
 
     [Fact]
-    public async Task Pipeline_Maps_OkResult()
+    public void Pipeline_Maps_OkResult()
     {
         var handler = new TestHandler.Handler();
         var dto = new TestDto();
 
-        var iResults = new[]
-        {
-            await _pipeline.Pipe(handler, dto),
-            await _pipeline.Pipe<TestDto, TestDtoValidator, Unit>(handler, dto)
-        };
+        var result = _pipeline.Pipe(handler, dto).GetAwaiter().GetResult();
 
-        iResults.Every(x =>
-        {
-            Assert.True(x is Ok<Unit>);
-        });
+        Assert.True(result is Ok<Unit>);
     }
 
     [Fact]
-    public async Task Pipeline_Maps_ValidationErrors_To_BadRequest()
+    public void Pipeline_Maps_ValidationErrors_To_BadRequest()
     {
         var handler = new TestHandler.Handler();
         var dto = new TestDto() { Property = eHandlerResult.Invalid };
 
-        var iResults = new[]
-        {
-            await _pipeline.Pipe(handler, dto),
-            await _pipeline.Pipe<TestDto, TestDtoValidator, Unit>(handler, dto)
-        };
+        var result = _pipeline.Pipe(handler, dto).GetAwaiter().GetResult();
 
-        iResults.Every(x =>
-        {
-            var r = x as BadRequest<string[]>;
-            Assert.NotNull(r);
-            Assert.NotNull(r.Value);
-            Assert.Contains(TestDtoValidator.ErrorMessage, r.Value);
-        });
+        var r = result as BadRequest<string[]>;
+        Assert.NotNull(r);
+        Assert.NotNull(r.Value);
+        Assert.Contains(TestDto.ErrorMessage, r.Value);
     }
 
     [Fact]
-    public async Task Pipeline_Uses_CustomMapper()
+    public void Pipeline_Uses_CustomMapper()
     {
         var handler = new TestHandler.Handler();
         var dto = new TestDto();
         var customMapper = (Unit e) => Results.Accepted();
 
-        var iResults = new[]
-        {
-             await _pipeline.Pipe(handler, dto, customMapper),
-             await _pipeline
-                .Pipe<TestDto, TestDtoValidator, Unit>(handler, dto, customMapper)
-        };
+        var result = _pipeline.Pipe(handler, dto).GetAwaiter().GetResult();
 
-        iResults.Every(x =>
-        {
-            Assert.NotNull(x);
-            Assert.True(x is Accepted);
-        });
+        Assert.NotNull(result);
+        Assert.True(result is Accepted);
     }
 
     [Fact]
-    public async Task Pipeline_Skips_CustomMapper_When_Result_NotFound()
+    public void Pipeline_Skips_CustomMapper_When_Result_NotFound()
     {
         var handler = new TestHandler.Handler();
         var dto = new TestDto() { Property = eHandlerResult.NotFound };
         var customMapper = (Unit e) => Results.Accepted();
 
-        var iResults = new[]
-        {
-             await _pipeline.Pipe(handler, dto, customMapper),
-             await _pipeline
-                .Pipe<TestDto, TestDtoValidator, Unit>(handler, dto, customMapper)
-        };
+        var result = _pipeline.Pipe(handler, dto).GetAwaiter().GetResult();
 
-        iResults.Every(x =>
-        {
-            Assert.NotNull(x);
-            Assert.True(x is NotFound<Unit>);
-        });
+        Assert.NotNull(result);
+        Assert.True(result is NotFound<Unit>);
     }
 }

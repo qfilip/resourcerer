@@ -3,19 +3,21 @@ using Resourcerer.Dtos;
 
 namespace Resourcerer.UnitTests.Utilities.TestClasses;
 
-public class TestDto : BaseDto
+public class TestDto : IBaseDto<TestDto>
 {
     public eHandlerResult Property { get; set; }
-}
 
-public class TestDtoValidator : AbstractValidator<TestDto>
-{
+    public AbstractValidator<TestDto>? GetValidator() => new Validator();
+
     public const string ErrorMessage = "Test property must not be Invalid";
-
-    public TestDtoValidator()
+    private class Validator : AbstractValidator<TestDto>
     {
-        RuleFor(x => x.Property)
-            .Must(e => e != eHandlerResult.Invalid)
-            .WithMessage(ErrorMessage);
+
+        public Validator()
+        {
+            RuleFor(x => x.Property)
+                .Must(e => e != eHandlerResult.Invalid)
+                .WithMessage(ErrorMessage);
+        }
     }
 }
