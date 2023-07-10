@@ -1,20 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos;
 
 namespace Resourcerer.Logic.Commands.ElementEvents;
 
-public static class CreateElementPurchasedEvent
+public static class CreateElementOrderedEvent
 {
-    public class Handler : IAppHandler<CreateElementPurchasedEventDto, Unit>
+    public class Handler : IAppHandler<InstanceOrderedEventDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
-        public async Task<HandlerResult<Unit>> Handle(CreateElementPurchasedEventDto request)
+        public async Task<HandlerResult<Unit>> Handle(InstanceOrderedEventDto request)
         {
             //var element = await _appDbContext.Elements
             //    .Include(x => x.UnitOfMeasure)

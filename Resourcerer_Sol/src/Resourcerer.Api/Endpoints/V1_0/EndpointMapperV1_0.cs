@@ -45,8 +45,8 @@ public class EndpointMapperV1_0
         ChangeElementPriceEndpoint.MapToGroup(g);
         CreateElementDeliveredEndpoint.MapToGroup(g);
         CreateElementEndpoint.MapToGroup(g);
-        CreateElementPurchaseCancelledEventEndpoint.MapToGroup(g);
-        CreateElementPurchasedEndpoint.MapToGroup(g);
+        CreateElementOrderCancelledEventEndpoint.MapToGroup(g);
+        CreateElementOrderedEventEndpoint.MapToGroup(g);
         GetAllElementsStatisticsEndpoint.MapToGroup(g);
     }
 

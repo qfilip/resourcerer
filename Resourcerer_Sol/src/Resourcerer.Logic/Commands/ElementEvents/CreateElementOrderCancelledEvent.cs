@@ -1,20 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos;
 
 namespace Resourcerer.Logic.Commands.ElementEvents;
 
-public static class CreateElementPurchaseCancelledEvent
+public static class CreateElementOrderCancelledEvent
 {
-    public class Handler : IAppHandler<ElementPurchaseCancelledEventDto, Unit>
+    public class Handler : IAppHandler<InstanceOrderCancelledEventDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
-        public async Task<HandlerResult<Unit>> Handle(ElementPurchaseCancelledEventDto request)
+        public async Task<HandlerResult<Unit>> Handle(InstanceOrderCancelledEventDto request)
         {
             //var purchaseEvent = await _appDbContext.ElementPurchasedEvents
             //    .Include(x => x.ElementDeliveredEvent)

@@ -4,11 +4,13 @@ namespace Resourcerer.Dtos;
 
 public class DtoValidator
 {
-    public static string[] Validate<TDto, TValidator>(TDto dto)
-        where TDto : class
-        where TValidator : AbstractValidator<TDto>, new()
+    public static string[] Validate<TDto>(TDto dto, AbstractValidator<TDto>? validator)
     {
-        var validator = new TValidator();
+        if (validator == null)
+        {
+            return Array.Empty<string>();
+        }
+
         var validationResult = validator.Validate(dto);
         
         if(validationResult.IsValid)

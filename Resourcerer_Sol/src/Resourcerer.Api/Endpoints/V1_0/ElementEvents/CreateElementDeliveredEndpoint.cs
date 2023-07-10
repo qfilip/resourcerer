@@ -17,7 +17,7 @@ public class CreateElementDeliveredEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/create-element-purchase-delivered", Action);
+        var endpoint = group.MapPost("/order-delivered", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {

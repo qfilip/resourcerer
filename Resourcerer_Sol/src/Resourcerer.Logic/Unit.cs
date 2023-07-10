@@ -1,5 +1,9 @@
-﻿namespace Resourcerer.Logic;
+﻿using FluentValidation;
+using Resourcerer.Dtos;
 
-public struct Unit
+namespace Resourcerer.Logic;
+
+public struct Unit : IBaseDto<Unit>
 {
+    public AbstractValidator<Unit>? GetValidator() => null;
 }

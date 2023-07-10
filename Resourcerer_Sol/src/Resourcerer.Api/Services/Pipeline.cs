@@ -17,30 +17,13 @@ public class Pipeline
         IAppHandler<TRequest, TResponse> handler,
         TRequest request,
         Func<TResponse, IResult>? customOkResultMapper = null)
+        where TRequest : IBaseDto<TRequest>
     {
         var actionName = GetHandlerName(handler);
 
         _logger.LogInformation("Action {Action} started", actionName);
 
-        var handlerResult = await handler.Handle(request);
-
-        _logger.LogInformation("Action {Action} finished", actionName);
-
-        return MapResult(handlerResult, customOkResultMapper);
-    }
-
-    public async Task<IResult> Pipe<TRequest, TRequestValidator, TResponse>(
-        IAppHandler<TRequest, TResponse> handler,
-        TRequest request,
-        Func<TResponse, IResult>? customOkResultMapper = null)
-        where TRequest : class
-        where TRequestValidator : AbstractValidator<TRequest>, new()
-    {
-        var actionName = GetHandlerName(handler);
-
-        _logger.LogInformation("Action {Action} started", actionName);
-
-        var validationErrors = DtoValidator.Validate<TRequest, TRequestValidator>(request);
+        var validationErrors = DtoValidator.Validate(request, request.GetValidator());
         if (validationErrors.Any())
         {
             _logger.LogInformation("Action {Action} finished with validation errors", actionName);
@@ -48,6 +31,7 @@ public class Pipeline
         }
 
         var handlerResult = await handler.Handle(request);
+
         _logger.LogInformation("Action {Action} finished", actionName);
 
         return MapResult(handlerResult, customOkResultMapper);

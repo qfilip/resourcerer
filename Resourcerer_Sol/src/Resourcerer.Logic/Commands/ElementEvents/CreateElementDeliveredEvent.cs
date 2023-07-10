@@ -8,7 +8,7 @@ namespace Resourcerer.Logic.Commands.ElementEvents;
 
 public static class CreateElementDeliveredEvent
 {
-    public class Handler : IAppHandler<CreateElementDeliveredEventDto, Unit>
+    public class Handler : IAppHandler<InstanceDeliveredEventDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
@@ -16,7 +16,7 @@ public static class CreateElementDeliveredEvent
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(CreateElementDeliveredEventDto request)
+        public async Task<HandlerResult<Unit>> Handle(InstanceDeliveredEventDto request)
         {
             //var purchaseEvent = await _appDbContext.ElementPurchasedEvents
             //    .Include(x => x.ElementPurchaseCancelledEvent)
