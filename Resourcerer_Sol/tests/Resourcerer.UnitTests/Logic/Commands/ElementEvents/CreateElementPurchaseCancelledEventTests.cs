@@ -4,6 +4,7 @@ using Resourcerer.Dtos;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.ElementEvents;
 using Resourcerer.UnitTests.Utilities;
+using Resourcerer.UnitTests.Utilities.Mocker;
 
 namespace Resourcerer.UnitTests.Logic.Commands.ElementEvents;
 

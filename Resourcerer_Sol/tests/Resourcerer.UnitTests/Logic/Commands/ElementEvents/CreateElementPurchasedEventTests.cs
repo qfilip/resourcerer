@@ -1,6 +1,7 @@
-﻿using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
+﻿using Resourcerer.Dtos;
+using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.ElementEvents;
+using Resourcerer.UnitTests.Utilities.Mocker;
 
 namespace Resourcerer.UnitTests.Logic.Commands.ElementEvents;
 
@@ -13,19 +14,45 @@ public class CreateElementPurchasedEventTests : TestsBase
     }
 
     [Fact]
-    public void When_ElementExists_Then_Ok()
+    public void When_AllOk_Then_Ok()
     {
         // arrange
-        var element = Mocker.MockLE
+        var element = Mocker.MockElement(_testDbContext);
+        _testDbContext.SaveChanges();
+
         var dto = new CreateElementPurchasedEventDto
         {
-            ElementId
+            ElementId = element.Id,
+            UnitPrice = 10,
+            UnitsBought = 10,
+            ExpectedDeliveryTime = DateTime.UtcNow,
+            TotalDiscountPercent = 0
         };
 
         // act
         var result = _handler.Handle(dto).GetAwaiter().GetResult();
+        
+        // assert
+        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
     }
 
     [Fact]
-    public void When_ElementNotExists_Then_ValidationError() { }
+    public void When_ElementNotExists_Then_ValidationError()
+    {
+        // arrange
+        var dto = new CreateElementPurchasedEventDto
+        {
+            ElementId = Guid.NewGuid(),
+            UnitPrice = 10,
+            UnitsBought = 10,
+            ExpectedDeliveryTime = DateTime.UtcNow,
+            TotalDiscountPercent = 0
+        };
+
+        // act
+        var result = _handler.Handle(dto).GetAwaiter().GetResult();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.ValidationError, result.Status);
+    }
 }

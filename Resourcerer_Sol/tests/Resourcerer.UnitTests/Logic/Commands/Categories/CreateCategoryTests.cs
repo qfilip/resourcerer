@@ -1,9 +1,9 @@
 ﻿using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Categories;
 using Resourcerer.UnitTests.Utilities;
+using Resourcerer.UnitTests.Utilities.Mocker;
 
 namespace Resourcerer.UnitTests.Logic.Commands.Categories;
 
@@ -40,7 +40,7 @@ public class CreateCategoryTests
     {
         // arrange
         var existing = Mocker.MockCategory(_testDbContext);
-
+        _testDbContext.SaveChanges();
         var dto = new CategoryDto
         {
             Name = existing.Name
@@ -60,7 +60,7 @@ public class CreateCategoryTests
     {
         // arrange
         var existing = Mocker.MockCategory(_testDbContext);
-
+        _testDbContext.SaveChanges();
         var dto = new CategoryDto
         {
             ParentCategoryId = existing.Id,
