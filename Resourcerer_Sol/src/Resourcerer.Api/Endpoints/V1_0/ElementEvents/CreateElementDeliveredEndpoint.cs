@@ -8,7 +8,7 @@ namespace Resourcerer.Api.Endpoints.V1_0.ElementEvents;
 public class CreateElementDeliveredEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] CreateElementDeliveredEventDto dto,
+        [FromBody] InstanceDeliveredEventDto dto,
         [FromServices] Pipeline pipeline,
         [FromServices] CreateElementDeliveredEvent.Handler handler)
     {

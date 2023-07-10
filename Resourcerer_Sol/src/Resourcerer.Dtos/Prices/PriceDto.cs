@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class PriceDto : EntityDto
+public class PriceDto : EntityDto<PriceDto>
 {
     public double UnitValue { get; set; }
 
@@ -11,16 +11,20 @@ public class PriceDto : EntityDto
 
     public Guid? CompositeId { get; set; }
     public virtual CompositeDto? Composite { get; set; }
-}
 
-public class PriceDtoValidator : AbstractValidator<PriceDto>
-{
-    public PriceDtoValidator()
+    public override AbstractValidator<PriceDto> GetValidator() => new Validator();
+
+    public class Validator : AbstractValidator<PriceDto>
     {
-        RuleFor(x => x.CompositeId)
-            .NotEmpty().WithMessage("CompositeId cannot be emmpty value");
+        public Validator()
+        {
+            RuleFor(x => x.CompositeId)
+                .NotEmpty().WithMessage("CompositeId cannot be emmpty value");
 
-        RuleFor(x => x.UnitValue)
-            .GreaterThan(0).WithMessage("Price value must be bigger than 0");
+            RuleFor(x => x.UnitValue)
+                .GreaterThan(0).WithMessage("Price value must be bigger than 0");
+        }
     }
 }
+
+

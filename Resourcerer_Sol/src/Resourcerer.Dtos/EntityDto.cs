@@ -1,8 +1,11 @@
-﻿namespace Resourcerer.Dtos;
+﻿using FluentValidation;
 
-public abstract class EntityDto : BaseDto
+namespace Resourcerer.Dtos;
+
+public abstract class EntityDto<T> : IBaseDto<T>
 {
     public Guid Id { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime ModifiedAt { get; set; }
+    public abstract AbstractValidator<T> GetValidator();
 }

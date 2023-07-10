@@ -15,8 +15,4 @@
     <ProjectReference Include="..\Resourcerer.DataAccess\Resourcerer.DataAccess.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ElementDeliveredEvents\" />
-  </ItemGroup>
-
 </Project>

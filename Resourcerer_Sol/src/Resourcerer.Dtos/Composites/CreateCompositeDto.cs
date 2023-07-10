@@ -2,13 +2,15 @@
 
 namespace Resourcerer.Dtos;
 
-public class CreateCompositeDto : BaseDto
+public class CreateCompositeDto : IBaseDto<CreateCompositeDto>
 {
     public string? Name { get; set; }
     public Guid CategoryId { get; set; }
     public Guid UnitOfMeasureId { get; set; }
     public double UnitPrice { get; set; }
     public List<CompositeElementsDto>? Elements { get; set; }
+
+    public AbstractValidator<CreateCompositeDto>? GetValidator() => new CreateCompositeDtoValidator();
 }
 
 public class CreateCompositeDtoValidator : AbstractValidator<CreateCompositeDto>

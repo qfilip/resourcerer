@@ -1,6 +1,8 @@
-﻿namespace Resourcerer.Dtos.Elements;
+﻿using FluentValidation;
 
-public class ElementStatisticsDto : BaseDto
+namespace Resourcerer.Dtos.Elements;
+
+public class ElementStatisticsDto : IBaseDto<ElementStatisticsDto>
 {
     public Guid ElementId { get; set; }
     public string? Name { get; set; }
@@ -14,4 +16,6 @@ public class ElementStatisticsDto : BaseDto
     public double UnitsUsedInComposites { get; set; }
     public int UsedInComposites { get; set; }
     public double UnitsInStock { get; set; }
+
+    public AbstractValidator<ElementStatisticsDto>? GetValidator() => null;
 }

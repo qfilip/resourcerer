@@ -1,6 +1,8 @@
-﻿namespace Resourcerer.Dtos;
+﻿using FluentValidation;
 
-public class CompositeStatisticsDto : BaseDto
+namespace Resourcerer.Dtos;
+
+public class CompositeStatisticsDto : IBaseDto<CompositeStatisticsDto>
 {
     public Guid CompositeId { get; set; }
     public string? Name { get; set; }
@@ -10,4 +12,6 @@ public class CompositeStatisticsDto : BaseDto
     public int ElementCount { get; set; }
     public double MakingCosts { get; set; }
     public double SellingPrice { get; set; }
+
+    public AbstractValidator<CompositeStatisticsDto>? GetValidator() => null;
 }

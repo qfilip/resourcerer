@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class CategoryDto : EntityDto
+public class CategoryDto : EntityDto<CategoryDto>
 {
     public string? Name { get; set; }
     public Guid? ParentCategoryId { get; set; }
@@ -11,6 +11,8 @@ public class CategoryDto : EntityDto
     public List<CategoryDto> ChildCategories { get; set; } = new();
     public List<CompositeDto> Composites { get; set; } = new();
     public List<ElementDto> Elements { get; set; } = new();
+
+    public override AbstractValidator<CategoryDto> GetValidator() => new CategoryDtoValidator();
 }
 
 public class CategoryDtoValidator : AbstractValidator<CategoryDto>

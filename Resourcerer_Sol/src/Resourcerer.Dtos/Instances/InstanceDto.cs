@@ -1,6 +1,7 @@
-﻿namespace Resourcerer.Dtos;
+﻿using FluentValidation;
 
-public class InstanceDto
+namespace Resourcerer.Dtos;
+public class InstanceDto : EntityDto<InstanceDto>
 {
     public double Quantity { get; set; }
     public DateTime? ExpiryDate { get; set; }
@@ -14,4 +15,16 @@ public class InstanceDto
     public List<InstanceOrderCancelledEventDto>? InstanceOrderCancelledEvents { get; set; }
     public List<InstanceDeliveredEventDto>? InstanceDeliveredEvents { get; set; }
     public List<InstanceDiscardedEventDto>? InstanceDiscardedEvents { get; set; }
+
+
+    public override AbstractValidator<InstanceDto> GetValidator() => new Validator();
+    private class Validator : AbstractValidator<InstanceDto>
+    {
+        public Validator()
+        {
+            RuleFor(x => x.Quantity)
+                .GreaterThan(0)
+                .WithMessage("Quantity must be larger than 0");
+        }
+    }
 }

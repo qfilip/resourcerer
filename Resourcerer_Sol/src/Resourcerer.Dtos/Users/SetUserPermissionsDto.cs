@@ -2,22 +2,24 @@
 
 namespace Resourcerer.Dtos;
 
-public class SetUserPermissionsDto : BaseDto
+public class SetUserPermissionsDto : IBaseDto<SetUserPermissionsDto>
 {
     public Guid UserId { get; set; }
     public Dictionary<string, string>? Permissions { get; set; }
-}
 
-public class SetUserPermissionsDtoValidator : AbstractValidator<SetUserPermissionsDto>
-{
-    public SetUserPermissionsDtoValidator()
+    public AbstractValidator<SetUserPermissionsDto> GetValidator() => new Validator();
+
+    public class Validator : AbstractValidator<SetUserPermissionsDto>
     {
-        RuleFor(x => x.Permissions)
-            .NotEmpty()
-            .WithMessage("User id cannot be empty");
+        public Validator()
+        {
+            RuleFor(x => x.Permissions)
+                .NotEmpty()
+                .WithMessage("User id cannot be empty");
 
-        RuleFor(x => x.Permissions)
-            .NotNull()
-            .WithMessage("Permissions cannot be null");
+            RuleFor(x => x.Permissions)
+                .NotNull()
+                .WithMessage("Permissions cannot be null");
+        }
     }
 }
