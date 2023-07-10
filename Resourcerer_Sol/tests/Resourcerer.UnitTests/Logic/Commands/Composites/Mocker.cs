@@ -72,9 +72,9 @@ internal static class Mocker
 
     public static List<Price> MockPrices(AppDbContext context, Action<Price> entityIdModifier, int priceCount, bool pricesCorrupted)
     {
-        if (priceCount < 1)
+        if (priceCount < 0)
         {
-            throw new ArgumentException($"priceCount must be larger than 0");
+            throw new ArgumentException($"priceCount cannot be a negative number");
         }
 
         var prices = Enumerable.Range(0, priceCount)

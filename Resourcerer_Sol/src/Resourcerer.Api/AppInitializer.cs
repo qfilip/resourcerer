@@ -7,7 +7,7 @@ public class AppInitializer
         var dbPath = Path.Combine(env.WebRootPath, "resourcerer.db3");
         return $"Datasource={dbPath}";
     }
-
+    
     public static void LoadConfiguration(IConfiguration configuration)
     {
         AppStaticData.Jwt.SetJwtSecretKey(Load<string>(configuration, "Auth", "JwtSecret"));

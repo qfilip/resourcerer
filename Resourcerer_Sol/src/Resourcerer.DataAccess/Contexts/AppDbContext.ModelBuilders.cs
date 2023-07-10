@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
+using System.Linq.Expressions;
 
 namespace Resourcerer.DataAccess.Contexts;
 public partial class AppDbContext
@@ -135,6 +136,18 @@ public partial class AppDbContext
             e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
         });
+
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if(typeof(EntityBase).IsAssignableFrom(entityType.ClrType))
+            {
+                var param = Expression.Parameter(entityType.ClrType, "i");
+                var prop = Expression.PropertyOrField(param, nameof(EntityBase.EntityStatus));
+                var expression = Expression.NotEqual(prop, Expression.Constant(eEntityStatus.Deleted));
+
+                entityType.SetQueryFilter(Expression.Lambda(expression, param));
+            }
+        }
 
         base.OnModelCreating(modelBuilder);
     }

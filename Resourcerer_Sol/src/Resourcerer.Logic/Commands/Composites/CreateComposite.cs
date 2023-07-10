@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Logging;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Resourcerer.Logic.Commands.Composites;
 
@@ -31,12 +31,21 @@ public static class CreateComposite
                 return HandlerResult<Unit>.ValidationError(error);
             }
 
-            var categoryExists = await _appDbContext.Categories
-                .CountAsync(x => x.Id == request.CategoryId) > 0;
+            var category = await _appDbContext.Categories
+                .FirstOrDefaultAsync(x => x.Id == request.CategoryId);
 
-            if (!categoryExists)
+            if (category == null)
             {
                 var error = "Requested category doesn't exist";
+                return HandlerResult<Unit>.ValidationError(error);
+            }
+
+            var unitOfMeasure = await _appDbContext.UnitsOfMeasure
+                .FirstOrDefaultAsync(x => x.Id == request.UnitOfMeasureId);
+
+            if (unitOfMeasure == null)
+            {
+                var error = "Requested unit of measure doesn't exist";
                 return HandlerResult<Unit>.ValidationError(error);
             }
 
@@ -46,10 +55,10 @@ public static class CreateComposite
             
             var requiredElements = await _appDbContext.Elements
                 .Where(x => requestElementIds.Contains(x.Id))
-                .Include(x => x.Prices)
+                .Include(x => x.Prices) // EFCore bug with global query filter
                 .ToArrayAsync();
-
-            if(requestElementIds.Length != requiredElements.Length)
+            
+            if (requestElementIds.Length != requiredElements.Length)
             {
                 var error = "Not all required elements found";
                 return HandlerResult<Unit>.ValidationError(error);
@@ -63,7 +72,7 @@ public static class CreateComposite
                     elementErrors.Add($"Element {r.Id} doesn't have a price");
                 }
 
-                if(r.Prices.Count > 0)
+                if(r.Prices.Count(x => x.EntityStatus == eEntityStatus.Active) > 1)
                 {
                     elementErrors.Add($"Element {r.Id} has more than one active price");
                     _logger.LogWarning("Element {id} has more than one active price", r.Id);
@@ -78,8 +87,9 @@ public static class CreateComposite
             var composite = new Composite
             {
                 Id = Guid.NewGuid(),
-                CategoryId = request.CategoryId,
-                Name = request.Name
+                Name = request.Name,
+                CategoryId = category.Id,
+                UnitOfMeasureId = unitOfMeasure.Id,
             };
 
             var excerpts = request.Elements!
@@ -97,7 +107,9 @@ public static class CreateComposite
             };
 
             _appDbContext.Composites.Add(composite);
+            _appDbContext.SaveChanges();
             _appDbContext.Excerpts.AddRange(excerpts);
+            _appDbContext.SaveChanges();
             _appDbContext.Prices.Add(price);
 
             await _appDbContext.SaveChangesAsync();

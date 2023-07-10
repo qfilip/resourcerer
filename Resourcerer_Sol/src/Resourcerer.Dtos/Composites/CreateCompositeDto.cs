@@ -6,6 +6,7 @@ public class CreateCompositeDto : BaseDto
 {
     public string? Name { get; set; }
     public Guid CategoryId { get; set; }
+    public Guid UnitOfMeasureId { get; set; }
     public double UnitPrice { get; set; }
     public List<CompositeElementsDto>? Elements { get; set; }
 }
@@ -21,6 +22,10 @@ public class CreateCompositeDtoValidator : AbstractValidator<CreateCompositeDto>
         RuleFor(x => x.CategoryId)
             .NotEmpty()
             .WithMessage("Composite category must be set");
+
+        RuleFor(x => x.UnitOfMeasureId)
+            .NotEmpty()
+            .WithMessage("Composite unit of measure must be set");
 
         RuleFor(x => x.UnitPrice)
             .GreaterThan(0)
