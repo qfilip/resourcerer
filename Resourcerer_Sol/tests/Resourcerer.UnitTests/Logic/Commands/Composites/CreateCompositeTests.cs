@@ -39,7 +39,7 @@ public class CreateCompositeTests : TestsBase
         Assert.True(entity.Excerpts.All(x =>
         {
             return dto.Elements!
-                .All(e => e.ElementId == x.ElementId && e.Quantity == x.Quantity);
+                .Single(e => e.ElementId == x.ElementId && e.Quantity == x.Quantity) != null;
         }));
     }
 
