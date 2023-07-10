@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
@@ -11,28 +12,33 @@ public class ChangeElementPrice
     public class Handler : IAppHandler<ChangePriceDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
-        public Handler(AppDbContext appDbContext)
+        private readonly ILogger<Handler> _logger;
+
+        public Handler(AppDbContext appDbContext, ILogger<Handler> logger)
         {
             _appDbContext = appDbContext;
+            _logger = logger;
         }
 
         public async Task<HandlerResult<Unit>> Handle(ChangePriceDto request)
         {   
-            var prices = await _appDbContext.Prices
-                .Where(x => x.ElementId == request.EntityId)
-                .ToListAsync();
+            var element = await _appDbContext.Elements
+                .Where(x => x.Id == request.EntityId)
+                .Include(x => x.Prices)
+                .FirstOrDefaultAsync();
 
-            if(!prices.Any())
+            if(element == null)
             {
-                return HandlerResult<Unit>.NotFound($"Price for entity with id {request.EntityId} not found");
+                return HandlerResult<Unit>.ValidationError($"Element with id {request.EntityId} doesn't exist");
             }
 
-            if(prices.Count > 1)
+            if(element.Prices.Count(x => x.EntityStatus == eEntityStatus.Active) > 1)
             {
-                // report error
+                _logger.LogWarning("Element with id {id} had multiple active prices", element.Id);
             }
 
-            prices.ForEach(x => x.EntityStatus = eEntityStatus.Deleted);
+            foreach (var p in element.Prices)
+                p.EntityStatus = eEntityStatus.Deleted;
 
             var price = new Price
             {

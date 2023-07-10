@@ -3,7 +3,7 @@ using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.Commands.ElementEvents;
 
-namespace Resourcerer.Api.Endpoints.V1_0.Elements;
+namespace Resourcerer.Api.Endpoints.V1_0.ElementEvents;
 
 public class CreateElementPurchaseCancelledEventEndpoint
 {

@@ -1,23 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
+using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.ElementEvents;
 
-namespace Resourcerer.Api.Endpoints.V1_0.Elements;
+namespace Resourcerer.Api.Endpoints.V1_0.ElementEvents;
 
-public class CreateElementDeliveredEndpoint
+public class CreateElementPurchasedEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] CreateElementDeliveredEventDto dto,
+        [FromBody] CreateElementPurchasedEventDto dto,
         [FromServices] Pipeline pipeline,
-        [FromServices] CreateElementDeliveredEvent.Handler handler)
+        [FromServices] CreateElementPurchasedEvent.Handler handler)
     {
-        return await pipeline.Pipe(handler, dto);
+        return await pipeline.Pipe<CreateElementPurchasedEventDto, CreateElementPurchaseDtoValidator, Unit>
+            (handler, dto);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/create-element-purchase-delivered", Action);
+        var endpoint = group.MapPost("/create-element-purchased", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {

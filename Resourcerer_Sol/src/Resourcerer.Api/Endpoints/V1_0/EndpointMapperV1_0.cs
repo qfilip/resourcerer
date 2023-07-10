@@ -1,5 +1,6 @@
 ﻿using Resourcerer.Api.Endpoints.V1_0.Categories;
 using Resourcerer.Api.Endpoints.V1_0.Composites;
+using Resourcerer.Api.Endpoints.V1_0.ElementEvents;
 using Resourcerer.Api.Endpoints.V1_0.Elements;
 using Resourcerer.Api.Endpoints.V1_0.Mocks;
 using Resourcerer.Api.Endpoints.V1_0.UnitsOfMeasure;

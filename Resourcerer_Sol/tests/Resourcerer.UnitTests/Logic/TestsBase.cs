@@ -1,4 +1,6 @@
-﻿using Resourcerer.DataAccess.Contexts;
+﻿using FakeItEasy;
+using Microsoft.Extensions.Logging;
+using Resourcerer.DataAccess.Contexts;
 using Resourcerer.UnitTests.Utilities;
 
 namespace Resourcerer.UnitTests.Logic;
@@ -10,4 +12,6 @@ public class TestsBase
     {
         _testDbContext = new ContextCreator().GetTestDbContext();
     }
+
+    protected ILogger<T> MockLogger<T>() => A.Fake<ILogger<T>>();
 }
