@@ -2,9 +2,9 @@
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
 
-namespace Resourcerer.UnitTests.Logic.Commands.Composites;
+namespace Resourcerer.UnitTests.Utilities.Mocker;
 
-internal static class Mocker
+internal static partial class Mocker
 {
     public static Category MockCategory(AppDbContext context)
     {

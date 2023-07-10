@@ -23,7 +23,7 @@ public static class CreateElementPurchasedEvent
             if (element == null)
             {
                 return HandlerResult<Unit>
-                    .NotFound($"Element with id: {request.ElementId} not found");
+                    .ValidationError($"Element with id: {request.ElementId} not found");
             }
 
             var entity = new ElementPurchasedEvent
