@@ -1,4 +1,5 @@
-﻿using Resourcerer.DataAccess.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 
@@ -17,6 +18,33 @@ public static class CreateElement
 
         public async Task<HandlerResult<Unit>> Handle(CreateElementDto request)
         {
+            var existing = await _appDbContext.Elements
+                .FirstOrDefaultAsync(x => x.Name == request.Name);
+            
+            if(existing != null)
+            {
+                var error = "Element with the same name already exist";
+                return HandlerResult<Unit>.ValidationError(error);
+            }
+
+            var category = await _appDbContext.Categories
+                .FirstOrDefaultAsync(x => x.Id == request.CategoryId);
+
+            if (category == null)
+            {
+                var error = "Requested category doesn't exist";
+                return HandlerResult<Unit>.ValidationError(error);
+            }
+
+            var uom = await _appDbContext.UnitsOfMeasure
+                .FirstOrDefaultAsync(x => x.Id == request.UnitOfMeasureId);
+
+            if (uom == null)
+            {
+                var error = "Requested unit of measure doesn't exist";
+                return HandlerResult<Unit>.ValidationError(error);
+            }
+
             var element = new Element
             {
                 Id = Guid.NewGuid(),
