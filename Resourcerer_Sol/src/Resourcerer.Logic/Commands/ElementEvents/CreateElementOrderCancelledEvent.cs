@@ -1,4 +1,6 @@
-﻿using Resourcerer.DataAccess.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Contexts;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 
 namespace Resourcerer.Logic.Commands.ElementEvents;
@@ -14,35 +16,35 @@ public static class CreateElementOrderCancelledEvent
         }
         public async Task<HandlerResult<Unit>> Handle(InstanceOrderCancelledEventDto request)
         {
-            //var purchaseEvent = await _appDbContext.ElementPurchasedEvents
-            //    .Include(x => x.ElementDeliveredEvent)
-            //    .Include(x => x.ElementPurchaseCancelledEvent)
-            //    .FirstOrDefaultAsync(x => x.Id == request.ElementPurchasedEventId);
+            var orderedEvent = await _appDbContext.InstanceOrderedEvents
+                .Include(x => x.InstanceOrderCancelledEventId)
+                .Include(x => x.InstanceDeliveredEvent)
+                .FirstOrDefaultAsync(x => x.Id == request.InstanceOrderedEventId);
 
-            //if(purchaseEvent == null)
-            //{
-            //    var error = $"Purchase event with id {request.ElementPurchasedEventId} not found";
-            //    return HandlerResult<Unit>.ValidationError(error);
-            //}
+            if (orderedEvent == null)
+            {
+                var error = $"Order event with id {request.InstanceOrderedEventId} not found";
+                return HandlerResult<Unit>.ValidationError(error);
+            }
 
-            //if (purchaseEvent.ElementDeliveredEvent != null)
-            //{
-            //    var error = "Purchase was delivered, and cannot be cancelled";
-            //    return HandlerResult<Unit>.ValidationError(error);
-            //}
+            if (orderedEvent.InstanceDeliveredEvent != null)
+            {
+                var error = "Order was delivered, and cannot be cancelled";
+                return HandlerResult<Unit>.ValidationError(error);
+            }
 
-            //if (purchaseEvent.ElementPurchaseCancelledEvent != null)
-            //{
-            //    return HandlerResult<Unit>.Ok(new Unit());
-            //}
+            if (orderedEvent.InstanceOrderCancelledEventId != null)
+            {
+                return HandlerResult<Unit>.Ok(new Unit());
+            }
 
-            //var entity = new ElementPurchaseCancelledEvent
-            //{
-            //    ElementPurchasedEventId = request.ElementPurchasedEventId
-            //};
+            var entity = new InstanceOrderCancelledEvent
+            {
+                InstanceOrderedEventId = orderedEvent.Id
+            };
 
-            //_appDbContext.ElementPurchaseCancelledEvents.Add(entity);
-            //await _appDbContext.SaveChangesAsync();
+            _appDbContext.InstanceOrderCancelledEvents.Add(entity);
+            await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());
         }

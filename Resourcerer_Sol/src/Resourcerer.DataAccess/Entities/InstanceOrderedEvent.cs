@@ -2,7 +2,7 @@
 
 public class InstanceOrderedEvent : EntityBase
 {
-    public double UnitsBought { get; set; }
+    public double UnitsOrdered { get; set; }
     public double UnitPrice { get; set; }
     public int TotalDiscountPercent { get; set; }
     public DateTime ExpectedDeliveryTime { get; set; }

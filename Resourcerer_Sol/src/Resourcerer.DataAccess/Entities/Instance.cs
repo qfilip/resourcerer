@@ -9,7 +9,6 @@ public class Instance : EntityBase
         InstanceDeliveredEvents = new HashSet<InstanceDeliveredEvent>();
         InstanceDiscardedEvents = new HashSet<InstanceDiscardedEvent>();
     }
-    public double Quantity { get; set; }
     public DateTime? ExpiryDate { get; set; }
 
     public Guid? ElementId { get; set; }

@@ -44,17 +44,9 @@ public static class CreateElementDeliveredEvent
                 InstanceOrderedEventId = orderEvent.Id
             };
 
-            var elementinstance = new Instance
-            {
-                elementid = purchaseevent.elementid,
-                quantity = purchaseevent.unitsbought,
-                expirydate = request.instanceexpirydate
-            };
+            _appDbContext.InstanceDeliveredEvents.Add(deliveredEvent);
 
-            //_appDbContext.ElementDeliveredEvents.Add(deliveredEvent);
-            //_appDbContext.Instances.Add(elementInstance);
-
-            //await _appDbContext.SaveChangesAsync();
+            await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());
         }

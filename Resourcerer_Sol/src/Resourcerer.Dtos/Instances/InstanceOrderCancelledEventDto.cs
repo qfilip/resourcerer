@@ -4,6 +4,7 @@ namespace Resourcerer.Dtos;
 
 public class InstanceOrderCancelledEventDto : EntityDto<InstanceOrderCancelledEventDto>
 {
+    public Guid InstanceOrderedEventId { get; set; }
     public override AbstractValidator<InstanceOrderCancelledEventDto> GetValidator() =>
         new Validator();
 
@@ -11,7 +12,9 @@ public class InstanceOrderCancelledEventDto : EntityDto<InstanceOrderCancelledEv
     {
         public Validator()
         {
-            
+            RuleFor(x => x.InstanceOrderedEventId)
+                .NotEmpty()
+                .WithMessage("Order event id cannot be empty");
         }
     }
 }
