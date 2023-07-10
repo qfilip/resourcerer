@@ -18,7 +18,7 @@ public static class TestHandler
             }
             else
             {
-                return Task.FromResult(HandlerResult<Unit>.ValidationError(TestDtoValidator.ErrorMessage));
+                return Task.FromResult(HandlerResult<Unit>.ValidationError(TestDto.ErrorMessage));
             }
         }
     }

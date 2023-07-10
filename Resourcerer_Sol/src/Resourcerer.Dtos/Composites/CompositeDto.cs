@@ -11,7 +11,6 @@ public class CompositeDto : EntityDto<CompositeDto>
     public CategoryDto? Category { get; set; }
     public List<PriceDto> Prices { get; set; } = new();
     public List<ExcerptDto> Excerpts { get; set; } = new();
-    public List<CompositeSoldEventDto> CompositeSoldEvents { get; set; } = new();
 
     public override AbstractValidator<CompositeDto> GetValidator() => new CompositeDtoValidator();
 }

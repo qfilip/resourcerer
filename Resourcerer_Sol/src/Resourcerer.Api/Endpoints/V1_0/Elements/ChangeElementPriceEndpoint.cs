@@ -14,8 +14,7 @@ public class ChangeElementPriceEndpoint
        [FromServices] Pipeline pipeline,
        [FromServices] ChangeElementPrice.Handler handler)
     {
-        return await pipeline
-            .Pipe<ChangePriceDto, ChangePriceDtoValidator, Unit>(handler, dto);
+        return await pipeline.Pipe(handler, dto);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

@@ -15,8 +15,7 @@ public class CreateElementEndpoint
        [FromServices] Pipeline pipeline,
        [FromServices] CreateElement.Handler handler)
     {
-        return await pipeline
-            .Pipe<CreateElementDto, CreateElementDtoValidator, Unit>(handler, dto);
+        return await pipeline.Pipe(handler, dto);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

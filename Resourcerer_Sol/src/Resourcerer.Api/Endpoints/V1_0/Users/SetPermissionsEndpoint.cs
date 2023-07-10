@@ -14,9 +14,7 @@ public class SetPermissionsEndpoint
        [FromServices] Pipeline pipeline,
        [FromServices] SetPermissions.Handler handler)
     {
-        return await
-            pipeline
-            .Pipe<SetUserPermissionsDto, SetUserPermissionsDtoValidator, Unit>(handler, dto);
+        return await pipeline.Pipe(handler, dto);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
