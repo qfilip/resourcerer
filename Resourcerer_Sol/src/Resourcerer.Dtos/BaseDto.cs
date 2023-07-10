@@ -1,5 +1,5 @@
 ﻿namespace Resourcerer.Dtos;
 
-public class BaseDto
+public abstract class BaseDto
 {
 }
