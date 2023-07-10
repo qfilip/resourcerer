@@ -44,10 +44,7 @@ public class ContextCreator: IDisposable
             context.UnitsOfMeasure.AddRange(dbData.UnitsOfMeasure!);
             context.Prices.AddRange(dbData.Prices!);
             context.Composites.AddRange(dbData.Composites!);
-            context.CompositeSoldEvents.AddRange(dbData.CompositeSoldEvents!);
             context.Elements.AddRange(dbData.Elements!);
-            context.ElementSoldEvents.AddRange(dbData.ElementSoldEvents!);
-            context.ElementPurchasedEvents.AddRange(dbData.ElementPurchasedEvents!);
 
             context.SaveChanges();
         }

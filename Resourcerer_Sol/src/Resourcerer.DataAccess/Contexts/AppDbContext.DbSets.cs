@@ -15,17 +15,15 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<Excerpt> Excerpts { get; set; }
     public virtual DbSet<UnitOfMeasure> UnitsOfMeasure { get; set; }
     public virtual DbSet<Price> Prices { get; set; }
-    public virtual DbSet<Instance> Instances { get; set; }
-
-    public virtual DbSet<Composite> Composites { get; set; }
-    public virtual DbSet<CompositeSoldEvent> CompositeSoldEvents { get; set; }
-    
     public virtual DbSet<Element> Elements { get; set; }
-    public virtual DbSet<ElementPurchasedEvent> ElementPurchasedEvents { get; set; }
-    public virtual DbSet<ElementPurchaseCancelledEvent> ElementPurchaseCancelledEvents { get; set; }
-    public virtual DbSet<ElementDeliveredEvent> ElementDeliveredEvents { get; set; }
-    public virtual DbSet<ElementInstanceDiscardedEvent> ElementDiscardedEvents { get; set; }
-    public virtual DbSet<ElementInstanceSoldEvent> ElementSoldEvents { get; set; }
+    public virtual DbSet<Composite> Composites { get; set; }
+    public virtual DbSet<Instance> Instances { get; set; }
+    public virtual DbSet<InstanceOrderedEvent> InstanceOrderedEvents { get; set; }
+    public virtual DbSet<InstanceOrderCancelledEvent> InstanceOrderCancelledEvents { get; set; }
+    public virtual DbSet<InstanceDeliveredEvent> InstanceDeliveredEvents { get; set; }
+    public virtual DbSet<InstanceDiscardedEvent> InstanceDiscardedEvents { get; set; }
+
+
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

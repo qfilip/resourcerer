@@ -15,8 +15,6 @@ public class ElementDto : EntityDto
 
     public List<ExcerptDto>? Excerpts { get; set; }
     public List<Price>? Prices { get; set; }
-    public List<ElementPurchasedEvent>? ElementPurchasedEvents { get; set; }
-    public List<ElementInstanceSoldEvent>? ElementSoldEvents { get; set; }
 }
 
 public class ElementDtoValidator : AbstractValidator<ElementDto>

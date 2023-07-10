@@ -75,18 +75,6 @@ public class DbMockingFuncs
         });
     }
 
-    protected static CompositeSoldEvent MakeCompositeSoldEvent(Composite composite, double unitsSold, double priceByUnit, DateTime createdAt)
-    {
-        return MakeEntity(() => new CompositeSoldEvent
-        {
-            CompositeId = composite.Id,
-            UnitsSold = unitsSold,
-            UnitPrice = priceByUnit,
-
-            CreatedAt = createdAt
-        });
-    }
-
     protected static Price MakePrice(double value, Composite composite)
     {
         return MakeEntity(() => new Price
@@ -102,32 +90,6 @@ public class DbMockingFuncs
         {
             UnitValue = value,
             ElementId = element.Id
-        });
-    }
-
-    protected static ElementPurchasedEvent MakeElementPurchasedEvent(Element element, double unitsBought, double priceByUnit, UnitOfMeasure unitOfMeasure, DateTime createdAt)
-    {
-        return MakeEntity(() => new ElementPurchasedEvent
-        {
-            ElementId = element.Id,
-            UnitsBought = unitsBought,
-            UnitPrice = priceByUnit,
-            UnitOfMeasure = unitOfMeasure,
-
-            CreatedAt = createdAt
-        });
-    }
-
-    protected static ElementInstanceSoldEvent MakeElementSoldEvent(Element element, UnitOfMeasure unitOfMeasure, double unitsSold, double priceByUnit, DateTime createdAt)
-    {
-        return MakeEntity(() => new ElementInstanceSoldEvent
-        {
-            // ElementId = element.Id,
-            UnitPrice = priceByUnit,
-            UnitsSold = unitsSold,
-            UnitOfMeasure = unitOfMeasure,
-
-            CreatedAt = createdAt
         });
     }
 

@@ -18,44 +18,44 @@ public static class CreateElementDeliveredEvent
 
         public async Task<HandlerResult<Unit>> Handle(CreateElementDeliveredEventDto request)
         {
-            var purchaseEvent = await _appDbContext.ElementPurchasedEvents
-                .Include(x => x.ElementPurchaseCancelledEvent)
-                .Include(x => x.ElementPurchaseCancelledEvent)
-                .FirstOrDefaultAsync(x => x.Id == request.ElementPurchasedEventId);
+            //var purchaseEvent = await _appDbContext.ElementPurchasedEvents
+            //    .Include(x => x.ElementPurchaseCancelledEvent)
+            //    .Include(x => x.ElementPurchaseCancelledEvent)
+            //    .FirstOrDefaultAsync(x => x.Id == request.ElementPurchasedEventId);
             
-            if (purchaseEvent == null)
-            {
-                var message = $"Purchase event with id {request.ElementPurchasedEventId} not found";
-                return HandlerResult<Unit>.ValidationError(message);
-            }
+            //if (purchaseEvent == null)
+            //{
+            //    var message = $"Purchase event with id {request.ElementPurchasedEventId} not found";
+            //    return HandlerResult<Unit>.ValidationError(message);
+            //}
 
-            if (purchaseEvent.ElementPurchaseCancelledEvent != null)
-            {
-                var error = "Purchase was cancelled, and cannot be delivered";
-                return HandlerResult<Unit>.ValidationError(error);
-            }
+            //if (purchaseEvent.ElementPurchaseCancelledEvent != null)
+            //{
+            //    var error = "Purchase was cancelled, and cannot be delivered";
+            //    return HandlerResult<Unit>.ValidationError(error);
+            //}
 
-            if(purchaseEvent.ElementDeliveredEvent != null)
-            {
-                return HandlerResult<Unit>.Ok(new Unit());
-            }
+            //if(purchaseEvent.ElementDeliveredEvent != null)
+            //{
+            //    return HandlerResult<Unit>.Ok(new Unit());
+            //}
 
-            var deliveredEvent = new ElementDeliveredEvent
-            {
-                ElementPurchasedEventId = request.ElementPurchasedEventId
-            };
+            //var deliveredEvent = new ElementDeliveredEvent
+            //{
+            //    ElementPurchasedEventId = request.ElementPurchasedEventId
+            //};
 
-            var elementInstance = new Instance
-            {
-                ElementId = purchaseEvent.ElementId,
-                Quantity = purchaseEvent.UnitsBought,
-                ExpiryDate = request.InstanceExpiryDate
-            };
+            //var elementInstance = new Instance
+            //{
+            //    ElementId = purchaseEvent.ElementId,
+            //    Quantity = purchaseEvent.UnitsBought,
+            //    ExpiryDate = request.InstanceExpiryDate
+            //};
 
-            _appDbContext.ElementDeliveredEvents.Add(deliveredEvent);
-            _appDbContext.Instances.Add(elementInstance);
+            //_appDbContext.ElementDeliveredEvents.Add(deliveredEvent);
+            //_appDbContext.Instances.Add(elementInstance);
 
-            await _appDbContext.SaveChangesAsync();
+            //await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());
         }
