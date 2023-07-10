@@ -8,15 +8,15 @@ public class InstanceDeliveredEventDto : EntityDto<InstanceDeliveredEventDto>
     public virtual InstanceOrderedEventDto? InstanceOrderedEvent { get; set; }
 
     public override AbstractValidator<InstanceDeliveredEventDto> GetValidator() =>
-        new InstanceDeliveredEventDtoValidator();
-}
+        new Validator();
 
-public class InstanceDeliveredEventDtoValidator : AbstractValidator<InstanceDeliveredEventDto>
-{
-    public InstanceDeliveredEventDtoValidator()
+    public class Validator : AbstractValidator<InstanceDeliveredEventDto>
     {
-        RuleFor(x => x.InstanceOrderedEventId)
-            .NotEmpty()
-            .WithMessage("InstanceOrderedEventId cannot be empty");
+        public Validator()
+        {
+            RuleFor(x => x.InstanceOrderedEventId)
+                .NotEmpty()
+                .WithMessage("InstanceOrderedEventId cannot be empty");
+        }
     }
 }

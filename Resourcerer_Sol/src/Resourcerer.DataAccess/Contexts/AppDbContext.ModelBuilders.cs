@@ -107,6 +107,10 @@ public partial class AppDbContext
                 .HasForeignKey<InstanceOrderCancelledEvent>(x => x.InstanceOrderedEventId)
                 .IsRequired()
                 .HasConstraintName($"FK_{nameof(InstanceOrderedEvent)}_{nameof(InstanceOrderCancelledEvent)}");
+
+            e.HasOne(x => x.InstanceDeliveredEvent).WithOne(x => x.InstanceOrderCancelledEvent)
+                .HasForeignKey<InstanceOrderCancelledEvent>(x => x.InstanceDeliveredEventId)
+                .HasConstraintName($"FK_{nameof(InstanceDeliveredEvent)}_{nameof(InstanceOrderCancelledEvent)}");
         });
 
         ConfigureEntity<InstanceDeliveredEvent>(modelBuilder, (e) =>
@@ -115,6 +119,10 @@ public partial class AppDbContext
                 .HasForeignKey<InstanceDeliveredEvent>(x => x.InstanceOrderedEventId)
                 .IsRequired()
                 .HasConstraintName($"FK_{nameof(InstanceOrderedEvent)}_{nameof(InstanceDeliveredEvent)}");
+
+            e.HasOne(x => x.InstanceOrderCancelledEvent).WithOne(x => x.InstanceDeliveredEvent)
+                .HasForeignKey<InstanceDeliveredEvent>(x => x.InstanceOrderCancelledEventId)
+                .HasConstraintName($"FK_{nameof(InstanceOrderCancelledEvent)}_{nameof(InstanceDeliveredEvent)}");
         });
 
         ConfigureEntity<InstanceDiscardedEvent>(modelBuilder, e =>

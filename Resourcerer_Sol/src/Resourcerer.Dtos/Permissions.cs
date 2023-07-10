@@ -115,5 +115,5 @@ public enum eSection
     User,
     Category,
     Element,
-    Composite
+    Composite,
 }
