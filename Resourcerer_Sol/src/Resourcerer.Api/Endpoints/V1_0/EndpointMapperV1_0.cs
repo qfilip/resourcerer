@@ -13,6 +13,7 @@ public class EndpointMapperV1_0
     public static void Map(WebApplication app)
     {
         MapCategories(app);
+        MapEvents(app);
         MapMocks(app);
         MapItems(app);
         MapUnitsOfMeasure(app);
@@ -27,15 +28,22 @@ public class EndpointMapperV1_0
         CreateCategoryEndpoint.MapToGroup(g);
     }
 
+    private static void MapEvents(WebApplication app)
+    {
+        var g = EndpointMapper.GetGroup(app, Version, "Events");
+        
+        CreateInstanceDeliveredEndpoint.MapToGroup(g);
+        CreateInstanceOrderCancelledEventEndpoint.MapToGroup(g);
+        CreateInstanceOrderedEventEndpoint.MapToGroup(g);
+    }
+
     private static void MapItems(WebApplication app)
     {
         var g = EndpointMapper.GetGroup(app, Version, "Items");
 
         ChangeItemPriceEndpoint.MapToGroup(g);
-        CreateInstanceDeliveredEndpoint.MapToGroup(g);
+        CreateCompositeItemEndpoint.MapToGroup(g);
         CreateElementItemEndpoint.MapToGroup(g);
-        CreateInstanceOrderCancelledEventEndpoint.MapToGroup(g);
-        CreateInstanceOrderedEventEndpoint.MapToGroup(g);
         GetItemsStatisticsEndpoint.MapToGroup(g);
     }
 
