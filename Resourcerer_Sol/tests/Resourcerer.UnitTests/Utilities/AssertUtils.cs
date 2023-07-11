@@ -3,7 +3,7 @@ using Resourcerer.Logic;
 
 namespace Resourcerer.UnitTests.Utilities;
 
-public static class ArrayAssert
+public static class AssertUtils
 {
     public static void Every(this IResult[] iResults, Action<IResult> assert)
     {

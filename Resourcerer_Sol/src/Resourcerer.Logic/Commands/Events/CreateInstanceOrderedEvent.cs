@@ -32,7 +32,7 @@ public static class CreateInstanceOrderedEvent
                     .ValidationError($"Item with id {request.ElementId} not found");
             }
 
-            if(item.ExpirationTime != null)
+            if(item.ExpirationTimeSeconds != null)
             {
                 if(request.ExpectedDeliveryDate == null)
                 {
