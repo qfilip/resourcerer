@@ -48,6 +48,8 @@ public static class CreateElementItem
             var item = new Item
             {
                 Id = Guid.NewGuid(),
+                PreparationTimeSeconds = request.PreparationTimeSeconds,
+                ExpirationTimeSeconds = request.ExpirationTimeSeconds,
                 Name = request.Name,
                 CategoryId = request.CategoryId,
                 UnitOfMeasureId = request.UnitOfMeasureId

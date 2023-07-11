@@ -11,8 +11,8 @@ public class Item : EntityBase
     }
 
     public string? Name { get; set; }
-    public TimeSpan PreparationTime { get; set; }
-    public TimeSpan? ExpirationTime { get; set; }
+    public double PreparationTimeSeconds { get; set; }
+    public double? ExpirationTimeSeconds { get; set; }
 
     public Guid CategoryId { get; set; }
     public virtual Category? Category { get; set; }
