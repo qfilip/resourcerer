@@ -139,9 +139,9 @@ public class CreateCompositeTests : TestsBase
         Assert.Equal(eHandlerResultStatus.ValidationError, result.Status);
     }
 
-    private Element[] SeedRequiredElements(int priceCount = 3, bool pricesCorrupted = false)
+    private Item[] SeedRequiredElements(int priceCount = 3, bool pricesCorrupted = false)
     {
-        return new Element[]
+        return new Item[]
         {
             Mocker.MockElement(_testDbContext, priceCount, pricesCorrupted),
             Mocker.MockElement(_testDbContext, priceCount, pricesCorrupted),
@@ -149,7 +149,7 @@ public class CreateCompositeTests : TestsBase
     }
 
     private CreateCompositeDto GetDto(
-        Element[] requiredElements,
+        Item[] requiredElements,
         Action<CreateCompositeDto>? modifier = null)
     {
         var dto = new CreateCompositeDto

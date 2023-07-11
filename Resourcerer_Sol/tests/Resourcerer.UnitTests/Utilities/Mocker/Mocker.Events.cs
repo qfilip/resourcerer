@@ -10,7 +10,7 @@ internal static partial class Mocker
         var entity = new InstanceOrderedEvent
         {
             Id = Guid.NewGuid(),
-            ExpectedDeliveryTime = DateTime.UtcNow,
+            ExpectedDeliveryDate = DateTime.UtcNow,
             TotalDiscountPercent = 0,
             UnitPrice = 5,
             UnitsOrdered = 5,

@@ -56,9 +56,9 @@ public class DbMockingFuncs
         });
     }
 
-    protected static Element MakeElement(string name, Category category, UnitOfMeasure uom)
+    protected static Item MakeElement(string name, Category category, UnitOfMeasure uom)
     {
-        return MakeEntity(() => new Element
+        return MakeEntity(() => new Item
         {
             Name = name,
             CategoryId = category.Id,
@@ -84,7 +84,7 @@ public class DbMockingFuncs
         });
     }
 
-    protected static Price MakePrice(double value, Element element)
+    protected static Price MakePrice(double value, Item element)
     {
         return MakeEntity(() => new Price
         {
@@ -93,7 +93,7 @@ public class DbMockingFuncs
         });
     }
 
-    protected static IEnumerable<Excerpt> MakeExcerpts(Composite composite, List<(Element, double)> ingredients)
+    protected static IEnumerable<Excerpt> MakeExcerpts(Composite composite, List<(Item, double)> ingredients)
     {
         return ingredients.Select(x =>
         {

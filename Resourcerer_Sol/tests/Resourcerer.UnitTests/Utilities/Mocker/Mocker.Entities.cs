@@ -37,10 +37,10 @@ internal static partial class Mocker
         return composite;
     }
 
-    public static Element MockElement(AppDbContext context, int priceCount = 3, bool pricesCorrupted = false)
+    public static Item MockElement(AppDbContext context, int priceCount = 3, bool pricesCorrupted = false)
     {
         var id = Guid.NewGuid();
-        var element = new Element
+        var element = new Item
         {
             Id = id,
             Name = $"test-{id}",

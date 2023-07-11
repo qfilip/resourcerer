@@ -9,5 +9,5 @@ public class DatabaseData
     public List<UnitOfMeasure> UnitsOfMeasure { get; set; } = new();
     public List<Price> Prices { get; set; } = new();
     public List<Composite> Composites { get; set; } = new();
-    public List<Element> Elements { get; set; } = new();
+    public List<Item> Elements { get; set; } = new();
 }

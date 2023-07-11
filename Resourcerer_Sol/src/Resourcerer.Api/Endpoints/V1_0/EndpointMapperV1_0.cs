@@ -14,8 +14,6 @@ public class EndpointMapperV1_0
     public static void Map(WebApplication app)
     {
         MapCategories(app);
-        MapComposites(app);
-        MapElements(app);
         MapMocks(app);
         MapUnitsOfMeasure(app);
         MapUsers(app);
@@ -27,15 +25,6 @@ public class EndpointMapperV1_0
 
         GetAllCategoriesEndpoint.MapToGroup(g);
         CreateCategoryEndpoint.MapToGroup(g);
-    }
-
-    private static void MapComposites(WebApplication app)
-    {
-        var g = EndpointMapper.GetGroup(app, Version, "Composites");
-
-        ChangeCompositePriceEndpoint.MapToGroup(g);
-        CreateCompositeEndpoint.MapToGroup(g);
-        GetAllCompositesStatisticsEndpoint.MapToGroup(g);
     }
 
     private static void MapElements(WebApplication app)

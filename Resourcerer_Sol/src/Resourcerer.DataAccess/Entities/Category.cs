@@ -5,8 +5,7 @@ public class Category : EntityBase
     public Category()
     {
         ChildCategories = new HashSet<Category>();
-        Composites = new HashSet<Composite>();
-        Elements = new HashSet<Element>();
+        Items = new HashSet<Item>();
     }
 
     public string? Name { get; set; }
@@ -15,6 +14,5 @@ public class Category : EntityBase
     public virtual Category? ParentCategory { get; set; }
     
     public ICollection<Category> ChildCategories { get; set; }
-    public ICollection<Composite> Composites { get; set; }
-    public ICollection<Element> Elements { get; set; }
+    public ICollection<Item> Items { get; set; }
 }

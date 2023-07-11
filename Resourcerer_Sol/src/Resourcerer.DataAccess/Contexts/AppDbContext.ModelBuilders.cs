@@ -28,10 +28,11 @@ public partial class AppDbContext
         {
             e.HasOne(x => x.Composite).WithMany(x => x.Excerpts)
                 .HasForeignKey(x => x.CompositeId).IsRequired()
-                .HasConstraintName($"FK_{nameof(Composite)}_{nameof(Excerpt)}");
+                .HasConstraintName($"FK_Composite{nameof(Item)}_{nameof(Excerpt)}");
 
             e.HasOne(x => x.Element).WithMany(x => x.Excerpts)
-                .HasForeignKey(x => x.ElementId).IsRequired();
+                .HasForeignKey(x => x.ElementId).IsRequired()
+                .HasConstraintName($"FK_Element{nameof(Item)}_{nameof(Excerpt)}");
         });
 
         ConfigureEntity<UnitOfMeasure>(modelBuilder, (e) =>
@@ -45,63 +46,29 @@ public partial class AppDbContext
         {
             e.Property(x => x.UnitValue).IsRequired();
 
-            e.HasOne(x => x.Element).WithMany(x => x.Prices)
-                .HasForeignKey(x => x.ElementId)
-                .HasConstraintName($"FK_{nameof(Element)}_{nameof(Price)}");
-
-            e.HasOne(x => x.Composite).WithMany(x => x.Prices)
-                .HasForeignKey(x => x.CompositeId)
-                .HasConstraintName($"FK_{nameof(Composite)}_{nameof(Price)}");
+            e.HasOne(x => x.Item).WithMany(x => x.Prices)
+                .HasForeignKey(x => x.ItemId)
+                .HasConstraintName($"FK_{nameof(Item)}_{nameof(Price)}");
         });
 
-        ConfigureEntity<Behavior>(modelBuilder, e =>
-        {
-            e.HasOne(x => x.Element).WithOne(x => x.Behavior)
-                .HasForeignKey<Behavior>(x => x.ElementId)
-                .HasConstraintName($"FK_{nameof(Element)}_{nameof(Behavior)}");
-
-            e.HasOne(x => x.Composite).WithOne(x => x.Behavior)
-                .HasForeignKey<Behavior>(x => x.CompositeId)
-                .HasConstraintName($"FK_{nameof(Composite)}_{nameof(Behavior)}");
-        });
-
-        ConfigureEntity<Element>(modelBuilder, e =>
+        ConfigureEntity<Item>(modelBuilder, e =>
         {
             e.Property(x => x.Name).IsRequired();
 
-            e.HasOne(x => x.Category).WithMany(x => x.Elements)
+            e.HasOne(x => x.Category).WithMany(x => x.Items)
                 .HasForeignKey(x => x.CategoryId).IsRequired()
-                .HasConstraintName($"FK_{nameof(Category)}_{nameof(Element)}");
+                .HasConstraintName($"FK_{nameof(Category)}_{nameof(Item)}");
 
-            e.HasOne(x => x.UnitOfMeasure).WithMany(x => x.Elements)
+            e.HasOne(x => x.UnitOfMeasure).WithMany(x => x.Items)
                 .HasForeignKey(x => x.UnitOfMeasureId).IsRequired()
-                .HasConstraintName($"FK_{nameof(UnitOfMeasure)}_{nameof(Element)}");
-        });
-
-        ConfigureEntity<Composite>(modelBuilder, e =>
-        {
-            e.Property(x => x.Name).IsRequired();
-            
-            e.HasOne(x => x.Category).WithMany(x => x.Composites)
-                .HasForeignKey(x => x.CategoryId).IsRequired()
-                .HasConstraintName($"FK_{nameof(Composite.Category)}_{nameof(Composite)}");
-
-            e.HasOne(x => x.UnitOfMeasure).WithMany(x => x.Composites)
-                .HasForeignKey(x => x.UnitOfMeasureId).IsRequired()
-                .HasConstraintName($"FK_{nameof(Composite.UnitOfMeasure)}_{nameof(Composite)}");
+                .HasConstraintName($"FK_{nameof(UnitOfMeasure)}_{nameof(Item)}");
         });
 
         ConfigureEntity<Instance>(modelBuilder, (e) =>
         {
-            e.Property(x => x.Quantity).IsRequired();
-
-            e.HasOne(x => x.Element).WithMany(x => x.Instances)
-                .HasForeignKey(x => x.ElementId)
-                .HasConstraintName($"FK_{nameof(Element)}_{nameof(Instance)}");
-
-            e.HasOne(x => x.Composite).WithMany(x => x.Instances)
-                .HasForeignKey(x => x.CompositeId)
-                .HasConstraintName($"FK_{nameof(Composite)}_{nameof(Instance)}");
+            e.HasOne(x => x.Item).WithMany(x => x.Instances)
+                .HasForeignKey(x => x.ItemId)
+                .HasConstraintName($"FK_{nameof(Item)}_{nameof(Instance)}");
         });
 
         ConfigureEntity<InstanceOrderedEvent>(modelBuilder, (e) =>

@@ -45,7 +45,7 @@ public static class CreateElement
                 return HandlerResult<Unit>.ValidationError(error);
             }
 
-            var element = new Element
+            var element = new Item
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,

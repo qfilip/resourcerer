@@ -50,7 +50,7 @@ public static class CreateElementOrderedEvent
                 if(request.ExpectedDeliveryDate <= request.ExpiryDate)
                 {
                     return HandlerResult<Unit>
-                        .ValidationError($"Order items will expire before they are delivered");
+                        .ValidationError($"Ordered items will expire before they are delivered");
                 }
             }
 
@@ -66,7 +66,7 @@ public static class CreateElementOrderedEvent
                 UnitPrice = request.UnitPrice,
                 UnitsOrdered = request.UnitsOrdered,
                 TotalDiscountPercent = request.TotalDiscountPercent,
-                ExpectedDeliveryTime = request.ExpectedDeliveryDate
+                ExpectedDeliveryDate = request.ExpectedDeliveryDate
             };
 
             _appDbContext.InstanceOrderedEvents.Add(entity);
