@@ -50,7 +50,7 @@ internal static partial class Mocker
 
         MockPrices(context, x => x.ElementId = element.Id, priceCount, pricesCorrupted);
 
-        context.Elements.Add(element);
+        context.Items.Add(element);
 
         return element;
     }

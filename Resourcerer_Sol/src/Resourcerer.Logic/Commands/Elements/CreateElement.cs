@@ -18,7 +18,7 @@ public static class CreateElement
 
         public async Task<HandlerResult<Unit>> Handle(CreateElementDto request)
         {
-            var existing = await _appDbContext.Elements
+            var existing = await _appDbContext.Items
                 .FirstOrDefaultAsync(x => x.Name == request.Name);
             
             if(existing != null)
@@ -59,7 +59,7 @@ public static class CreateElement
                 UnitValue = request.UnitPrice
             };
 
-            _appDbContext.Elements.Add(element);
+            _appDbContext.Items.Add(element);
             _appDbContext.Prices.Add(price);
 
             await _appDbContext.SaveChangesAsync();

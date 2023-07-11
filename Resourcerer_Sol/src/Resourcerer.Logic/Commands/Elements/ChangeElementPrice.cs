@@ -22,7 +22,7 @@ public class ChangeElementPrice
 
         public async Task<HandlerResult<Unit>> Handle(ChangePriceDto request)
         {   
-            var element = await _appDbContext.Elements
+            var element = await _appDbContext.Items
                 .Where(x => x.Id == request.EntityId)
                 .Include(x => x.Prices)
                 .FirstOrDefaultAsync();

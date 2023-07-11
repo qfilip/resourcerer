@@ -32,7 +32,7 @@ public class CreateElementTests : TestsBase
 
         // act
         var result = _handler.Handle(dto).GetAwaiter().GetResult();
-        var entity = _testDbContext.Elements.First();
+        var entity = _testDbContext.Items.First();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);

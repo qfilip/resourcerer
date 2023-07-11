@@ -22,7 +22,7 @@ public static class CreateElementOrderedEvent
                     .ValidationError($"ElementId cannot be null");
             }
 
-            var element = await _appDbContext.Elements
+            var element = await _appDbContext.Items
                 .Include(x => x.UnitOfMeasure)
                 .Include(x => x.Behavior)
                 .FirstOrDefaultAsync(x => x.Id == request.ElementId);

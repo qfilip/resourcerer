@@ -23,7 +23,7 @@ public static class SeedMockData
 
             _dbContext.Composites.AddRange(dbData.Composites!);
 
-            _dbContext.Elements.AddRange(dbData.Elements!);
+            _dbContext.Items.AddRange(dbData.Elements!);
 
             await _dbContext.BaseSaveChangesAsync();
 

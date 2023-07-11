@@ -53,7 +53,7 @@ public static class CreateComposite
                 .Select(x => x.ElementId)
                 .ToArray();
             
-            var requiredElements = await _appDbContext.Elements
+            var requiredElements = await _appDbContext.Items
                 .Where(x => requestElementIds.Contains(x.Id))
                 .Include(x => x.Prices) // EFCore bug with global query filter
                 .ToArrayAsync();
