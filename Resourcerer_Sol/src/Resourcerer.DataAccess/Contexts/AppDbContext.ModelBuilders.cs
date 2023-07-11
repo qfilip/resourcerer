@@ -30,8 +30,8 @@ public partial class AppDbContext
                 .HasForeignKey(x => x.CompositeId).IsRequired()
                 .HasConstraintName($"FK_Composite{nameof(Item)}_{nameof(Excerpt)}");
 
-            e.HasOne(x => x.Element).WithMany(x => x.Excerpts)
-                .HasForeignKey(x => x.ElementId).IsRequired()
+            e.HasOne(x => x.Item).WithMany(x => x.Excerpts)
+                .HasForeignKey(x => x.ItemId).IsRequired()
                 .HasConstraintName($"FK_Element{nameof(Item)}_{nameof(Excerpt)}");
         });
 
@@ -62,6 +62,11 @@ public partial class AppDbContext
             e.HasOne(x => x.UnitOfMeasure).WithMany(x => x.Items)
                 .HasForeignKey(x => x.UnitOfMeasureId).IsRequired()
                 .HasConstraintName($"FK_{nameof(UnitOfMeasure)}_{nameof(Item)}");
+        });
+
+        ConfigureEntity<Composite>(modelBuilder, e =>
+        {
+            e.HasOne(x => x.CompositeItem).WithOne(x => x.Composite).IsRequired();
         });
 
         ConfigureEntity<Instance>(modelBuilder, (e) =>
@@ -133,8 +138,8 @@ public partial class AppDbContext
         {
             e.ToTable(name);
             e.HasKey(x => x.Id);
-            customConfiguration?.Invoke(e);
             e.HasQueryFilter(x => x.EntityStatus == eEntityStatus.Active);
+            customConfiguration?.Invoke(e);
         });
     }
 }

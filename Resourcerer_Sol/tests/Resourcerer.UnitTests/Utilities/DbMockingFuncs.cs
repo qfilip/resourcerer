@@ -82,7 +82,7 @@ public class DbMockingFuncs
             return MakeEntity(() => new Excerpt
             {
                 CompositeId = composite.Id,
-                ElementId = x.Item1.Id,
+                //ElementId = x.Item1.Id,
                 Quantity = x.Item2
             });
         });

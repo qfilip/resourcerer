@@ -7,13 +7,11 @@ using Resourcerer.UnitTests.Utilities.Mocker;
 
 namespace Resourcerer.UnitTests.Logic.Commands.Categories;
 
-public class CreateCategoryTests
+public class CreateCategoryTests : TestsBase
 {
-    private readonly AppDbContext _testDbContext;
     private readonly CreateCategory.Handler _handler;
     public CreateCategoryTests()
     {
-        _testDbContext = new ContextCreator().GetTestDbContext();
         _handler = new CreateCategory.Handler(_testDbContext);
     }
 

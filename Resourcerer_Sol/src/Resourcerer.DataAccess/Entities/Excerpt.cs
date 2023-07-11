@@ -3,10 +3,10 @@
 public class Excerpt : EntityBase
 {
     public Guid CompositeId { get; set; }
-    public Guid ElementId { get; set; }
+    public Composite? Composite { get; set; }
     
-    public virtual Item? Composite { get; set; }
-    public virtual Item? Element { get; set; }
+    public  Guid ItemId { get; set; }
+    public virtual Item? Item { get; set; }
 
     public double Quantity { get; set; }
 }
