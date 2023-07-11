@@ -6,7 +6,7 @@ namespace Resourcerer.UnitTests.Utilities.Mocker;
 
 internal static partial class Mocker
 {
-    public static Category MockCategory(AppDbContext context)
+    public static Category MockCategory(AppDbContext context, Action<Category>? modifier = null)
     {
         var id = Guid.NewGuid();
         var category = new Category
@@ -14,6 +14,8 @@ internal static partial class Mocker
             Id = id,
             Name = $"test-{id}"
         };
+
+        modifier?.Invoke(category);
 
         context.Categories.Add(category);
 
@@ -59,7 +61,25 @@ internal static partial class Mocker
         return uom;
     }
 
-    public static List<Price> MockPrices(AppDbContext context, Action<Price> entityIdModifier, int priceCount, bool pricesCorrupted)
+    public static List<Excerpt> MockExcerpts(AppDbContext context, Item composite, (Item, double)[] itemsDetail)
+    {
+        var excerpts = new List<Excerpt>();
+        foreach (var d in itemsDetail)
+        {
+            excerpts.Add(new Excerpt
+            {
+                CompositeId = composite.Id,
+                ElementId = d.Item1.Id,
+                Quantity = d.Item2
+            });
+        }
+
+        context.Excerpts.AddRange(excerpts);
+
+        return excerpts;
+    }
+
+    public static List<Price> MockPrices(AppDbContext context, Action<Price>? modifier, int priceCount, bool pricesCorrupted)
     {
         if (priceCount < 0)
         {
@@ -74,7 +94,7 @@ internal static partial class Mocker
                EntityStatus = x == 0 ? eEntityStatus.Active : eEntityStatus.Deleted
            }).ToList();
 
-        prices.ForEach(entityIdModifier);
+        prices.ForEach(x => modifier?.Invoke(x));
 
         if (pricesCorrupted)
             prices.ForEach(x => x.EntityStatus = eEntityStatus.Active);

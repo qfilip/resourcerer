@@ -16,4 +16,13 @@ public class TestsBase
     }
 
     protected ILogger<T> MockLogger<T>() => A.Fake<ILogger<T>>();
+
+    [Fact]
+    public void Ooh()
+    {
+        Mocker.MockDbData(_testDbContext);
+        _testDbContext.SaveChanges();
+
+        var x = 0;
+    }
 }
