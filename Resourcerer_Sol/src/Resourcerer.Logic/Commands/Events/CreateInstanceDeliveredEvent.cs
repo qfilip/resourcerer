@@ -19,7 +19,7 @@ public static class CreateInstanceDeliveredEvent
         {
             var orderEvent = await _appDbContext.InstanceOrderedEvents
                 .Include(x => x.InstanceOrderCancelledEvent)
-                .Include(x => x.InstanceDeliveredEvent)
+                .Include(x => x.InstanceOrderDeliveredEvent)
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceOrderedEventId);
 
             if (orderEvent == null)
@@ -34,17 +34,17 @@ public static class CreateInstanceDeliveredEvent
                 return HandlerResult<Unit>.ValidationError(error);
             }
 
-            if (orderEvent.InstanceDeliveredEvent != null)
+            if (orderEvent.InstanceOrderDeliveredEvent != null)
             {
                 return HandlerResult<Unit>.Ok(new Unit());
             }
 
-            var deliveredEvent = new InstanceDeliveredEvent
+            var deliveredEvent = new InstanceOrderDeliveredEvent
             {
                 InstanceOrderedEventId = orderEvent.Id
             };
 
-            _appDbContext.InstanceDeliveredEvents.Add(deliveredEvent);
+            _appDbContext.InstanceOrderDeliveredEvents.Add(deliveredEvent);
 
             await _appDbContext.SaveChangesAsync();
 

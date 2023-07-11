@@ -9,5 +9,5 @@ public class InstanceOrderedEvent : EntityBase
     public virtual InstanceOrderCancelledEvent? InstanceOrderCancelledEvent { get; set; }
 
     public Guid? InstanceDeliveredEventId { get; set; }
-    public virtual InstanceDeliveredEvent? InstanceDeliveredEvent { get; set; }
+    public virtual InstanceOrderDeliveredEvent? InstanceOrderDeliveredEvent { get; set; }
 }

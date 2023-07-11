@@ -19,7 +19,7 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<Instance> Instances { get; set; }
     public virtual DbSet<InstanceOrderedEvent> InstanceOrderedEvents { get; set; }
     public virtual DbSet<InstanceOrderCancelledEvent> InstanceOrderCancelledEvents { get; set; }
-    public virtual DbSet<InstanceDeliveredEvent> InstanceDeliveredEvents { get; set; }
+    public virtual DbSet<InstanceOrderDeliveredEvent> InstanceOrderDeliveredEvents { get; set; }
     public virtual DbSet<InstanceDiscardedEvent> InstanceDiscardedEvents { get; set; }
 
 

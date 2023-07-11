@@ -18,7 +18,7 @@ public static class CreateInstanceOrderCancelledEvent
         {
             var orderedEvent = await _appDbContext.InstanceOrderedEvents
                 .Include(x => x.InstanceOrderCancelledEventId)
-                .Include(x => x.InstanceDeliveredEvent)
+                .Include(x => x.InstanceOrderDeliveredEvent)
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceOrderedEventId);
 
             if (orderedEvent == null)
@@ -27,7 +27,7 @@ public static class CreateInstanceOrderCancelledEvent
                 return HandlerResult<Unit>.ValidationError(error);
             }
 
-            if (orderedEvent.InstanceDeliveredEvent != null)
+            if (orderedEvent.InstanceOrderDeliveredEvent != null)
             {
                 var error = "Order was delivered, and cannot be cancelled";
                 return HandlerResult<Unit>.ValidationError(error);
