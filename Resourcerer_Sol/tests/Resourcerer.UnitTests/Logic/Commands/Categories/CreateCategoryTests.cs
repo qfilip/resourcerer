@@ -1,8 +1,6 @@
-﻿using Resourcerer.DataAccess.Contexts;
-using Resourcerer.Dtos;
+﻿using Resourcerer.Dtos;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Categories;
-using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Mocker;
 
 namespace Resourcerer.UnitTests.Logic.Commands.Categories;

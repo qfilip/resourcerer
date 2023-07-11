@@ -4,8 +4,7 @@ namespace Resourcerer.Dtos;
 
 public class InstanceOrderedEventDto : EntityDto<InstanceOrderedEventDto>
 {
-    public Guid? ElementId { get; set; }
-    public Guid? CompositeId { get; set; }
+    public Guid ItemId { get; set; }
     public DateTime? ExpiryDate { get; set; }
     public double UnitsOrdered { get; set; }
     public double UnitPrice { get; set; }
@@ -19,6 +18,10 @@ public class InstanceOrderedEventDto : EntityDto<InstanceOrderedEventDto>
     {
         public Validator()
         {
+            RuleFor(x => x.ItemId)
+                .NotEmpty()
+                .WithMessage("Item id cannot be empty");
+
             RuleFor(x => x.UnitsOrdered)
                 .GreaterThan(0)
                 .WithMessage("Number of ordered units must be greater than 0");

@@ -10,11 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Logic\Commands\Events\**" />
     <Compile Remove="Logic\Queries\**" />
-    <EmbeddedResource Remove="Logic\Commands\Events\**" />
     <EmbeddedResource Remove="Logic\Queries\**" />
-    <None Remove="Logic\Commands\Events\**" />
     <None Remove="Logic\Queries\**" />
   </ItemGroup>
 

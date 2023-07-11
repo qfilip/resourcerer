@@ -67,7 +67,7 @@ public class ChangeItemPriceTests : TestsBase
     public void When_Element_HasCorruptedPrices_Then_PricesAreFixed_Ok()
     {
         // arrange
-        var item = Mocker.MockItem(_testDbContext, 3, true);
+        var item = Mocker.MockItem(_testDbContext, null, 3, true);
         var oldPrices = item.Prices.Select(x => x).ToList();
         var dto = new ChangePriceDto
         {

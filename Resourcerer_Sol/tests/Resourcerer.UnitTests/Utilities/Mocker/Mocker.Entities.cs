@@ -20,18 +20,24 @@ internal static partial class Mocker
         return category;
     }
 
-    public static Item MockItem(AppDbContext context, int priceCount = 3, bool pricesCorrupted = false)
+    public static Item MockItem(AppDbContext context, Action<Item>? modifier = null, int priceCount = 3, bool pricesCorrupted = false)
     {
         var id = Guid.NewGuid();
         var item = new Item
         {
             Id = id,
+            
             Name = $"test-{id}",
+            ExpirationTimeSeconds = 1200,
+            PreparationTimeSeconds = 10,
+            
             CategoryId = MockCategory(context).Id,
-            UnitOfMeasureId = MockUnitOfMeasure(context).Id
+            UnitOfMeasureId = MockUnitOfMeasure(context).Id,
         };
 
         MockPrices(context, x => x.ItemId = item.Id, priceCount, pricesCorrupted);
+
+        modifier?.Invoke(item);
 
         context.Items.Add(item);
 

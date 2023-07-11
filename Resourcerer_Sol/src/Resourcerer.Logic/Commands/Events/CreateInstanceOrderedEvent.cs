@@ -16,20 +16,14 @@ public static class CreateInstanceOrderedEvent
         }
         public async Task<HandlerResult<Unit>> Handle(InstanceOrderedEventDto request)
         {
-            if(request.ElementId == null)
-            {
-                return HandlerResult<Unit>
-                    .ValidationError($"ElementId cannot be null");
-            }
-
             var item = await _appDbContext.Items
                 .Include(x => x.UnitOfMeasure)
-                .FirstOrDefaultAsync(x => x.Id == request.ElementId);
+                .FirstOrDefaultAsync(x => x.Id == request.ItemId);
 
             if (item == null)
             {
                 return HandlerResult<Unit>
-                    .ValidationError($"Item with id {request.ElementId} not found");
+                    .ValidationError($"Item with id {request.ItemId} not found");
             }
 
             if(item.ExpirationTimeSeconds != null)
@@ -46,7 +40,7 @@ public static class CreateInstanceOrderedEvent
                         .ValidationError($"Expiry date must be set for items that can expire");
                 }
 
-                if(request.ExpectedDeliveryDate <= request.ExpiryDate)
+                if(request.ExpectedDeliveryDate >= request.ExpiryDate)
                 {
                     return HandlerResult<Unit>
                         .ValidationError($"Ordered items will expire before they are delivered");
@@ -55,20 +49,25 @@ public static class CreateInstanceOrderedEvent
 
             var instance = new Instance
             {
-                ItemId = item.Id,
-                ExpiryDate = request.ExpiryDate
-            };
+                Id = Guid.NewGuid(),
 
-            var entity = new InstanceOrderedEvent
-            {
-                Instance = instance,
                 UnitPrice = request.UnitPrice,
                 UnitsOrdered = request.UnitsOrdered,
                 TotalDiscountPercent = request.TotalDiscountPercent,
-                ExpectedDeliveryDate = request.ExpectedDeliveryDate
+                ExpectedDeliveryDate = request.ExpectedDeliveryDate,
+                ExpiryDate = request.ExpiryDate,
+                
+                ItemId = item.Id
             };
 
-            _appDbContext.InstanceOrderedEvents.Add(entity);
+            var orderedEvent = new InstanceOrderedEvent
+            {
+                InstanceId = instance.Id,
+            };
+
+            _appDbContext.InstanceOrderedEvents.Add(orderedEvent);
+            _appDbContext.Instances.Add(instance);
+            
             await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());
