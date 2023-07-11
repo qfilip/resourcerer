@@ -24,12 +24,34 @@ public static class CreateElementOrderedEvent
 
             var element = await _appDbContext.Elements
                 .Include(x => x.UnitOfMeasure)
+                .Include(x => x.Behavior)
                 .FirstOrDefaultAsync(x => x.Id == request.ElementId);
 
             if (element == null)
             {
                 return HandlerResult<Unit>
                     .ValidationError($"Element with id {request.ElementId} not found");
+            }
+
+            if(element.Behavior != null && element.Behavior.ExpirationTime != null)
+            {
+                if(request.ExpectedDeliveryDate == null)
+                {
+                    return HandlerResult<Unit>
+                        .ValidationError($"Expected delivery time must be set for elements that can expire");
+                }
+
+                if (request.ExpiryDate == null)
+                {
+                    return HandlerResult<Unit>
+                        .ValidationError($"Expiry date must be set for elements that can expire");
+                }
+
+                if(request.ExpectedDeliveryDate <= request.ExpiryDate)
+                {
+                    return HandlerResult<Unit>
+                        .ValidationError($"Order items will expire before they are delivered");
+                }
             }
 
             var instance = new Instance
@@ -44,7 +66,7 @@ public static class CreateElementOrderedEvent
                 UnitPrice = request.UnitPrice,
                 UnitsOrdered = request.UnitsOrdered,
                 TotalDiscountPercent = request.TotalDiscountPercent,
-                ExpectedDeliveryTime = request.ExpectedDeliveryTime
+                ExpectedDeliveryTime = request.ExpectedDeliveryDate
             };
 
             _appDbContext.InstanceOrderedEvents.Add(entity);

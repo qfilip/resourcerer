@@ -10,7 +10,7 @@ public class InstanceOrderedEventDto : EntityDto<InstanceOrderedEventDto>
     public double UnitsOrdered { get; set; }
     public double UnitPrice { get; set; }
     public int TotalDiscountPercent { get; set; }
-    public DateTime ExpectedDeliveryTime { get; set; }
+    public DateTime? ExpectedDeliveryDate { get; set; }
 
     public override AbstractValidator<InstanceOrderedEventDto> GetValidator() =>
         new Validator();

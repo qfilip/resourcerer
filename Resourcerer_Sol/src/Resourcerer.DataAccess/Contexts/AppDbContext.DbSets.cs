@@ -15,6 +15,7 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<Excerpt> Excerpts { get; set; }
     public virtual DbSet<UnitOfMeasure> UnitsOfMeasure { get; set; }
     public virtual DbSet<Price> Prices { get; set; }
+    public virtual DbSet<Behavior> Behaviors { get; set; }
     public virtual DbSet<Element> Elements { get; set; }
     public virtual DbSet<Composite> Composites { get; set; }
     public virtual DbSet<Instance> Instances { get; set; }

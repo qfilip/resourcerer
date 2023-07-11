@@ -54,6 +54,17 @@ public partial class AppDbContext
                 .HasConstraintName($"FK_{nameof(Composite)}_{nameof(Price)}");
         });
 
+        ConfigureEntity<Behavior>(modelBuilder, e =>
+        {
+            e.HasOne(x => x.Element).WithOne(x => x.Behavior)
+                .HasForeignKey<Behavior>(x => x.ElementId)
+                .HasConstraintName($"FK_{nameof(Element)}_{nameof(Behavior)}");
+
+            e.HasOne(x => x.Composite).WithOne(x => x.Behavior)
+                .HasForeignKey<Behavior>(x => x.CompositeId)
+                .HasConstraintName($"FK_{nameof(Composite)}_{nameof(Behavior)}");
+        });
+
         ConfigureEntity<Element>(modelBuilder, e =>
         {
             e.Property(x => x.Name).IsRequired();
