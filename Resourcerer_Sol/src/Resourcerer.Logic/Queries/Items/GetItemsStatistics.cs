@@ -32,7 +32,7 @@ public static class GetItemsStatistics
                         .ThenInclude(x => x!.InstanceOrderCancelledEvent)
                 // discards
                 .Include(x => x.Instances)
-                    .ThenInclude(x => x.InstanceDiscardedEvent)
+                    .ThenInclude(x => x.InstanceDiscardedEvents)
                 .FirstOrDefaultAsync();
 
             if (item == null)
@@ -47,11 +47,8 @@ public static class GetItemsStatistics
                     x.InstanceOrderedEvent.InstanceOrderDeliveredEvent == null)
                 .ToArray();
 
-            var cancelledInstances = item.Instances
-                .Where(x =>
-                    x.InstanceOrderedEvent != null &&
-                    x.InstanceOrderedEvent.InstanceOrderCancelledEvent != null)
-                .ToArray();
+            var pendingForStock = pendingInstances
+                .Sum(x => x.UnitsOrdered);
 
             var deliveredInstances = item.Instances
                 .Where(x =>
@@ -62,15 +59,18 @@ public static class GetItemsStatistics
             var unitsInStock = deliveredInstances
                 .Select(x =>
                 {
-                    var totalQuantity = x.UnitsOrdered;
-                    if(x.InstanceDiscardedEvent != null)
-                    {
-                        totalQuantity -= x.InstanceDiscardedEvent.Quantity;
-                    }
-
-                    return totalQuantity;
+                    if (x.ExpiryDate <= DateTime.UtcNow) return 0;
+                    
+                    var discarded = x.InstanceDiscardedEvents.Sum(ev => ev.Quantity);
+                    
+                    return x.UnitsOrdered - discarded;
                 });
 
+            var isComposite = item.CompositeExcerpts.Any();
+
+            var usedInComposites = item.ElementExcerpts
+                .DistinctBy(x => x.CompositeId)
+                .Count();
 
             return HandlerResult<List<ItemStatisticsDto>>.Ok(new List<ItemStatisticsDto>());
         }
