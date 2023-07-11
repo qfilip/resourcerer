@@ -4,7 +4,7 @@ namespace Resourcerer.Dtos;
 
 public class ChangePriceDto : IBaseDto<ChangePriceDto>
 {
-    public Guid EntityId { get; set; }
+    public Guid ItemId { get; set; }
     public double UnitPrice { get; set; }
 
     public AbstractValidator<ChangePriceDto>? GetValidator() => new Validator();
@@ -13,11 +13,11 @@ public class ChangePriceDto : IBaseDto<ChangePriceDto>
     {
         public Validator()
         {
-            RuleFor(x => x.EntityId)
-                .NotEmpty().WithMessage("Entity id cannot be default value");
+            RuleFor(x => x.ItemId)
+                .NotEmpty().WithMessage("Item id cannot be default value");
 
             RuleFor(x => x.UnitPrice)
-                .GreaterThan(0).WithMessage("Entity price must be greater than 0");
+                .GreaterThan(0).WithMessage("Item price must be greater than 0");
         }
     }
 }

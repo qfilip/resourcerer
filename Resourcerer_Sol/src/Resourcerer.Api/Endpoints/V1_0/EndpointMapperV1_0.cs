@@ -1,7 +1,6 @@
 ﻿using Resourcerer.Api.Endpoints.V1_0.Categories;
-using Resourcerer.Api.Endpoints.V1_0.Composites;
-using Resourcerer.Api.Endpoints.V1_0.ElementEvents;
-using Resourcerer.Api.Endpoints.V1_0.Elements;
+using Resourcerer.Api.Endpoints.V1_0.Events;
+using Resourcerer.Api.Endpoints.V1_0.Items;
 using Resourcerer.Api.Endpoints.V1_0.Mocks;
 using Resourcerer.Api.Endpoints.V1_0.UnitsOfMeasure;
 using Resourcerer.Api.Endpoints.V1_0.Users;
@@ -15,6 +14,7 @@ public class EndpointMapperV1_0
     {
         MapCategories(app);
         MapMocks(app);
+        MapItems(app);
         MapUnitsOfMeasure(app);
         MapUsers(app);
     }
@@ -27,16 +27,16 @@ public class EndpointMapperV1_0
         CreateCategoryEndpoint.MapToGroup(g);
     }
 
-    private static void MapElements(WebApplication app)
+    private static void MapItems(WebApplication app)
     {
-        var g = EndpointMapper.GetGroup(app, Version, "Elements");
+        var g = EndpointMapper.GetGroup(app, Version, "Items");
 
-        ChangeElementPriceEndpoint.MapToGroup(g);
-        CreateElementDeliveredEndpoint.MapToGroup(g);
-        CreateElementEndpoint.MapToGroup(g);
-        CreateElementOrderCancelledEventEndpoint.MapToGroup(g);
-        CreateElementOrderedEventEndpoint.MapToGroup(g);
-        GetAllElementsStatisticsEndpoint.MapToGroup(g);
+        ChangeItemPriceEndpoint.MapToGroup(g);
+        CreateInstanceDeliveredEndpoint.MapToGroup(g);
+        CreateItemEndpoint.MapToGroup(g);
+        CreateInstanceOrderCancelledEventEndpoint.MapToGroup(g);
+        CreateInstanceOrderedEventEndpoint.MapToGroup(g);
+        GetItemsStatisticsEndpoint.MapToGroup(g);
     }
 
     private static void MapMocks(WebApplication app)

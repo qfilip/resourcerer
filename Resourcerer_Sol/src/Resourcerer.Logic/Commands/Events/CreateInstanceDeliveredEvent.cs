@@ -3,9 +3,9 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 
-namespace Resourcerer.Logic.Commands.ElementEvents;
+namespace Resourcerer.Logic.Commands.Events;
 
-public static class CreateElementDeliveredEvent
+public static class CreateInstanceDeliveredEvent
 {
     public class Handler : IAppHandler<InstanceDeliveredEventDto, Unit>
     {

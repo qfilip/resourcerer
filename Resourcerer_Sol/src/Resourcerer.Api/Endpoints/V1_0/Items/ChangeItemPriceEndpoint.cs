@@ -1,18 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
-using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
-using Resourcerer.Logic;
-using Resourcerer.Logic.Commands.Elements;
+using Resourcerer.Logic.Commands.Items;
 
-namespace Resourcerer.Api.Endpoints.V1_0.Elements;
+namespace Resourcerer.Api.Endpoints.V1_0.Items;
 
-public class ChangeElementPriceEndpoint
+public class ChangeItemPriceEndpoint
 {
     public static async Task<IResult> Action(
        [FromBody] ChangePriceDto dto,
        [FromServices] Pipeline pipeline,
-       [FromServices] ChangeElementPrice.Handler handler)
+       [FromServices] ChangeItemPrice.Handler handler)
     {
         return await pipeline.Pipe(handler, dto);
     }
@@ -23,7 +21,7 @@ public class ChangeElementPriceEndpoint
 
         EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {
-            (eSection.Element, new[] { ePermission.Write })
+            (eSection.Item, new[] { ePermission.Write })
         });
     }
 }

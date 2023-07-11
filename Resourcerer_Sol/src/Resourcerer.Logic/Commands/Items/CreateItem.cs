@@ -3,11 +3,11 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 
-namespace Resourcerer.Logic.Commands.Elements;
+namespace Resourcerer.Logic.Commands.Items;
 
-public static class CreateElement
+public static class CreateItem
 {
-    public class Handler : IAppHandler<CreateElementDto, Unit>
+    public class Handler : IAppHandler<CreateItemDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -16,7 +16,7 @@ public static class CreateElement
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(CreateElementDto request)
+        public async Task<HandlerResult<Unit>> Handle(CreateItemDto request)
         {
             var existing = await _appDbContext.Items
                 .FirstOrDefaultAsync(x => x.Name == request.Name);
@@ -45,7 +45,7 @@ public static class CreateElement
                 return HandlerResult<Unit>.ValidationError(error);
             }
 
-            var element = new Item
+            var item = new Item
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
@@ -55,11 +55,11 @@ public static class CreateElement
 
             var price = new Price
             {
-                ElementId = element.Id,
+                Item = item,
                 UnitValue = request.UnitPrice
             };
 
-            _appDbContext.Items.Add(element);
+            _appDbContext.Items.Add(item);
             _appDbContext.Prices.Add(price);
 
             await _appDbContext.SaveChangesAsync();

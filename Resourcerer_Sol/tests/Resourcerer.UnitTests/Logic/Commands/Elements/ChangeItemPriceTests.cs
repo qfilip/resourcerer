@@ -1,35 +1,33 @@
-﻿using Castle.Core.Logging;
-using FakeItEasy;
+﻿using FakeItEasy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos;
 using Resourcerer.Logic;
-using Resourcerer.Logic.Commands.Elements;
+using Resourcerer.Logic.Commands.Items;
 using Resourcerer.UnitTests.Utilities.Mocker;
-using SQLitePCL;
 
 namespace Resourcerer.UnitTests.Logic.Commands.Elements;
 
-public class ChangeElementPriceTests : TestsBase
+public class ChangeItemPriceTests : TestsBase
 {
-    private readonly ChangeElementPrice.Handler _handler;
-    private readonly ILogger<ChangeElementPrice.Handler> _fakeLogger;
-    public ChangeElementPriceTests()
+    private readonly ChangeItemPrice.Handler _handler;
+    private readonly ILogger<ChangeItemPrice.Handler> _fakeLogger;
+    public ChangeItemPriceTests()
     {
-        _fakeLogger = A.Fake<ILogger<ChangeElementPrice.Handler>>();
-        _handler = new ChangeElementPrice.Handler(_testDbContext, _fakeLogger);
+        _fakeLogger = A.Fake<ILogger<ChangeItemPrice.Handler>>();
+        _handler = new ChangeItemPrice.Handler(_testDbContext, _fakeLogger);
     }
 
     [Fact]
     public void When_AllOk_Then_NewPriceAdded_Ok()
     {
         // arrange
-        var element = Mocker.MockElement(_testDbContext);
-        var oldPrices = element.Prices.Select(x => x).ToList();
+        var item = Mocker.MockItem(_testDbContext);
+        var oldPrices = item.Prices.Select(x => x).ToList();
         var dto = new ChangePriceDto
         {
-            EntityId = element.Id,
+            ItemId = item.Id,
             UnitPrice = 20
         };
         _testDbContext.SaveChanges();
@@ -37,7 +35,7 @@ public class ChangeElementPriceTests : TestsBase
         // act
         var result = _handler.Handle(dto).GetAwaiter().GetResult();
         var newPrices = _testDbContext.Prices
-            .Where(x => x.ElementId == element.Id)
+            .Where(x => x.ItemId == item.Id)
             .IgnoreQueryFilters()
             .ToList();
 
@@ -53,7 +51,7 @@ public class ChangeElementPriceTests : TestsBase
         // arrange
         var dto = new ChangePriceDto
         {
-            EntityId = Guid.NewGuid(),
+            ItemId = Guid.NewGuid(),
             UnitPrice = 20
         };
         _testDbContext.SaveChanges();
@@ -69,11 +67,11 @@ public class ChangeElementPriceTests : TestsBase
     public void When_Element_HasCorruptedPrices_Then_PricesAreFixed_Ok()
     {
         // arrange
-        var element = Mocker.MockElement(_testDbContext, 3, true);
-        var oldPrices = element.Prices.Select(x => x).ToList();
+        var item = Mocker.MockItem(_testDbContext, 3, true);
+        var oldPrices = item.Prices.Select(x => x).ToList();
         var dto = new ChangePriceDto
         {
-            EntityId = element.Id,
+            ItemId = item.Id,
             UnitPrice = 20
         };
         _testDbContext.SaveChanges();
@@ -81,7 +79,7 @@ public class ChangeElementPriceTests : TestsBase
         // act
         var result = _handler.Handle(dto).GetAwaiter().GetResult();
         var newPrices = _testDbContext.Prices
-            .Where(x => x.ElementId == element.Id)
+            .Where(x => x.ItemId == item.Id)
             .IgnoreQueryFilters()
             .ToList();
 

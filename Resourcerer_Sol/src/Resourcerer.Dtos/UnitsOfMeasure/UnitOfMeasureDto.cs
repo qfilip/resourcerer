@@ -8,7 +8,7 @@ public class UnitOfMeasureDto : EntityDto<UnitOfMeasureDto>
     public string? Symbol { get; set; }
 
     public List<ExcerptDto> Excerpts { get; set; } = new();
-    public List<ElementDto> Elements { get; set; } = new();
+    public List<ItemDto> Elements { get; set; } = new();
 
     public override AbstractValidator<UnitOfMeasureDto> GetValidator() => new Validator();
 

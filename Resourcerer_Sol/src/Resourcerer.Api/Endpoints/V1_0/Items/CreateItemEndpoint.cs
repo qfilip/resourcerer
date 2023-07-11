@@ -1,27 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
-using Resourcerer.Logic.Commands.ElementEvents;
+using Resourcerer.Logic.Commands.Items;
 
-namespace Resourcerer.Api.Endpoints.V1_0.ElementEvents;
+namespace Resourcerer.Api.Endpoints.V1_0.Items;
 
-public class CreateElementOrderCancelledEventEndpoint
+public class CreateItemEndpoint
 {
     public static async Task<IResult> Action(
-       [FromBody] InstanceOrderCancelledEventDto dto,
+       [FromBody] CreateItemDto dto,
        [FromServices] Pipeline pipeline,
-       [FromServices] CreateElementOrderCancelledEvent.Handler handler)
+       [FromServices] CreateItem.Handler handler)
     {
         return await pipeline.Pipe(handler, dto);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/order-cancelled", Action);
+        var endpoint = group.MapPost("/create", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {
-            (eSection.Element, new[] { ePermission.Write })
+            (eSection.Item, new[] { ePermission.Write })
         });
     }
 }

@@ -20,9 +20,6 @@ public static class SeedMockData
             _dbContext.UnitsOfMeasure.AddRange(dbData.UnitsOfMeasure!);
             _dbContext.Excerpts.AddRange(dbData.Excerpts!);
             _dbContext.Prices.AddRange(dbData.Prices!);
-
-            _dbContext.Composites.AddRange(dbData.Composites!);
-
             _dbContext.Items.AddRange(dbData.Elements!);
 
             await _dbContext.BaseSaveChangesAsync();

@@ -5,9 +5,9 @@ using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos;
 
-namespace Resourcerer.Logic.Commands.Elements;
+namespace Resourcerer.Logic.Commands.Items;
 
-public class ChangeElementPrice
+public class ChangeItemPrice
 {
     public class Handler : IAppHandler<ChangePriceDto, Unit>
     {
@@ -23,18 +23,18 @@ public class ChangeElementPrice
         public async Task<HandlerResult<Unit>> Handle(ChangePriceDto request)
         {   
             var element = await _appDbContext.Items
-                .Where(x => x.Id == request.EntityId)
+                .Where(x => x.Id == request.ItemId)
                 .Include(x => x.Prices)
                 .FirstOrDefaultAsync();
 
             if(element == null)
             {
-                return HandlerResult<Unit>.ValidationError($"Element with id {request.EntityId} doesn't exist");
+                return HandlerResult<Unit>.ValidationError($"Item with id {request.ItemId} doesn't exist");
             }
 
             if(element.Prices.Count(x => x.EntityStatus == eEntityStatus.Active) > 1)
             {
-                _logger.LogWarning("Element with id {id} had multiple active prices", element.Id);
+                _logger.LogWarning("Item with id {id} had multiple active prices", element.Id);
             }
 
             foreach (var p in element.Prices)
@@ -42,7 +42,7 @@ public class ChangeElementPrice
 
             var price = new Price
             {
-                ElementId = request.EntityId,
+                ItemId = request.ItemId,
                 UnitValue = request.UnitPrice
             };
 

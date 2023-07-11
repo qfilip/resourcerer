@@ -3,9 +3,9 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 
-namespace Resourcerer.Logic.Commands.ElementEvents;
+namespace Resourcerer.Logic.Commands.Events;
 
-public static class CreateElementOrderedEvent
+public static class CreateInstanceOrderedEvent
 {
     public class Handler : IAppHandler<InstanceOrderedEventDto, Unit>
     {
@@ -22,29 +22,28 @@ public static class CreateElementOrderedEvent
                     .ValidationError($"ElementId cannot be null");
             }
 
-            var element = await _appDbContext.Items
+            var item = await _appDbContext.Items
                 .Include(x => x.UnitOfMeasure)
-                .Include(x => x.Behavior)
                 .FirstOrDefaultAsync(x => x.Id == request.ElementId);
 
-            if (element == null)
+            if (item == null)
             {
                 return HandlerResult<Unit>
-                    .ValidationError($"Element with id {request.ElementId} not found");
+                    .ValidationError($"Item with id {request.ElementId} not found");
             }
 
-            if(element.Behavior != null && element.Behavior.ExpirationTime != null)
+            if(item.ExpirationTime != null)
             {
                 if(request.ExpectedDeliveryDate == null)
                 {
                     return HandlerResult<Unit>
-                        .ValidationError($"Expected delivery time must be set for elements that can expire");
+                        .ValidationError($"Expected delivery time must be set for items that can expire");
                 }
 
                 if (request.ExpiryDate == null)
                 {
                     return HandlerResult<Unit>
-                        .ValidationError($"Expiry date must be set for elements that can expire");
+                        .ValidationError($"Expiry date must be set for items that can expire");
                 }
 
                 if(request.ExpectedDeliveryDate <= request.ExpiryDate)
@@ -56,7 +55,7 @@ public static class CreateElementOrderedEvent
 
             var instance = new Instance
             {
-                ElementId = element.Id,
+                ItemId = item.Id,
                 ExpiryDate = request.ExpiryDate
             };
 

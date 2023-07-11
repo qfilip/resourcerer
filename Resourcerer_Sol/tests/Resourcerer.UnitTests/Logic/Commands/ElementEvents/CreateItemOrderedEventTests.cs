@@ -1,15 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.Dtos;
+﻿using Resourcerer.Dtos;
 using Resourcerer.Logic;
-using Resourcerer.Logic.Commands.ElementEvents;
+using Resourcerer.Logic.Commands.Events;
 using Resourcerer.UnitTests.Utilities.Mocker;
 
 namespace Resourcerer.UnitTests.Logic.Commands.ElementEvents;
 
-public class CreateElementOrderedEventTests : TestsBase
+public class CreateInstanceOrderedEventTests : TestsBase
 {
-    private readonly CreateElementOrderedEvent.Handler _handler;
-    public CreateElementOrderedEventTests()
+    private readonly CreateInstanceOrderedEvent.Handler _handler;
+    public CreateInstanceOrderedEventTests()
     {
         _handler = new(_testDbContext);
     }
@@ -18,7 +17,7 @@ public class CreateElementOrderedEventTests : TestsBase
     public void When_AllOk_Then_Ok()
     {
         // arrange
-        var element = Mocker.MockElement(_testDbContext);
+        var element = Mocker.MockItem(_testDbContext);
         _testDbContext.SaveChanges();
 
         var dto = new InstanceOrderedEventDto

@@ -21,7 +21,7 @@ public class CreateElementTests : TestsBase
         // arrange
         var category = Mocker.MockCategory(_testDbContext);
         var uom = Mocker.MockUnitOfMeasure(_testDbContext);
-        var dto = new CreateElementDto
+        var dto = new CreateItemDto
         {
             Name = "test",
             CategoryId = category.Id,
@@ -43,10 +43,10 @@ public class CreateElementTests : TestsBase
     public void When_ElementWithSameName_Exsts_Then_ValidationError()
     {
         // arrange
-        var existingElement = Mocker.MockElement(_testDbContext);
+        var existingElement = Mocker.MockItem(_testDbContext);
         var category = Mocker.MockCategory(_testDbContext);
         var uom = Mocker.MockUnitOfMeasure(_testDbContext);
-        var dto = new CreateElementDto
+        var dto = new CreateItemDto
         {
             Name = existingElement.Name,
             CategoryId = category.Id,
@@ -67,7 +67,7 @@ public class CreateElementTests : TestsBase
     {
         // arrange
         var uom = Mocker.MockUnitOfMeasure(_testDbContext);
-        var dto = new CreateElementDto
+        var dto = new CreateItemDto
         {
             Name = "test",
             CategoryId = Guid.NewGuid(),
@@ -88,7 +88,7 @@ public class CreateElementTests : TestsBase
     {
         // arrange
         var category = Mocker.MockCategory(_testDbContext);
-        var dto = new CreateElementDto
+        var dto = new CreateItemDto
         {
             Name = "test",
             CategoryId = category.Id,

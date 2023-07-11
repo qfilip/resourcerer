@@ -7,13 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Resourcerer.DataAccess\Resourcerer.DataAccess.csproj" />
-    <ProjectReference Include="..\Resourcerer.Dtos\Resourcerer.Dtos.csproj" />
-    <ProjectReference Include="..\Resourcerer.Utilities\Resourcerer.Utilities.csproj" />
+    <Compile Remove="Commands\Prices\**" />
+    <EmbeddedResource Remove="Commands\Prices\**" />
+    <None Remove="Commands\Prices\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Prices\" />
+    <ProjectReference Include="..\Resourcerer.DataAccess\Resourcerer.DataAccess.csproj" />
+    <ProjectReference Include="..\Resourcerer.Dtos\Resourcerer.Dtos.csproj" />
+    <ProjectReference Include="..\Resourcerer.Utilities\Resourcerer.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

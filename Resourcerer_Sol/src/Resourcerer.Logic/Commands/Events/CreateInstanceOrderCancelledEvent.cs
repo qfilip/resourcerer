@@ -3,9 +3,9 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 
-namespace Resourcerer.Logic.Commands.ElementEvents;
+namespace Resourcerer.Logic.Commands.Events;
 
-public static class CreateElementOrderCancelledEvent
+public static class CreateInstanceOrderCancelledEvent
 {
     public class Handler : IAppHandler<InstanceOrderCancelledEventDto, Unit>
     {

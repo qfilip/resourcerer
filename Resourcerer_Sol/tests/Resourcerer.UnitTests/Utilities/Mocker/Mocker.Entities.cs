@@ -19,10 +19,11 @@ internal static partial class Mocker
 
         return category;
     }
-    public static Composite MockComposite(AppDbContext context, int priceCount = 3, bool pricesCorrupted = false)
+
+    public static Item MockItem(AppDbContext context, int priceCount = 3, bool pricesCorrupted = false)
     {
         var id = Guid.NewGuid();
-        var composite = new Composite
+        var item = new Item
         {
             Id = id,
             Name = $"test-{id}",
@@ -30,29 +31,11 @@ internal static partial class Mocker
             UnitOfMeasureId = MockUnitOfMeasure(context).Id
         };
 
-        MockPrices(context, x => x.CompositeId = composite.Id, priceCount, pricesCorrupted);
+        MockPrices(context, x => x.ItemId = item.Id, priceCount, pricesCorrupted);
 
-        context.Composites.Add(composite);
+        context.Items.Add(item);
 
-        return composite;
-    }
-
-    public static Item MockElement(AppDbContext context, int priceCount = 3, bool pricesCorrupted = false)
-    {
-        var id = Guid.NewGuid();
-        var element = new Item
-        {
-            Id = id,
-            Name = $"test-{id}",
-            CategoryId = MockCategory(context).Id,
-            UnitOfMeasureId = MockUnitOfMeasure(context).Id
-        };
-
-        MockPrices(context, x => x.ElementId = element.Id, priceCount, pricesCorrupted);
-
-        context.Items.Add(element);
-
-        return element;
+        return item;
     }
 
     public static UnitOfMeasure MockUnitOfMeasure(AppDbContext context)

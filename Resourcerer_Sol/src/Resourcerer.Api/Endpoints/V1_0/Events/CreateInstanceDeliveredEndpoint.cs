@@ -1,27 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
-using Resourcerer.Logic.Commands.ElementEvents;
+using Resourcerer.Logic.Commands.Events;
 
-namespace Resourcerer.Api.Endpoints.V1_0.ElementEvents;
+namespace Resourcerer.Api.Endpoints.V1_0.Events;
 
-public class CreateElementOrderedEventEndpoint
+public class CreateInstanceDeliveredEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] InstanceOrderedEventDto dto,
+        [FromBody] InstanceDeliveredEventDto dto,
         [FromServices] Pipeline pipeline,
-        [FromServices] CreateElementOrderedEvent.Handler handler)
+        [FromServices] CreateInstanceDeliveredEvent.Handler handler)
     {
         return await pipeline.Pipe(handler, dto);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/ordered", Action);
+        var endpoint = group.MapPost("/order-delivered", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {
-            (eSection.Element, new[] { ePermission.Write })
+            (eSection.Item, new[] { ePermission.Write })
         });
     }
 }

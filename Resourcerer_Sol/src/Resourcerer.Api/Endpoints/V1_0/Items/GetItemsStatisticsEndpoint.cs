@@ -1,16 +1,15 @@
 ﻿using Resourcerer.Api.Services;
-using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 using Resourcerer.Logic;
-using Resourcerer.Logic.Queries.Elements;
+using Resourcerer.Logic.Queries.Items;
 
-namespace Resourcerer.Api.Endpoints.V1_0.Elements;
+namespace Resourcerer.Api.Endpoints.V1_0.Items;
 
-public class GetAllElementsStatisticsEndpoint
+public class GetItemsStatisticsEndpoint
 {
     public static async Task<IResult> Action(
         Pipeline pipeline,
-        GetAllElementsStatistics.Handler handler)
+        GetItemsStatistics.Handler handler)
     {
         return await pipeline.Pipe(handler, new Unit());
     }
@@ -21,7 +20,7 @@ public class GetAllElementsStatisticsEndpoint
 
         EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {
-            (eSection.Element, new[] { ePermission.Read })
+            (eSection.Item, new[] { ePermission.Read })
         });
     }
 }

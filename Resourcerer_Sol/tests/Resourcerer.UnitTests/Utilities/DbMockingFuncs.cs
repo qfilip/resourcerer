@@ -66,34 +66,16 @@ public class DbMockingFuncs
         });
     }
 
-    protected static Composite MakeComposite(string name, Category category)
-    {
-        return MakeEntity(() => new Composite
-        {
-            Name = name,
-            CategoryId = category.Id
-        });
-    }
-
-    protected static Price MakePrice(double value, Composite composite)
+    protected static Price MakePrice(double value, Item item)
     {
         return MakeEntity(() => new Price
         {
             UnitValue = value,
-            CompositeId = composite.Id
+            ItemId = item.Id
         });
     }
 
-    protected static Price MakePrice(double value, Item element)
-    {
-        return MakeEntity(() => new Price
-        {
-            UnitValue = value,
-            ElementId = element.Id
-        });
-    }
-
-    protected static IEnumerable<Excerpt> MakeExcerpts(Composite composite, List<(Item, double)> ingredients)
+    protected static IEnumerable<Excerpt> MakeExcerpts(Item composite, List<(Item, double)> ingredients)
     {
         return ingredients.Select(x =>
         {

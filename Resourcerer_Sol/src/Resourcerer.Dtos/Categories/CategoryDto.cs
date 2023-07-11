@@ -9,8 +9,7 @@ public class CategoryDto : EntityDto<CategoryDto>
 
     public CategoryDto? ParentCategory { get; set; }
     public List<CategoryDto> ChildCategories { get; set; } = new();
-    public List<CompositeDto> Composites { get; set; } = new();
-    public List<ElementDto> Elements { get; set; } = new();
+    public List<ItemDto> Elements { get; set; } = new();
 
     public override AbstractValidator<CategoryDto> GetValidator() => new CategoryDtoValidator();
 }

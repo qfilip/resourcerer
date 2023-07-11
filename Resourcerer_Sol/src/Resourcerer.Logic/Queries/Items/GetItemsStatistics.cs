@@ -4,10 +4,10 @@ using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Elements;
 using Resourcerer.Utilities;
 
-namespace Resourcerer.Logic.Queries.Elements;
-public static class GetAllElementsStatistics
+namespace Resourcerer.Logic.Queries.Items;
+public static class GetItemsStatistics
 {
-    public class Handler : IAppHandler<Unit, List<ElementStatisticsDto>>
+    public class Handler : IAppHandler<Unit, List<ItemStatisticsDto>>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -16,7 +16,7 @@ public static class GetAllElementsStatistics
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<List<ElementStatisticsDto>>> Handle(Unit _)
+        public async Task<HandlerResult<List<ItemStatisticsDto>>> Handle(Unit _)
         {
             //var elementsSales = await _appDbContext.ElementSoldEvents.ToListAsync();
             //var elementsPurchases = await _appDbContext.ElementPurchasedEvents.ToListAsync();
@@ -122,7 +122,7 @@ public static class GetAllElementsStatistics
             //.ToList();
 
             // return HandlerResult<List<ElementStatisticsDto>>.Ok(usageDetails);
-            return HandlerResult<List<ElementStatisticsDto>>.Ok(new List<ElementStatisticsDto>());
+            return HandlerResult<List<ItemStatisticsDto>>.Ok(new List<ItemStatisticsDto>());
         }
     }
 }

@@ -24,7 +24,7 @@ internal static partial class Mocker
         if(modifier != null)
             modifier(entity);
         else
-            entity.Instance.Element = MockElement(context);
+            entity.Instance.Item = MockItem(context);
 
         context.InstanceOrderedEvents.Add(entity);
         
