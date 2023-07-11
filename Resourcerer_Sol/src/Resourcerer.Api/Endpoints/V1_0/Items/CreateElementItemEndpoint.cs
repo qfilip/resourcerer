@@ -5,12 +5,12 @@ using Resourcerer.Logic.Commands.Items;
 
 namespace Resourcerer.Api.Endpoints.V1_0.Items;
 
-public class CreateItemEndpoint
+public class CreateElementItemEndpoint
 {
     public static async Task<IResult> Action(
-       [FromBody] CreateItemDto dto,
+       [FromBody] CreateElementItemDto dto,
        [FromServices] Pipeline pipeline,
-       [FromServices] CreateItem.Handler handler)
+       [FromServices] CreateElementItem.Handler handler)
     {
         return await pipeline.Pipe(handler, dto);
     }

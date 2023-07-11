@@ -33,7 +33,7 @@ public class EndpointMapperV1_0
 
         ChangeItemPriceEndpoint.MapToGroup(g);
         CreateInstanceDeliveredEndpoint.MapToGroup(g);
-        CreateItemEndpoint.MapToGroup(g);
+        CreateElementItemEndpoint.MapToGroup(g);
         CreateInstanceOrderCancelledEventEndpoint.MapToGroup(g);
         CreateInstanceOrderedEventEndpoint.MapToGroup(g);
         GetItemsStatisticsEndpoint.MapToGroup(g);

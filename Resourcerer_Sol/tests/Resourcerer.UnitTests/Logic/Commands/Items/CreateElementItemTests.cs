@@ -5,12 +5,12 @@ using Resourcerer.UnitTests.Utilities.Mocker;
 
 namespace Resourcerer.UnitTests.Logic.Commands.Items;
 
-public class CreateItemTests : TestsBase
+public class CreateElementItemTests : TestsBase
 {
-    private readonly CreateItem.Handler _handler;
-    public CreateItemTests()
+    private readonly CreateElementItem.Handler _handler;
+    public CreateElementItemTests()
     {
-        _handler = new CreateItem.Handler(_testDbContext);
+        _handler = new CreateElementItem.Handler(_testDbContext);
     }
 
     [Fact]
@@ -19,7 +19,7 @@ public class CreateItemTests : TestsBase
         // arrange
         var category = Mocker.MockCategory(_testDbContext);
         var uom = Mocker.MockUnitOfMeasure(_testDbContext);
-        var dto = new CreateItemDto
+        var dto = new CreateElementItemDto
         {
             Name = "test",
             CategoryId = category.Id,
@@ -44,7 +44,7 @@ public class CreateItemTests : TestsBase
         var existingElement = Mocker.MockItem(_testDbContext);
         var category = Mocker.MockCategory(_testDbContext);
         var uom = Mocker.MockUnitOfMeasure(_testDbContext);
-        var dto = new CreateItemDto
+        var dto = new CreateElementItemDto
         {
             Name = existingElement.Name,
             CategoryId = category.Id,
@@ -65,7 +65,7 @@ public class CreateItemTests : TestsBase
     {
         // arrange
         var uom = Mocker.MockUnitOfMeasure(_testDbContext);
-        var dto = new CreateItemDto
+        var dto = new CreateElementItemDto
         {
             Name = "test",
             CategoryId = Guid.NewGuid(),
@@ -86,7 +86,7 @@ public class CreateItemTests : TestsBase
     {
         // arrange
         var category = Mocker.MockCategory(_testDbContext);
-        var dto = new CreateItemDto
+        var dto = new CreateElementItemDto
         {
             Name = "test",
             CategoryId = category.Id,

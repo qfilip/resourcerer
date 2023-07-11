@@ -5,9 +5,9 @@ using Resourcerer.Dtos;
 
 namespace Resourcerer.Logic.Commands.Items;
 
-public static class CreateItem
+public static class CreateElementItem
 {
-    public class Handler : IAppHandler<CreateItemDto, Unit>
+    public class Handler : IAppHandler<CreateElementItemDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -16,7 +16,7 @@ public static class CreateItem
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(CreateItemDto request)
+        public async Task<HandlerResult<Unit>> Handle(CreateElementItemDto request)
         {
             var existing = await _appDbContext.Items
                 .FirstOrDefaultAsync(x => x.Name == request.Name);

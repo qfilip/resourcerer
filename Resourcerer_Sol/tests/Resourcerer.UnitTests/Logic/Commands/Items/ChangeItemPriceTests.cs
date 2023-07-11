@@ -7,7 +7,7 @@ using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Items;
 using Resourcerer.UnitTests.Utilities.Mocker;
 
-namespace Resourcerer.UnitTests.Logic.Commands.Elements;
+namespace Resourcerer.UnitTests.Logic.Commands.Items;
 
 public class ChangeItemPriceTests : TestsBase
 {

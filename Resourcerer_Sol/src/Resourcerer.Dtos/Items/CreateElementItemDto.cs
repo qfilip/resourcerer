@@ -2,16 +2,16 @@
 
 namespace Resourcerer.Dtos;
 
-public class CreateItemDto : IBaseDto<CreateItemDto>
+public class CreateElementItemDto : IBaseDto<CreateElementItemDto>
 {
     public string? Name { get; set; }
     public Guid CategoryId { get; set; }
     public Guid UnitOfMeasureId { get; set; }
     public double UnitPrice { get; set; }
 
-    public AbstractValidator<CreateItemDto>? GetValidator() => new Validator();
+    public AbstractValidator<CreateElementItemDto>? GetValidator() => new Validator();
 
-    private class Validator : AbstractValidator<CreateItemDto>
+    private class Validator : AbstractValidator<CreateElementItemDto>
     {
         public Validator()
         {
