@@ -18,110 +18,30 @@ public static class GetItemsStatistics
 
         public async Task<HandlerResult<List<ItemStatisticsDto>>> Handle(Unit _)
         {
-            //var elementsSales = await _appDbContext.ElementSoldEvents.ToListAsync();
-            //var elementsPurchases = await _appDbContext.ElementPurchasedEvents.ToListAsync();
-
-            //var elementsData = await _appDbContext.Elements
-            //    .IgnoreQueryFilters()
+            //var item = await _appDbContext.Items
+            //    .Include(x => x.Category)
             //    .Include(x => x.UnitOfMeasure)
-            //    .IgnoreQueryFilters()
-            //    .Include(x => x.Excerpts)
-            //    .IgnoreQueryFilters()
-            //    .ToListAsync();
+            //    .Include(x => x.Prices)
+            //    .Include(x => x.ElementExcerpts)
+            //    .Include(x => x.CompositeExcerpts)
+            //    .Include(x => x.Instances)
+            //        .ThenInclude(x => x.InstanceOrderedEvent)
+            //    .Include(x => x.Instances)
+            //        .ThenInclude(x => x.InstanceDeliveredEvent)
+            //    .Include(x => x.Instances)
+            //        .ThenInclude(x => x.InstanceDiscardedEvent)
+            //    .Include(x => x.Instances)
+            //        .ThenInclude(x => x.InstanceOrderCancelledEvent)
+            //    .FirstOrDefaultAsync();
 
-
-            //var idLookup = elementsData
-            //    .Select(x => new
-            //    {
-            //        ElementId = x.Id,
-            //        ElementCompositeIds = x.Excerpts
-            //            .Select(e => e.CompositeId)
-            //            .ToList()
-            //    })
-            //    .ToList();
-
-            //var compositeIds = idLookup
-            //    .SelectMany(x => x.ElementCompositeIds)
-            //    .ToList();
-
-            //var compositeSoldEvents = await _appDbContext.CompositeSoldEvents
-            //    .Where(x => compositeIds.Contains(x.CompositeId))
-            //    .ToListAsync();
-
-            //var compositeSoldEventsLookup = compositeSoldEvents
-            //    .Select(cse => new
-            //    {
-            //        CompositeId = cse.CompositeId,
-            //        UnitsSold = cse.UnitsSold
-
-            //    }).ToLookup(x => x.CompositeId);
-
-            //var usageDetails = elementsData.Select(x =>
+            //if(item == null)
             //{
-            //    var events = new
-            //    {
-            //        Purchases = elementsPurchases
-            //            .Where(e => e.ElementId == x.Id)
-            //            .ToArray(),
+            //    return HandlerResult<List<ItemStatisticsDto>>.Ok(new List<ItemStatisticsDto>());
+            //}
 
-            //        Sales = elementsSales
-            //            .Where(e => e.ElementId == x.Id)
-            //            .ToArray()
-            //    };
-
-            //    var unitsPurchased = events.Purchases
-            //        .Sum(epe => epe.UnitsBought);
-
-            //    var purchaseCosts = events.Purchases
-            //        .Sum(epe => Maths.Discount(epe.UnitPrice * epe.UnitsBought, epe.TotalDiscountPercent));
-
-            //    var averagePurchaseDiscount =
-            //        Maths.SafeAverage(events.Purchases, x => x.TotalDiscountPercent);
-
-            //    var elementCompositeIds = idLookup
-            //        .Where(il => il.ElementId == x.Id)
-            //        .SelectMany(i => i.ElementCompositeIds)
-            //        .ToList();
-
-            //    var unitsSoldRaw = events.Sales.Sum(ese => ese.UnitsSold);
-
-            //    var salesEarnings = events.Sales
-            //    .Sum(ese => Maths.Discount(ese.UnitsSold * ese.UnitPrice, ese.TotalDiscountPercent));
-
-            //    var averageSaleDiscount = Maths.SafeAverage(events.Sales, e => e.TotalDiscountPercent);
-
-            //    var unitsUsedInComposites = x.Excerpts
-            //        .Select(e => {
-            //            var compositeUnitsSold = compositeSoldEventsLookup[e.CompositeId].Sum(x => x.UnitsSold);
-            //            return new
-            //            {
-            //                e.CompositeId,
-            //                ElementQuantity = e.Quantity * compositeUnitsSold
-            //            };
-            //        })
-            //        .Sum(x => x.ElementQuantity);
-
-            //    var usedInComposites = x.Excerpts.DistinctBy(e => e.CompositeId).Count();
-
-            //    return new ElementStatisticsDto
-            //    {
-            //        ElementId = x.Id,
-            //        Name = x.Name,
-            //        Unit = x.UnitOfMeasure!.Name,
-            //        UnitsPurchased = unitsPurchased,
-            //        PurchaseCosts = purchaseCosts,
-            //        AveragePurchaseDiscount = averagePurchaseDiscount,
-            //        UnitsSold = unitsSoldRaw,
-            //        SalesEarning = salesEarnings,
-            //        AverageSaleDiscount = averageSaleDiscount,
-            //        UnitsUsedInComposites = unitsUsedInComposites,
-            //        UsedInComposites = usedInComposites,
-            //        UnitsInStock = unitsPurchased - unitsUsedInComposites - unitsSoldRaw
-            //    };
-            //})
-            //.ToList();
-
-            // return HandlerResult<List<ElementStatisticsDto>>.Ok(usageDetails);
+            //var pendingInstances = item.Instances
+            //    .Where(x => x.InstanceOrderedEvents)
+            
             return HandlerResult<List<ItemStatisticsDto>>.Ok(new List<ItemStatisticsDto>());
         }
     }

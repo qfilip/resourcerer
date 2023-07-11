@@ -68,6 +68,11 @@ public partial class AppDbContext
 
         ConfigureEntity<Instance>(modelBuilder, (e) =>
         {
+            e.HasOne(x => x.InstanceOrderedEvent).WithOne(x => x.Instance)
+                .HasForeignKey<Instance>(x => x.InstanceOrderedEvent)
+                .IsRequired()
+                .HasConstraintName($"FK_{nameof(InstanceOrderedEvent)}_{nameof(Instance)}");
+
             e.HasOne(x => x.Item).WithMany(x => x.Instances)
                 .HasForeignKey(x => x.ItemId)
                 .HasConstraintName($"FK_{nameof(Item)}_{nameof(Instance)}");
@@ -75,8 +80,8 @@ public partial class AppDbContext
 
         ConfigureEntity<InstanceOrderedEvent>(modelBuilder, (e) =>
         {
-            e.HasOne(x => x.Instance).WithMany(x => x.InstanceOrderedEvents)
-                .HasForeignKey(x => x.InstanceId)
+            e.HasOne(x => x.Instance).WithOne(x => x.InstanceOrderedEvent)
+                .HasForeignKey<InstanceOrderedEvent>(x => x.InstanceId)
                 .IsRequired()
                 .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceOrderedEvent)}");
         });
@@ -107,8 +112,8 @@ public partial class AppDbContext
 
         ConfigureEntity<InstanceDiscardedEvent>(modelBuilder, e =>
         {
-            e.HasOne(x => x.Instance).WithMany(x => x.InstanceDiscardedEvents)
-                .HasForeignKey(x => x.InstanceId)
+            e.HasOne(x => x.Instance).WithOne(x => x.InstanceDiscardedEvent)
+                .HasForeignKey<InstanceDiscardedEvent>(x => x.InstanceId)
                 .IsRequired()
                 .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceDiscardedEvent)}");
         });
