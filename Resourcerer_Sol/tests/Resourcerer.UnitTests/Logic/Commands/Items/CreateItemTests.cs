@@ -1,18 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
+﻿using Resourcerer.Dtos;
 using Resourcerer.Logic;
-using Resourcerer.Logic.Commands.Elements;
+using Resourcerer.Logic.Commands.Items;
 using Resourcerer.UnitTests.Utilities.Mocker;
 
-namespace Resourcerer.UnitTests.Logic.Commands.Elements;
+namespace Resourcerer.UnitTests.Logic.Commands.Items;
 
-public class CreateElementTests : TestsBase
+public class CreateItemTests : TestsBase
 {
-    private readonly CreateElement.Handler _handler;
-    public CreateElementTests()
+    private readonly CreateItem.Handler _handler;
+    public CreateItemTests()
     {
-        _handler = new CreateElement.Handler(_testDbContext);
+        _handler = new CreateItem.Handler(_testDbContext);
     }
 
     [Fact]
@@ -61,9 +59,9 @@ public class CreateElementTests : TestsBase
         // assert
         Assert.Equal(eHandlerResultStatus.ValidationError, result.Status);
     }
-    
+
     [Fact]
-    public void When_Category_NotFound_Then_ValidationError() 
+    public void When_Category_NotFound_Then_ValidationError()
     {
         // arrange
         var uom = Mocker.MockUnitOfMeasure(_testDbContext);

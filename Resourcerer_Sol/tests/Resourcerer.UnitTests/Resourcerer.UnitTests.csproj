@@ -30,4 +30,9 @@
     <ProjectReference Include="..\..\src\Resourcerer.Logic\Resourcerer.Logic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Logic\Commands\Events\" />
+    <Folder Include="Logic\Queries\" />
+  </ItemGroup>
+
 </Project>
