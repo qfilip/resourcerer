@@ -4,7 +4,8 @@ public class Item : EntityBase
 {
     public Item()
     {
-        Excerpts = new HashSet<Excerpt>();
+        CompositeExcerpts = new HashSet<Excerpt>();
+        ElementExcerpts = new HashSet<Excerpt>();
         Prices = new HashSet<Price>();
         Instances = new HashSet<Instance>();
     }
@@ -19,10 +20,8 @@ public class Item : EntityBase
     public Guid UnitOfMeasureId { get; set; }
     public virtual UnitOfMeasure? UnitOfMeasure { get; set; }
 
-    public Guid? CompositeId { get; set; }
-    public virtual Composite? Composite { get; set; }
-
-    public ICollection<Excerpt> Excerpts { get; set; }
+    public ICollection<Excerpt> ElementExcerpts { get; set; }
+    public ICollection<Excerpt> CompositeExcerpts { get; set; }
     public ICollection<Price> Prices { get; set; }
     public ICollection<Instance> Instances { get; set; }
 }

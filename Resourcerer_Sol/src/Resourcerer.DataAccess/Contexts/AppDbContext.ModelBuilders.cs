@@ -26,14 +26,16 @@ public partial class AppDbContext
 
         ConfigureEntity<Excerpt>(modelBuilder, (e) =>
         {
-            e.HasOne(x => x.Composite).WithMany(x => x.Excerpts)
+            e.HasKey(x => new { x.CompositeId, x.ElementId });
+
+            e.HasOne(x => x.Composite).WithMany(x => x.CompositeExcerpts)
                 .HasForeignKey(x => x.CompositeId).IsRequired()
                 .HasConstraintName($"FK_Composite{nameof(Item)}_{nameof(Excerpt)}");
 
-            e.HasOne(x => x.Item).WithMany(x => x.Excerpts)
-                .HasForeignKey(x => x.ItemId).IsRequired()
+            e.HasOne(x => x.Element).WithMany(x => x.ElementExcerpts)
+                .HasForeignKey(x => x.ElementId).IsRequired()
                 .HasConstraintName($"FK_Element{nameof(Item)}_{nameof(Excerpt)}");
-        });
+        }, customKey: true);
 
         ConfigureEntity<UnitOfMeasure>(modelBuilder, (e) =>
         {
@@ -62,11 +64,6 @@ public partial class AppDbContext
             e.HasOne(x => x.UnitOfMeasure).WithMany(x => x.Items)
                 .HasForeignKey(x => x.UnitOfMeasureId).IsRequired()
                 .HasConstraintName($"FK_{nameof(UnitOfMeasure)}_{nameof(Item)}");
-        });
-
-        ConfigureEntity<Composite>(modelBuilder, e =>
-        {
-            e.HasOne(x => x.CompositeItem).WithOne(x => x.Composite).IsRequired();
         });
 
         ConfigureEntity<Instance>(modelBuilder, (e) =>
@@ -131,13 +128,16 @@ public partial class AppDbContext
         base.OnModelCreating(modelBuilder);
     }
 
-    private void ConfigureEntity<T>(ModelBuilder mb, Action<EntityTypeBuilder<T>>? customConfiguration = null) where T : EntityBase
+    private void ConfigureEntity<T>(ModelBuilder mb, Action<EntityTypeBuilder<T>>? customConfiguration = null, bool customKey = false) where T : EntityBase
     {
         var name = typeof(T).Name;
         mb.Entity<T>(e =>
         {
             e.ToTable(name);
-            e.HasKey(x => x.Id);
+            if(!customKey)
+            {
+                e.HasKey(x => x.Id);
+            }
             e.HasQueryFilter(x => x.EntityStatus == eEntityStatus.Active);
             customConfiguration?.Invoke(e);
         });

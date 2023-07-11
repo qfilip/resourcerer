@@ -10,6 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Logic\Commands\Events\**" />
+    <Compile Remove="Logic\Queries\**" />
+    <EmbeddedResource Remove="Logic\Commands\Events\**" />
+    <EmbeddedResource Remove="Logic\Queries\**" />
+    <None Remove="Logic\Commands\Events\**" />
+    <None Remove="Logic\Queries\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FakeItEasy" Version="7.4.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="MockQueryable.FakeItEasy" Version="7.0.0" />
@@ -28,11 +37,6 @@
     <ProjectReference Include="..\..\src\Resourcerer.Api\Resourcerer.Api.csproj" />
     <ProjectReference Include="..\..\src\Resourcerer.DataAccess\Resourcerer.DataAccess.csproj" />
     <ProjectReference Include="..\..\src\Resourcerer.Logic\Resourcerer.Logic.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Logic\Commands\Events\" />
-    <Folder Include="Logic\Queries\" />
   </ItemGroup>
 
 </Project>
