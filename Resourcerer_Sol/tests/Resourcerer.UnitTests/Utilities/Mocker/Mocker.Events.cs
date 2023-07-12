@@ -5,7 +5,7 @@ namespace Resourcerer.UnitTests.Utilities.Mocker;
 
 internal static partial class Mocker
 {
-    public static InstanceOrderedEvent MockInstanceOrderedEvent(AppDbContext context, Action<InstanceOrderedEvent>? modifier = null)
+    public static InstanceOrderedEvent MockOrderedEvent(AppDbContext context, Action<InstanceOrderedEvent>? modifier = null)
     {
         var entity = new InstanceOrderedEvent
         {
@@ -32,11 +32,25 @@ internal static partial class Mocker
         return entity;
     }
 
-    public static InstanceOrderDeliveredEvent MockInstanceOrderDeliveredEvent(AppDbContext context, Action<InstanceOrderDeliveredEvent>? modifier = null)
+    public static InstanceOrderCancelledEvent MockOrderCancelledEvent(AppDbContext context, Action<InstanceOrderCancelledEvent>? modifier = null)
+    {
+        var entity = new InstanceOrderCancelledEvent
+        {
+            InstanceOrderedEventId = MockOrderedEvent(context).Id
+        };
+
+        modifier?.Invoke(entity);
+
+        context.InstanceOrderCancelledEvents.Add(entity);
+
+        return entity;
+    }
+
+    public static InstanceOrderDeliveredEvent MockDeliveredEvent(AppDbContext context, Action<InstanceOrderDeliveredEvent>? modifier = null)
     {
         var entity = new InstanceOrderDeliveredEvent
         {
-            InstanceOrderedEventId = MockInstanceOrderedEvent(context).Id
+            InstanceOrderedEventId = MockOrderedEvent(context).Id
         };
 
         modifier?.Invoke(entity);

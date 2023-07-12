@@ -17,7 +17,7 @@ public static class CreateInstanceOrderCancelledEvent
         public async Task<HandlerResult<Unit>> Handle(InstanceOrderCancelledEventDto request)
         {
             var orderedEvent = await _appDbContext.InstanceOrderedEvents
-                .Include(x => x.InstanceOrderCancelledEventId)
+                .Include(x => x.InstanceOrderCancelledEvent)
                 .Include(x => x.InstanceOrderDeliveredEvent)
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceOrderedEventId);
 

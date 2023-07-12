@@ -68,11 +68,6 @@ public partial class AppDbContext
 
         ConfigureEntity<Instance>(modelBuilder, (e) =>
         {
-            e.HasOne(x => x.InstanceOrderedEvent).WithOne(x => x.Instance)
-                .HasForeignKey<Instance>(x => x.InstanceOrderedEvent)
-                .IsRequired()
-                .HasConstraintName($"FK_{nameof(InstanceOrderedEvent)}_{nameof(Instance)}");
-
             e.HasOne(x => x.Item).WithMany(x => x.Instances)
                 .HasForeignKey(x => x.ItemId)
                 .HasConstraintName($"FK_{nameof(Item)}_{nameof(Instance)}");
