@@ -5,7 +5,7 @@ using Resourcerer.Dtos.Elements;
 namespace Resourcerer.Logic.Queries.Items;
 public static class GetItemsStatistics
 {
-    public class Handler : IAppHandler<Unit, List<ItemStatisticsDto>>
+    public class Handler : IAppHandler<Guid, List<ItemStatisticsDto>>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -14,7 +14,7 @@ public static class GetItemsStatistics
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<List<ItemStatisticsDto>>> Handle(Unit _)
+        public async Task<HandlerResult<List<ItemStatisticsDto>>> Handle(Guid itemId)
         {
             var item = await _appDbContext.Items
                 .Include(x => x.Category)
@@ -22,6 +22,8 @@ public static class GetItemsStatistics
                 .Include(x => x.Prices)
                 .Include(x => x.ElementExcerpts)
                 .Include(x => x.CompositeExcerpts)
+                    .ThenInclude(x => x.Element)
+                        .ThenInclude(x => x!.Prices)
                 // orders
                 .Include(x => x.Instances)
                     .ThenInclude(x => x.InstanceOrderedEvent)
@@ -33,7 +35,7 @@ public static class GetItemsStatistics
                 // discards
                 .Include(x => x.Instances)
                     .ThenInclude(x => x.InstanceDiscardedEvents)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(x => x.Id == itemId);
 
             if (item == null)
             {
@@ -68,9 +70,13 @@ public static class GetItemsStatistics
 
             var isComposite = item.CompositeExcerpts.Any();
 
-            var usedInComposites = item.ElementExcerpts
-                .DistinctBy(x => x.CompositeId)
-                .Count();
+            var usedInComposites = item.ElementExcerpts.Count();
+
+            var makingCostAsComposite = item.CompositeExcerpts
+                .SelectMany(x => x.Element!.Prices)
+                .Sum(x => x.UnitValue);
+
+            var sellingCost = item.Prices.Single().UnitValue;
 
             return HandlerResult<List<ItemStatisticsDto>>.Ok(new List<ItemStatisticsDto>());
         }

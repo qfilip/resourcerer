@@ -11,35 +11,35 @@ internal static partial class Mocker
 
         var cement = MockItem(context, x =>
         {
-            x.CategoryId = material.Id;
+            x.Category = material;
             x.Name = "cement";
-        });
+        }, 1);
 
         var sand = MockItem(context, x =>
         {
-            x.CategoryId = material.Id;
+            x.Category = material;
             x.Name = "sand";
-        });
+        }, 1);
 
         var mortar = MockItem(context, x =>
         {
-            x.CategoryId = product.Id;
+            x.Category = product;
             x.Name = "mortar";
-        });
+        }, 10);
 
         var hourglass = MockItem(context, x =>
         {
-            x.CategoryId = product.Id;
+            x.Category = product;
             x.Name = "hourglass";
-        });
+        }, 10);
 
-        var excerptList1 = MockExcerpts(context, mortar, new[]
+        MockExcerpts(context, mortar, new[]
         {
             (cement, 2d),
             (sand, 2d)
         });
 
-        var excerptList2 = MockExcerpts(context, hourglass, new[]
+        MockExcerpts(context, hourglass, new[]
         {
             (sand, 2d)
         });

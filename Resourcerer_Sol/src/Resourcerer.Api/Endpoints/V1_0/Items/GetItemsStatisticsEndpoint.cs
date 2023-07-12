@@ -8,10 +8,11 @@ namespace Resourcerer.Api.Endpoints.V1_0.Items;
 public class GetItemsStatisticsEndpoint
 {
     public static async Task<IResult> Action(
+        Guid itemId,
         Pipeline pipeline,
         GetItemsStatistics.Handler handler)
     {
-        return await pipeline.Pipe(handler, new Unit());
+        return await pipeline.PipeGet(handler, itemId);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
