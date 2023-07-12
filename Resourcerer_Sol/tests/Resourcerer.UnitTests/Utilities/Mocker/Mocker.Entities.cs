@@ -33,11 +33,10 @@ internal static partial class Mocker
             ExpirationTimeSeconds = 1200,
             PreparationTimeSeconds = 10,
             
-            CategoryId = MockCategory(context).Id,
-            UnitOfMeasureId = MockUnitOfMeasure(context).Id,
+            Category = MockCategory(context),
+            UnitOfMeasure = MockUnitOfMeasure(context),
+            Prices = MockPrices(null, priceCount, pricesCorrupted)
         };
-
-        MockPrices(context, x => x.ItemId = item.Id, priceCount, pricesCorrupted);
 
         modifier?.Invoke(item);
 
@@ -79,7 +78,7 @@ internal static partial class Mocker
         return excerpts;
     }
 
-    public static List<Price> MockPrices(AppDbContext context, Action<Price>? modifier, int priceCount, bool pricesCorrupted)
+    public static List<Price> MockPrices(Action<Price>? modifier, int priceCount, bool pricesCorrupted)
     {
         if (priceCount < 0)
         {
@@ -98,8 +97,6 @@ internal static partial class Mocker
 
         if (pricesCorrupted)
             prices.ForEach(x => x.EntityStatus = eEntityStatus.Active);
-
-        context.AddRange(prices);
 
         return prices;
     }
