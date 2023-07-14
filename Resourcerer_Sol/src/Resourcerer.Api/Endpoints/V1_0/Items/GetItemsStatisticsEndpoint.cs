@@ -12,7 +12,7 @@ public class GetItemsStatisticsEndpoint
         Pipeline pipeline,
         GetItemsStatistics.Handler handler)
     {
-        return await pipeline.PipeGet(handler, itemId);
+        return await pipeline.PipeGet(handler, (itemId, DateTime.UtcNow));
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

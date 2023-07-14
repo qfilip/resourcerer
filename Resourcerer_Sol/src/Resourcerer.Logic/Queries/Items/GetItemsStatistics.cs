@@ -5,7 +5,7 @@ using Resourcerer.Dtos.Elements;
 namespace Resourcerer.Logic.Queries.Items;
 public static class GetItemsStatistics
 {
-    public class Handler : IAppHandler<Guid, List<ItemStatisticsDto>>
+    public class Handler : IAppHandler<(Guid ItemId, DateTime Now), List<ItemStatisticsDto>>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -14,7 +14,7 @@ public static class GetItemsStatistics
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<List<ItemStatisticsDto>>> Handle(Guid itemId)
+        public async Task<HandlerResult<List<ItemStatisticsDto>>> Handle((Guid ItemId, DateTime Now) query)
         {
             var item = await _appDbContext.Items
                 .Include(x => x.Category)
@@ -35,7 +35,7 @@ public static class GetItemsStatistics
                 // discards
                 .Include(x => x.Instances)
                     .ThenInclude(x => x.InstanceDiscardedEvents)
-                .FirstOrDefaultAsync(x => x.Id == itemId);
+                .FirstOrDefaultAsync(x => x.Id == query.ItemId);
 
             if (item == null)
             {
@@ -61,12 +61,12 @@ public static class GetItemsStatistics
             var unitsInStock = deliveredInstances
                 .Select(x =>
                 {
-                    if (x.ExpiryDate <= DateTime.UtcNow) return 0;
+                    if (x.ExpiryDate <= query.Now) return 0;
                     
                     var discarded = x.InstanceDiscardedEvents.Sum(ev => ev.Quantity);
                     
                     return x.UnitsOrdered - discarded;
-                });
+                }).Sum();
 
             var isComposite = item.CompositeExcerpts.Any();
 

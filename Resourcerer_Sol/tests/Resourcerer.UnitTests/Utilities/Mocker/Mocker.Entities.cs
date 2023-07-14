@@ -6,9 +6,9 @@ namespace Resourcerer.UnitTests.Utilities.Mocker;
 
 internal static partial class Mocker
 {
-    private static DateTime Now = new DateTime(2000, 1, 1);
-    private static string MakeName() => $"test-{Guid.NewGuid().ToString("n").Substring(0, 6)}";
-    private static T MakeEntity<T>(Func<T> retn) where T : EntityBase
+    public static DateTime Now = new DateTime(2000, 1, 1);
+    public static string MakeName() => $"test-{Guid.NewGuid().ToString("n").Substring(0, 6)}";
+    public static T MakeEntity<T>(Func<T> retn) where T : EntityBase
     {
         var e = retn();
         e.Id = Guid.NewGuid();

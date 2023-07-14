@@ -43,5 +43,8 @@ internal static partial class Mocker
         {
             (sand, 2d)
         });
+
+        context.SaveChanges();
+        context.ChangeTracker.Clear();
     }
 }
