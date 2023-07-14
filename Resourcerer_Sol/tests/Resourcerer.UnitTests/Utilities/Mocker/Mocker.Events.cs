@@ -1,5 +1,6 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Enums;
 
 namespace Resourcerer.UnitTests.Utilities.Mocker;
 
@@ -7,11 +8,13 @@ internal static partial class Mocker
 {
     public static InstanceOrderedEvent MockOrderedEvent(
         AppDbContext context,
+        eOrderType orderType,
         Action<InstanceOrderedEvent>? modifier = null,
         Item? instanceItem = null)
     {
         var entity = MakeEntity(() => new InstanceOrderedEvent
         {
+            OrderType = orderType,
             Instance = MakeEntity(() => new Instance
             {
                 ExpiryDate = DateTime.UtcNow,
@@ -36,12 +39,13 @@ internal static partial class Mocker
 
     public static InstanceOrderCancelledEvent MockOrderCancelledEvent(
         AppDbContext context,
+        eOrderType orderType,
         Action<InstanceOrderCancelledEvent>? modifier = null,
         Item? instanceItem = null)
     {
         var entity = MakeEntity(() => new InstanceOrderCancelledEvent
         {
-            InstanceOrderedEvent = MockOrderedEvent(context)
+            InstanceOrderedEvent = MockOrderedEvent(context, orderType)
         });
 
         modifier?.Invoke(entity);
@@ -58,12 +62,13 @@ internal static partial class Mocker
 
     public static InstanceOrderDeliveredEvent MockDeliveredEvent(
         AppDbContext context,
+        eOrderType orderType,
         Action<InstanceOrderDeliveredEvent>? modifier = null,
         Item? instanceItem = null)
     {
         var entity = MakeEntity(() => new InstanceOrderDeliveredEvent
         {
-            InstanceOrderedEvent = MockOrderedEvent(context)
+            InstanceOrderedEvent = MockOrderedEvent(context, orderType)
         });
 
         modifier?.Invoke(entity);

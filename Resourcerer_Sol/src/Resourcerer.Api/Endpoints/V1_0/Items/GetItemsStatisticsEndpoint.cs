@@ -10,7 +10,7 @@ public class GetItemsStatisticsEndpoint
     public static async Task<IResult> Action(
         Guid itemId,
         Pipeline pipeline,
-        GetItemsStatistics.Handler handler)
+        GetItemStatistics.Handler handler)
     {
         return await pipeline.PipeGet(handler, (itemId, DateTime.UtcNow));
     }

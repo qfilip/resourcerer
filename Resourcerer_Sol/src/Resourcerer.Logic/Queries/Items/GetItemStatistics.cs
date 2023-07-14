@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
+using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos.Elements;
 
 namespace Resourcerer.Logic.Queries.Items;
-public static class GetItemsStatistics
+public static class GetItemStatistics
 {
     public class Handler : IAppHandler<(Guid ItemId, DateTime Now), List<ItemStatisticsDto>>
     {
@@ -42,23 +43,25 @@ public static class GetItemsStatistics
                 return HandlerResult<List<ItemStatisticsDto>>.Ok(new List<ItemStatisticsDto>());
             }
 
-            var pendingInstances = item.Instances
+            var pendingBoughtInstances = item.Instances
                 .Where(x =>
                     x.InstanceOrderedEvent != null &&
+                    x.InstanceOrderedEvent.OrderType == eOrderType.Buy &&
                     x.InstanceOrderedEvent.InstanceOrderCancelledEvent == null &&
                     x.InstanceOrderedEvent.InstanceOrderDeliveredEvent == null)
                 .ToArray();
 
-            var pendingForStock = pendingInstances
+            var pendingForStock = pendingBoughtInstances
                 .Sum(x => x.UnitsOrdered);
 
-            var deliveredInstances = item.Instances
+            var deliveredBoughtInstances = item.Instances
                 .Where(x =>
                     x.InstanceOrderedEvent != null &&
+                    x.InstanceOrderedEvent.OrderType == eOrderType.Buy &&
                     x.InstanceOrderedEvent.InstanceOrderDeliveredEvent != null)
                 .ToArray();
-
-            var unitsInStock = deliveredInstances
+            
+            var totalUnitsInStock = deliveredBoughtInstances
                 .Select(x =>
                 {
                     if (x.ExpiryDate <= query.Now) return 0;
