@@ -52,7 +52,7 @@ public static class CreateInstanceOrderedEvent
                 Id = Guid.NewGuid(),
 
                 UnitPrice = request.UnitPrice,
-                UnitsOrdered = request.UnitsOrdered,
+                Quantity = request.UnitsOrdered,
                 TotalDiscountPercent = request.TotalDiscountPercent,
                 ExpectedDeliveryDate = request.ExpectedDeliveryDate,
                 ExpiryDate = request.ExpiryDate,
@@ -63,7 +63,6 @@ public static class CreateInstanceOrderedEvent
             var orderedEvent = new InstanceBuyRequestedEvent
             {
                 InstanceId = instance.Id,
-                OrderType = request.OrderType
             };
 
             _appDbContext.InstanceOrderedEvents.Add(orderedEvent);

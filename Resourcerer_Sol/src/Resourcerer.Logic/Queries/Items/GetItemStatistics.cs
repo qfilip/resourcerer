@@ -2,6 +2,7 @@
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
+using Resourcerer.Dtos;
 using Resourcerer.Dtos.Elements;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -45,41 +46,7 @@ public static class GetItemStatistics
                 return HandlerResult<List<ItemStatisticsDto>>.Ok(new List<ItemStatisticsDto>());
             }
 
-            var pendingInstancesOrderEvents = item.Instances
-                .SelectMany(x => x.InstanceBuyRequestedEvent)
-                .Where(x =>
-                    x.OrderType == eOrderType.Buy &&
-                    x.InstanceRequestCancelledEvent == null)
-                .ToArray();
-
-            pendingInstancesOrderEvents.Select(x =>
-            {
-                if (x.InstanceExpiryDate <= query.Now) return 0;
-
-                var discarded = x.InstanceDiscardedEvents.Sum(ev => ev.Quantity);
-
-                return x.UnitsOrdered - discarded;
-            });
-
-            //var pendingForStock = pendingBoughtInstances
-            //    .Sum(x => x.UnitsOrdered);
-
-            //var deliveredBoughtInstances = item.Instances
-            //    .Where(x =>
-            //        x.InstanceOrderedEvent != null &&
-            //        x.InstanceOrderedEvent.OrderType == eOrderType.Buy &&
-            //        x.InstanceOrderedEvent.InstanceOrderDeliveredEvent != null)
-            //    .ToArray();
-
-            //var totalUnitsInStock = deliveredBoughtInstances
-            //    .Select(x =>
-            //    {
-            //        if (x.ExpiryDate <= query.Now) return 0;
-
-            //        var discarded = x.InstanceDiscardedEvents.Sum(ev => ev.Quantity);
-
-            //        return x.UnitsOrdered - discarded;
-            //    }).Sum();
+            
 
             var isComposite = item.CompositeExcerpts.Any();
 
@@ -94,19 +61,6 @@ public static class GetItemStatistics
             return HandlerResult<List<ItemStatisticsDto>>.Ok(new List<ItemStatisticsDto>());
         }
 
-        public void Erm(Instance i)
-        {
-            var deliveredBought = i.InstanceBuyRequestedEvent
-                .Where(x =>
-                    x.OrderType == eOrderType.Buy &&
-                    x.InstanceRequestDeliveredEvent != null)
-                .ToArray();
-
-            var sold = i.InstanceBuyRequestedEvent
-                .Where(x =>
-                    x.OrderType == eOrderType.Sell &&
-                    x.InstanceRequestCancelledEvent == null)
-                .ToArray();
-        }
+        
     }
 }

@@ -2,6 +2,10 @@
 
 public class InstanceSellRequestedEvent : EntityBase
 {
+    public double UnitsSold { get; set; }
+    public double UnitPrice { get; set; }
+    public int TotalDiscountPercent { get; set; }
+    
     public Guid InstanceId { get; set; }
     public virtual Instance? Instance { get; set; }
 

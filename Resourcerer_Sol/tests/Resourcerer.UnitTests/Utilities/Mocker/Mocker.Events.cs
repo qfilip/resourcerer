@@ -21,7 +21,7 @@ internal static partial class Mocker
                 ExpectedDeliveryDate = DateTime.UtcNow,
                 TotalDiscountPercent = 0,
                 UnitPrice = 5,
-                UnitsOrdered = 5,
+                Quantity = 5,
             })
         });
 
