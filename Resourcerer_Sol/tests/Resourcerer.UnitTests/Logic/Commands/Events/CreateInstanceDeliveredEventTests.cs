@@ -49,11 +49,10 @@ public class CreateInstanceDeliveredEventTests : TestsBase
     [Fact]
     public void When_CancelledEvent_Exists_Then_ValidationError()
     {
-        var orderEventId = Mocker.MockOrderedEvent(_testDbContext).Id;
-        Mocker.MockOrderCancelledEvent(_testDbContext, x => x.InstanceOrderedEventId = orderEventId);
+        var cancelledEvent = Mocker.MockOrderCancelledEvent(_testDbContext);
         var dto = new InstanceDeliveredEventDto
         {
-            InstanceOrderedEventId = orderEventId
+            InstanceOrderedEventId = cancelledEvent.InstanceOrderedEvent!.Id
         };
         _testDbContext.SaveChanges();
 
