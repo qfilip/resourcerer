@@ -6,14 +6,24 @@ namespace Resourcerer.UnitTests.Utilities.Mocker;
 
 internal static partial class Mocker
 {
+    private static DateTime Now = new DateTime(2000, 1, 1);
+    private static string MakeName() => $"test-{Guid.NewGuid().ToString("n").Substring(0, 6)}";
+    private static T MakeEntity<T>(Func<T> retn) where T : EntityBase
+    {
+        var e = retn();
+        e.Id = Guid.NewGuid();
+        e.CreatedAt = Now;
+        e.ModifiedAt = Now;
+
+        return e;
+    }
     public static Category MockCategory(AppDbContext context, Action<Category>? modifier = null)
     {
         var id = Guid.NewGuid();
-        var category = new Category
+        var category = MakeEntity(() => new Category
         {
-            Id = id,
-            Name = $"test-{id}"
-        };
+            Name = MakeName()
+        });
 
         modifier?.Invoke(category);
 
@@ -24,19 +34,16 @@ internal static partial class Mocker
 
     public static Item MockItem(AppDbContext context, Action<Item>? modifier = null, double unitValue = 1, int priceCount = 3, bool pricesCorrupted = false)
     {
-        var id = Guid.NewGuid();
-        var item = new Item
+        var item = MakeEntity(() => new Item
         {
-            Id = id,
-            
-            Name = $"test-{id}",
+            Name = MakeName(),
             ExpirationTimeSeconds = 1200,
             PreparationTimeSeconds = 10,
             
             Category = MockCategory(context),
             UnitOfMeasure = MockUnitOfMeasure(context),
             Prices = MockPrices(null, unitValue, priceCount, pricesCorrupted),
-        };
+        });
 
         modifier?.Invoke(item);
 
@@ -47,13 +54,12 @@ internal static partial class Mocker
 
     public static UnitOfMeasure MockUnitOfMeasure(AppDbContext context)
     {
-        var id = Guid.NewGuid();
-        var uom = new UnitOfMeasure
+        
+        var uom = MakeEntity(() => new UnitOfMeasure
         {
-            Id = id,
-            Name = $"test-{id}",
+            Name = MakeName(),
             Symbol = "test"
-        };
+        });
 
         context.UnitsOfMeasure.Add(uom);
 
@@ -65,12 +71,12 @@ internal static partial class Mocker
         var excerpts = new List<Excerpt>();
         foreach (var d in itemsDetail)
         {
-            excerpts.Add(new Excerpt
+            excerpts.Add(MakeEntity(() => new Excerpt
             {
                 CompositeId = composite.Id,
                 ElementId = d.Item1.Id,
                 Quantity = d.Item2
-            });
+            }));
         }
 
         context.Excerpts.AddRange(excerpts);
@@ -86,12 +92,12 @@ internal static partial class Mocker
         }
 
         var prices = Enumerable.Range(0, priceCount)
-           .Select(x => new Price
+           .Select(x => MakeEntity(() => new Price
            {
                Id = Guid.NewGuid(),
                UnitValue = unitValue,
                EntityStatus = x == 0 ? eEntityStatus.Active : eEntityStatus.Deleted
-           }).ToList();
+           })).ToList();
 
         prices.ForEach(x => modifier?.Invoke(x));
 

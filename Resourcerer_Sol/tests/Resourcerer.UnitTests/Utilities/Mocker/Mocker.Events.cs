@@ -7,25 +7,19 @@ internal static partial class Mocker
 {
     public static InstanceOrderedEvent MockOrderedEvent(AppDbContext context, Action<InstanceOrderedEvent>? modifier = null)
     {
-        var entity = new InstanceOrderedEvent
+        var entity = MakeEntity(() => new InstanceOrderedEvent
         {
-            Id = Guid.NewGuid(),
-
-            Instance = new Instance
+            Instance = MakeEntity(() => new Instance
             {
-                Id = Guid.NewGuid(),
                 ExpiryDate = DateTime.UtcNow,
                 ExpectedDeliveryDate = DateTime.UtcNow,
                 TotalDiscountPercent = 0,
                 UnitPrice = 5,
                 UnitsOrdered = 5,
-            }
-        };
+            })
+        });
 
-        if(modifier != null)
-            modifier(entity);
-        else
-            entity.Instance.Item = MockItem(context);
+        modifier?.Invoke(entity);
 
         context.InstanceOrderedEvents.Add(entity);
         
@@ -34,10 +28,10 @@ internal static partial class Mocker
 
     public static InstanceOrderCancelledEvent MockOrderCancelledEvent(AppDbContext context, Action<InstanceOrderCancelledEvent>? modifier = null)
     {
-        var entity = new InstanceOrderCancelledEvent
+        var entity = MakeEntity(() => new InstanceOrderCancelledEvent
         {
-            InstanceOrderedEventId = MockOrderedEvent(context).Id
-        };
+            InstanceOrderedEvent = MockOrderedEvent(context)
+        });
 
         modifier?.Invoke(entity);
 
@@ -48,10 +42,10 @@ internal static partial class Mocker
 
     public static InstanceOrderDeliveredEvent MockDeliveredEvent(AppDbContext context, Action<InstanceOrderDeliveredEvent>? modifier = null)
     {
-        var entity = new InstanceOrderDeliveredEvent
+        var entity = MakeEntity(() => new InstanceOrderDeliveredEvent
         {
-            InstanceOrderedEventId = MockOrderedEvent(context).Id
-        };
+            InstanceOrderedEvent = MockOrderedEvent(context)
+        });
 
         modifier?.Invoke(entity);
 
