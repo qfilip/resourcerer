@@ -4,6 +4,7 @@ public class Instance : EntityBase
 {
     public Instance()
     {
+        InstanceSellRequestedEvents = new HashSet<InstanceSellRequestedEvent>();
         InstanceDiscardedEvents = new HashSet<InstanceDiscardedEvent>();
     }
     public double UnitsOrdered { get; set; }
@@ -15,7 +16,9 @@ public class Instance : EntityBase
     public Guid? ItemId { get; set; }
     public virtual Item? Item { get; set; }
 
-    public Guid InstanceOrderedEventId { get; set; }
-    public virtual InstanceOrderedEvent? InstanceOrderedEvent { get; set; }
+    public Guid InstanceBuyRequestedEventId { get; set; }
+    public virtual InstanceBuyRequestedEvent? InstanceBuyRequestedEvent { get; set; }
+    
+    public ICollection<InstanceSellRequestedEvent> InstanceSellRequestedEvents { get; set; }
     public ICollection<InstanceDiscardedEvent> InstanceDiscardedEvents { get; set; }    
 }

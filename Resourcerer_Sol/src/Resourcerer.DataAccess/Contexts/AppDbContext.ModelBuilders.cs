@@ -73,28 +73,42 @@ public partial class AppDbContext
                 .HasConstraintName($"FK_{nameof(Item)}_{nameof(Instance)}");
         });
 
-        ConfigureEntity<InstanceOrderedEvent>(modelBuilder, (e) =>
+        ConfigureEntity<InstanceBuyRequestedEvent>(modelBuilder, (e) =>
         {
-            e.HasOne(x => x.Instance).WithOne(x => x.InstanceOrderedEvent)
-                .HasForeignKey<InstanceOrderedEvent>(x => x.InstanceId)
+            e.HasOne(x => x.Instance).WithOne(x => x.InstanceBuyRequestedEvent)
+                .HasForeignKey<InstanceBuyRequestedEvent>(x => x.InstanceId)
                 .IsRequired()
-                .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceOrderedEvent)}");
+                .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceBuyRequestedEvent)}");
+        });
+        
+        ConfigureEntity<InstanceSellRequestedEvent>(modelBuilder, (e) =>
+        {
+            e.HasOne(x => x.Instance).WithMany(x => x.InstanceSellRequestedEvents)
+                .HasForeignKey(x => x.InstanceId)
+                .IsRequired()
+                .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceSellRequestedEvent)}");
         });
 
-        ConfigureEntity<InstanceOrderCancelledEvent>(modelBuilder, (e) =>
+        ConfigureEntity<InstanceRequestCancelledEvent>(modelBuilder, (e) =>
         {
-            e.HasOne(x => x.InstanceOrderedEvent).WithOne(x => x.InstanceOrderCancelledEvent)
-                .HasForeignKey<InstanceOrderCancelledEvent>(x => x.InstanceOrderedEventId)
-                .IsRequired()
-                .HasConstraintName($"FK_{nameof(InstanceOrderedEvent)}_{nameof(InstanceOrderCancelledEvent)}");
+            e.HasOne(x => x.InstanceBuyRequestedEvent).WithOne(x => x.InstanceRequestCancelledEvent)
+                .HasForeignKey<InstanceRequestCancelledEvent>(x => x.InstanceBuyRequestedEventId)
+                .HasConstraintName($"FK_{nameof(InstanceBuyRequestedEvent)}_{nameof(InstanceRequestCancelledEvent)}");
+
+            e.HasOne(x => x.InstanceSellRequestedEvent).WithOne(x => x.InstanceRequestCancelledEvent)
+                .HasForeignKey<InstanceRequestCancelledEvent>(x => x.InstanceSellRequestedEvent)
+                .HasConstraintName($"FK_{nameof(InstanceBuyRequestedEvent)}_{nameof(InstanceRequestCancelledEvent)}");
         });
 
-        ConfigureEntity<InstanceOrderDeliveredEvent>(modelBuilder, (e) =>
+        ConfigureEntity<InstanceRequestDeliveredEvent>(modelBuilder, (e) =>
         {
-            e.HasOne(x => x.InstanceOrderedEvent).WithOne(x => x.InstanceOrderDeliveredEvent)
-                .HasForeignKey<InstanceOrderDeliveredEvent>(x => x.InstanceOrderedEventId)
-                .IsRequired()
-                .HasConstraintName($"FK_{nameof(InstanceOrderedEvent)}_{nameof(InstanceOrderDeliveredEvent)}");
+            e.HasOne(x => x.InstanceBuyRequestedEvent).WithOne(x => x.InstanceRequestDeliveredEvent)
+                .HasForeignKey<InstanceRequestDeliveredEvent>(x => x.InstanceBuyRequestedEventId)
+                .HasConstraintName($"FK_{nameof(InstanceBuyRequestedEvent)}_{nameof(InstanceRequestDeliveredEvent)}");
+
+            e.HasOne(x => x.InstanceSellRequestedEvent).WithOne(x => x.InstanceRequestDeliveredEvent)
+                .HasForeignKey<InstanceRequestDeliveredEvent>(x => x.InstanceSellRequestedEventId)
+                .HasConstraintName($"FK_{nameof(InstanceBuyRequestedEvent)}_{nameof(InstanceRequestDeliveredEvent)}");
         });
 
         ConfigureEntity<InstanceDiscardedEvent>(modelBuilder, e =>

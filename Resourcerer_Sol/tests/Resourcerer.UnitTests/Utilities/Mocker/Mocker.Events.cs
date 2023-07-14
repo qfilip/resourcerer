@@ -6,13 +6,13 @@ namespace Resourcerer.UnitTests.Utilities.Mocker;
 
 internal static partial class Mocker
 {
-    public static InstanceOrderedEvent MockOrderedEvent(
+    public static InstanceBuyRequestedEvent MockOrderedEvent(
         AppDbContext context,
         eOrderType orderType,
-        Action<InstanceOrderedEvent>? modifier = null,
+        Action<InstanceBuyRequestedEvent>? modifier = null,
         Item? instanceItem = null)
     {
-        var entity = MakeEntity(() => new InstanceOrderedEvent
+        var entity = MakeEntity(() => new InstanceBuyRequestedEvent
         {
             OrderType = orderType,
             Instance = MakeEntity(() => new Instance
@@ -37,22 +37,22 @@ internal static partial class Mocker
         return entity;
     }
 
-    public static InstanceOrderCancelledEvent MockOrderCancelledEvent(
+    public static InstanceRequestCancelledEvent MockOrderCancelledEvent(
         AppDbContext context,
         eOrderType orderType,
-        Action<InstanceOrderCancelledEvent>? modifier = null,
+        Action<InstanceRequestCancelledEvent>? modifier = null,
         Item? instanceItem = null)
     {
-        var entity = MakeEntity(() => new InstanceOrderCancelledEvent
+        var entity = MakeEntity(() => new InstanceRequestCancelledEvent
         {
-            InstanceOrderedEvent = MockOrderedEvent(context, orderType)
+            InstanceBuyRequestedEvent = MockOrderedEvent(context, orderType)
         });
 
         modifier?.Invoke(entity);
 
         if (instanceItem != null)
         {
-            entity.InstanceOrderedEvent!.Instance!.Item = instanceItem;
+            entity.InstanceBuyRequestedEvent!.Instance!.Item = instanceItem;
         }
 
         context.InstanceOrderCancelledEvents.Add(entity);
@@ -60,22 +60,22 @@ internal static partial class Mocker
         return entity;
     }
 
-    public static InstanceOrderDeliveredEvent MockDeliveredEvent(
+    public static InstanceRequestDeliveredEvent MockDeliveredEvent(
         AppDbContext context,
         eOrderType orderType,
-        Action<InstanceOrderDeliveredEvent>? modifier = null,
+        Action<InstanceRequestDeliveredEvent>? modifier = null,
         Item? instanceItem = null)
     {
-        var entity = MakeEntity(() => new InstanceOrderDeliveredEvent
+        var entity = MakeEntity(() => new InstanceRequestDeliveredEvent
         {
-            InstanceOrderedEvent = MockOrderedEvent(context, orderType)
+            InstanceBuyRequestedEvent = MockOrderedEvent(context, orderType)
         });
 
         modifier?.Invoke(entity);
 
         if (instanceItem != null)
         {
-            entity.InstanceOrderedEvent!.Instance!.Item = instanceItem;
+            entity.InstanceBuyRequestedEvent!.Instance!.Item = instanceItem;
         }
 
         context.InstanceOrderDeliveredEvents.Add(entity);

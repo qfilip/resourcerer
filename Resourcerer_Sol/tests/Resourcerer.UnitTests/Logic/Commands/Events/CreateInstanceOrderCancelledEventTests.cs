@@ -1,4 +1,5 @@
-﻿using Resourcerer.Dtos;
+﻿using Resourcerer.DataAccess.Enums;
+using Resourcerer.Dtos;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Events;
 using Resourcerer.UnitTests.Utilities.Mocker;
@@ -17,7 +18,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     public void When_AllOk_Then_Ok()
     {
         // arrange
-        var orderEventId = Mocker.MockOrderedEvent(_testDbContext).Id;
+        var orderEventId = Mocker.MockOrderedEvent(_testDbContext, eOrderType.Buy).Id;
         var dto = new InstanceOrderCancelledEventDto
         {
             InstanceOrderedEventId = orderEventId
@@ -49,10 +50,10 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     [Fact]
     public void When_DeliveredEvent_Exists_Then_ValidationError()
     {
-        var deliveredEvent = Mocker.MockDeliveredEvent(_testDbContext);
+        var deliveredEvent = Mocker.MockDeliveredEvent(_testDbContext, eOrderType.Buy);
         var dto = new InstanceOrderCancelledEventDto
         {
-            InstanceOrderedEventId = deliveredEvent.InstanceOrderedEvent!.Id
+            InstanceOrderedEventId = deliveredEvent.InstanceBuyRequestedEvent!.Id
         };
         _testDbContext.SaveChanges();
 
@@ -66,10 +67,10 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     [Fact]
     public void Is_Idempotent()
     {
-        var orderCancelledEvent = Mocker.MockOrderCancelledEvent(_testDbContext);
+        var orderCancelledEvent = Mocker.MockOrderCancelledEvent(_testDbContext, eOrderType.Buy);
         var dto = new InstanceOrderCancelledEventDto
         {
-            InstanceOrderedEventId = orderCancelledEvent.InstanceOrderedEventId
+            InstanceOrderedEventId = orderCancelledEvent.InstanceBuyRequestedEventId
         };
         _testDbContext.SaveChanges();
 

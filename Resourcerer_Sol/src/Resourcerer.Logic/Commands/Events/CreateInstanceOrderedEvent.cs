@@ -60,9 +60,10 @@ public static class CreateInstanceOrderedEvent
                 ItemId = item.Id
             };
 
-            var orderedEvent = new InstanceOrderedEvent
+            var orderedEvent = new InstanceBuyRequestedEvent
             {
                 InstanceId = instance.Id,
+                OrderType = request.OrderType
             };
 
             _appDbContext.InstanceOrderedEvents.Add(orderedEvent);

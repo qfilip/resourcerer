@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos.Elements;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Resourcerer.Logic.Queries.Items;
 public static class GetItemStatistics
@@ -27,12 +29,12 @@ public static class GetItemStatistics
                         .ThenInclude(x => x!.Prices)
                 // orders
                 .Include(x => x.Instances)
-                    .ThenInclude(x => x.InstanceOrderedEvent)
-                        .ThenInclude(x => x!.InstanceOrderDeliveredEvent)
+                    .ThenInclude(x => x.InstanceBuyRequestedEvent)
+                        .ThenInclude(x => x!.InstanceRequestDeliveredEvent)
                 // cancelations
                 .Include(x => x.Instances)
-                    .ThenInclude(x => x.InstanceOrderedEvent)
-                        .ThenInclude(x => x!.InstanceOrderCancelledEvent)
+                    .ThenInclude(x => x.InstanceBuyRequestedEvent)
+                        .ThenInclude(x => x!.InstanceRequestCancelledEvent)
                 // discards
                 .Include(x => x.Instances)
                     .ThenInclude(x => x.InstanceDiscardedEvents)
@@ -43,33 +45,41 @@ public static class GetItemStatistics
                 return HandlerResult<List<ItemStatisticsDto>>.Ok(new List<ItemStatisticsDto>());
             }
 
-            var pendingBoughtInstances = item.Instances
+            var pendingInstancesOrderEvents = item.Instances
+                .SelectMany(x => x.InstanceBuyRequestedEvent)
                 .Where(x =>
-                    x.InstanceOrderedEvent != null &&
-                    x.InstanceOrderedEvent.OrderType == eOrderType.Buy &&
-                    x.InstanceOrderedEvent.InstanceOrderCancelledEvent == null &&
-                    x.InstanceOrderedEvent.InstanceOrderDeliveredEvent == null)
+                    x.OrderType == eOrderType.Buy &&
+                    x.InstanceRequestCancelledEvent == null)
                 .ToArray();
 
-            var pendingForStock = pendingBoughtInstances
-                .Sum(x => x.UnitsOrdered);
+            pendingInstancesOrderEvents.Select(x =>
+            {
+                if (x.InstanceExpiryDate <= query.Now) return 0;
 
-            var deliveredBoughtInstances = item.Instances
-                .Where(x =>
-                    x.InstanceOrderedEvent != null &&
-                    x.InstanceOrderedEvent.OrderType == eOrderType.Buy &&
-                    x.InstanceOrderedEvent.InstanceOrderDeliveredEvent != null)
-                .ToArray();
-            
-            var totalUnitsInStock = deliveredBoughtInstances
-                .Select(x =>
-                {
-                    if (x.ExpiryDate <= query.Now) return 0;
-                    
-                    var discarded = x.InstanceDiscardedEvents.Sum(ev => ev.Quantity);
-                    
-                    return x.UnitsOrdered - discarded;
-                }).Sum();
+                var discarded = x.InstanceDiscardedEvents.Sum(ev => ev.Quantity);
+
+                return x.UnitsOrdered - discarded;
+            });
+
+            //var pendingForStock = pendingBoughtInstances
+            //    .Sum(x => x.UnitsOrdered);
+
+            //var deliveredBoughtInstances = item.Instances
+            //    .Where(x =>
+            //        x.InstanceOrderedEvent != null &&
+            //        x.InstanceOrderedEvent.OrderType == eOrderType.Buy &&
+            //        x.InstanceOrderedEvent.InstanceOrderDeliveredEvent != null)
+            //    .ToArray();
+
+            //var totalUnitsInStock = deliveredBoughtInstances
+            //    .Select(x =>
+            //    {
+            //        if (x.ExpiryDate <= query.Now) return 0;
+
+            //        var discarded = x.InstanceDiscardedEvents.Sum(ev => ev.Quantity);
+
+            //        return x.UnitsOrdered - discarded;
+            //    }).Sum();
 
             var isComposite = item.CompositeExcerpts.Any();
 
@@ -82,6 +92,21 @@ public static class GetItemStatistics
             var sellingCost = item.Prices.Single().UnitValue;
 
             return HandlerResult<List<ItemStatisticsDto>>.Ok(new List<ItemStatisticsDto>());
+        }
+
+        public void Erm(Instance i)
+        {
+            var deliveredBought = i.InstanceBuyRequestedEvent
+                .Where(x =>
+                    x.OrderType == eOrderType.Buy &&
+                    x.InstanceRequestDeliveredEvent != null)
+                .ToArray();
+
+            var sold = i.InstanceBuyRequestedEvent
+                .Where(x =>
+                    x.OrderType == eOrderType.Sell &&
+                    x.InstanceRequestCancelledEvent == null)
+                .ToArray();
         }
     }
 }
