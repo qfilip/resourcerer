@@ -2,7 +2,7 @@
 
 public class InstanceSellRequestedEvent : EntityBase
 {
-    public double UnitsSold { get; set; }
+    public double Quantity { get; set; }
     public double UnitPrice { get; set; }
     public int TotalDiscountPercent { get; set; }
     

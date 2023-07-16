@@ -1,10 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Enums;
-using Resourcerer.Dtos;
 using Resourcerer.Dtos.Elements;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Resourcerer.Logic.Queries.Items;
 public static class GetItemStatistics
@@ -46,7 +42,9 @@ public static class GetItemStatistics
                 return HandlerResult<List<ItemStatisticsDto>>.Ok(new List<ItemStatisticsDto>());
             }
 
-            
+            var instanceInfos = item.Instances
+                .Select(x => Functions.Instances.GetInstanceInfo(x, query.Now))
+                .ToArray();
 
             var isComposite = item.CompositeExcerpts.Any();
 
