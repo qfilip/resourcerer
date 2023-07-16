@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class ExcerptDto : EntityDto<ExcerptDto>
+public class ExcerptDto : BaseDto<ExcerptDto>
 {
     public Guid CompositeId { get; set; }
     public Guid ElementId { get; set; }
@@ -11,10 +11,7 @@ public class ExcerptDto : EntityDto<ExcerptDto>
 
     public double Quantity { get; set; }
 
-    public override AbstractValidator<ExcerptDto> GetValidator()
-    {
-        throw new NotImplementedException();
-    }
+    public override AbstractValidator<ExcerptDto> GetValidator() => new Validator();
 
     private class Validator : AbstractValidator<ExcerptDto>
     {

@@ -32,7 +32,7 @@ public class Pipeline
         IAppHandler<TRequest, TResponse> handler,
         TRequest request,
         Func<TResponse, IResult>? customOkResultMapper = null)
-        where TRequest : IBaseDto<TRequest>
+        where TRequest : BaseDto<TRequest>
     {
         var actionName = GetHandlerName(handler);
 

@@ -3,7 +3,7 @@ using Resourcerer.DataAccess.Entities;
 
 namespace Resourcerer.Dtos;
 
-public class ItemDto : EntityDto<ItemDto>
+public class ItemDto : BaseDto<ItemDto>
 {
     public string? Name { get; set; }
 

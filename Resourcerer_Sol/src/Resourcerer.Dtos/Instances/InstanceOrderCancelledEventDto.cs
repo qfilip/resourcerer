@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class InstanceOrderCancelledEventDto : EntityDto<InstanceOrderCancelledEventDto>
+public class InstanceOrderCancelledEventDto : BaseDto<InstanceOrderCancelledEventDto>
 {
     public Guid InstanceOrderedEventId { get; set; }
     public override AbstractValidator<InstanceOrderCancelledEventDto> GetValidator() =>

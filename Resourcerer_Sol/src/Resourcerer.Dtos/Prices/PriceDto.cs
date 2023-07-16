@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class PriceDto : EntityDto<PriceDto>
+public class PriceDto : BaseDto<PriceDto>
 {
     public double UnitValue { get; set; }
 

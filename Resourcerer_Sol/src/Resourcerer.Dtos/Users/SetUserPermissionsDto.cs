@@ -2,12 +2,12 @@
 
 namespace Resourcerer.Dtos;
 
-public class SetUserPermissionsDto : IBaseDto<SetUserPermissionsDto>
+public class SetUserPermissionsDto : BaseDto<SetUserPermissionsDto>
 {
     public Guid UserId { get; set; }
     public Dictionary<string, string>? Permissions { get; set; }
 
-    public AbstractValidator<SetUserPermissionsDto> GetValidator() => new Validator();
+    public override AbstractValidator<SetUserPermissionsDto> GetValidator() => new Validator();
 
     public class Validator : AbstractValidator<SetUserPermissionsDto>
     {

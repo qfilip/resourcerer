@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class InstanceDeliveredEventDto : EntityDto<InstanceDeliveredEventDto>
+public class InstanceDeliveredEventDto : BaseDto<InstanceDeliveredEventDto>
 {
     public Guid InstanceOrderedEventId { get; set; }
     public virtual InstanceOrderedEventDto? InstanceOrderedEvent { get; set; }

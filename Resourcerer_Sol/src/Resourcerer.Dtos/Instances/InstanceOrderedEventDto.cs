@@ -3,7 +3,7 @@ using Resourcerer.DataAccess.Enums;
 
 namespace Resourcerer.Dtos;
 
-public class InstanceOrderedEventDto : EntityDto<InstanceOrderedEventDto>
+public class InstanceOrderedEventDto : BaseDto<InstanceOrderedEventDto>
 {
     public Guid ItemId { get; set; }
     public eOrderType OrderType { get; set; }

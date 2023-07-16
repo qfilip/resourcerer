@@ -1,12 +1,8 @@
-﻿using FluentValidation;
+﻿namespace Resourcerer.Dtos;
 
-namespace Resourcerer.Dtos;
-
-public class CreateCategoryDto : IBaseDto<CreateCategoryDto>
+public class CreateCategoryDto : IBaseDto
 {
     public string? Name { get; set; }
     public Guid? ParentCategoryId { get; set; }
-
-    public AbstractValidator<CreateCategoryDto>? GetValidator() => null;
 }
 

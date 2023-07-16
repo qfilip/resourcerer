@@ -1,8 +1,6 @@
-﻿using FluentValidation;
+﻿namespace Resourcerer.Dtos;
 
-namespace Resourcerer.Dtos;
-
-public interface IBaseDto<T>
+public interface IBaseDto
 {
-    AbstractValidator<T>? GetValidator();
+    
 }

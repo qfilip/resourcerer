@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 
 namespace Resourcerer.Dtos;
-public class InstanceDto : EntityDto<InstanceDto>
+public class InstanceDto : BaseDto<InstanceDto>
 {
     public double Quantity { get; set; }
     public DateTime? ExpiryDate { get; set; }

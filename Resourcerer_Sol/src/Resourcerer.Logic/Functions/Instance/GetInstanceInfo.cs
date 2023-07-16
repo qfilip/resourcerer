@@ -25,7 +25,7 @@ public static partial class Instances
             .Sum(x => Maths.Discount(x.Quantity * x.UnitPrice, x.TotalDiscountPercent));
 
         var discards = i.InstanceDiscardedEvents
-            .Select(x => new DiscardInfo
+            .Select(x => new DiscardInfoDto
             {
                 Quantity = x.Quantity,
                 Reason = x.Reason
@@ -42,8 +42,6 @@ public static partial class Instances
         return new InstanceInfoDto
         {
             InstanceId = i.Id,
-            ItemId = i.Item!.Id,
-            ItemName = i.Item!.Name,
             Discards = discards,
             ExpiryDate = i.ExpiryDate,
             PurchaseCost = i.UnitPrice,

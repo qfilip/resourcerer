@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class CategoryDto : EntityDto<CategoryDto>
+public class CategoryDto : BaseDto<CategoryDto>
 {
     public string? Name { get; set; }
     public Guid? ParentCategoryId { get; set; }

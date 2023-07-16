@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.Dtos.Instances;
 
-public class DiscardInfo
+public class DiscardInfoDto : IBaseDto
 {
     public string? Reason { get; set; }
     public double Quantity { get; set; }

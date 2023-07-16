@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos.Elements;
 
-public class ItemStatisticsDto : IBaseDto<ItemStatisticsDto>
+public class ItemStatisticsDto : IBaseDto
 {
     public Guid ElementId { get; set; }
     public string? Name { get; set; }
@@ -16,6 +16,4 @@ public class ItemStatisticsDto : IBaseDto<ItemStatisticsDto>
     public double UnitsUsedInComposites { get; set; }
     public int UsedInComposites { get; set; }
     public double UnitsInStock { get; set; }
-
-    public AbstractValidator<ItemStatisticsDto>? GetValidator() => null;
 }

@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class CreateElementItemDto : IBaseDto<CreateElementItemDto>
+public class CreateElementItemDto : BaseDto<CreateElementItemDto>
 {
     public string? Name { get; set; }
     public double PreparationTimeSeconds { get; set; }
@@ -11,7 +11,7 @@ public class CreateElementItemDto : IBaseDto<CreateElementItemDto>
     public Guid UnitOfMeasureId { get; set; }
     public double UnitPrice { get; set; }
 
-    public AbstractValidator<CreateElementItemDto>? GetValidator() => new Validator();
+    public override AbstractValidator<CreateElementItemDto>? GetValidator() => new Validator();
 
     private class Validator : AbstractValidator<CreateElementItemDto>
     {
