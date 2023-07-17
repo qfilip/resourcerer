@@ -8,5 +8,5 @@ public class InstanceRequestCancelledEvent : EntityBase
     public virtual InstanceBuyRequestedEvent? InstanceBuyRequestedEvent { get; set; }
 
     public Guid? InstanceSellRequestedEventId { get; set; }
-    public virtual InstanceBuyRequestedEvent? InstanceSellRequestedEvent { get; set; }
+    public virtual InstanceSellRequestedEvent? InstanceSellRequestedEvent { get; set; }
 }
