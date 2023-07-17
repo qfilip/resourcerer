@@ -8,18 +8,15 @@ public static class TestHandler
     {
         public Task<HandlerResult<Unit>> Handle(TestDto request)
         {
-            if (request.Property == eHandlerResult.Ok)
+            var r = request.Property switch
             {
-                return Task.FromResult(HandlerResult<Unit>.Ok(new Unit()));
-            }
-            else if (request.Property == eHandlerResult.NotFound)
-            {
-                return Task.FromResult(HandlerResult<Unit>.NotFound("Oops"));
-            }
-            else
-            {
-                return Task.FromResult(HandlerResult<Unit>.ValidationError(TestDto.ErrorMessage));
-            }
+                eHandlerResult.Ok => HandlerResult<Unit>.Ok(new Unit()),
+                eHandlerResult.NotFound => HandlerResult<Unit>.NotFound("Oops"),
+                eHandlerResult.Rejected => HandlerResult<Unit>.Rejected(TestDto.ErrorMessage),
+                _ => throw new ArgumentException($"Invalid property passed {request.Property}"),
+            };
+
+            return Task.FromResult(r);
         }
     }
 }

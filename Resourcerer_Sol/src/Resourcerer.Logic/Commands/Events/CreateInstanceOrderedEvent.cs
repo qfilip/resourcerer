@@ -23,7 +23,7 @@ public static class CreateInstanceOrderedEvent
             if (item == null)
             {
                 return HandlerResult<Unit>
-                    .ValidationError($"Item with id {request.ItemId} not found");
+                    .Rejected($"Item with id {request.ItemId} not found");
             }
 
             if(item.ExpirationTimeSeconds != null)
@@ -31,30 +31,25 @@ public static class CreateInstanceOrderedEvent
                 if(request.ExpectedDeliveryDate == null)
                 {
                     return HandlerResult<Unit>
-                        .ValidationError($"Expected delivery time must be set for items that can expire");
+                        .Rejected($"Expected delivery time must be set for items that can expire");
                 }
 
                 if (request.ExpiryDate == null)
                 {
                     return HandlerResult<Unit>
-                        .ValidationError($"Expiry date must be set for items that can expire");
+                        .Rejected($"Expiry date must be set for items that can expire");
                 }
 
                 if(request.ExpectedDeliveryDate >= request.ExpiryDate)
                 {
                     return HandlerResult<Unit>
-                        .ValidationError($"Ordered items will expire before they are delivered");
+                        .Rejected($"Ordered items will expire before they are delivered");
                 }
             }
 
             var instance = new Instance
             {
                 Id = Guid.NewGuid(),
-
-                UnitPrice = request.UnitPrice,
-                Quantity = request.UnitsOrdered,
-                TotalDiscountPercent = request.TotalDiscountPercent,
-                ExpectedDeliveryDate = request.ExpectedDeliveryDate,
                 ExpiryDate = request.ExpiryDate,
                 
                 ItemId = item.Id
@@ -63,6 +58,10 @@ public static class CreateInstanceOrderedEvent
             var orderedEvent = new InstanceBuyRequestedEvent
             {
                 InstanceId = instance.Id,
+                UnitPrice = request.UnitPrice,
+                Quantity = request.UnitsOrdered,
+                TotalDiscountPercent = request.TotalDiscountPercent,
+                ExpectedDeliveryDate = request.ExpectedDeliveryDate,
             };
 
             _appDbContext.InstanceOrderedEvents.Add(orderedEvent);

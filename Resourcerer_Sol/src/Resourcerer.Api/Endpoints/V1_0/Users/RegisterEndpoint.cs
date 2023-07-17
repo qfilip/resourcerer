@@ -13,7 +13,7 @@ public static class RegisterEndpoint
         [FromServices] Pipeline pipeline,
         [FromServices] Register.Handler handler)
     {
-        return await pipeline.Pipe(handler, dto);
+        return await pipeline.PipeWithValidator(handler, dto);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

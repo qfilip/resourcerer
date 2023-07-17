@@ -14,7 +14,7 @@ public class CreateCategoryEndpoint
         [FromServices] Pipeline pipeline,
         [FromServices] CreateCategory.Handler handler)
     {
-        return await pipeline.Pipe(handler, categoryDto);
+        return await pipeline.PipeWithValidator(handler, categoryDto);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

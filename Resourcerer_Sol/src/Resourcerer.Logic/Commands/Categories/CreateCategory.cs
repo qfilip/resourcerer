@@ -27,13 +27,13 @@ public class CreateCategory
             if(existing.Any(x => x.Name == request.Name))
             {
                 var error = $"Category with name {request.Name} already exists";
-                return HandlerResult<Unit>.ValidationError(error);
+                return HandlerResult<Unit>.Rejected(error);
             }
 
             if(request.ParentCategoryId != null && !existing.Any(x => x.Id == request.ParentCategoryId))
             {
                 var error = $"Parent category with id {request.ParentCategoryId} doesn't exist";
-                return HandlerResult<Unit>.ValidationError(error);
+                return HandlerResult<Unit>.Rejected(error);
             }
 
             var entity = new Category

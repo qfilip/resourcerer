@@ -29,7 +29,7 @@ public class ChangeItemPrice
 
             if(element == null)
             {
-                return HandlerResult<Unit>.ValidationError($"Item with id {request.ItemId} doesn't exist");
+                return HandlerResult<Unit>.Rejected($"Item with id {request.ItemId} doesn't exist");
             }
 
             if(element.Prices.Count(x => x.EntityStatus == eEntityStatus.Active) > 1)

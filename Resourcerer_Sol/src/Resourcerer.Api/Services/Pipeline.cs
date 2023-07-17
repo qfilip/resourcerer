@@ -12,7 +12,7 @@ public class Pipeline
         _logger = logger;
     }
 
-    public async Task<IResult> PipeGet<TRequest, TResponse>(
+    public async Task<IResult> PipeAny<TRequest, TResponse>(
         IAppHandler<TRequest, TResponse> handler,
         TRequest request,
         Func<TResponse, IResult>? customOkResultMapper = null)
@@ -28,7 +28,7 @@ public class Pipeline
         return MapResult(handlerResult, customOkResultMapper);
     }
 
-    public async Task<IResult> Pipe<TRequest, TResponse>(
+    public async Task<IResult> PipeWithValidator<TRequest, TResponse>(
         IAppHandler<TRequest, TResponse> handler,
         TRequest request,
         Func<TResponse, IResult>? customOkResultMapper = null)
@@ -61,12 +61,11 @@ public class Pipeline
             (eHandlerResultStatus.Ok, null) => Results.Ok(handlerResult.Object),
             (eHandlerResultStatus.Ok, _) => customOkResultMapper.Invoke(handlerResult.Object!),
             (eHandlerResultStatus.NotFound, _) => Results.NotFound(handlerResult.Object),
-            (eHandlerResultStatus.ValidationError, _) => Results.BadRequest(handlerResult.Errors),
+            (eHandlerResultStatus.Rejected, _) => Results.Conflict(handlerResult.Errors),
             _ =>
                 throw new NotImplementedException($"Cannot handle status of {handlerResult.Status}")
         };
     }
 
-    private string GetHandlerName(object handler) =>
-        handler.GetType().FullName!.Split('.').Last();
+    private string GetHandlerName(object handler) => handler.GetType().Name;
 }

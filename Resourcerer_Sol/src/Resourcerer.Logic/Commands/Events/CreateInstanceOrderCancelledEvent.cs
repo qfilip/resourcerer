@@ -24,13 +24,13 @@ public static class CreateInstanceOrderCancelledEvent
             if (orderedEvent == null)
             {
                 var error = $"Order event with id {request.InstanceOrderedEventId} not found";
-                return HandlerResult<Unit>.ValidationError(error);
+                return HandlerResult<Unit>.Rejected(error);
             }
 
             if (orderedEvent.InstanceRequestDeliveredEvent != null)
             {
                 var error = "Order was delivered, and cannot be cancelled";
-                return HandlerResult<Unit>.ValidationError(error);
+                return HandlerResult<Unit>.Rejected(error);
             }
 
             if (orderedEvent.InstanceRequestCancelledEventId != null)

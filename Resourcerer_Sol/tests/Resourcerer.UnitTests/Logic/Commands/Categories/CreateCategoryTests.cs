@@ -47,7 +47,7 @@ public class CreateCategoryTests : TestsBase
         var entities = _testDbContext.Categories.ToList();
 
         // assert
-        Assert.Equal(eHandlerResultStatus.ValidationError, result.Status);
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
         Assert.Single(entities);
     }
 
@@ -86,6 +86,6 @@ public class CreateCategoryTests : TestsBase
         var result = _handler.Handle(dto).GetAwaiter().GetResult();
 
         // assert
-        Assert.Equal(eHandlerResultStatus.ValidationError, result.Status);
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
     }
 }

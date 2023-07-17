@@ -12,7 +12,7 @@ public class LoginEndpoint
        [FromServices] Pipeline pipeline,
        [FromServices] Login.Handler handler)
     {
-        return await pipeline.Pipe(handler, dto, (result) =>
+        return await pipeline.PipeWithValidator(handler, dto, (result) =>
         {
             var jwt = JwtService.GenerateToken(result.Claims!);
             return Results.Ok(jwt);

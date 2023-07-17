@@ -25,13 +25,13 @@ public static class CreateInstanceDeliveredEvent
             if (orderEvent == null)
             {
                 var message = $"Order event with id {request.InstanceOrderedEventId} not found";
-                return HandlerResult<Unit>.ValidationError(message);
+                return HandlerResult<Unit>.Rejected(message);
             }
 
             if (orderEvent.InstanceRequestCancelledEvent != null)
             {
                 var error = "Order was cancelled, and cannot be delivered";
-                return HandlerResult<Unit>.ValidationError(error);
+                return HandlerResult<Unit>.Rejected(error);
             }
 
             if (orderEvent.InstanceRequestDeliveredEvent != null)

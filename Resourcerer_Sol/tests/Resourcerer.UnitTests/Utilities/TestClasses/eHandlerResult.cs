@@ -4,5 +4,6 @@ public enum eHandlerResult
 {
     Ok,
     NotFound,
+    Rejected,
     Invalid
 }

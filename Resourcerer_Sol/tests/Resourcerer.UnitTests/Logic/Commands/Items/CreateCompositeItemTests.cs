@@ -40,7 +40,7 @@ public class CreateCompositeItemTests : TestsBase
         var result = _handler.Handle(dto).GetAwaiter().GetResult();
 
         // assert
-        Assert.Equal(eHandlerResultStatus.ValidationError, result.Status);
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public class CreateCompositeItemTests : TestsBase
         var result = _handler.Handle(dto).GetAwaiter().GetResult();
 
         // assert
-        Assert.Equal(eHandlerResultStatus.ValidationError, result.Status);
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
     }
 
     [Fact]
@@ -68,7 +68,7 @@ public class CreateCompositeItemTests : TestsBase
         var result = _handler.Handle(dto).GetAwaiter().GetResult();
 
         // assert
-        Assert.Equal(eHandlerResultStatus.ValidationError, result.Status);
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
     }
 
     [Fact]
@@ -86,7 +86,7 @@ public class CreateCompositeItemTests : TestsBase
         var result = _handler.Handle(dto).GetAwaiter().GetResult();
 
         // assert
-        Assert.Equal(eHandlerResultStatus.ValidationError, result.Status);
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
     }
 
     private CreateCompositeItemDto GetDto(Action<CreateCompositeItemDto>? modifier = null)

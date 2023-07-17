@@ -2,7 +2,7 @@
 
 public enum eHandlerResultStatus
 {
-    Ok, NotFound, ValidationError
+    Ok, NotFound, Rejected
 }
 
 public class HandlerResult<T>
@@ -22,14 +22,14 @@ public class HandlerResult<T>
         return new HandlerResult<T>(eHandlerResultStatus.NotFound, Array.Empty<string>());
     }
 
-    public static HandlerResult<T> ValidationError(string error)
+    public static HandlerResult<T> Rejected(string error)
     {
-        return new HandlerResult<T>(eHandlerResultStatus.ValidationError, new string[] { error });
+        return new HandlerResult<T>(eHandlerResultStatus.Rejected, new string[] { error });
     }
 
-    public static HandlerResult<T> ValidationError(string[] errors)
+    public static HandlerResult<T> Rejected(string[] errors)
     {
-        return new HandlerResult<T>(eHandlerResultStatus.ValidationError, errors);
+        return new HandlerResult<T>(eHandlerResultStatus.Rejected, errors);
     }
 
     private HandlerResult(T? obj)

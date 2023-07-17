@@ -17,7 +17,8 @@ public static class GetAllCategories
 
         public async Task<HandlerResult<List<CategoryDto>>> Handle(Unit _)
         {
-            var result = await _appDbContext.Categories.Select(x => new CategoryDto
+            var result = await _appDbContext.Categories
+            .Select(x => new CategoryDto
             {
                 Id = x.Id,
                 Name = x.Name,

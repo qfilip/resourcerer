@@ -3,11 +3,11 @@ using Resourcerer.Dtos;
 
 namespace Resourcerer.UnitTests.Utilities.TestClasses;
 
-public class TestDto : IBaseDto<TestDto>
+public class TestDto : BaseDto<TestDto>
 {
     public eHandlerResult Property { get; set; }
 
-    public AbstractValidator<TestDto>? GetValidator() => new Validator();
+    public override AbstractValidator<TestDto>? GetValidator() => new Validator();
 
     public const string ErrorMessage = "Test property must not be Invalid";
     private class Validator : AbstractValidator<TestDto>

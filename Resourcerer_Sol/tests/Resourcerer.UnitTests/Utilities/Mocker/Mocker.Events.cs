@@ -1,6 +1,5 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Enums;
 
 namespace Resourcerer.UnitTests.Utilities.Mocker;
 
@@ -8,20 +7,19 @@ internal static partial class Mocker
 {
     public static InstanceBuyRequestedEvent MockOrderedEvent(
         AppDbContext context,
-        eOrderType orderType,
         Action<InstanceBuyRequestedEvent>? modifier = null,
         Item? instanceItem = null)
     {
         var entity = MakeEntity(() => new InstanceBuyRequestedEvent
         {
-            OrderType = orderType,
+            ExpectedDeliveryDate = DateTime.UtcNow,
+            TotalDiscountPercent = 0,
+            UnitPrice = 5,
+            Quantity = 5,
+
             Instance = MakeEntity(() => new Instance
             {
                 ExpiryDate = DateTime.UtcNow,
-                ExpectedDeliveryDate = DateTime.UtcNow,
-                TotalDiscountPercent = 0,
-                UnitPrice = 5,
-                Quantity = 5,
             })
         });
 
@@ -39,13 +37,12 @@ internal static partial class Mocker
 
     public static InstanceRequestCancelledEvent MockOrderCancelledEvent(
         AppDbContext context,
-        eOrderType orderType,
         Action<InstanceRequestCancelledEvent>? modifier = null,
         Item? instanceItem = null)
     {
         var entity = MakeEntity(() => new InstanceRequestCancelledEvent
         {
-            InstanceBuyRequestedEvent = MockOrderedEvent(context, orderType)
+            InstanceBuyRequestedEvent = MockOrderedEvent(context)
         });
 
         modifier?.Invoke(entity);
@@ -62,13 +59,12 @@ internal static partial class Mocker
 
     public static InstanceRequestDeliveredEvent MockDeliveredEvent(
         AppDbContext context,
-        eOrderType orderType,
         Action<InstanceRequestDeliveredEvent>? modifier = null,
         Item? instanceItem = null)
     {
         var entity = MakeEntity(() => new InstanceRequestDeliveredEvent
         {
-            InstanceBuyRequestedEvent = MockOrderedEvent(context, orderType)
+            InstanceBuyRequestedEvent = MockOrderedEvent(context)
         });
 
         modifier?.Invoke(entity);

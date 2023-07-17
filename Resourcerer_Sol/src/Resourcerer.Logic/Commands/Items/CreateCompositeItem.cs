@@ -24,7 +24,7 @@ public static class CreateCompositeItem
             if (existing != null)
             {
                 var error = "Element with the same name already exist";
-                return HandlerResult<Unit>.ValidationError(error);
+                return HandlerResult<Unit>.Rejected(error);
             }
 
             var category = await _appDbContext.Categories
@@ -33,7 +33,7 @@ public static class CreateCompositeItem
             if (category == null)
             {
                 var error = "Requested category doesn't exist";
-                return HandlerResult<Unit>.ValidationError(error);
+                return HandlerResult<Unit>.Rejected(error);
             }
 
             var uom = await _appDbContext.UnitsOfMeasure
@@ -42,7 +42,7 @@ public static class CreateCompositeItem
             if (uom == null)
             {
                 var error = "Requested unit of measure doesn't exist";
-                return HandlerResult<Unit>.ValidationError(error);
+                return HandlerResult<Unit>.Rejected(error);
             }
 
             var requiredElementIds = request.ExcerptMap!.Select(x => x.Key).ToArray();
@@ -54,7 +54,7 @@ public static class CreateCompositeItem
             if(requiredItems.Length != requiredElementIds.Length)
             {
                 var error = "All required elements don't exist";
-                return HandlerResult<Unit>.ValidationError(error);
+                return HandlerResult<Unit>.Rejected(error);
             }
 
             var composite = new Item

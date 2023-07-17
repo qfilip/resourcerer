@@ -13,7 +13,7 @@ public class GetAllCategoriesEndpoint
         [FromServices] Pipeline pipeline,
         [FromServices] GetAllCategories.Handler handler)
     {
-        return await pipeline.Pipe(handler, new Unit());
+        return await pipeline.PipeAny(handler, new Unit());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

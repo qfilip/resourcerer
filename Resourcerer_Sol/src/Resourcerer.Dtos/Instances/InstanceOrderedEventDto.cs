@@ -1,12 +1,10 @@
 ﻿using FluentValidation;
-using Resourcerer.DataAccess.Enums;
 
 namespace Resourcerer.Dtos;
 
 public class InstanceOrderedEventDto : BaseDto<InstanceOrderedEventDto>
 {
     public Guid ItemId { get; set; }
-    public eOrderType OrderType { get; set; }
     public DateTime? ExpiryDate { get; set; }
     public double UnitsOrdered { get; set; }
     public double UnitPrice { get; set; }

@@ -21,7 +21,7 @@ public static class SetPermissions
             var errors = Permission.Validate(request.Permissions!);
             if(errors.Any())
             {
-                return HandlerResult<Unit>.ValidationError(errors.ToArray());
+                return HandlerResult<Unit>.Rejected(errors.ToArray());
             }
 
             var user = await _appDbContext.AppUsers

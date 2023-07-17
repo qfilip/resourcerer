@@ -28,9 +28,9 @@ public class TestsBase
         var sand = ctx.Items.Where(x => x.Name == "sand").First();
         var now = Mocker.Now.AddMonths(4);
         
-        Mocker.MockDeliveredEvent(ctx, eOrderType.Buy, x => x.CreatedAt = Mocker.Now.AddMonths(1), sand);
-        Mocker.MockDeliveredEvent(ctx, eOrderType.Buy, x => x.CreatedAt = Mocker.Now.AddMonths(2), sand);
-        Mocker.MockDeliveredEvent(ctx, eOrderType.Buy, x => x.CreatedAt = Mocker.Now.AddMonths(3), sand);
+        Mocker.MockDeliveredEvent(ctx, x => x.CreatedAt = Mocker.Now.AddMonths(1), sand);
+        Mocker.MockDeliveredEvent(ctx, x => x.CreatedAt = Mocker.Now.AddMonths(2), sand);
+        Mocker.MockDeliveredEvent(ctx, x => x.CreatedAt = Mocker.Now.AddMonths(3), sand);
 
         ctx.SaveChanges();
 

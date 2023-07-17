@@ -18,23 +18,23 @@ public class PipelineTests
     }
 
     [Fact]
-    public void Pipeline_Maps_OkResult()
+    public void When_Ok_Returns_Ok()
     {
         var handler = new TestHandler.Handler();
         var dto = new TestDto();
 
-        var result = _pipeline.Pipe(handler, dto).GetAwaiter().GetResult();
+        var result = _pipeline.PipeWithValidator(handler, dto).GetAwaiter().GetResult();
 
         Assert.True(result is Ok<Unit>);
     }
 
     [Fact]
-    public void Pipeline_Maps_ValidationErrors_To_BadRequest()
+    public void When_DtoValidationFails_Returns_BadRequest()
     {
         var handler = new TestHandler.Handler();
         var dto = new TestDto() { Property = eHandlerResult.Invalid };
 
-        var result = _pipeline.Pipe(handler, dto).GetAwaiter().GetResult();
+        var result = _pipeline.PipeWithValidator(handler, dto).GetAwaiter().GetResult();
 
         var r = result as BadRequest<string[]>;
         Assert.NotNull(r);
@@ -43,26 +43,26 @@ public class PipelineTests
     }
 
     [Fact]
-    public void Pipeline_Uses_CustomMapper()
+    public void When_CustomMapperIsUsed_Returns_MappedHttpResult()
     {
         var handler = new TestHandler.Handler();
         var dto = new TestDto();
         var customMapper = (Unit e) => Results.Accepted();
 
-        var result = _pipeline.Pipe(handler, dto).GetAwaiter().GetResult();
+        var result = _pipeline.PipeWithValidator(handler, dto).GetAwaiter().GetResult();
 
         Assert.NotNull(result);
         Assert.True(result is Accepted);
     }
 
     [Fact]
-    public void Pipeline_Skips_CustomMapper_When_Result_NotFound()
+    public void When_CustomMapperIsUsed_And_HandlerResult_Is_NotFound_Returns_NotFound()
     {
         var handler = new TestHandler.Handler();
         var dto = new TestDto() { Property = eHandlerResult.NotFound };
         var customMapper = (Unit e) => Results.Accepted();
 
-        var result = _pipeline.Pipe(handler, dto).GetAwaiter().GetResult();
+        var result = _pipeline.PipeWithValidator(handler, dto).GetAwaiter().GetResult();
 
         Assert.NotNull(result);
         Assert.True(result is NotFound<Unit>);

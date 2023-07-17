@@ -7,10 +7,7 @@ public class Instance : EntityBase
         InstanceSellRequestedEvents = new HashSet<InstanceSellRequestedEvent>();
         InstanceDiscardedEvents = new HashSet<InstanceDiscardedEvent>();
     }
-    public double Quantity { get; set; }
-    public double UnitPrice { get; set; }
-    public int TotalDiscountPercent { get; set; }
-    public DateTime? ExpectedDeliveryDate { get; set; }
+    
     public DateTime? ExpiryDate { get; set; }
 
     public Guid? ItemId { get; set; }

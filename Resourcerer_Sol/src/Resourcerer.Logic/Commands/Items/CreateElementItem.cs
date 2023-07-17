@@ -24,7 +24,7 @@ public static class CreateElementItem
             if(existing != null)
             {
                 var error = "Element with the same name already exist";
-                return HandlerResult<Unit>.ValidationError(error);
+                return HandlerResult<Unit>.Rejected(error);
             }
 
             var category = await _appDbContext.Categories
@@ -33,7 +33,7 @@ public static class CreateElementItem
             if (category == null)
             {
                 var error = "Requested category doesn't exist";
-                return HandlerResult<Unit>.ValidationError(error);
+                return HandlerResult<Unit>.Rejected(error);
             }
 
             var uom = await _appDbContext.UnitsOfMeasure
@@ -42,7 +42,7 @@ public static class CreateElementItem
             if (uom == null)
             {
                 var error = "Requested unit of measure doesn't exist";
-                return HandlerResult<Unit>.ValidationError(error);
+                return HandlerResult<Unit>.Rejected(error);
             }
 
             var item = new Item
