@@ -22,29 +22,14 @@ public static class Exporter
         return conf;
     }
 
-    private static Type[] GetTypesForExport<T>(string namespaceFilter)
-    {
-        var assembly = Assembly
-            .GetAssembly(typeof(T));
-
-        if(assembly == null)
-        {
-            throw new Exception("Assembly not found");
-        }
-        
+    private static Type[] GetDtos<T>()
+    {   
         return typeof(IBaseDto)
             .Assembly
             .GetTypes()
             .Where(x =>
                 x.GetInterface(typeof(IBaseDto).Name) != null &&
-                !x.IsAbstract &&
                 !x.IsInterface)
-            .ToArray();
-
-        return assembly.ExportedTypes
-            .Where(i => i.Namespace!.StartsWith(namespaceFilter))
-            .OrderBy(i => i.Name)
-            .OrderBy(i => i.Name != nameof(T))
             .ToArray();
     }
 
@@ -61,7 +46,7 @@ public static class Exporter
 
     private static void ConfigureTypes(this TsBuilder builder)
     {
-        var dtos = GetTypesForExport<IBaseDto>($"{SOLUTION_NAMESPACE}.Dtos");
+        var dtos = GetDtos<IBaseDto>();
 
         // Tools > Options > Projects And Solutions > Build And Run
         // Set MSBuild project build output verbosity -> Detailed
@@ -79,9 +64,9 @@ public static class Exporter
         // enum export
         builder.ExportAsEnums(new Type[]
             {
-                //typeof(eEntityStatus),
-                //typeof(ePermission),
-                //typeof(eSection)
+                typeof(eEntityStatus),
+                typeof(ePermission),
+                typeof(eSection)
             },
             conf => conf.ExportTo("enums.ts")
         );

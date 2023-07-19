@@ -54,7 +54,7 @@
 			Note that in case of using RtDivideTypesAmongFiles, RtTargetFile parameter will 
 			NOT be used anymore.
 		-->
-		<RtTargetDirectory>$(SolutionDir)src\</RtTargetDirectory>
+		<RtTargetDirectory>$(SolutionDir)client\src\interfaces\dtos</RtTargetDirectory>
 
 
 		<!--
