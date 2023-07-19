@@ -61,6 +61,7 @@ public static class GetItemStockInfo
             {
                 Id = item.Id,
                 Name = item.Name,
+                TotalUnitsInStock = instancesInfo.Sum(x => x.QuantityLeft),
                 InstancesInfo = instancesInfo,
                 ItemType = isComposite ? new[] { "Element", "Composite" } : new[] { "Element" },
                 ProductionCostAsComposite = productionCostAsComposite,

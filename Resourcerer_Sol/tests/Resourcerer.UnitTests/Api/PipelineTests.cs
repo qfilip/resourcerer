@@ -49,7 +49,7 @@ public class PipelineTests
         var dto = new TestDto();
         var customMapper = (Unit e) => Results.Accepted();
 
-        var result = _pipeline.PipeWithValidator(handler, dto).GetAwaiter().GetResult();
+        var result = _pipeline.PipeWithValidator(handler, dto, customMapper).GetAwaiter().GetResult();
 
         Assert.NotNull(result);
         Assert.True(result is Accepted);
@@ -62,7 +62,7 @@ public class PipelineTests
         var dto = new TestDto() { Property = eHandlerResult.NotFound };
         var customMapper = (Unit e) => Results.Accepted();
 
-        var result = _pipeline.PipeWithValidator(handler, dto).GetAwaiter().GetResult();
+        var result = _pipeline.PipeWithValidator(handler, dto, customMapper).GetAwaiter().GetResult();
 
         Assert.NotNull(result);
         Assert.True(result is NotFound<Unit>);
