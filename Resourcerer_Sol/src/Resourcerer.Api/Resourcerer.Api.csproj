@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+  
+  <Target Name="CompileTypeScript" />
 
   <ItemGroup>
     <PackageReference Include="Mapster" Version="7.3.0" />

@@ -1,14 +1,16 @@
-import type IUserLoginDto from '../interfaces/dtos/IUserLoginDto';
-import type IUserResiterDto from '../interfaces/dtos/IUserRegisterDto';
+import { IAppUserDto } from "../interfaces/dtos/interfaces";
+import * as userStore from "../services/user.store";
 
-export function register(x: IUserResiterDto) {
+export function register(x: IAppUserDto) {
 
 }
 
-export function login(x: IUserLoginDto, onLoginSuccess: () => void) {
+export function login(x: IAppUserDto, onLoginSuccess: () => void) {
     onLoginSuccess();
 }
 
 export function checkAuthStore(onAuthPresent: () => void) {
-    onAuthPresent();
+    if(userStore.checkUserLogged()) {
+        onAuthPresent();
+    }
 }
