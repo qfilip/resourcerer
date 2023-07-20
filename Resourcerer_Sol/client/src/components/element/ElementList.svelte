@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import * as elementController from "../../controllers/element.controller";
-    import type IElementTableDetails from "../../interfaces/appModels/IElementTableDetails";
 
     onMount(() => {
         elementController.getElementsOverviews().then((data) => {
@@ -9,7 +8,6 @@
         });
     });
 
-    let elements: IElementTableDetails[] = [];
 </script>
 
 <h2>Elements</h2>
@@ -24,7 +22,7 @@
             </tr>
         </thead>
         <tbody>
-            {#each elements as elem}
+            <!-- {#each elements as elem}
                 <tr on:click={() => console.log(elem.id)}>
                     <td>{elem.name}</td>
                     <td>{elem.category}</td>
@@ -32,7 +30,7 @@
                     <td>{elem.compositesCount}</td>
                     <div>aaaaa</div>
                 </tr>
-            {/each}
+            {/each} -->
         </tbody>
     </table>
 </section>

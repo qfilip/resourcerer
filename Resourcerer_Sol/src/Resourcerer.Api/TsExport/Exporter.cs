@@ -1,8 +1,6 @@
 ﻿using Reinforced.Typings.Fluent;
 using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos;
-using Resourcerer.Logic;
-using System.Reflection;
 using TsBuilder = Reinforced.Typings.Fluent.ConfigurationBuilder;
 
 namespace Resourcerer.Api.TsExport;

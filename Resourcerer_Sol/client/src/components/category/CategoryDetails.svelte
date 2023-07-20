@@ -1,7 +1,8 @@
 <script lang="ts">
-    import type ICategory from "../../interfaces/dbModels/ICategory";
+    import type { ICategoryDto } from "../../interfaces/dtos/interfaces";
 
-    export let category: ICategory = null;
+
+    export let category: ICategoryDto = null;
     let focusedBtn = 0;
 
     function setFocus(btnIdx: number) {

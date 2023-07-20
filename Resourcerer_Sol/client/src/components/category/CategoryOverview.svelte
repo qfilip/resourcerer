@@ -3,7 +3,7 @@
     import CategoryDropdown from './CategoryDropdown.svelte';
     import * as categoryService from "../../services/category.service";
     import * as categoryController from "../../controllers/category.controller";
-    import type ICategoryDto from '../../interfaces/dtos/ICategoryDto';
+    import type { ICategoryDto } from '../../interfaces/dtos/interfaces';
 
     onMount(() => {
         categoryController.getAllCategories()

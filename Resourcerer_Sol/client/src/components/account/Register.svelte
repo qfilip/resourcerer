@@ -1,13 +1,13 @@
 <script lang="ts">
     import * as userController from '../../controllers/user.controller';
-    import type IUserResiterDto from '../../interfaces/dtos/IUserRegisterDto';
+    import type { IUserRegister } from '../../interfaces/models/IUserRegister';
 
     let dto = {
         username: '',
         email: '',
         password: '',
         passwordConfirm: ''
-    } as IUserResiterDto;
+    } as IUserRegister;
 
     function handleSubmit() {
         userController.register(dto);

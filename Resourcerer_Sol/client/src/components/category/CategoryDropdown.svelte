@@ -1,10 +1,10 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type ICategory from "../../interfaces/dbModels/ICategory";
     import * as categoryService from "../../services/category.service";
+    import type { ICategoryDto } from "../../interfaces/dtos/interfaces";
 
-    export let category: ICategory;
-    export let allCategories: ICategory[];
+    export let category: ICategoryDto;
+    export let allCategories: ICategoryDto[];
 
     onMount(() => {
         categoryService.selectedCategoryId$.subscribe(x => {
