@@ -1,5 +1,6 @@
 ﻿using Resourcerer.DataAccess.Entities;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace Resourcerer.Dtos;
 
@@ -50,6 +51,12 @@ public class Permission
         });
 
         return dict;
+    }
+
+    public static List<Claim> GetClaimsFromString(string permissionsJson)
+    {
+        var dict = JsonSerializer.Deserialize<Dictionary<string, string>>(permissionsJson)!;
+        return GetClaimsFromDictionary(dict);
     }
 
     public static List<Claim> GetClaimsFromDictionary(Dictionary<string, string> permissionsDict)

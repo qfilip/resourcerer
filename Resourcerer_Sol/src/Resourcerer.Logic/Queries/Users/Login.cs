@@ -1,4 +1,6 @@
-﻿using Resourcerer.DataAccess.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Contexts;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 using Resourcerer.Utilities.Cryptography;
 using System.Text.Json;
@@ -7,37 +9,45 @@ namespace Resourcerer.Logic.Queries.Users;
 
 public static class Login
 {
-    public static AppUser FakeAdmin = new AppUser
-    {
-        Id = Guid.NewGuid(),
-        Name = "string",
-        PasswordHash = Hasher.GetSha256Hash("string"),
-        Permissions = JsonSerializer.Serialize(Permission.GetAllPermissionsDictionary())
-    };
-
     public class Handler : IAppHandler<AppUserDto, AppUserDto>
     {
-        public Task<HandlerResult<AppUserDto>> Handle(AppUserDto request)
+        private readonly AppDbContext _appDbContext;
+        public Handler(AppDbContext appDbContext)
         {
-            if(request.Name == FakeAdmin.Name && Hasher.GetSha256Hash(request.Password!) == FakeAdmin.PasswordHash)
-            {
-                var claimsDict = JsonSerializer.Deserialize<Dictionary<string, string>>(FakeAdmin.Permissions!);
-                claimsDict!.Add("sub", FakeAdmin.Id.ToString());
-                claimsDict!.Add("name", FakeAdmin.Name!);
-                claimsDict!.Add("pwdhash", FakeAdmin.PasswordHash!);
+            _appDbContext = appDbContext;
+        }
 
-                var dto = new AppUserDto
-                {
-                    Name = FakeAdmin.Name,
-                    Claims = Permission.GetClaimsFromDictionary(claimsDict!)
-                };
-
-                return Task.FromResult(HandlerResult<AppUserDto>.Ok(dto));
-            }
-            else
+        public async Task<HandlerResult<AppUserDto>> Handle(AppUserDto request)
+        {
+            var entity = new AppUser
             {
-                return Task.FromResult(HandlerResult<AppUserDto>.NotFound());
+                Name = request.Name,
+                PasswordHash = Hasher.GetSha256Hash(request.Password!),
+                Permissions = JsonSerializer.Serialize(new Dictionary<string, string>())
+            };
+
+            var user = await _appDbContext.AppUsers
+                .FirstOrDefaultAsync(x => x.Name == request.Name);
+
+            if (user == null)
+            {
+                return HandlerResult<AppUserDto>.NotFound($"User with name {request.Name} not found");
             }
+
+            var hash = Hasher.GetSha256Hash(request.Password!);
+
+            if (user.PasswordHash != hash)
+            {
+                return HandlerResult<AppUserDto>.Rejected("Bad credentials");
+            }
+
+            var dto = new AppUserDto
+            {
+                Name = user.Name,
+                Claims = Permission.GetClaimsFromString(user.Permissions!)
+            };
+
+            return HandlerResult<AppUserDto>.Ok(dto);
         }
     }
 }
