@@ -1,47 +1,36 @@
-import type IApiDto from '../interfaces/dtos/IApiDto';
+import axios from 'axios';
 import * as loaderService from '../services/commonUi/loader.service';
+import * as userStore from '../services/user.store';
 
-const apiUrl = 'https://localhost:44387';
+const apiUrl = 'https://localhost:44387/api/1.0';
+let interceptor;
 
-export function sendGet(endpoint: string, message?: string) {
-    const url = apiUrl + endpoint;
-    const apiCall = () => fetch(url);
+userStore.jwt(x => {
+  if(interceptor) {
+    axios.interceptors.request.eject(interceptor);
+  }
 
-    return handleCall(apiCall, message);
-}
+  interceptor = axios.interceptors.request.use(
+    (config) => {
+        loaderService.show();
+        config.url = apiUrl + config.url;
+        config.headers.Authorization = `Bearer ${x}`;
+        return config;
+    },
+    (error) => {
+        console.warn(error);
+        return Promise.reject(error);
+    }
+  );
+});
 
-export function sendPost(endpoint: string, body: unknown, message?: string) {
-    const url = apiUrl + endpoint;
-    
-    const options = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-    } as RequestInit;
-    
-    const apiCall = () => fetch(url, options);
+axios.interceptors.response.use((response) => {
+    loaderService.hide();
+    return response;
+  }, (error) => {
+    loaderService.hide();
+    console.warn(error);
+    return Promise.reject(error);
+  });
 
-    return handleCall(apiCall, message);
-}
-
-async function handleCall<TResponse>(apiCall: () => Promise<Response>, message?: string) {
-        loaderService.show(message);
-        try {
-            const response = await apiCall();
-            loaderService.hide();
-            
-            if(response.status >= 200 || response.status < 300) {
-                return await response.json();
-            }
-            else {
-                console.warn(response.status);
-            }
-        }
-        catch(error) {
-            loaderService.hide();
-            console.log(error);
-            return {
-                status: 500
-            } as IApiDto<TResponse>;
-        }
-}
+export const http = axios;

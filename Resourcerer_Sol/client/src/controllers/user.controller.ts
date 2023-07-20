@@ -1,12 +1,20 @@
-import { IAppUserDto } from "../interfaces/dtos/interfaces";
+import type { IAppUserDto } from "../interfaces/dtos/interfaces";
 import * as userStore from "../services/user.store";
+import { http } from './base.controller';
+
 
 export function register(x: IAppUserDto) {
 
 }
 
 export function login(x: IAppUserDto, onLoginSuccess: () => void) {
-    onLoginSuccess();
+    http.post('/users/login', x)
+    .then(jwt => {
+        console.log(jwt.data);
+        userStore.setUser(jwt.data);
+        onLoginSuccess();
+    })
+    .catch(err => console.warn(err));
 }
 
 export function checkAuthStore(onAuthPresent: () => void) {

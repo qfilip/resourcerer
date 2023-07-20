@@ -19,13 +19,6 @@ public static class Login
 
         public async Task<HandlerResult<AppUserDto>> Handle(AppUserDto request)
         {
-            var entity = new AppUser
-            {
-                Name = request.Name,
-                PasswordHash = Hasher.GetSha256Hash(request.Password!),
-                Permissions = JsonSerializer.Serialize(new Dictionary<string, string>())
-            };
-
             var user = await _appDbContext.AppUsers
                 .FirstOrDefaultAsync(x => x.Name == request.Name);
 
