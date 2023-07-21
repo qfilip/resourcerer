@@ -1,24 +1,69 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
+    import { onMount } from 'svelte';
 
+    import CategoryOverview from '../category/CategoryOverview.svelte';
+    import ElementList from "../element/ElementList.svelte";
+    import type { IAppComponent } from '../../interfaces/models/IAppComponent';
+
+    import { ePermissionSection } from '../../interfaces/dtos/enums';
+    import { createEventDispatcher } from 'svelte';
+    import { onUserChanged } from '../../stores/user.store';
+    
     const dispatch = createEventDispatcher();
     let expanded = false;
+
+    onMount(() => {
+        onUserChanged(userr => {
+            visibleButtons = allButtons.filter(x => {
+                if(x.permissionSection === null) return true;
+                return userr.permissions[x.permissionSection];
+            });
+        });
+    });
+
     
-    const buttons = [
-        { text: 'Categories', icon: 'las la-clipboard-list' },
-        { text: 'Elements', icon: 'las la-vial' },
-        { text: 'Composites', icon: 'las la-cubes' },
-        { text: 'Stocks', icon: 'las la-warehouse' },
-        { text: 'Settings', icon: 'las la-wrench' },
-        { text: 'Users', icon: 'las la-users' }
-    ]
 
-    let selectedBtnText = buttons[0].text;
+    const allButtons: IAppComponent[] = [
+        { 
+            name: 'Categories',
+            component: CategoryOverview,
+            permissionSection: ePermissionSection[ePermissionSection.Category],
+            icon: 'las la-clipboard-list'
+        },
+        {
+            name: 'Elements',
+            component: ElementList,
+            permissionSection: ePermissionSection[ePermissionSection.Element],
+            icon: 'las la-vial',
+        },
+        {
+            name: 'Test',
+            component: ElementList,
+            permissionSection: null,
+            icon: 'las la-vial',
+        }
+        // { text: 'Composites', icon: 'las la-cubes' },
+        // { text: 'Stocks', icon: 'las la-warehouse' },
+        // { text: 'Settings', icon: 'las la-wrench' },
+        // { text: 'Users', icon: 'las la-users' }
+    ];
 
-    function changeComponent(btnText: string) {
-        selectedBtnText = btnText;
+    let visibleButtons: IAppComponent[] = [];
+
+    // onUserChanged(user => {
+    //     debugger
+    //     visibleButtons = allButtons.filter(x => {
+    //         if(x.permissionSection === null) return true;
+    //         return user.permissions[x.permissionSection];
+    //     });
+    // });
+
+    let selectedBtnText = visibleButtons.length > 0 ? visibleButtons[0].name : '';
+
+    function changeComponent(btn: IAppComponent) {
+        selectedBtnText = btn.name;
         dispatch('componentSelected', {
-			name: btnText
+			name: btn
 		});
     }
 
@@ -28,9 +73,9 @@
 </script>
 
 <nav class="{expanded ? 'expanded' : 'collapsed'}">
-    {#each buttons as btn}
-        <button on:click={() => changeComponent(btn.text)} class="{selectedBtnText === btn.text ? 'marked' : ''}">
-            <span>{btn.text}</span>
+    {#each visibleButtons as btn}
+        <button on:click={() => changeComponent(btn)} class="{selectedBtnText === btn.name ? 'marked' : ''}">
+            <span>{btn.name}</span>
             <i class="{btn.icon}"></i>
         </button>
     {/each}

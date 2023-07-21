@@ -1,6 +1,5 @@
 ﻿using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
-using Resourcerer.Logic;
 using Resourcerer.Logic.Queries.Items;
 
 namespace Resourcerer.Api.Endpoints.V1_0.Items;
@@ -19,9 +18,9 @@ public class GetItemsStatisticsEndpoint
     {
         var endpoint = group.MapGet("/statistics", Action);
 
-        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
-            (eSection.Item, new[] { ePermission.Read })
+            (ePermissionSection.Event, new[] { ePermission.Read })
         });
     }
 }

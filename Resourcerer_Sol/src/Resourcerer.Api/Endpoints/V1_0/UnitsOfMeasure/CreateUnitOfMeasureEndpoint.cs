@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
-using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
-using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.UnitsOfMeasure;
 
 namespace Resourcerer.Api.Endpoints.V1_0.UnitsOfMeasure;
@@ -21,9 +19,9 @@ public class CreateUnitOfMeasureEndpoint
     {
         var endpoint = group.MapPost("/create", Action);
 
-        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
-            (eSection.Item, new[] { ePermission.Write })
+            (ePermissionSection.Element, new[] { ePermission.Write })
         });
     }
 }

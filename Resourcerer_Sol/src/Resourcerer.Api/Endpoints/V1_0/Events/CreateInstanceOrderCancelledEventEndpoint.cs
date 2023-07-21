@@ -19,9 +19,9 @@ public class CreateInstanceOrderCancelledEventEndpoint
     {
         var endpoint = group.MapPost("/order-cancelled", Action);
 
-        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
-            (eSection.Item, new[] { ePermission.Write })
+            (ePermissionSection.Event, new[] { ePermission.Write })
         });
     }
 }

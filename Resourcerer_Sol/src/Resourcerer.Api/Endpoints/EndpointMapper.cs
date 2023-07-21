@@ -13,7 +13,7 @@ public static class EndpointMapper
 
     public static void AddAuthorization(
         RouteHandlerBuilder route,
-        List<(eSection claimType, ePermission[] claimValues)> claims)
+        List<(ePermissionSection claimType, ePermission[] claimValues)> claims)
     {
         if (false)
         {

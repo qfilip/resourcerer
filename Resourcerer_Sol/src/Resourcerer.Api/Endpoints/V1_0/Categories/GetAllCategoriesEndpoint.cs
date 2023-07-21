@@ -20,9 +20,9 @@ public class GetAllCategoriesEndpoint
     {
         var endpoint = group.MapGet("", Action);
 
-        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
-            (eSection.Category, new[] { ePermission.Read })
+            (ePermissionSection.Category, new[] { ePermission.Read })
         });
     }
 }

@@ -1,22 +1,11 @@
 <script lang="ts">
     import HomeNav from "./HomeNav.svelte";
-    import CategoryOverview from '../category/CategoryOverview.svelte';
-    import ElementList from "../element/ElementList.svelte";
 
-    const components = [
-        { name: 'Categories', component: CategoryOverview },
-        { name: 'Elements', icon: 'las la-vial', component: ElementList },
-        { name: 'Composites', icon: 'las la-cubes', component: null },
-        { name: 'Stocks', icon: 'las la-warehouse', component: null },
-        { name: 'Settings', icon: 'las la-wrench', component: null },
-        { name: 'Users', icon: 'las la-users', component: null },
-    ];
-
-    let selectedComponent = components[0].component;
+    let selectedComponent = null;
 
     function onComponentSelected(ev: any) {
-        console.log(ev.detail);
-        selectedComponent = components.find(x => ev.detail.name === x.name).component;
+        console.log(ev);
+        // selectedComponent = components.find(x => ev.detail.name === x.name).component;
     }
 </script>
 

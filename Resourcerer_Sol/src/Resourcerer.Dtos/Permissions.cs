@@ -6,7 +6,7 @@ namespace Resourcerer.Dtos;
 public class Permissions
 {
     private static List<ePermission> AllPermissions = Enum.GetValues<ePermission>().ToList();
-    private static List<string> AllSections = Enum.GetValues<eSection>()
+    private static List<string> AllSections = Enum.GetValues<ePermissionSection>()
         .Select(x => x.ToString())
         .ToList();
 
@@ -99,12 +99,14 @@ public enum ePermission
 {
     Read = 1,
     Write = 2,
-    Remove = 4
+    Modify = 4,
+    Remove = 8
 }
 
-public enum eSection
+public enum ePermissionSection
 {
     User,
     Category,
-    Item
+    Element,
+    Event
 }

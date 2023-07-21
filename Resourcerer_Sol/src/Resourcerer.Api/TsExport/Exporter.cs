@@ -66,7 +66,7 @@ public static class Exporter
             {
                 typeof(eEntityStatus),
                 typeof(ePermission),
-                typeof(eSection)
+                typeof(ePermissionSection)
             },
             conf => conf.ExportTo("enums.ts")
         );

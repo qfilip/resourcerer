@@ -19,9 +19,9 @@ public class CreateElementItemEndpoint
     {
         var endpoint = group.MapPost("/create-element", Action);
 
-        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
-            (eSection.Item, new[] { ePermission.Write })
+            (ePermissionSection.Event, new[] { ePermission.Write })
         });
     }
 }

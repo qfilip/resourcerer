@@ -1,5 +1,5 @@
 import type { IAppUserDto } from "../interfaces/dtos/interfaces";
-import * as userStore from "../services/user.store";
+import * as userStore from "../stores/user.store";
 import { http } from './base.controller';
 
 

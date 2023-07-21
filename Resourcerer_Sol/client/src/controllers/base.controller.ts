@@ -1,11 +1,11 @@
 import axios from 'axios';
-import * as loaderService from '../services/commonUi/loader.service';
-import * as userStore from '../services/user.store';
+import * as loaderService from '../stores/commonUi/loader.service';
+import * as userStore from '../stores/user.store';
 
 const apiUrl = 'https://localhost:44387/api/1.0';
 let interceptor;
 
-userStore.jwt(x => {
+userStore.onJwtChanged(x => {
   if(interceptor) {
     axios.interceptors.request.eject(interceptor);
   }

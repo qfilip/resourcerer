@@ -1,20 +1,24 @@
 import { writable } from "svelte/store";
 import type { IAppUserDto } from "../interfaces/dtos/interfaces";
-import { eSection } from "../interfaces/dtos/enums";
+import { ePermissionSection } from "../interfaces/dtos/enums";
 
 const key = 'rscr-user';
 
-const user$ = writable<IAppUserDto>();
+const user$ = writable<IAppUserDto>({} as IAppUserDto);
 const jwt$ = writable<string>();
 
-export const user = user$.subscribe;
-export const jwt = jwt$.subscribe
+export const onUserChanged = user$.subscribe;
+export const onJwtChanged = jwt$.subscribe;
+
+checkUserLogged();
 
 export function checkUserLogged() {
-    const userString = window.localStorage.getItem(key);
-    if(!userString) {
+    const jwtString = window.localStorage.getItem(key);
+    if(!jwtString) {
         return false;
     }
+
+    setUser(jwtString);
 
     return true;
 }
@@ -26,8 +30,8 @@ export function setUser(jwt: string) {
     const name = body.sub;
     let permissions: { [key:string]: number } = {};
     
-    for (let member in eSection) {
-        const section = eSection[member];
+    for (let member in ePermissionSection) {
+        const section = ePermissionSection[member];
         const permissionLevel = body[section] as number;
 
         if(permissionLevel) {

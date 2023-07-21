@@ -21,9 +21,9 @@ public class CreateCategoryEndpoint
     {
         var endpoint = group.MapPost("/create", Action);
 
-        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
-            (eSection.Category, new[] { ePermission.Write })
+            (ePermissionSection.Category, new[] { ePermission.Write })
         });
     }
 }
