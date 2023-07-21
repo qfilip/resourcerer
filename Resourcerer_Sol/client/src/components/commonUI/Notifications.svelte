@@ -1,22 +1,26 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { onNotificationsUpdated, clearNotifications, type INotification } from "../../stores/commonUi/notification.store";
+    import { onNotificationsUpdated, clearNotifications, type INotification, eSeverity } from "../../stores/commonUi/notification.store";
 
     let notifications: { head: INotification, tail: INotification[] } = {
-        head: {} as INotification,
+        head: null,
         tail: []
     };
 
     let visible = false;
-    
+    let latestSeverity = eSeverity.Info;
+
     onMount(() => {
         onNotificationsUpdated(ns => {
             const [x, ...xs] = ns;
-            console.log(ns);
+            
             notifications.head = x;
             notifications.tail = xs;
             
-            if(ns.length > 0) visible = true;
+            if(ns.length > 0) {
+                latestSeverity = notifications.head.severity;
+                visible = true;
+            }
         });
     });
 
@@ -30,19 +34,31 @@
     }
 </script>
 
-<section class="{visible ? 'visible' : 'hidden'}">
-    <!-- <h2>Notifications</h2> -->
+<section class="{visible ? 'visible' : 'hidden'}"
+    class:info={latestSeverity === eSeverity.Info}
+    class:warning={latestSeverity === eSeverity.Warning}
+    class:error={latestSeverity === eSeverity.Error}>
     <div class="messages-flex">
         <div class="scroller">
             <div class="message-list">
+                {#if notifications.head}
                 <div class="message-item-flex">
-                    <div class="message-text">{notifications.head.text}</div>
-                    <div class="severity-status"></div>
+                    <div class="message-text">
+                        {notifications.head.text}
+                    </div>
+                    <div class="severity-status"
+                    class:info={notifications.head.severity === eSeverity.Info}
+                    class:warning={notifications.head.severity === eSeverity.Warning}
+                    class:error={notifications.head.severity === eSeverity.Error}></div>
                 </div>
+                {/if}
                 {#each notifications.tail as msg}
                     <div class="message-item-flex">
                         <div class="message-text">{msg.text}</div>
-                        <div class="severity-status"></div>
+                        <div class="severity-status"
+                        class:info={notifications.head.severity === eSeverity.Info}
+                        class:warning={notifications.head.severity === eSeverity.Warning}
+                        class:error={notifications.head.severity === eSeverity.Error}></div>
                     </div>
                 {/each}
             </div>
@@ -60,7 +76,6 @@
         display: flex;
         justify-content: space-between;
         transition: .3s;
-        background-color: var(--color-red);
     }
 
     .hidden {
@@ -126,11 +141,11 @@
         content: ' ';
         min-height: .7rem;
         min-width: .7rem;
-        background-color: red;
         border: .1rem groove var(--color-black);
     }
 
     button {
         margin-left: 1rem;
+        border: none;
     }
 </style>

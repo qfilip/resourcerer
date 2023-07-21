@@ -16,9 +16,16 @@
     let notificationCounter = 0;
     function testNotification() {
         notificationCounter++;
+        let severity = notificationStore.eSeverity.Info;
+        if(notificationCounter % 2 === 0) {
+            severity = notificationStore.eSeverity.Warning;
+        }
+        else if(notificationCounter % 3 === 0) {
+            severity = notificationStore.eSeverity.Error;
+        }
         notificationStore.addNotification({
             text: `Notification number ${notificationCounter}`,
-            severity: notificationStore.eSeverity.Info
+            severity: severity
         });
     }
 </script>

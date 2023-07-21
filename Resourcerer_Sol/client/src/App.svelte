@@ -10,7 +10,7 @@
 <AppHeader />
 <Notifications />
 <main>
-    <AppTest />
+    <!-- <AppTest /> -->
     <PageSelector />
 </main>
 
@@ -22,9 +22,9 @@
         --color-white: whitesmoke;
         --color-lightgrey: #ddd;
         --color-black: #222;
-        --color-orange: #d95300;
+        --color-orange: #ff6200;
         --color-red: #cc3333;
-        --color-link: #007bff;
+        --color-blue: #007bff;
         
         --transition: .5s;
     }
@@ -63,5 +63,17 @@
     :global(input:focus) {
         color: var(--color-white);
         background-color: var(--color-black);
+    }
+
+    :global(.info) {
+        background-color: var(--color-blue);
+    }
+
+    :global(.warning) {
+        background-color: var(--color-orange);
+    }
+
+    :global(.error) {
+        background-color: var(--color-red);
     }
 </style>
