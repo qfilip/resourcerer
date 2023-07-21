@@ -8,15 +8,8 @@
     onMount(() => {
         onUserChanged(x => {
             if(!x) return;
-
-            if(Object.keys(x.permissions).length === 0) {
-                pageService.goto.settings();
-            }
-            else {
-                pageService.goto.home();
-            }
-            
-        })
+            pageService.changePage('Home');
+        });
     });
 
     let dto = {
@@ -26,7 +19,6 @@
     } as IAppUserDto;
 
     function handleSubmit() {
-        console.log(dto);
         userController.login(dto, () => pageService.goto.home());
     }
 
@@ -72,7 +64,7 @@
         margin-top: .2rem;
         width: 100%;
         text-align: center;
-        font-size: .5rem;
+        font-size: .7rem;
     }
 
     .flex {

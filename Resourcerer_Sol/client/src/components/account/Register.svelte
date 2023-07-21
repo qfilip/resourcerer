@@ -29,6 +29,10 @@
             pageService.goto.settings();
         });
     }
+
+    function goToLoginPage() {
+        pageService.goto.login();
+    }
 </script>
 
 <section class="flex">
@@ -46,6 +50,9 @@
             </label>
             <div class="flex">
                 <button type="submit">Submit</button>
+            </div>
+            <div class="login">
+                <i>Or <a href="#a" on:click={goToLoginPage}>login</a> if you already have an account</i>
             </div>
         </form>
     </fieldset>
@@ -66,11 +73,11 @@
         width: 100%;
     }
 
-    .register {
+    .login {
         margin-top: .2rem;
         width: 100%;
         text-align: center;
-        font-size: .5rem;
+        font-size: .7rem;
     }
 
     .flex {

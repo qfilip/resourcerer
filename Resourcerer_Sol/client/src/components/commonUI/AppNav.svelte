@@ -1,61 +1,55 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 
-    import CategoryOverview from '../category/CategoryOverview.svelte';
-    import ElementList from "../element/ElementList.svelte";
-    import Settings from "../account/Settings.svelte";
-
-    import type { IAppComponent } from '../../interfaces/models/IAppComponent';
-
     import { ePermissionSection } from '../../interfaces/dtos/enums';
-    import { createEventDispatcher } from 'svelte';
     import { onUserChanged } from '../../stores/user.store';
+    import { changePage } from '../../stores/commonUi/page.service';
+    import type { PageName } from '../../stores/commonUi/page.service';
     
-    const dispatch = createEventDispatcher();
+    type NavButton = { pageName: PageName, permissionSection: string, icon: string };
     let expanded = false;
 
     onMount(() => {
-        onUserChanged(userr => {
+        onUserChanged(user => {
             visibleButtons = allButtons.filter(x => {
                 if(x.permissionSection === null) return true;
-                return userr.permissions[x.permissionSection];
+                return user.permissions[x.permissionSection];
             });
         });
     });
 
-    const allButtons: IAppComponent[] = [
+    const allButtons: NavButton[] = [
         { 
-            name: 'Categories',
-            component: CategoryOverview,
+            pageName: 'Categories',
             permissionSection: ePermissionSection[ePermissionSection.Category],
             icon: 'las la-clipboard-list'
         },
         {
-            name: 'Elements',
-            component: ElementList,
+            pageName: 'Elements',
             permissionSection: ePermissionSection[ePermissionSection.Element],
             icon: 'las la-vial',
         },
         {
-            name: 'Settings',
-            component: Settings,
+            pageName: 'Settings',
             permissionSection: null,
             icon: 'las la-vial',
+        },
+        {
+            pageName: 'Users',
+            permissionSection: ePermissionSection[ePermissionSection.User],
+            icon: 'las la-users',
         }
         // { text: 'Composites', icon: 'las la-cubes' },
         // { text: 'Stocks', icon: 'las la-warehouse' },
         // { text: 'Settings', icon: 'las la-wrench' },
-        // { text: 'Users', icon: 'las la-users' }
     ];
 
-    let visibleButtons: IAppComponent[] = [];
-    let selectedBtnText = visibleButtons.length > 0 ? visibleButtons[0].name : '';
+    let visibleButtons: NavButton[] = [];
+    let selectedBtnText = visibleButtons.length > 0 ? visibleButtons[0].pageName : '';
 
-    function changeComponent(btn: IAppComponent) {
-        selectedBtnText = btn.name;
-        dispatch('componentSelected', {
-			name: btn
-		});
+    function changeComponent(btn: NavButton) {
+        selectedBtnText = btn.pageName;
+        changePage(btn.pageName)
     }
 
     function toggleView() {
@@ -65,8 +59,8 @@
 
 <nav class="{expanded ? 'expanded' : 'collapsed'}">
     {#each visibleButtons as btn}
-        <button on:click={() => changeComponent(btn)} class="{selectedBtnText === btn.name ? 'marked' : ''}">
-            <span>{btn.name}</span>
+        <button on:click={() => changeComponent(btn)} class="{selectedBtnText === btn.pageName ? 'marked' : ''}">
+            <span>{btn.pageName}</span>
             <i class="{btn.icon}"></i>
         </button>
     {/each}
