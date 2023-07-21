@@ -1,34 +1,48 @@
 <script lang="ts">
     import * as userController from '../../controllers/user.controller';
-    import type { IUserRegister } from '../../interfaces/models/IUserRegister';
+    import * as pageService from '../../stores/commonUi/page.service';
+    import type { IAppUserDto } from '../../interfaces/dtos/interfaces';
 
-    let dto = {
-        username: '',
-        email: '',
-        password: '',
+    let model = {
+        dto: {
+            name: '',
+            password: '',
+        } as IAppUserDto,
         passwordConfirm: ''
-    } as IUserRegister;
+    };
 
     function handleSubmit() {
-        userController.register(dto);
+        const validate = (x: string) => x && x.length >= 2;
+        let errors = [];
+
+        if(!validate(model.dto.name)) errors.push('Name must be at least 2 chars long'); 
+        if(!validate(model.dto.password)) errors.push('Password must be at least 2 chars long');
+        if(!validate(model.passwordConfirm)) errors.push('Password confirm must be at least 2 chars long');
+        if(model.dto.password !== model.passwordConfirm) errors.push(`Password confirmation doesn't match`);
+        
+        if(errors.length > 0) {
+            console.log(errors);
+            return;
+        }
+
+        userController.register(model.dto, () => {
+            pageService.goto.settings();
+        });
     }
 </script>
 
 <section class="flex">
     <fieldset>
-        <legend>Login</legend>
+        <legend>Register</legend>
         <form on:submit|preventDefault={handleSubmit}>
             <label>
-                <input bind:value={dto.username} placeholder="username" type="text">
+                <input bind:value={model.dto.name} placeholder="name" type="text">
             </label>
             <label>
-                <input bind:value={dto.email} placeholder="email" type="text">
+                <input bind:value={model.dto.password} placeholder="password" type="password">
             </label>
             <label>
-                <input bind:value={dto.password} placeholder="password" type="password">
-            </label>
-            <label>
-                <input bind:value={dto.passwordConfirm} placeholder="confirm password" type="password">
+                <input bind:value={model.passwordConfirm} placeholder="confirm password" type="password">
             </label>
             <div class="flex">
                 <button type="submit">Submit</button>
@@ -36,3 +50,32 @@
         </form>
     </fieldset>
 </section>
+
+<style>
+    section {
+        height: 80vh;
+    }
+
+    legend {
+        padding: 0 var(--padding);
+        color: var(--color-white);
+        background-color: var(--color-black);
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .register {
+        margin-top: .2rem;
+        width: 100%;
+        text-align: center;
+        font-size: .5rem;
+    }
+
+    .flex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>

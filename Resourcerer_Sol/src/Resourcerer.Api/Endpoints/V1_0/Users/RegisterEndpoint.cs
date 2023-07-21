@@ -12,7 +12,11 @@ public static class RegisterEndpoint
         [FromServices] Pipeline pipeline,
         [FromServices] Register.Handler handler)
     {
-        return await pipeline.PipeWithValidator(handler, dto);
+        return await pipeline.PipeWithValidator(handler, dto, (result) =>
+        {
+            var jwt = JwtService.GenerateToken(result);
+            return Results.Ok(jwt);
+        });
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

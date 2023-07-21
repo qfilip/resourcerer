@@ -4,7 +4,7 @@ import { ePermissionSection } from "../interfaces/dtos/enums";
 
 const key = 'rscr-user';
 
-const user$ = writable<IAppUserDto>({} as IAppUserDto);
+const user$ = writable<IAppUserDto>();
 const jwt$ = writable<string>();
 
 export const onUserChanged = user$.subscribe;

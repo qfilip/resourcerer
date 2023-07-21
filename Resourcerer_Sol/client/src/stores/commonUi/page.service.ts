@@ -2,10 +2,10 @@ import Home from '../../components/home/Home.svelte';
 import Login from '../../components/account/Login.svelte';
 import Register from '../../components/account/Register.svelte';
 import { writable } from "svelte/store";
-import { ePermissionSection } from '../../interfaces/dtos/enums';
+import Settings from '../../components/account/Settings.svelte';
 
 
-export type PageName = '' | 'login' | 'register' | 'home' | 'test';
+export type PageName = '' | 'login' | 'register' | 'home' | 'settings';
 
 export interface IAppPage {
     name: PageName;
@@ -19,7 +19,7 @@ const pages: IAppPage[] = [
     { name: 'login', component: Login, minPermission: null, props: null },
     { name: 'register', component: Register, minPermission: null, props: null },
     { name: 'home', component: Home, minPermission: null, props: null },
-    { name: 'test', component: Home, minPermission: null, props: null }
+    { name: 'settings', component: Settings, minPermission: null, props: null }
 ];
 
 const currentPage$ = writable<IAppPage>(pages[0]);
@@ -46,7 +46,7 @@ export const goto = {
     home: function() {
         changePage('home');
     },
-    test: function(props: unknown) {
-        changePage('home', props);
+    settings: function() {
+        changePage('settings');
     }
 }

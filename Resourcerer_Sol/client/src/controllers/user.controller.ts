@@ -3,8 +3,13 @@ import * as userStore from "../stores/user.store";
 import { http } from './base.controller';
 
 
-export function register(x: IAppUserDto) {
-
+export function register(x: IAppUserDto, onRegisterSuccess: () => void) {
+    http.post('/users/register', x)
+    .then(jwt => {
+        userStore.setUser(jwt.data);
+        onRegisterSuccess();
+    })
+    .catch(err => console.warn(err));
 }
 
 export function login(x: IAppUserDto, onLoginSuccess: () => void) {
@@ -14,10 +19,4 @@ export function login(x: IAppUserDto, onLoginSuccess: () => void) {
         onLoginSuccess();
     })
     .catch(err => console.warn(err));
-}
-
-export function checkAuthStore(onAuthPresent: () => void) {
-    if(userStore.checkUserLogged()) {
-        onAuthPresent();
-    }
 }

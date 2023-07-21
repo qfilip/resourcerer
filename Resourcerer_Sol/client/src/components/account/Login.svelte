@@ -2,18 +2,27 @@
     import { onMount } from "svelte";
     import * as pageService from '../../stores/commonUi/page.service';
     import * as userController from '../../controllers/user.controller';
+    import { onUserChanged } from "../../stores/user.store";
     import type { IAppUserDto } from "../../interfaces/dtos/interfaces";
     
     onMount(() => {
-        userController.checkAuthStore(() => {
-            pageService.goto.home();
+        onUserChanged(x => {
+            if(!x) return;
+
+            if(Object.keys(x.permissions).length === 0) {
+                pageService.goto.settings();
+            }
+            else {
+                pageService.goto.home();
+            }
+            
         })
     });
 
     let dto = {
         name: 'admin',
         password: 'admin',
-        claims: []
+        permissions: {}
     } as IAppUserDto;
 
     function handleSubmit() {

@@ -3,6 +3,8 @@
 
     import CategoryOverview from '../category/CategoryOverview.svelte';
     import ElementList from "../element/ElementList.svelte";
+    import Settings from "../account/Settings.svelte";
+
     import type { IAppComponent } from '../../interfaces/models/IAppComponent';
 
     import { ePermissionSection } from '../../interfaces/dtos/enums';
@@ -21,8 +23,6 @@
         });
     });
 
-    
-
     const allButtons: IAppComponent[] = [
         { 
             name: 'Categories',
@@ -37,8 +37,8 @@
             icon: 'las la-vial',
         },
         {
-            name: 'Test',
-            component: ElementList,
+            name: 'Settings',
+            component: Settings,
             permissionSection: null,
             icon: 'las la-vial',
         }
@@ -49,15 +49,6 @@
     ];
 
     let visibleButtons: IAppComponent[] = [];
-
-    // onUserChanged(user => {
-    //     debugger
-    //     visibleButtons = allButtons.filter(x => {
-    //         if(x.permissionSection === null) return true;
-    //         return user.permissions[x.permissionSection];
-    //     });
-    // });
-
     let selectedBtnText = visibleButtons.length > 0 ? visibleButtons[0].name : '';
 
     function changeComponent(btn: IAppComponent) {
