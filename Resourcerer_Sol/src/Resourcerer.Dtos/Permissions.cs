@@ -1,5 +1,4 @@
-﻿using Resourcerer.DataAccess.Entities;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Text.Json;
 
 namespace Resourcerer.Dtos;
@@ -58,28 +57,15 @@ public class Permissions
         return JsonSerializer.Deserialize<Dictionary<string, int>>(permissionsJson)!;
     }
 
-    public static List<Claim> GetClaimsFromDictionary(Dictionary<string, string> permissionsDict)
+    public static List<Claim> GetClaimsFromDictionary(Dictionary<string, int> permissionsDict)
     {
         var setPermissions = permissionsDict
             .Where(x => AllSections.Contains(x.Key))
             .ToList();
 
-        var claims = new List<Claim>();
-
-        setPermissions.ForEach(x =>
-        {
-            var permissionInt = int.Parse(x.Value);
-            AllPermissions.ForEach(p =>
-            {
-                var hasPermission = (permissionInt & (int)p) > 0;
-                if(hasPermission)
-                {
-                    claims.Add(new Claim(x.Key, p.ToString()));
-                }
-            });
-        });
-
-        return claims;
+        return setPermissions
+            .Select(x => new Claim(x.Key, x.Value.ToString()))
+            .ToList();
     }
 
     public static Dictionary<string, int> GetPermissionDictionaryFromClaims(List<Claim> claims)

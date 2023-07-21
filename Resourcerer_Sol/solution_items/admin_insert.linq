@@ -25,7 +25,7 @@
 // add Utilities.dll
 void Main()
 {
-	var permissionDict = Permission.GetAllPermissionsDictionary();
+	var permissionDict = Permissions.GetAllPermissionsDictionary();
 	var permissions = JsonSerializer.Serialize(permissionDict);
 	
 	var passwordHash = Hasher.GetSha256Hash("admin");

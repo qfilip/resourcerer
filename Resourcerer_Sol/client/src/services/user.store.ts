@@ -1,5 +1,6 @@
 import { writable } from "svelte/store";
 import type { IAppUserDto } from "../interfaces/dtos/interfaces";
+import { eSection } from "../interfaces/dtos/enums";
 
 const key = 'rscr-user';
 
@@ -19,9 +20,25 @@ export function checkUserLogged() {
 }
 
 export function setUser(jwt: string) {
-    const [header, body, footer] = jwt.split('.');
-    const name = JSON.parse(atob(body)).sub;
+    const [header, body64String, footer] = jwt.split('.');
+    
+    const body = JSON.parse(atob(body64String));
+    const name = body.sub;
+    let permissions: { [key:string]: number } = {};
+    
+    for (let member in eSection) {
+        const section = eSection[member];
+        const permissionLevel = body[section] as number;
+
+        if(permissionLevel) {
+            permissions[section] = permissionLevel;
+        }
+    }
     
     window.localStorage.setItem(key, jwt);
-    user$.set({ name: name } as IAppUserDto)
+
+    user$.set({ 
+        name: name,
+        permissions: permissions
+    } as IAppUserDto)
 }

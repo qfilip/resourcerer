@@ -24,11 +24,11 @@ public class DbMockingFuncs
         return e;
     }
 
-    protected static AppUser MakeUser(string name, string password, bool allPermissions, Dictionary<string, string>? permissions = null)
+    protected static AppUser MakeUser(string name, string password, bool allPermissions, Dictionary<string, int>? permissions = null)
     {
         var userPermissions = allPermissions ?
             Permissions.GetAllPermissionsDictionary() :
-            (permissions ?? new Dictionary<string, string>());
+            (permissions ?? new Dictionary<string, int>());
 
         return MakeEntity(() => new AppUser
         {
