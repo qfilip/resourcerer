@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { IModalButton, IModalOptions } from "../../services/commonUi/modal.service";
-    import * as modalService from '../../services/commonUi/modal.service';
+    import type { IModalButton, IModalOptions } from "../../stores/commonUi/modal.service";
+    import * as modalService from '../../stores/commonUi/modal.service';
 
     let dialog: HTMLDialogElement;
     let options: IModalOptions = modalService.defaultOptions;

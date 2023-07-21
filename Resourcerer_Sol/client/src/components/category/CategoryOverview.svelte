@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import CategoryDropdown from './CategoryDropdown.svelte';
-    import * as categoryService from "../../services/category.service";
+    import * as categoryService from "../../stores/category.service";
     import * as categoryController from "../../controllers/category.controller";
     import type { ICategoryDto } from '../../interfaces/dtos/interfaces';
 

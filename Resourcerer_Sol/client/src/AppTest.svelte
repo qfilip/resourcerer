@@ -1,5 +1,5 @@
 <script lang="ts">
-    import * as pageLoaderService from './services/commonUi/loader.service';
+    import * as pageLoaderService from './stores/commonUi/loader.service';
     
     function testLoader() {
         [2500, 1000, 1500].forEach(x => {

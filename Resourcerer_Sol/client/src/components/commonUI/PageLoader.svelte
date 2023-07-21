@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import type IPageloaderOptions from '../../services/commonUi/loader.service'
-    import * as pageLoaderService from '../../services/commonUi/loader.service';
+    import type IPageloaderOptions from '../../stores/commonUi/loader.service'
+    import * as pageLoaderService from '../../stores/commonUi/loader.service';
 
     let options = {} as IPageloaderOptions;
     onMount(() => {

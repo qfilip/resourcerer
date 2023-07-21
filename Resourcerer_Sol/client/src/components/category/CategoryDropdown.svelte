@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import * as categoryService from "../../services/category.service";
+    import * as categoryService from "../../stores/category.service";
     import type { ICategoryDto } from "../../interfaces/dtos/interfaces";
 
     export let category: ICategoryDto;

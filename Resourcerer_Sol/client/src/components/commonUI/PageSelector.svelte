@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import * as pageService from '../../services/commonUi/page.service';
+    import * as pageService from '../../stores/commonUi/page.service';
     
     onMount(() => {
         pageService.onCurrentPageChanged(x => selected = x);
