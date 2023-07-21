@@ -18,7 +18,7 @@ public static class SetPermissions
 
         public async Task<HandlerResult<Unit>> Handle(SetUserPermissionsDto request)
         {
-            var errors = Permission.Validate(request.Permissions!);
+            var errors = Permissions.Validate(request.Permissions!);
             if(errors.Any())
             {
                 return HandlerResult<Unit>.Rejected(errors.ToArray());

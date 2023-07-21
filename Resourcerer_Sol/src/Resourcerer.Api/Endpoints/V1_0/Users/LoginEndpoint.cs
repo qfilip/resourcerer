@@ -14,7 +14,7 @@ public class LoginEndpoint
     {
         return await pipeline.PipeWithValidator(handler, dto, (result) =>
         {
-            var jwt = JwtService.GenerateToken(result.Claims!);
+            var jwt = JwtService.GenerateToken(result);
             return Results.Ok(jwt);
         });
     }

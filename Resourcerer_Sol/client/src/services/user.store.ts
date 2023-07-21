@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { IAppUserDto } from "../interfaces/dtos/interfaces";
+import type { IAppUserDto } from "../interfaces/dtos/interfaces";
 
 const key = 'rscr-user';
 
@@ -19,5 +19,9 @@ export function checkUserLogged() {
 }
 
 export function setUser(jwt: string) {
+    const [header, body, footer] = jwt.split('.');
+    const name = JSON.parse(atob(body)).sub;
+    
     window.localStorage.setItem(key, jwt);
+    user$.set({ name: name } as IAppUserDto)
 }

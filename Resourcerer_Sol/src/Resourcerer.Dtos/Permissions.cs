@@ -4,14 +4,14 @@ using System.Text.Json;
 
 namespace Resourcerer.Dtos;
 
-public class Permission
+public class Permissions
 {
     private static List<ePermission> AllPermissions = Enum.GetValues<ePermission>().ToList();
     private static List<string> AllSections = Enum.GetValues<eSection>()
         .Select(x => x.ToString())
         .ToList();
 
-    public static List<string> Validate(Dictionary<string, string> permissions)
+    public static List<string> Validate(Dictionary<string, int> permissions)
     {
         var errors = new List<string>();
         var lookup = permissions.ToLookup(x => x.Key);
@@ -26,9 +26,9 @@ public class Permission
             {
                 foreach (var kv in lookup[l.Key])
                 {
-                    if(!Enum.TryParse(kv.Value, out ePermission p))
+                    if(!Enum.IsDefined((ePermission)kv.Value))
                     {
-                        errors.Add($"Permission of value {p} doesn't exist");
+                        errors.Add($"Permission of value {kv.Value} doesn't exist");
                     }
                 }
             }
@@ -37,9 +37,9 @@ public class Permission
         return errors;
     }
 
-    public static Dictionary<string, string> GetAllPermissionsDictionary()
+    public static Dictionary<string, int> GetAllPermissionsDictionary()
     {
-        var dict = new Dictionary<string, string>();
+        var dict = new Dictionary<string, int>();
         AllSections.ForEach(s =>
         {
             var level = 0;
@@ -47,16 +47,15 @@ public class Permission
             {
                 level = level | (int)p;
             });
-            dict.Add(s, level.ToString());
+            dict.Add(s, level);
         });
 
         return dict;
     }
 
-    public static List<Claim> GetClaimsFromString(string permissionsJson)
+    public static Dictionary<string, int> GetPermissionDictFromString(string permissionsJson)
     {
-        var dict = JsonSerializer.Deserialize<Dictionary<string, string>>(permissionsJson)!;
-        return GetClaimsFromDictionary(dict);
+        return JsonSerializer.Deserialize<Dictionary<string, int>>(permissionsJson)!;
     }
 
     public static List<Claim> GetClaimsFromDictionary(Dictionary<string, string> permissionsDict)
@@ -83,13 +82,13 @@ public class Permission
         return claims;
     }
 
-    public static Dictionary<string, string> GetPermissionDictionaryFromClaims(List<Claim> claims)
+    public static Dictionary<string, int> GetPermissionDictionaryFromClaims(List<Claim> claims)
     {
         var lookup = claims
             .Where(x => AllSections.Contains(x.Type))
             .ToLookup(x => x.Type);
 
-        var permissionsDict = new Dictionary<string, string>();
+        var permissionsDict = new Dictionary<string, int>();
 
         foreach (var l in lookup)
         {
@@ -102,7 +101,7 @@ public class Permission
                 level = level | (int)e;
             }
 
-            permissionsDict.Add(l.Key, level.ToString());
+            permissionsDict.Add(l.Key, level);
         }
 
         return permissionsDict;

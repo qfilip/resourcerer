@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 using Resourcerer.Utilities.Cryptography;
-using System.Text.Json;
 
 namespace Resourcerer.Logic.Queries.Users;
 
@@ -37,7 +35,7 @@ public static class Login
             var dto = new AppUserDto
             {
                 Name = user.Name,
-                Claims = Permission.GetClaimsFromString(user.Permissions!)
+                Permissions = Permissions.GetPermissionDictFromString(user.Permissions!)
             };
 
             return HandlerResult<AppUserDto>.Ok(dto);

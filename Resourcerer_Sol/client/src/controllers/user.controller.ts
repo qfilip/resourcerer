@@ -10,7 +10,6 @@ export function register(x: IAppUserDto) {
 export function login(x: IAppUserDto, onLoginSuccess: () => void) {
     http.post('/users/login', x)
     .then(jwt => {
-        console.log(jwt.data);
         userStore.setUser(jwt.data);
         onLoginSuccess();
     })

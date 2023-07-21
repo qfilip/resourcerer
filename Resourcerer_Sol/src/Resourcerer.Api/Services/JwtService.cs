@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Resourcerer.Dtos;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -6,8 +7,11 @@ namespace Resourcerer.Api.Services;
 
 public class JwtService
 {
-    public static string GenerateToken(List<Claim> claims)
+    public static string GenerateToken(AppUserDto dto)
     {
+        var claims = Permissions.GetClaimsFromDictionary(dto.Permissions!);
+        claims.Add(new Claim(JwtRegisteredClaimNames.Sub, dto.Name!));
+        
         var creadentials = new SigningCredentials(AppStaticData.Jwt.Key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(

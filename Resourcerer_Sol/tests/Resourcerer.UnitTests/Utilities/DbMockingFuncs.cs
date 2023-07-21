@@ -27,7 +27,7 @@ public class DbMockingFuncs
     protected static AppUser MakeUser(string name, string password, bool allPermissions, Dictionary<string, string>? permissions = null)
     {
         var userPermissions = allPermissions ?
-            Permission.GetAllPermissionsDictionary() :
+            Permissions.GetAllPermissionsDictionary() :
             (permissions ?? new Dictionary<string, string>());
 
         return MakeEntity(() => new AppUser
