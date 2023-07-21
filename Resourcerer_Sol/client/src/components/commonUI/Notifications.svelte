@@ -35,9 +35,9 @@
 </script>
 
 <section class="{visible ? 'visible' : 'hidden'}"
-    class:info={latestSeverity === eSeverity.Info}
-    class:warning={latestSeverity === eSeverity.Warning}
-    class:error={latestSeverity === eSeverity.Error}>
+    class:b-blue={latestSeverity === eSeverity.Info}
+    class:b-orange={latestSeverity === eSeverity.Warning}
+    class:b-error={latestSeverity === eSeverity.Error}>
     <div class="messages-flex">
         <div class="scroller">
             <div class="message-list">
@@ -47,18 +47,18 @@
                         {notifications.head.text}
                     </div>
                     <div class="severity-status"
-                    class:info={notifications.head.severity === eSeverity.Info}
-                    class:warning={notifications.head.severity === eSeverity.Warning}
-                    class:error={notifications.head.severity === eSeverity.Error}></div>
+                    class:b-blue={notifications.head.severity === eSeverity.Info}
+                    class:b-orange={notifications.head.severity === eSeverity.Warning}
+                    class:b-error={notifications.head.severity === eSeverity.Error}></div>
                 </div>
                 {/if}
                 {#each notifications.tail as msg}
                     <div class="message-item-flex">
                         <div class="message-text">{msg.text}</div>
                         <div class="severity-status"
-                        class:info={notifications.head.severity === eSeverity.Info}
-                        class:warning={notifications.head.severity === eSeverity.Warning}
-                        class:error={notifications.head.severity === eSeverity.Error}></div>
+                        class:b-blue={notifications.head.severity === eSeverity.Info}
+                        class:b-orange={notifications.head.severity === eSeverity.Warning}
+                        class:b-error={notifications.head.severity === eSeverity.Error}></div>
                     </div>
                 {/each}
             </div>

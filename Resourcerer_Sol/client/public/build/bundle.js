@@ -910,14 +910,14 @@ var app = (function () {
     			t1 = space();
     			div1 = element("div");
     			attr_dev(div0, "class", "message-text svelte-id72sk");
-    			add_location(div0, file$a, 37, 20, 1142);
+    			add_location(div0, file$a, 37, 20, 1147);
     			attr_dev(div1, "class", "severity-status svelte-id72sk");
-    			toggle_class(div1, "info", /*notifications*/ ctx[0].head.severity === eSeverity.Info);
-    			toggle_class(div1, "warning", /*notifications*/ ctx[0].head.severity === eSeverity.Warning);
-    			toggle_class(div1, "error", /*notifications*/ ctx[0].head.severity === eSeverity.Error);
-    			add_location(div1, file$a, 40, 20, 1269);
+    			toggle_class(div1, "b-blue", /*notifications*/ ctx[0].head.severity === eSeverity.Info);
+    			toggle_class(div1, "b-orange", /*notifications*/ ctx[0].head.severity === eSeverity.Warning);
+    			toggle_class(div1, "b-error", /*notifications*/ ctx[0].head.severity === eSeverity.Error);
+    			add_location(div1, file$a, 40, 20, 1274);
     			attr_dev(div2, "class", "message-item-flex svelte-id72sk");
-    			add_location(div2, file$a, 36, 16, 1089);
+    			add_location(div2, file$a, 36, 16, 1094);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -930,15 +930,15 @@ var app = (function () {
     			if (dirty & /*notifications*/ 1 && t0_value !== (t0_value = /*notifications*/ ctx[0].head.text + "")) set_data_dev(t0, t0_value);
 
     			if (dirty & /*notifications, eSeverity*/ 1) {
-    				toggle_class(div1, "info", /*notifications*/ ctx[0].head.severity === eSeverity.Info);
+    				toggle_class(div1, "b-blue", /*notifications*/ ctx[0].head.severity === eSeverity.Info);
     			}
 
     			if (dirty & /*notifications, eSeverity*/ 1) {
-    				toggle_class(div1, "warning", /*notifications*/ ctx[0].head.severity === eSeverity.Warning);
+    				toggle_class(div1, "b-orange", /*notifications*/ ctx[0].head.severity === eSeverity.Warning);
     			}
 
     			if (dirty & /*notifications, eSeverity*/ 1) {
-    				toggle_class(div1, "error", /*notifications*/ ctx[0].head.severity === eSeverity.Error);
+    				toggle_class(div1, "b-error", /*notifications*/ ctx[0].head.severity === eSeverity.Error);
     			}
     		},
     		d: function destroy(detaching) {
@@ -976,14 +976,14 @@ var app = (function () {
     			div1 = element("div");
     			t2 = space();
     			attr_dev(div0, "class", "message-text svelte-id72sk");
-    			add_location(div0, file$a, 48, 24, 1732);
+    			add_location(div0, file$a, 48, 24, 1742);
     			attr_dev(div1, "class", "severity-status svelte-id72sk");
-    			toggle_class(div1, "info", /*notifications*/ ctx[0].head.severity === eSeverity.Info);
-    			toggle_class(div1, "warning", /*notifications*/ ctx[0].head.severity === eSeverity.Warning);
-    			toggle_class(div1, "error", /*notifications*/ ctx[0].head.severity === eSeverity.Error);
-    			add_location(div1, file$a, 49, 24, 1800);
+    			toggle_class(div1, "b-blue", /*notifications*/ ctx[0].head.severity === eSeverity.Info);
+    			toggle_class(div1, "b-orange", /*notifications*/ ctx[0].head.severity === eSeverity.Warning);
+    			toggle_class(div1, "b-error", /*notifications*/ ctx[0].head.severity === eSeverity.Error);
+    			add_location(div1, file$a, 49, 24, 1810);
     			attr_dev(div2, "class", "message-item-flex svelte-id72sk");
-    			add_location(div2, file$a, 47, 20, 1675);
+    			add_location(div2, file$a, 47, 20, 1685);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -997,15 +997,15 @@ var app = (function () {
     			if (dirty & /*notifications*/ 1 && t0_value !== (t0_value = /*msg*/ ctx[5].text + "")) set_data_dev(t0, t0_value);
 
     			if (dirty & /*notifications, eSeverity*/ 1) {
-    				toggle_class(div1, "info", /*notifications*/ ctx[0].head.severity === eSeverity.Info);
+    				toggle_class(div1, "b-blue", /*notifications*/ ctx[0].head.severity === eSeverity.Info);
     			}
 
     			if (dirty & /*notifications, eSeverity*/ 1) {
-    				toggle_class(div1, "warning", /*notifications*/ ctx[0].head.severity === eSeverity.Warning);
+    				toggle_class(div1, "b-orange", /*notifications*/ ctx[0].head.severity === eSeverity.Warning);
     			}
 
     			if (dirty & /*notifications, eSeverity*/ 1) {
-    				toggle_class(div1, "error", /*notifications*/ ctx[0].head.severity === eSeverity.Error);
+    				toggle_class(div1, "b-error", /*notifications*/ ctx[0].head.severity === eSeverity.Error);
     			}
     		},
     		d: function destroy(detaching) {
@@ -1066,19 +1066,19 @@ var app = (function () {
     			button1 = element("button");
     			button1.textContent = "Hide";
     			attr_dev(div0, "class", "message-list svelte-id72sk");
-    			add_location(div0, file$a, 34, 12, 1003);
+    			add_location(div0, file$a, 34, 12, 1008);
     			attr_dev(div1, "class", "scroller svelte-id72sk");
-    			add_location(div1, file$a, 33, 8, 967);
+    			add_location(div1, file$a, 33, 8, 972);
     			attr_dev(button0, "class", "svelte-id72sk");
-    			add_location(button0, file$a, 57, 8, 2197);
+    			add_location(button0, file$a, 57, 8, 2212);
     			attr_dev(button1, "class", "svelte-id72sk");
-    			add_location(button1, file$a, 58, 8, 2246);
+    			add_location(button1, file$a, 58, 8, 2261);
     			attr_dev(div2, "class", "messages-flex svelte-id72sk");
-    			add_location(div2, file$a, 32, 4, 930);
+    			add_location(div2, file$a, 32, 4, 935);
     			attr_dev(section, "class", section_class_value = "" + (null_to_empty(/*visible*/ ctx[1] ? 'visible' : 'hidden') + " svelte-id72sk"));
-    			toggle_class(section, "info", /*latestSeverity*/ ctx[2] === eSeverity.Info);
-    			toggle_class(section, "warning", /*latestSeverity*/ ctx[2] === eSeverity.Warning);
-    			toggle_class(section, "error", /*latestSeverity*/ ctx[2] === eSeverity.Error);
+    			toggle_class(section, "b-blue", /*latestSeverity*/ ctx[2] === eSeverity.Info);
+    			toggle_class(section, "b-orange", /*latestSeverity*/ ctx[2] === eSeverity.Warning);
+    			toggle_class(section, "b-error", /*latestSeverity*/ ctx[2] === eSeverity.Error);
     			add_location(section, file$a, 28, 0, 710);
     		},
     		l: function claim(nodes) {
@@ -1153,15 +1153,15 @@ var app = (function () {
     			}
 
     			if (dirty & /*visible, latestSeverity, eSeverity*/ 6) {
-    				toggle_class(section, "info", /*latestSeverity*/ ctx[2] === eSeverity.Info);
+    				toggle_class(section, "b-blue", /*latestSeverity*/ ctx[2] === eSeverity.Info);
     			}
 
     			if (dirty & /*visible, latestSeverity, eSeverity*/ 6) {
-    				toggle_class(section, "warning", /*latestSeverity*/ ctx[2] === eSeverity.Warning);
+    				toggle_class(section, "b-orange", /*latestSeverity*/ ctx[2] === eSeverity.Warning);
     			}
 
     			if (dirty & /*visible, latestSeverity, eSeverity*/ 6) {
-    				toggle_class(section, "error", /*latestSeverity*/ ctx[2] === eSeverity.Error);
+    				toggle_class(section, "b-error", /*latestSeverity*/ ctx[2] === eSeverity.Error);
     			}
     		},
     		i: noop$1,

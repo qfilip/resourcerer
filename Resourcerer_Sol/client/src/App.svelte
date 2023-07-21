@@ -65,15 +65,15 @@
         background-color: var(--color-black);
     }
 
-    :global(.info) {
+    :global(.b-blue) {
         background-color: var(--color-blue);
     }
 
-    :global(.warning) {
+    :global(.b-orange) {
         background-color: var(--color-orange);
     }
 
-    :global(.error) {
+    :global(.b-red) {
         background-color: var(--color-red);
     }
 </style>
