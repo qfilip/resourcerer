@@ -36,12 +36,12 @@
         <div class="scroller">
             <div class="message-list">
                 <div class="message-item-flex">
-                    <div>{notifications.head.text}</div>
+                    <div class="message-text">{notifications.head.text}</div>
                     <div class="severity-status"></div>
                 </div>
                 {#each notifications.tail as msg}
                     <div class="message-item-flex">
-                        <div>{msg.text}</div>
+                        <div class="message-text">{msg.text}</div>
                         <div class="severity-status"></div>
                     </div>
                 {/each}
@@ -82,6 +82,12 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
+        margin-bottom: .5rem;
+        padding-left: .5rem;
+    }
+
+    .message-text {
+        width: 90%;
     }
 
     .scroller {
@@ -114,12 +120,6 @@
         z-index: 100;
         max-height: 1rem;
         transition: .3s;
-        scrollbar-gutter: stable both-edges;
-    }
-
-    .message-list > div {
-        margin-bottom: .5rem;
-        padding-left: .5rem;
     }
 
     .severity-status {
@@ -127,6 +127,7 @@
         min-height: .7rem;
         min-width: .7rem;
         background-color: red;
+        border: .1rem groove var(--color-black);
     }
 
     button {

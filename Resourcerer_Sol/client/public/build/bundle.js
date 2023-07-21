@@ -903,11 +903,12 @@ var app = (function () {
     			t1 = space();
     			div1 = element("div");
     			t2 = space();
-    			add_location(div0, file$a, 37, 24, 1123);
-    			attr_dev(div1, "class", "severity-status svelte-1939ent");
-    			add_location(div1, file$a, 38, 24, 1170);
-    			attr_dev(div2, "class", "message-item-flex svelte-1939ent");
-    			add_location(div2, file$a, 36, 20, 1066);
+    			attr_dev(div0, "class", "message-text svelte-197ylvx");
+    			add_location(div0, file$a, 37, 24, 1144);
+    			attr_dev(div1, "class", "severity-status svelte-197ylvx");
+    			add_location(div1, file$a, 38, 24, 1212);
+    			attr_dev(div2, "class", "message-item-flex svelte-197ylvx");
+    			add_location(div2, file$a, 36, 20, 1087);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -986,22 +987,23 @@ var app = (function () {
     			t5 = space();
     			button1 = element("button");
     			button1.textContent = "Hide";
+    			attr_dev(div0, "class", "message-text svelte-197ylvx");
     			add_location(div0, file$a, 32, 20, 876);
-    			attr_dev(div1, "class", "severity-status svelte-1939ent");
-    			add_location(div1, file$a, 33, 20, 934);
-    			attr_dev(div2, "class", "message-item-flex svelte-1939ent");
+    			attr_dev(div1, "class", "severity-status svelte-197ylvx");
+    			add_location(div1, file$a, 33, 20, 955);
+    			attr_dev(div2, "class", "message-item-flex svelte-197ylvx");
     			add_location(div2, file$a, 31, 16, 823);
-    			attr_dev(div3, "class", "message-list svelte-1939ent");
+    			attr_dev(div3, "class", "message-list svelte-197ylvx");
     			add_location(div3, file$a, 30, 12, 779);
-    			attr_dev(div4, "class", "scroller svelte-1939ent");
+    			attr_dev(div4, "class", "scroller svelte-197ylvx");
     			add_location(div4, file$a, 29, 8, 743);
-    			attr_dev(button0, "class", "svelte-1939ent");
-    			add_location(button0, file$a, 43, 8, 1304);
-    			attr_dev(button1, "class", "svelte-1939ent");
-    			add_location(button1, file$a, 44, 8, 1353);
-    			attr_dev(div5, "class", "messages-flex svelte-1939ent");
+    			attr_dev(button0, "class", "svelte-197ylvx");
+    			add_location(button0, file$a, 43, 8, 1346);
+    			attr_dev(button1, "class", "svelte-197ylvx");
+    			add_location(button1, file$a, 44, 8, 1395);
+    			attr_dev(div5, "class", "messages-flex svelte-197ylvx");
     			add_location(div5, file$a, 28, 4, 706);
-    			attr_dev(section, "class", section_class_value = "" + (null_to_empty(/*visible*/ ctx[1] ? 'visible' : 'hidden') + " svelte-1939ent"));
+    			attr_dev(section, "class", section_class_value = "" + (null_to_empty(/*visible*/ ctx[1] ? 'visible' : 'hidden') + " svelte-197ylvx"));
     			add_location(section, file$a, 26, 0, 613);
     		},
     		l: function claim(nodes) {
@@ -1064,7 +1066,7 @@ var app = (function () {
     				each_blocks.length = each_value.length;
     			}
 
-    			if (dirty & /*visible*/ 2 && section_class_value !== (section_class_value = "" + (null_to_empty(/*visible*/ ctx[1] ? 'visible' : 'hidden') + " svelte-1939ent"))) {
+    			if (dirty & /*visible*/ 2 && section_class_value !== (section_class_value = "" + (null_to_empty(/*visible*/ ctx[1] ? 'visible' : 'hidden') + " svelte-197ylvx"))) {
     				attr_dev(section, "class", section_class_value);
     			}
     		},
