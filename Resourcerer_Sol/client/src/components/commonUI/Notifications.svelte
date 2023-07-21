@@ -27,7 +27,7 @@
 </script>
 
 <section class="{visible ? 'visible' : 'hidden'}">
-    <h2>Notifications</h2>
+    <!-- <h2>Notifications</h2> -->
     <div class="message-flex">
         <div class="scroller">
             {notifications.head}
@@ -45,15 +45,12 @@
 
 <style>
     section {
-        padding: .5rem 2rem;
+        padding: .2rem .2rem;
+        font-size: .8rem;
         display: flex;
         justify-content: space-between;
         transition: .3s;
-    }
-
-    h2 {
-        margin: 0;
-        padding: 0;
+        background-color: var(--color-red);
     }
 
     .hidden {
@@ -68,18 +65,20 @@
         width: 100%;
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: center;
     }
 
     .scroller {
         width: 50%;
         position: relative;
-        line-height: 2rem;
-        min-height: 2rem;
-        max-height: 2rem;
+        line-height: 1rem;
+        min-height: 1rem;
+        max-height: 1rem;
         padding-left: .5rem;
-        background-color: var(--clr-white);
-        overflow-y: auto;
+        /* background-color: var(--color-white); */
+        background-color: var(--color-red);
+        color: var(--color-white);
+        overflow-y: hidden;
         transition: .3s;
     }
 
@@ -88,18 +87,20 @@
     }
 
     .scroller:hover > .old-messages {
-        height: 10rem;
-        overflow-y: auto;
+        overflow-y: scroll;
+        max-height: 10rem;
     }
 
     .old-messages {
         width: 100%;
-        top: 2rem;
+        /* top: 1rem; */
         left: 0;
         position: absolute;
         background-color: inherit;
         z-index: 100;
-        height: 0rem;
+        max-height: 1rem;
+        transition: .3s;
+        /* overflow-y: auto; */
         transition: .3s;
     }
 

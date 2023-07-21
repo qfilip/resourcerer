@@ -882,8 +882,8 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			t = text(t_value);
-    			attr_dev(div, "class", "svelte-16raxsz");
-    			add_location(div, file$a, 29, 20, 865);
+    			attr_dev(div, "class", "svelte-fnvnvo");
+    			add_location(div, file$a, 29, 20, 874);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -910,17 +910,15 @@ var app = (function () {
 
     function create_fragment$b(ctx) {
     	let section;
-    	let h2;
-    	let t1;
     	let div2;
     	let div1;
-    	let t2_value = /*notifications*/ ctx[0].head + "";
-    	let t2;
-    	let t3;
+    	let t0_value = /*notifications*/ ctx[0].head + "";
+    	let t0;
+    	let t1;
     	let div0;
-    	let t4;
+    	let t2;
     	let button0;
-    	let t6;
+    	let t4;
     	let button1;
     	let section_class_value;
     	let mounted;
@@ -936,38 +934,33 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			section = element("section");
-    			h2 = element("h2");
-    			h2.textContent = "Notifications";
-    			t1 = space();
     			div2 = element("div");
     			div1 = element("div");
-    			t2 = text(t2_value);
-    			t3 = space();
+    			t0 = text(t0_value);
+    			t1 = space();
     			div0 = element("div");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			t4 = space();
+    			t2 = space();
     			button0 = element("button");
     			button0.textContent = "Clear";
-    			t6 = space();
+    			t4 = space();
     			button1 = element("button");
     			button1.textContent = "Hide";
-    			attr_dev(h2, "class", "svelte-16raxsz");
-    			add_location(h2, file$a, 23, 4, 632);
-    			attr_dev(div0, "class", "old-messages svelte-16raxsz");
-    			add_location(div0, file$a, 27, 12, 766);
-    			attr_dev(div1, "class", "scroller svelte-16raxsz");
-    			add_location(div1, file$a, 25, 8, 696);
-    			attr_dev(button0, "class", "svelte-16raxsz");
-    			add_location(button0, file$a, 33, 8, 952);
-    			attr_dev(button1, "class", "svelte-16raxsz");
-    			add_location(button1, file$a, 34, 8, 1001);
-    			attr_dev(div2, "class", "message-flex svelte-16raxsz");
-    			add_location(div2, file$a, 24, 4, 660);
-    			attr_dev(section, "class", section_class_value = "" + (null_to_empty(/*visible*/ ctx[1] ? 'visible' : 'hidden') + " svelte-16raxsz"));
+    			attr_dev(div0, "class", "old-messages svelte-fnvnvo");
+    			add_location(div0, file$a, 27, 12, 775);
+    			attr_dev(div1, "class", "scroller svelte-fnvnvo");
+    			add_location(div1, file$a, 25, 8, 705);
+    			attr_dev(button0, "class", "svelte-fnvnvo");
+    			add_location(button0, file$a, 33, 8, 961);
+    			attr_dev(button1, "class", "svelte-fnvnvo");
+    			add_location(button1, file$a, 34, 8, 1010);
+    			attr_dev(div2, "class", "message-flex svelte-fnvnvo");
+    			add_location(div2, file$a, 24, 4, 669);
+    			attr_dev(section, "class", section_class_value = "" + (null_to_empty(/*visible*/ ctx[1] ? 'visible' : 'hidden') + " svelte-fnvnvo"));
     			add_location(section, file$a, 22, 0, 576);
     		},
     		l: function claim(nodes) {
@@ -975,21 +968,19 @@ var app = (function () {
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, section, anchor);
-    			append_dev(section, h2);
-    			append_dev(section, t1);
     			append_dev(section, div2);
     			append_dev(div2, div1);
-    			append_dev(div1, t2);
-    			append_dev(div1, t3);
+    			append_dev(div1, t0);
+    			append_dev(div1, t1);
     			append_dev(div1, div0);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(div0, null);
     			}
 
-    			append_dev(div2, t4);
+    			append_dev(div2, t2);
     			append_dev(div2, button0);
-    			append_dev(div2, t6);
+    			append_dev(div2, t4);
     			append_dev(div2, button1);
 
     			if (!mounted) {
@@ -1002,7 +993,7 @@ var app = (function () {
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*notifications*/ 1 && t2_value !== (t2_value = /*notifications*/ ctx[0].head + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*notifications*/ 1 && t0_value !== (t0_value = /*notifications*/ ctx[0].head + "")) set_data_dev(t0, t0_value);
 
     			if (dirty & /*notifications*/ 1) {
     				each_value = /*notifications*/ ctx[0].tail;
@@ -1028,7 +1019,7 @@ var app = (function () {
     				each_blocks.length = each_value.length;
     			}
 
-    			if (dirty & /*visible*/ 2 && section_class_value !== (section_class_value = "" + (null_to_empty(/*visible*/ ctx[1] ? 'visible' : 'hidden') + " svelte-16raxsz"))) {
+    			if (dirty & /*visible*/ 2 && section_class_value !== (section_class_value = "" + (null_to_empty(/*visible*/ ctx[1] ? 'visible' : 'hidden') + " svelte-fnvnvo"))) {
     				attr_dev(section, "class", section_class_value);
     			}
     		},
