@@ -16,7 +16,10 @@
     let notificationCounter = 0;
     function testNotification() {
         notificationCounter++;
-        notificationStore.addNotification(`Notification number ${notificationCounter}`)
+        notificationStore.addNotification({
+            text: `Notification number ${notificationCounter}`,
+            severity: notificationStore.eSeverity.Info
+        });
     }
 </script>
 

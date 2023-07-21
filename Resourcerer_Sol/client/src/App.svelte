@@ -22,6 +22,7 @@
         --color-white: whitesmoke;
         --color-lightgrey: #ddd;
         --color-black: #222;
+        --color-orange: #d95300;
         --color-red: #cc3333;
         --color-link: #007bff;
         
