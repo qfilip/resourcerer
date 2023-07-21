@@ -4,7 +4,9 @@
     import AppNav from './AppNav.svelte';
     
     onMount(() => {
-        pageService.onCurrentPageChanged(x => selected = x);
+        pageService.onCurrentPageChanged(x => {
+            selected = x;
+        });
     });
 
     let selected;

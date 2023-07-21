@@ -8,7 +8,7 @@
     onMount(() => {
         onUserChanged(x => {
             if(!x) return;
-            pageService.changePage('Home');
+            pageService.changePage('Settings');
         });
     });
 
@@ -19,11 +19,11 @@
     } as IAppUserDto;
 
     function handleSubmit() {
-        userController.login(dto, () => pageService.goto.home());
+        userController.login(dto, () => pageService.changePage('Settings'));
     }
 
     function goToRegisterPage() {
-        pageService.goto.register();
+        pageService.changePage('Register');
     }
 </script>
 

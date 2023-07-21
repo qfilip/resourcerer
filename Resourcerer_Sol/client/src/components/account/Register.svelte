@@ -26,12 +26,12 @@
         }
 
         userController.register(model.dto, () => {
-            pageService.goto.settings();
+            pageService.changePage('Settings');
         });
     }
 
     function goToLoginPage() {
-        pageService.goto.login();
+        pageService.changePage('Login');
     }
 </script>
 
