@@ -12,10 +12,10 @@ export interface INotification {
 }
 
 const notifications$ = writable<INotification[]>([]);
-export const onNotificationsUpdated = notifications$.subscribe; 
+export const onNotificationsUpdated = notifications$.subscribe;
 
 export const addNotification = (n: INotification | INotification[]) => notifications$.update((xs) => {
-    if(Array.isArray(n)) {
+    if (Array.isArray(n)) {
         return xs.concat(n);
     }
     else {

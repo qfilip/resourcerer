@@ -5202,10 +5202,27 @@ var app = (function () {
         return response;
     }, (error) => {
         hide();
-        console.warn(error);
+        handleErrorResponse(error);
         return Promise.reject(error);
     });
     const http = axios$1;
+    function handleErrorResponse(error) {
+        if (error.response.status == 404) {
+            notify(error.response.data, 'Requested item not found');
+        }
+        else if (error.response.status == 409) {
+            notify(error.response.data, 'Request rejected');
+        }
+    }
+    function notify(x, alt) {
+        if (Array.isArray(x) && x.every(e => typeof e === 'string')) {
+            const notifications = x.map(e => ({ text: e, severity: eSeverity.Warning }));
+            addNotification(notifications);
+        }
+        else {
+            addNotification({ text: alt, severity: eSeverity.Warning });
+        }
+    }
 
     async function getAllCategories() {
         const data = await undefined('/categories/all', 'Fetching categories...');
@@ -7163,7 +7180,7 @@ var app = (function () {
     const app = new App({
         target: document.body,
         props: {
-            name: 'world'
+        // name: 'world'
         }
     });
 
