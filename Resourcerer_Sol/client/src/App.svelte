@@ -1,14 +1,16 @@
 <script lang="ts">
     import AppTest from "./AppTest.svelte";
     import AppHeader from "./components/commonUI/AppHeader.svelte";
+    import Notifications from "./components/commonUI/Notifications.svelte";
     import PageLoader from "./components/commonUI/PageLoader.svelte";
     import PageSelector from "./components/commonUI/PageSelector.svelte";
 </script>
 
 <PageLoader />
 <AppHeader />
+<Notifications />
 <main>
-    <!-- <AppTest /> -->
+    <AppTest />
     <PageSelector />
 </main>
 
