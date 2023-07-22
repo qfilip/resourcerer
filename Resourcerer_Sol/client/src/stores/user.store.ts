@@ -23,17 +23,27 @@ export function checkUserLogged() {
         return false;
     }
 
-    setUser(jwtString);
-
-    return true;
+    return trySetUser(jwtString);
 }
 
-export function setUser(jwt: string) {
+export function trySetUser(jwt: string) {
     const [header, body64String, footer] = jwt.split('.');
     
     const body = JSON.parse(atob(body64String));
     const name = body.sub;
-    const jwtExpiration = new Date(1000 * body.exp);
+    
+    const jwtExpiration = new Date(1000 * body.exp).getTime();
+    const now = new Date().getTime();
+    
+    const sessionTimeLeft = jwtExpiration - now
+    
+    if(sessionTimeLeft <= 0) {
+        logout();
+        return false;
+    }
+    else if(sessionTimeLeft < 10 * 60 * 1000) {
+        // what if less than 10 mins left in session? Call refresh token
+    }
     
     let permissions: { [key:string]: number } = {};
     
@@ -50,14 +60,20 @@ export function setUser(jwt: string) {
     
     clearInterval(cacheControl);
     cacheControl = setInterval(() => {
-        window.localStorage.removeItem(key);
         addNotification({text: 'Session expired', severity: eSeverity.Info});
-        pageStore.goto.login();
-        user$.set(null);
-    }, 2000);
+        logout();
+    }, sessionTimeLeft);
 
     user$.set({ 
         name: name,
         permissions: permissions
-    } as IAppUserDto)
+    } as IAppUserDto);
+
+    return true;
+}
+
+export function logout() {
+    window.localStorage.removeItem(key);
+    pageStore.goto.login();
+    user$.set(null);
 }

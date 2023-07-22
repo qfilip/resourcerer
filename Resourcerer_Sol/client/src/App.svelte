@@ -1,17 +1,24 @@
 <script lang="ts">
-    import AppTest from "./AppTest.svelte";
+    import { onMount } from "svelte";
     import AppHeader from "./components/commonUI/AppHeader.svelte";
-    import Notifications from "./components/commonUI/Notifications.svelte";
     import PageLoader from "./components/commonUI/PageLoader.svelte";
     import PageSelector from "./components/commonUI/PageSelector.svelte";
+    import { jwtChangedEvent } from "./stores/user.store";
+    import { setInterceptor } from "./controllers/base.controller";
+
+    onMount(() => {
+        jwtChangedEvent(x => setInterceptor(x));
+    });
 </script>
 
-<PageLoader />
-<AppHeader />
-<main>
-    <PageSelector />
-</main>
-<!-- <AppTest /> -->
+<div>
+    <PageLoader />
+    <AppHeader />
+    <main>
+        <PageSelector />
+    </main>
+    <!-- <AppTest /> -->
+</div>
 
 <style>
 	:root {

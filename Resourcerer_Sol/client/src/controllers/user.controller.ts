@@ -6,7 +6,7 @@ import { http } from './base.controller';
 export function register(x: IAppUserDto, onRegisterSuccess: () => void) {
     http.post('/users/register', x)
     .then(jwt => {
-        userStore.setUser(jwt.data);
+        userStore.trySetUser(jwt.data);
         onRegisterSuccess();
     })
     .catch(err => console.warn(err));
@@ -15,7 +15,7 @@ export function register(x: IAppUserDto, onRegisterSuccess: () => void) {
 export function login(x: IAppUserDto, onLoginSuccess: () => void) {
     http.post('/users/login', x)
     .then(jwt => {
-        userStore.setUser(jwt.data);
+        userStore.trySetUser(jwt.data);
         onLoginSuccess();
     })
     .catch(err => console.warn(err));

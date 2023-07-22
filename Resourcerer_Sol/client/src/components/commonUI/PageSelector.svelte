@@ -3,10 +3,7 @@
     import * as pageService from '../../stores/commonUi/page.store';
     
     onMount(() => {
-        pageService.onCurrentPageChanged(x => {
-            console.log('page changed')
-            selected = x;
-        });
+        pageService.onCurrentPageChanged(x => selected = x);
     });
 
     let selected;

@@ -19,6 +19,7 @@
     } as IAppUserDto;
 
     function handleSubmit() {
+        debugger
         userController.login(dto, () => pageService.goto.home());
     }
 

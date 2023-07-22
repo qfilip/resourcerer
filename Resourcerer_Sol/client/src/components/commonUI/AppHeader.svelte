@@ -1,5 +1,6 @@
 <script lang="ts">
-    import Notifications from "./Notifications.svelte";
+    import Profile from "../account/Profile.svelte";
+import Notifications from "./Notifications.svelte";
 
 
 </script>
@@ -9,7 +10,7 @@
         Resourcerer
     </h1>
     <Notifications />
-    <button>Login</button>
+    <Profile />
 </header>
 
 <style>
@@ -17,6 +18,7 @@
         background-color: var(--color-black);
         position: sticky;
         top: 0;
+        padding: var(--padding);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -24,7 +26,6 @@
 
     h1 {
         margin: 0;
-        padding: var(--padding);
         color: var(--color-white);
     }
     
