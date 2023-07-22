@@ -1,13 +1,15 @@
 import axios, { AxiosError } from 'axios';
 import * as loaderService from '../stores/commonUi/loader.service';
 import * as userStore from '../stores/user.store';
-import { addNotification, eSeverity } from '../stores/commonUi/notification.store';
-import type { INotification } from '../stores/commonUi/notification.store';
+import { addNotification } from '../stores/commonUi/notification.store';
+import { eSeverity } from '../interfaces/enums/eSeverity';
+import type { INotification } from '../interfaces/models/INotification';
+
 
 const apiUrl = 'https://localhost:44387/api/1.0';
 let interceptor;
 
-userStore.onJwtChanged(x => {
+userStore.jwtChangedEvent(x => {
   if (interceptor) {
     axios.interceptors.request.eject(interceptor);
   }

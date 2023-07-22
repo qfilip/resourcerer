@@ -15,7 +15,7 @@
             });
         });
 
-        homenavStore.currentComponentChanged(page => selectedItemText = page.name);
+        homenavStore.currentComponentChanged(component => selectedItemText = component.name);
     });
 
     let visibleItems: IHomeComponent[] = [];
@@ -50,8 +50,11 @@
 
 <style>
     nav {
-        height: 80vh;
+        height: 100%;
+        width: 10%;
         overflow-y: hidden;
+        overflow-x: hidden;
+
         color: var(--color-white);
         background-color: var(--color-black);
         transition: var(--transition);

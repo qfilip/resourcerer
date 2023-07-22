@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { eSeverity } from './interfaces/enums/eSeverity';
     import * as pageLoaderService from './stores/commonUi/loader.service';
     import * as notificationStore from './stores/commonUi/notification.store';
     
@@ -16,12 +17,12 @@
     let notificationCounter = 0;
     function testNotification() {
         notificationCounter++;
-        let severity = notificationStore.eSeverity.Info;
+        let severity = eSeverity.Info;
         if(notificationCounter % 2 === 0) {
-            severity = notificationStore.eSeverity.Warning;
+            severity = eSeverity.Warning;
         }
         else if(notificationCounter % 3 === 0) {
-            severity = notificationStore.eSeverity.Error;
+            severity = eSeverity.Error;
         }
         notificationStore.addNotification({
             text: `Notification number ${notificationCounter}`,

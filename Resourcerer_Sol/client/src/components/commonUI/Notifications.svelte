@@ -54,13 +54,13 @@
                     class:b-error={notifications.head.severity === eSeverity.Error}></div>
                 </div>
                 {/if}
-                {#each notifications.tail as msg}
+                {#each notifications.tail as ntf}
                     <div class="message-item-flex">
-                        <div class="message-text">{msg.text}</div>
+                        <div class="message-text">{ntf.text}</div>
                         <div class="severity-status"
-                        class:b-blue={notifications.head.severity === eSeverity.Info}
-                        class:b-orange={notifications.head.severity === eSeverity.Warning}
-                        class:b-error={notifications.head.severity === eSeverity.Error}></div>
+                        class:b-blue={ntf.severity === eSeverity.Info}
+                        class:b-orange={ntf.severity === eSeverity.Warning}
+                        class:b-error={ntf.severity === eSeverity.Error}></div>
                     </div>
                 {/each}
             </div>
@@ -78,6 +78,8 @@
         display: flex;
         justify-content: space-between;
         transition: .3s;
+        width: 50%;
+        height: 1rem;
     }
 
     .hidden {

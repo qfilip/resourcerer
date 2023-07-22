@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import * as pageService from '../../stores/commonUi/page.store';
-    import AppNav from './AppNav.svelte';
     
     onMount(() => {
         pageService.onCurrentPageChanged(x => {
@@ -14,21 +13,10 @@
 
 <section>
     {#if selected}
-        {#if selected.hasNav}
-            <AppNav />
-        {/if}
-        <div>
-            <svelte:component this={selected.component} {...selected.props }/>
-        </div>
+    <svelte:component this={selected.component} {...selected.props }/>
     {/if}
 </section>
 
 <style>
-    section {
-        display: flex;
-    }
-
-    div {
-        width: 100%;
-    }
+    
 </style>

@@ -8,11 +8,10 @@
 
 <PageLoader />
 <AppHeader />
-<Notifications />
 <main>
-    <!-- <AppTest /> -->
     <PageSelector />
 </main>
+<AppTest />
 
 <style>
 	:root {
