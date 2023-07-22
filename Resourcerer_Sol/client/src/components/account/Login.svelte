@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import * as pageService from '../../stores/commonUi/page.service';
+    import * as pageService from '../../stores/commonUi/page.store';
     import * as userController from '../../controllers/user.controller';
     import { onUserChanged } from "../../stores/user.store";
     import type { IAppUserDto } from "../../interfaces/dtos/interfaces";
@@ -8,7 +8,7 @@
     onMount(() => {
         onUserChanged(x => {
             if(!x) return;
-            pageService.changePage('Settings');
+            pageService.goto.home();
         });
     });
 
@@ -19,11 +19,11 @@
     } as IAppUserDto;
 
     function handleSubmit() {
-        userController.login(dto, () => pageService.changePage('Settings'));
+        userController.login(dto, () => pageService.goto.home());
     }
 
     function goToRegisterPage() {
-        pageService.changePage('Register');
+        pageService.goto.register();
     }
 </script>
 

@@ -1,7 +1,10 @@
 <script lang="ts">
     import * as userController from '../../controllers/user.controller';
-    import * as pageService from '../../stores/commonUi/page.service';
+    import * as pageService from '../../stores/commonUi/page.store';
     import type { IAppUserDto } from '../../interfaces/dtos/interfaces';
+    import { addNotification } from '../../stores/commonUi/notification.store';
+    import { eSeverity } from '../../interfaces/enums/eSeverity';
+    import type { INotification } from '../../interfaces/models/INotification';
 
     let model = {
         dto: {
@@ -21,17 +24,17 @@
         if(model.dto.password !== model.passwordConfirm) errors.push(`Password confirmation doesn't match`);
         
         if(errors.length > 0) {
-            console.log(errors);
+            addNotification(errors.map(x => ({ text: x, severity: eSeverity.Warning } as INotification)));
             return;
         }
 
         userController.register(model.dto, () => {
-            pageService.changePage('Settings');
+            pageService.goto.home();
         });
     }
 
     function goToLoginPage() {
-        pageService.changePage('Login');
+        pageService.goto.login();
     }
 </script>
 

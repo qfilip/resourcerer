@@ -1,15 +1,5 @@
 import { writable } from "svelte/store";
-
-export enum eSeverity {
-    Info,
-    Warning,
-    Error
-}
-
-export interface INotification {
-    text: string;
-    severity: eSeverity;
-}
+import type { INotification } from "../../interfaces/models/INotification";
 
 const notifications$ = writable<INotification[]>([]);
 export const onNotificationsUpdated = notifications$.subscribe;

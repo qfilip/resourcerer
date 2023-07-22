@@ -2,29 +2,28 @@
     import { onMount } from 'svelte';
 
     import { onUserChanged } from '../../stores/user.store';
-    import * as pageStore from '../../stores/commonUi/page.store';
+    import * as homenavStore from '../../stores/home/homenav.store';
+    import type { IHomeComponent } from '../../interfaces/models/IHomeComponent';
     
     let expanded = false;
-    let user;
 
     onMount(() => {
         onUserChanged(user => {
-            user = user;
-            visibleButtons = pageStore.pages.filter(x => {
+            visibleItems = homenavStore.components.filter(x => {
                 if(x.minPermission === null) return true;
                 return Object.keys(user.permissions).includes(x.minPermission);
             });
         });
 
-        pageStore.onCurrentPageChanged(page => selectedBtnText = page.name);
+        homenavStore.currentComponentChanged(page => selectedItemText = page.name);
     });
 
-    let visibleButtons: IAppPage[] = [];
-    let selectedBtnText = visibleButtons.length > 0 ? visibleButtons[0].name : '';
+    let visibleItems: IHomeComponent[] = [];
+    let selectedItemText = visibleItems.length > 0 ? visibleItems[0].name : '';
 
-    function changeComponent(btn: IAppPage) {
-        selectedBtnText = btn.name;
-        pageStore.changePage(btn.name)
+    function changeToComponent(hc: IHomeComponent) {
+        selectedItemText = hc.name;
+        homenavStore.setComponent(hc.name);
     }
 
     function toggleView() {
@@ -33,10 +32,10 @@
 </script>
 
 <nav class="{expanded ? 'expanded' : 'collapsed'}">
-    {#each visibleButtons as btn}
-        <button on:click={() => changeComponent(btn)} class="{selectedBtnText === btn.name ? 'marked' : ''}">
-            <span>{btn.name}</span>
-            <i class="{btn.icon}"></i>
+    {#each visibleItems as item}
+        <button on:click={() => changeToComponent(item)} class="{selectedItemText === item.name ? 'marked' : ''}">
+            <span>{item.name}</span>
+            <i class="{item.icon}"></i>
         </button>
     {/each}
 
