@@ -1,14 +1,14 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 
-    import { onUserChanged } from '../../stores/user.store';
+    import { userChangedEvent } from '../../stores/user.store';
     import * as homenavStore from '../../stores/home/homenav.store';
     import type { IHomeComponent } from '../../interfaces/models/IHomeComponent';
     
     let expanded = false;
 
     onMount(() => {
-        onUserChanged(user => {
+        userChangedEvent(user => {
             visibleItems = homenavStore.components.filter(x => {
                 if(x.minPermission === null) return true;
                 return Object.keys(user.permissions).includes(x.minPermission);

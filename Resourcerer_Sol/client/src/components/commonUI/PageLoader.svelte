@@ -1,11 +1,11 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import type IPageloaderOptions from '../../stores/commonUi/loader.service'
-    import * as pageLoaderService from '../../stores/commonUi/loader.service';
+    import { optionsChangedEvent } from '../../stores/commonUi/loader.service';
+    import type IPageloaderOptions from '../../interfaces/models/IPageloaderOptions';
 
     let options = {} as IPageloaderOptions;
     onMount(() => {
-        pageLoaderService.options(x => options = x);
+        optionsChangedEvent(x => options = x);
     });
 </script>
 

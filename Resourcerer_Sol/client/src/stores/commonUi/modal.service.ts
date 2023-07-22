@@ -1,15 +1,5 @@
 import { writable } from "svelte/store";
-
-export interface IModalButton {
-    text: string;
-    onClick: () => void;
-}
-
-export interface IModalOptions {
-    open: boolean;
-    header: string;
-    buttons: IModalButton[];
-}
+import type { IModalOptions } from "../../interfaces/models/IModalOptions";
 
 export const defaultOptions: IModalOptions = {
     open: false,

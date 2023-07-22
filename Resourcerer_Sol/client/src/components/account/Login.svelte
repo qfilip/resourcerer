@@ -2,11 +2,11 @@
     import { onMount } from "svelte";
     import * as pageService from '../../stores/commonUi/page.store';
     import * as userController from '../../controllers/user.controller';
-    import { onUserChanged } from "../../stores/user.store";
+    import { userChangedEvent } from "../../stores/user.store";
     import type { IAppUserDto } from "../../interfaces/dtos/interfaces";
     
     onMount(() => {
-        onUserChanged(x => {
+        userChangedEvent(x => {
             if(!x) return;
             pageService.goto.home();
         });

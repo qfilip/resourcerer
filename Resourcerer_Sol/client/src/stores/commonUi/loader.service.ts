@@ -1,15 +1,10 @@
 import { writable } from "svelte/store";
-
-export default interface IPageLoaderOptions {
-    open: boolean;
-    message: string;
-    progress: number;
-}
+import type IPageLoaderOptions from "../../interfaces/models/IPageloaderOptions";
 
 let callCount = 0;
 const options$ = writable<IPageLoaderOptions>({ open: false, message: 'loading', progress: null });
 
-export const options = options$.subscribe;
+export const optionsChangedEvent = options$.subscribe;
 
 export function show(message?: string, progress?: number) {
     callCount += 1;

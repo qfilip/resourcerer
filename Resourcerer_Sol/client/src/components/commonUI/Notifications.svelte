@@ -1,6 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { onNotificationsUpdated, clearNotifications, type INotification, eSeverity } from "../../stores/commonUi/notification.store";
+    import type { INotification } from "../../interfaces/models/INotification";
+    import { eSeverity } from "../../interfaces/enums/eSeverity";
+    import { clearNotifications, notificationsChangedEvent } from "../../stores/commonUi/notification.store";
 
     let notifications: { head: INotification, tail: INotification[] } = {
         head: null,
@@ -11,7 +13,7 @@
     let latestSeverity = eSeverity.Info;
 
     onMount(() => {
-        onNotificationsUpdated(ns => {
+        notificationsChangedEvent(ns => {
             const [x, ...xs] = ns;
             
             notifications.head = x;

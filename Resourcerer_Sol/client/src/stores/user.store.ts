@@ -7,8 +7,8 @@ const key = 'rscr-user';
 const user$ = writable<IAppUserDto>();
 const jwt$ = writable<string>();
 
-export const onUserChanged = user$.subscribe;
-export const onJwtChanged = jwt$.subscribe;
+export const userChangedEvent = user$.subscribe;
+export const jwtChangedEvent = jwt$.subscribe;
 
 checkUserLogged();
 
