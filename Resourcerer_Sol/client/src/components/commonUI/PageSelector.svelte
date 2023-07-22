@@ -4,6 +4,7 @@
     
     onMount(() => {
         pageService.onCurrentPageChanged(x => {
+            console.log('page changed')
             selected = x;
         });
     });
@@ -13,7 +14,7 @@
 
 <section>
     {#if selected}
-    <svelte:component this={selected.component} {...selected.props }/>
+        <svelte:component this={selected.component} />
     {/if}
 </section>
 

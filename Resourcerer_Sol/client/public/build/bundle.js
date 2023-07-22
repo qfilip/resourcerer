@@ -12,12 +12,6 @@ var app = (function () {
     });
 
     function noop$1() { }
-    function assign(tar, src) {
-        // @ts-ignore
-        for (const k in src)
-            tar[k] = src[k];
-        return tar;
-    }
     function add_location(element, file, line, column, char) {
         element.__svelte_meta = {
             loc: { file, line, column, char }
@@ -268,43 +262,6 @@ var app = (function () {
         : typeof globalThis !== 'undefined'
             ? globalThis
             : global);
-
-    function get_spread_update(levels, updates) {
-        const update = {};
-        const to_null_out = {};
-        const accounted_for = { $$scope: 1 };
-        let i = levels.length;
-        while (i--) {
-            const o = levels[i];
-            const n = updates[i];
-            if (n) {
-                for (const key in o) {
-                    if (!(key in n))
-                        to_null_out[key] = 1;
-                }
-                for (const key in n) {
-                    if (!accounted_for[key]) {
-                        update[key] = n[key];
-                        accounted_for[key] = 1;
-                    }
-                }
-                levels[i] = n;
-            }
-            else {
-                for (const key in o) {
-                    accounted_for[key] = 1;
-                }
-            }
-        }
-        for (const key in to_null_out) {
-            if (!(key in update))
-                update[key] = undefined;
-        }
-        return update;
-    }
-    function get_spread_object(spread_props) {
-        return typeof spread_props === 'object' && spread_props !== null ? spread_props : {};
-    }
     function create_component(block) {
         block && block.c();
     }
@@ -814,14 +771,14 @@ var app = (function () {
     			t0 = text(t0_value);
     			t1 = space();
     			div1 = element("div");
-    			attr_dev(div0, "class", "message-text svelte-ok9rv2");
+    			attr_dev(div0, "class", "message-text svelte-19s8zlg");
     			add_location(div0, file$c, 38, 20, 1205);
-    			attr_dev(div1, "class", "severity-status svelte-ok9rv2");
+    			attr_dev(div1, "class", "severity-status svelte-19s8zlg");
     			toggle_class(div1, "b-blue", /*notifications*/ ctx[0].head.severity === eSeverity.Info);
     			toggle_class(div1, "b-orange", /*notifications*/ ctx[0].head.severity === eSeverity.Warning);
     			toggle_class(div1, "b-error", /*notifications*/ ctx[0].head.severity === eSeverity.Error);
     			add_location(div1, file$c, 41, 20, 1332);
-    			attr_dev(div2, "class", "message-item-flex svelte-ok9rv2");
+    			attr_dev(div2, "class", "message-item-flex svelte-19s8zlg");
     			add_location(div2, file$c, 37, 16, 1152);
     		},
     		m: function mount(target, anchor) {
@@ -880,14 +837,14 @@ var app = (function () {
     			t1 = space();
     			div1 = element("div");
     			t2 = space();
-    			attr_dev(div0, "class", "message-text svelte-ok9rv2");
+    			attr_dev(div0, "class", "message-text svelte-19s8zlg");
     			add_location(div0, file$c, 49, 24, 1800);
-    			attr_dev(div1, "class", "severity-status svelte-ok9rv2");
+    			attr_dev(div1, "class", "severity-status svelte-19s8zlg");
     			toggle_class(div1, "b-blue", /*ntf*/ ctx[5].severity === eSeverity.Info);
     			toggle_class(div1, "b-orange", /*ntf*/ ctx[5].severity === eSeverity.Warning);
     			toggle_class(div1, "b-error", /*ntf*/ ctx[5].severity === eSeverity.Error);
     			add_location(div1, file$c, 50, 24, 1868);
-    			attr_dev(div2, "class", "message-item-flex svelte-ok9rv2");
+    			attr_dev(div2, "class", "message-item-flex svelte-19s8zlg");
     			add_location(div2, file$c, 48, 20, 1743);
     		},
     		m: function mount(target, anchor) {
@@ -970,17 +927,17 @@ var app = (function () {
     			t3 = space();
     			button1 = element("button");
     			button1.textContent = "Hide";
-    			attr_dev(div0, "class", "message-list svelte-ok9rv2");
+    			attr_dev(div0, "class", "message-list svelte-19s8zlg");
     			add_location(div0, file$c, 35, 12, 1066);
-    			attr_dev(div1, "class", "scroller svelte-ok9rv2");
+    			attr_dev(div1, "class", "scroller svelte-19s8zlg");
     			add_location(div1, file$c, 34, 8, 1030);
-    			attr_dev(button0, "class", "svelte-ok9rv2");
+    			attr_dev(button0, "class", "svelte-19s8zlg");
     			add_location(button0, file$c, 58, 8, 2225);
-    			attr_dev(button1, "class", "svelte-ok9rv2");
+    			attr_dev(button1, "class", "svelte-19s8zlg");
     			add_location(button1, file$c, 59, 8, 2274);
-    			attr_dev(div2, "class", "messages-flex svelte-ok9rv2");
+    			attr_dev(div2, "class", "messages-flex svelte-19s8zlg");
     			add_location(div2, file$c, 33, 4, 993);
-    			attr_dev(section, "class", section_class_value = "" + (null_to_empty(/*visible*/ ctx[1] ? 'visible' : 'hidden') + " svelte-ok9rv2"));
+    			attr_dev(section, "class", section_class_value = "" + (null_to_empty(/*visible*/ ctx[1] ? 'visible' : 'hidden') + " svelte-19s8zlg"));
     			toggle_class(section, "b-blue", /*latestSeverity*/ ctx[2] === eSeverity.Info);
     			toggle_class(section, "b-orange", /*latestSeverity*/ ctx[2] === eSeverity.Warning);
     			toggle_class(section, "b-error", /*latestSeverity*/ ctx[2] === eSeverity.Error);
@@ -1053,7 +1010,7 @@ var app = (function () {
     				each_blocks.length = each_value.length;
     			}
 
-    			if (dirty & /*visible*/ 2 && section_class_value !== (section_class_value = "" + (null_to_empty(/*visible*/ ctx[1] ? 'visible' : 'hidden') + " svelte-ok9rv2"))) {
+    			if (dirty & /*visible*/ 2 && section_class_value !== (section_class_value = "" + (null_to_empty(/*visible*/ ctx[1] ? 'visible' : 'hidden') + " svelte-19s8zlg"))) {
     				attr_dev(section, "class", section_class_value);
     			}
 
@@ -1172,7 +1129,6 @@ var app = (function () {
     	let header;
     	let h1;
     	let t1;
-    	let div;
     	let notifications;
     	let t2;
     	let button;
@@ -1185,17 +1141,14 @@ var app = (function () {
     			h1 = element("h1");
     			h1.textContent = "Resourcerer";
     			t1 = space();
-    			div = element("div");
     			create_component(notifications.$$.fragment);
     			t2 = space();
     			button = element("button");
     			button.textContent = "Login";
-    			attr_dev(h1, "class", "svelte-gj3oy0");
+    			attr_dev(h1, "class", "svelte-1eia8or");
     			add_location(h1, file$b, 4, 4, 98);
-    			add_location(div, file$b, 7, 4, 140);
-    			attr_dev(button, "class", "svelte-gj3oy0");
-    			add_location(button, file$b, 10, 4, 190);
-    			attr_dev(header, "class", "svelte-gj3oy0");
+    			add_location(button, file$b, 8, 4, 163);
+    			attr_dev(header, "class", "svelte-1eia8or");
     			add_location(header, file$b, 3, 0, 84);
     		},
     		l: function claim(nodes) {
@@ -1205,8 +1158,7 @@ var app = (function () {
     			insert_dev(target, header, anchor);
     			append_dev(header, h1);
     			append_dev(header, t1);
-    			append_dev(header, div);
-    			mount_component(notifications, div, null);
+    			mount_component(notifications, header, null);
     			append_dev(header, t2);
     			append_dev(header, button);
     			current = true;
@@ -1550,6 +1502,7 @@ var app = (function () {
     const key = 'rscr-user';
     const user$ = writable();
     const jwt$ = writable();
+    let cacheControl;
     const userChangedEvent = user$.subscribe;
     const jwtChangedEvent = jwt$.subscribe;
     checkUserLogged();
@@ -1565,6 +1518,7 @@ var app = (function () {
         const [header, body64String, footer] = jwt.split('.');
         const body = JSON.parse(atob(body64String));
         const name = body.sub;
+        new Date(1000 * body.exp);
         let permissions = {};
         for (let member in ePermissionSection) {
             const section = ePermissionSection[member];
@@ -1574,6 +1528,13 @@ var app = (function () {
             }
         }
         window.localStorage.setItem(key, jwt);
+        clearInterval(cacheControl);
+        cacheControl = setInterval(() => {
+            window.localStorage.removeItem(key);
+            addNotification({ text: 'Session expired', severity: eSeverity.Info });
+            goto.login();
+            user$.set(null);
+        }, 2000);
         user$.set({
             name: name,
             permissions: permissions
@@ -4902,7 +4863,7 @@ var app = (function () {
     			a = element("a");
     			a.textContent = "register";
     			t8 = text(" if you don't have an account");
-    			attr_dev(legend, "class", "svelte-1yuoymq");
+    			attr_dev(legend, "class", "svelte-3wo6tc");
     			add_location(legend, file$9, 26, 8, 686);
     			attr_dev(input0, "placeholder", "email");
     			attr_dev(input0, "type", "text");
@@ -4913,16 +4874,16 @@ var app = (function () {
     			add_location(input1, file$9, 32, 16, 927);
     			add_location(label1, file$9, 31, 12, 902);
     			attr_dev(button, "type", "submit");
-    			attr_dev(button, "class", "svelte-1yuoymq");
+    			attr_dev(button, "class", "svelte-3wo6tc");
     			add_location(button, file$9, 34, 12, 1037);
     			attr_dev(a, "href", "#a");
     			add_location(a, file$9, 36, 22, 1134);
     			add_location(i, file$9, 36, 16, 1128);
-    			attr_dev(div, "class", "register svelte-1yuoymq");
+    			attr_dev(div, "class", "register svelte-3wo6tc");
     			add_location(div, file$9, 35, 12, 1088);
     			add_location(form, file$9, 27, 8, 718);
     			add_location(fieldset, file$9, 25, 4, 666);
-    			attr_dev(section, "class", "flex svelte-1yuoymq");
+    			attr_dev(section, "class", "flex svelte-3wo6tc");
     			add_location(section, file$9, 24, 0, 638);
     		},
     		l: function claim(nodes) {
@@ -5128,7 +5089,7 @@ var app = (function () {
     			a = element("a");
     			a.textContent = "login";
     			t9 = text(" if you already have an account");
-    			attr_dev(legend, "class", "svelte-1yjo4w0");
+    			attr_dev(legend, "class", "svelte-1vcos5m");
     			add_location(legend, file$8, 37, 8, 1287);
     			attr_dev(input0, "placeholder", "name");
     			attr_dev(input0, "type", "text");
@@ -5143,18 +5104,18 @@ var app = (function () {
     			add_location(input2, file$8, 46, 16, 1673);
     			add_location(label2, file$8, 45, 12, 1648);
     			attr_dev(button, "type", "submit");
-    			attr_dev(button, "class", "svelte-1yjo4w0");
+    			attr_dev(button, "class", "svelte-1vcos5m");
     			add_location(button, file$8, 49, 16, 1834);
-    			attr_dev(div0, "class", "flex svelte-1yjo4w0");
+    			attr_dev(div0, "class", "flex svelte-1vcos5m");
     			add_location(div0, file$8, 48, 12, 1798);
     			attr_dev(a, "href", "#a");
     			add_location(a, file$8, 52, 22, 1948);
     			add_location(i, file$8, 52, 16, 1942);
-    			attr_dev(div1, "class", "login svelte-1yjo4w0");
+    			attr_dev(div1, "class", "login svelte-1vcos5m");
     			add_location(div1, file$8, 51, 12, 1905);
     			add_location(form, file$8, 38, 8, 1322);
     			add_location(fieldset, file$8, 36, 4, 1267);
-    			attr_dev(section, "class", "flex svelte-1yjo4w0");
+    			attr_dev(section, "class", "flex svelte-1vcos5m");
     			add_location(section, file$8, 35, 0, 1239);
     		},
     		l: function claim(nodes) {
@@ -5799,8 +5760,6 @@ var app = (function () {
     });
 
     /* src\components\category\CategoryOverview.svelte generated by Svelte v3.55.1 */
-
-    const { console: console_1 } = globals;
     const file$5 = "src\\components\\category\\CategoryOverview.svelte";
 
     function get_each_context$1(ctx, list, i) {
@@ -5817,7 +5776,7 @@ var app = (function () {
     	categorydropdown = new CategoryDropdown({
     			props: {
     				category: /*ctg*/ ctx[3],
-    				allCategories: /*categories*/ ctx[0]
+    				allCategories: /*categories*/ ctx[1]
     			},
     			$$inline: true
     		});
@@ -5832,8 +5791,7 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			const categorydropdown_changes = {};
-    			if (dirty & /*mainCategories*/ 2) categorydropdown_changes.category = /*ctg*/ ctx[3];
-    			if (dirty & /*categories*/ 1) categorydropdown_changes.allCategories = /*categories*/ ctx[0];
+    			if (dirty & /*mainCategories*/ 1) categorydropdown_changes.category = /*ctg*/ ctx[3];
     			categorydropdown.$set(categorydropdown_changes);
     		},
     		i: function intro(local) {
@@ -5888,7 +5846,7 @@ var app = (function () {
     	let t13;
     	let div3;
     	let current;
-    	let each_value = /*mainCategories*/ ctx[1];
+    	let each_value = /*mainCategories*/ ctx[0];
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -5939,35 +5897,35 @@ var app = (function () {
     			div3 = element("div");
     			div3.textContent = "Elements: 0";
     			attr_dev(h2, "class", "svelte-8i1ol0");
-    			add_location(h2, file$5, 19, 0, 656);
+    			add_location(h2, file$5, 19, 0, 698);
     			attr_dev(h30, "class", "svelte-8i1ol0");
-    			add_location(h30, file$5, 25, 8, 735);
+    			add_location(h30, file$5, 25, 8, 777);
     			attr_dev(div0, "class", "dropdowns svelte-8i1ol0");
-    			add_location(div0, file$5, 24, 4, 702);
+    			add_location(div0, file$5, 24, 4, 744);
     			attr_dev(h31, "class", "svelte-8i1ol0");
-    			add_location(h31, file$5, 31, 8, 929);
+    			add_location(h31, file$5, 31, 8, 971);
     			attr_dev(i0, "class", "las la-plus");
-    			add_location(i0, file$5, 33, 12, 977);
+    			add_location(i0, file$5, 33, 12, 1019);
     			attr_dev(button0, "class", "svelte-8i1ol0");
-    			add_location(button0, file$5, 32, 8, 955);
+    			add_location(button0, file$5, 32, 8, 997);
     			attr_dev(i1, "class", "las la-chart-line");
-    			add_location(i1, file$5, 36, 12, 1055);
+    			add_location(i1, file$5, 36, 12, 1097);
     			attr_dev(button1, "class", "svelte-8i1ol0");
-    			add_location(button1, file$5, 35, 8, 1033);
+    			add_location(button1, file$5, 35, 8, 1075);
     			attr_dev(i2, "class", "las la-trash");
-    			add_location(i2, file$5, 39, 12, 1139);
+    			add_location(i2, file$5, 39, 12, 1181);
     			attr_dev(button2, "class", "svelte-8i1ol0");
-    			add_location(button2, file$5, 38, 8, 1117);
+    			add_location(button2, file$5, 38, 8, 1159);
     			attr_dev(div1, "class", "actions svelte-8i1ol0");
-    			add_location(div1, file$5, 30, 4, 898);
+    			add_location(div1, file$5, 30, 4, 940);
     			attr_dev(h32, "class", "svelte-8i1ol0");
-    			add_location(h32, file$5, 43, 8, 1219);
-    			add_location(div2, file$5, 44, 8, 1242);
-    			add_location(div3, file$5, 47, 8, 1300);
+    			add_location(h32, file$5, 43, 8, 1261);
+    			add_location(div2, file$5, 44, 8, 1284);
+    			add_location(div3, file$5, 47, 8, 1342);
     			attr_dev(div4, "class", "svelte-8i1ol0");
-    			add_location(div4, file$5, 42, 4, 1204);
+    			add_location(div4, file$5, 42, 4, 1246);
     			attr_dev(section, "class", "svelte-8i1ol0");
-    			add_location(section, file$5, 23, 0, 687);
+    			add_location(section, file$5, 23, 0, 729);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6007,7 +5965,7 @@ var app = (function () {
     		},
     		p: function update(ctx, [dirty]) {
     			if (dirty & /*mainCategories, categories*/ 3) {
-    				each_value = /*mainCategories*/ ctx[1];
+    				each_value = /*mainCategories*/ ctx[0];
     				validate_each_argument(each_value);
     				let i;
 
@@ -6075,24 +6033,12 @@ var app = (function () {
     	let mainCategories;
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('CategoryOverview', slots, []);
-
-    	onMount(() => {
-    		getAllCategories().then(x => {
-    			console.log(x);
-    			$$invalidate(0, categories = x);
-    		});
-
-    		selectedCategoryId$.subscribe(x => {
-    			selectedCategory = categories.find(c => c.id === x);
-    		});
-    	});
-
     	let categories = [];
     	let selectedCategory;
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<CategoryOverview> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<CategoryOverview> was created with unknown prop '${key}'`);
     	});
 
     	$$self.$capture_state = () => ({
@@ -6106,22 +6052,17 @@ var app = (function () {
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ('categories' in $$props) $$invalidate(0, categories = $$props.categories);
+    		if ('categories' in $$props) $$invalidate(1, categories = $$props.categories);
     		if ('selectedCategory' in $$props) selectedCategory = $$props.selectedCategory;
-    		if ('mainCategories' in $$props) $$invalidate(1, mainCategories = $$props.mainCategories);
+    		if ('mainCategories' in $$props) $$invalidate(0, mainCategories = $$props.mainCategories);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*categories*/ 1) {
-    			$$invalidate(1, mainCategories = categories.filter(x => !x.parentCategoryId));
-    		}
-    	};
-
-    	return [categories, mainCategories];
+    	$$invalidate(0, mainCategories = categories.filter(x => !x.parentCategoryId));
+    	return [mainCategories, categories];
     }
 
     class CategoryOverview extends SvelteComponentDev {
@@ -6352,7 +6293,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (27:4) {#each visibleItems as item}
+    // (29:4) {#each visibleItems as item}
     function create_each_block(ctx) {
     	let button;
     	let span;
@@ -6377,15 +6318,15 @@ var app = (function () {
     			t1 = space();
     			i = element("i");
     			attr_dev(span, "class", "svelte-1oc7b5j");
-    			add_location(span, file$3, 28, 12, 1077);
+    			add_location(span, file$3, 30, 12, 1118);
     			attr_dev(i, "class", i_class_value = "" + (null_to_empty(/*item*/ ctx[6].icon) + " svelte-1oc7b5j"));
-    			add_location(i, file$3, 29, 12, 1115);
+    			add_location(i, file$3, 31, 12, 1156);
 
     			attr_dev(button, "class", button_class_value = "" + (null_to_empty(/*selectedItemText*/ ctx[2] === /*item*/ ctx[6].name
     			? 'marked'
     			: '') + " svelte-1oc7b5j"));
 
-    			add_location(button, file$3, 27, 8, 957);
+    			add_location(button, file$3, 29, 8, 998);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -6424,14 +6365,14 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(27:4) {#each visibleItems as item}",
+    		source: "(29:4) {#each visibleItems as item}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (37:8) {:else}
+    // (39:8) {:else}
     function create_else_block(ctx) {
     	let i;
 
@@ -6439,7 +6380,7 @@ var app = (function () {
     		c: function create() {
     			i = element("i");
     			attr_dev(i, "class", "las la-angle-right svelte-1oc7b5j");
-    			add_location(i, file$3, 37, 12, 1331);
+    			add_location(i, file$3, 39, 12, 1372);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, i, anchor);
@@ -6453,14 +6394,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(37:8) {:else}",
+    		source: "(39:8) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (35:8) {#if expanded}
+    // (37:8) {#if expanded}
     function create_if_block$1(ctx) {
     	let i;
 
@@ -6468,7 +6409,7 @@ var app = (function () {
     		c: function create() {
     			i = element("i");
     			attr_dev(i, "class", "las la-angle-left svelte-1oc7b5j");
-    			add_location(i, file$3, 35, 12, 1267);
+    			add_location(i, file$3, 37, 12, 1308);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, i, anchor);
@@ -6482,7 +6423,7 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(35:8) {#if expanded}",
+    		source: "(37:8) {#if expanded}",
     		ctx
     	});
 
@@ -6524,9 +6465,9 @@ var app = (function () {
     			button = element("button");
     			if_block.c();
     			attr_dev(button, "class", "expander svelte-1oc7b5j");
-    			add_location(button, file$3, 33, 4, 1182);
+    			add_location(button, file$3, 35, 4, 1223);
     			attr_dev(nav, "class", nav_class_value = "" + (null_to_empty(/*expanded*/ ctx[0] ? 'expanded' : 'collapsed') + " svelte-1oc7b5j"));
-    			add_location(nav, file$3, 25, 0, 862);
+    			add_location(nav, file$3, 27, 0, 903);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6615,6 +6556,8 @@ var app = (function () {
 
     	onMount(() => {
     		userChangedEvent(user => {
+    			if (!user) return;
+
     			$$invalidate(1, visibleItems = components.filter(x => {
     				if (x.minPermission === null) return true;
     				return Object.keys(user.permissions).includes(x.minPermission);
@@ -6852,9 +6795,6 @@ var app = (function () {
     }
     const onCurrentPageChanged = currentPage$.subscribe;
     const goto = {
-        default: function () {
-            changePage('Login');
-        },
         login: function () {
             changePage('Login');
         },
@@ -6867,27 +6807,19 @@ var app = (function () {
     };
 
     /* src\components\commonUI\PageSelector.svelte generated by Svelte v3.55.1 */
+
+    const { console: console_1 } = globals;
     const file$1 = "src\\components\\commonUI\\PageSelector.svelte";
 
-    // (12:4) {#if selected}
+    // (13:4) {#if selected}
     function create_if_block(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
     	let current;
-    	const switch_instance_spread_levels = [/*selected*/ ctx[0].props];
     	var switch_value = /*selected*/ ctx[0].component;
 
     	function switch_props(ctx) {
-    		let switch_instance_props = {};
-
-    		for (let i = 0; i < switch_instance_spread_levels.length; i += 1) {
-    			switch_instance_props = assign(switch_instance_props, switch_instance_spread_levels[i]);
-    		}
-
-    		return {
-    			props: switch_instance_props,
-    			$$inline: true
-    		};
+    		return { $$inline: true };
     	}
 
     	if (switch_value) {
@@ -6905,10 +6837,6 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			const switch_instance_changes = (dirty & /*selected*/ 1)
-    			? get_spread_update(switch_instance_spread_levels, [get_spread_object(/*selected*/ ctx[0].props)])
-    			: {};
-
     			if (switch_value !== (switch_value = /*selected*/ ctx[0].component)) {
     				if (switch_instance) {
     					group_outros();
@@ -6929,8 +6857,6 @@ var app = (function () {
     				} else {
     					switch_instance = null;
     				}
-    			} else if (switch_value) {
-    				switch_instance.$set(switch_instance_changes);
     			}
     		},
     		i: function intro(local) {
@@ -6952,7 +6878,7 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(12:4) {#if selected}",
+    		source: "(13:4) {#if selected}",
     		ctx
     	});
 
@@ -6968,7 +6894,7 @@ var app = (function () {
     		c: function create() {
     			section = element("section");
     			if (if_block) if_block.c();
-    			add_location(section, file$1, 10, 0, 246);
+    			add_location(section, file$1, 11, 0, 284);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7034,6 +6960,7 @@ var app = (function () {
 
     	onMount(() => {
     		onCurrentPageChanged(x => {
+    			console.log('page changed');
     			$$invalidate(0, selected = x);
     		});
     	});
@@ -7042,7 +6969,7 @@ var app = (function () {
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<PageSelector> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<PageSelector> was created with unknown prop '${key}'`);
     	});
 
     	$$self.$capture_state = () => ({ onMount, pageService, selected });
@@ -7082,13 +7009,10 @@ var app = (function () {
     	let t1;
     	let main;
     	let pageselector;
-    	let t2;
-    	let apptest;
     	let current;
     	pageloader = new PageLoader({ $$inline: true });
     	appheader = new AppHeader({ $$inline: true });
     	pageselector = new PageSelector({ $$inline: true });
-    	apptest = new AppTest({ $$inline: true });
 
     	const block = {
     		c: function create() {
@@ -7098,8 +7022,6 @@ var app = (function () {
     			t1 = space();
     			main = element("main");
     			create_component(pageselector.$$.fragment);
-    			t2 = space();
-    			create_component(apptest.$$.fragment);
     			add_location(main, file, 9, 0, 379);
     		},
     		l: function claim(nodes) {
@@ -7112,8 +7034,6 @@ var app = (function () {
     			insert_dev(target, t1, anchor);
     			insert_dev(target, main, anchor);
     			mount_component(pageselector, main, null);
-    			insert_dev(target, t2, anchor);
-    			mount_component(apptest, target, anchor);
     			current = true;
     		},
     		p: noop$1,
@@ -7122,14 +7042,12 @@ var app = (function () {
     			transition_in(pageloader.$$.fragment, local);
     			transition_in(appheader.$$.fragment, local);
     			transition_in(pageselector.$$.fragment, local);
-    			transition_in(apptest.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
     			transition_out(pageloader.$$.fragment, local);
     			transition_out(appheader.$$.fragment, local);
     			transition_out(pageselector.$$.fragment, local);
-    			transition_out(apptest.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
@@ -7139,8 +7057,6 @@ var app = (function () {
     			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(main);
     			destroy_component(pageselector);
-    			if (detaching) detach_dev(t2);
-    			destroy_component(apptest, detaching);
     		}
     	};
 

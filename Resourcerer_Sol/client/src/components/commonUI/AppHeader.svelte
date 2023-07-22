@@ -8,9 +8,7 @@
     <h1>
         Resourcerer
     </h1>
-    <div>
-        <Notifications />
-    </div>
+    <Notifications />
     <button>Login</button>
 </header>
 
@@ -28,10 +26,6 @@
         margin: 0;
         padding: var(--padding);
         color: var(--color-white);
-    }
-
-    button {
-        padding: var(--padding);
     }
     
 </style>

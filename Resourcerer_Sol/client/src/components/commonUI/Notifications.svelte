@@ -74,12 +74,12 @@
 <style>
     section {
         padding: .2rem .2rem;
-        font-size: .8rem;
+        font-size: 1rem;
         display: flex;
         justify-content: space-between;
         transition: .3s;
         width: 50%;
-        height: 1rem;
+        height: 1.5rem;
     }
 
     .hidden {

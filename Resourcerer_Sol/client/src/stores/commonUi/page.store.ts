@@ -34,9 +34,6 @@ export function changePage(name: PageName) {
 export const onCurrentPageChanged = currentPage$.subscribe;
 
 export const goto = {
-    default: function() {
-        changePage('Login');
-    },
     login: function() {
         changePage('Login');
     },

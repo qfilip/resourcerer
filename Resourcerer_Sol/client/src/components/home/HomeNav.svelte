@@ -9,6 +9,8 @@
 
     onMount(() => {
         userChangedEvent(user => {
+            if(!user) return;
+            
             visibleItems = homenavStore.components.filter(x => {
                 if(x.minPermission === null) return true;
                 return Object.keys(user.permissions).includes(x.minPermission);

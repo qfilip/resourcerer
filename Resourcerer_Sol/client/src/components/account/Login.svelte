@@ -48,6 +48,7 @@
 <style>
     section {
         height: 80vh;
+        font-size: 2rem;
     }
 
     legend {
@@ -64,7 +65,7 @@
         margin-top: .2rem;
         width: 100%;
         text-align: center;
-        font-size: .7rem;
+        font-size: 1rem;
     }
 
     .flex {

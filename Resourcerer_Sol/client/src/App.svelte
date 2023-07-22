@@ -11,7 +11,7 @@
 <main>
     <PageSelector />
 </main>
-<AppTest />
+<!-- <AppTest /> -->
 
 <style>
 	:root {
