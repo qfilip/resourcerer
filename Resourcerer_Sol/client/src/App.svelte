@@ -5,13 +5,19 @@
     import PageSelector from "./components/commonUI/PageSelector.svelte";
     import { jwtChangedEvent } from "./stores/user.store";
     import { setInterceptor } from "./controllers/base.controller";
+    import { wakeUp } from "./stores/commonUi/sleep.store";
+
 
     onMount(() => {
         jwtChangedEvent(x => setInterceptor(x));
     });
+
+    function onClicked() {
+        wakeUp();
+    }
 </script>
 
-<div>
+<div on:click={onClicked} on:keyup={onClicked}>
     <PageLoader />
     <AppHeader />
     <main>

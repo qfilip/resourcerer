@@ -5873,12 +5873,27 @@ var app = (function () {
         }
     };
 
+    let sleepInterval;
+    const userActiveEvent$ = writable(true);
+    const userActiveEvent = userActiveEvent$.subscribe;
+    sleepInterval = setInterval(onLongSleep, 3000);
+    function wakeUp() {
+        userActiveEvent$.set(true);
+        clearInterval(sleepInterval);
+        sleepInterval = setInterval(onLongSleep, 3000);
+    }
+    function onLongSleep() {
+        userActiveEvent$.set(false);
+        clearInterval(sleepInterval);
+    }
+
     const key = 'rscr-user';
     const user$ = writable();
     const jwt$ = writable();
     let cacheControl;
     const userChangedEvent = user$.subscribe;
     const jwtChangedEvent = jwt$.subscribe;
+    userActiveEvent(x => x);
     checkUserLogged();
     function checkUserLogged() {
         const jwtString = window.localStorage.getItem(key);
@@ -7014,6 +7029,8 @@ var app = (function () {
     	let main;
     	let pageselector;
     	let current;
+    	let mounted;
+    	let dispose;
     	pageloader = new PageLoader({ $$inline: true });
     	appheader = new AppHeader({ $$inline: true });
     	pageselector = new PageSelector({ $$inline: true });
@@ -7027,8 +7044,8 @@ var app = (function () {
     			t1 = space();
     			main = element("main");
     			create_component(pageselector.$$.fragment);
-    			add_location(main, file, 14, 4, 508);
-    			add_location(div, file, 11, 0, 458);
+    			add_location(main, file, 18, 4, 649);
+    			add_location(div, file, 15, 0, 557);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7042,6 +7059,15 @@ var app = (function () {
     			append_dev(div, main);
     			mount_component(pageselector, main, null);
     			current = true;
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(div, "click", /*onClicked*/ ctx[0], false, false, false),
+    					listen_dev(div, "keyup", /*onClicked*/ ctx[0], false, false, false)
+    				];
+
+    				mounted = true;
+    			}
     		},
     		p: noop$1,
     		i: function intro(local) {
@@ -7062,6 +7088,8 @@ var app = (function () {
     			destroy_component(pageloader);
     			destroy_component(appheader);
     			destroy_component(pageselector);
+    			mounted = false;
+    			run_all(dispose);
     		}
     	};
 
@@ -7084,6 +7112,10 @@ var app = (function () {
     		jwtChangedEvent(x => setInterceptor(x));
     	});
 
+    	function onClicked() {
+    		wakeUp();
+    	}
+
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
@@ -7096,10 +7128,12 @@ var app = (function () {
     		PageLoader,
     		PageSelector,
     		jwtChangedEvent,
-    		setInterceptor
+    		setInterceptor,
+    		wakeUp,
+    		onClicked
     	});
 
-    	return [];
+    	return [onClicked];
     }
 
     class App extends SvelteComponentDev {

@@ -4,6 +4,7 @@ import { ePermissionSection } from "../interfaces/dtos/enums";
 import * as pageStore from './commonUi/page.store';
 import { addNotification } from "./commonUi/notification.store";
 import { eSeverity } from "../interfaces/enums/eSeverity";
+import * as sleepStore from "./commonUi/sleep.store";
 
 const key = 'rscr-user';
 
@@ -11,9 +12,12 @@ const user$ = writable<IAppUserDto>();
 const jwt$ = writable<string>();
 
 let cacheControl;
+let userActive = false;
 
 export const userChangedEvent = user$.subscribe;
 export const jwtChangedEvent = jwt$.subscribe;
+
+sleepStore.userActiveEvent(x => userActive = x);
 
 checkUserLogged();
 
@@ -41,7 +45,7 @@ export function trySetUser(jwt: string) {
         logout();
         return false;
     }
-    else if(sessionTimeLeft < 10 * 60 * 1000) {
+    else if(userActive && sessionTimeLeft < 10 * 60 * 1000) {
         // what if less than 10 mins left in session? Call refresh token
     }
     
