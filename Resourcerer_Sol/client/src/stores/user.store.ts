@@ -31,25 +31,23 @@ export function checkUserLogged() {
 }
 
 export function trySetUser(jwt: string) {
-    console.log('trySetUser()')
     const [header, body64String, footer] = jwt.split('.');
     
     const body = JSON.parse(atob(body64String));
     const name = body.sub;
     
     const jwtExpiration = new Date(1000 * body.exp).getTime();
-    console.log(new Date(1000 * body.exp));
     const now = new Date().getTime();
     
     const sessionTimeLeft = jwtExpiration - now
     
-    // if(sessionTimeLeft <= 0) {
-    //     logout();
-    //     return false;
-    // }
-    // else if(userActive && sessionTimeLeft < 10 * 60 * 1000) {
-    //     // what if less than 10 mins left in session? Call refresh token
-    // }
+    if(sessionTimeLeft <= 0) {
+        logout();
+        return false;
+    }
+    else if(userActive && sessionTimeLeft < 10 * 60 * 1000) {
+        // what if less than 10 mins left in session? Call refresh token
+    }
     
     let permissions: { [key:string]: number } = {};
     
@@ -68,8 +66,9 @@ export function trySetUser(jwt: string) {
     cacheControl = setInterval(() => {
         addNotification({text: 'Session expired', severity: eSeverity.Info});
         logout();
-    }, 30000);
+    }, sessionTimeLeft);
 
+    jwt$.set(jwt);
     user$.set({ 
         name: name,
         permissions: permissions

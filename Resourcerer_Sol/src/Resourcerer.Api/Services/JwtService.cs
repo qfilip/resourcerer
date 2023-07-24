@@ -20,8 +20,7 @@ public class JwtService
             AppStaticData.Jwt.Audience,
             claims,
             now,
-            // DateTime.UtcNow.AddMinutes(30),
-            now.AddMinutes(10),
+            now.AddMinutes(30),
             creadentials);
 
         var handler = new JwtSecurityTokenHandler();

@@ -1,26 +1,23 @@
 import axios, { AxiosError } from 'axios';
 import * as loaderService from '../stores/commonUi/loader.service';
-import * as userStore from '../stores/user.store';
 import { addNotification } from '../stores/commonUi/notification.store';
 import { eSeverity } from '../interfaces/enums/eSeverity';
 import type { INotification } from '../interfaces/models/INotification';
 
 const apiUrl = 'https://localhost:44387/api/1.0';
-let interceptor;
 
 export function setInterceptor(jwt) {
-    if (interceptor) {
-      axios.interceptors.request.eject(interceptor);
-    }
-
-    interceptor = axios.interceptors.request.use(
+    axios.interceptors.request.clear();
+    axios.interceptors.request.use(
       (config) => {
         loaderService.show();
+        console.log(config)
         config.url = apiUrl + config.url;
         config.headers.Authorization = `Bearer ${jwt}`;
         return config;
       },
       (error) => {
+        loaderService.hide();
         console.warn(error);
         return Promise.reject(error);
       }

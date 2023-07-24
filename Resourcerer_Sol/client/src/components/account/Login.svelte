@@ -7,7 +7,6 @@
     
     onMount(() => {
         userChangedEvent(x => {
-            console.log('user', x);
             if(!x) return;
             pageService.goto.home();
         });

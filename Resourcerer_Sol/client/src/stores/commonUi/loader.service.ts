@@ -25,6 +25,7 @@ export function update(message: string, progress: number) {
 
 export function hide() {
     callCount -= 1;
+    console.log(callCount);
     if(callCount === 0) {
         options$.set({
             open: false,
