@@ -5,9 +5,9 @@ using Resourcerer.Dtos;
 using Resourcerer.Utilities.Cryptography;
 using System.Text.Json;
 
-namespace Resourcerer.UnitTests.Utilities.Mocker;
+namespace Resourcerer.Logic.Commands.Mocks.Helpers;
 
-internal static partial class Mocker
+public static partial class Mocker
 {
     public static DateTime Now = new DateTime(2000, 1, 1);
     public static string MakeName() => $"test-{Guid.NewGuid().ToString("n").Substring(0, 6)}";
@@ -26,7 +26,8 @@ internal static partial class Mocker
         var user = MakeEntity(() => new AppUser
         {
             Name = MakeName(),
-            PasswordHash = Hasher.GetSha256Hash(password)
+            PasswordHash = Hasher.GetSha256Hash(password),
+            Permissions = JsonSerializer.Serialize(new Dictionary<string, int>())
         });
 
         if(setAdminPermissions)

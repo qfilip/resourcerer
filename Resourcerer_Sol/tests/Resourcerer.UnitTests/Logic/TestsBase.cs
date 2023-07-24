@@ -6,6 +6,8 @@ using Resourcerer.DataAccess.Enums;
 using Resourcerer.Logic.Queries.Items;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Mocker;
+using Resourcerer.UnitTests.Utilities.TestDatabaseMocks;
+using System.Text.Json;
 
 namespace Resourcerer.UnitTests.Logic;
 
@@ -36,5 +38,12 @@ public class TestsBase
 
         var handler = new GetItemStatistics.Handler(ctx);
         handler.Handle((sand.Id, now)).GetAwaiter().GetResult();
+    }
+
+    [Fact]
+    public void SeedCocktailDb()
+    {
+        var seed = CocktailDbMocker.GetSeed();
+        var json = JsonSerializer.Serialize(seed);
     }
 }

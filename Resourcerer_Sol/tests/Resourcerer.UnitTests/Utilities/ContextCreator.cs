@@ -43,7 +43,7 @@ public class ContextCreator: IDisposable
             context.Excerpts.AddRange(dbData.Excerpts!);
             context.UnitsOfMeasure.AddRange(dbData.UnitsOfMeasure!);
             context.Prices.AddRange(dbData.Prices!);
-            context.Items.AddRange(dbData.Elements!);
+            context.Items.AddRange(dbData.Items!);
 
             context.SaveChanges();
         }
