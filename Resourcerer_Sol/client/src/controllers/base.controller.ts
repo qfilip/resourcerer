@@ -6,9 +6,12 @@ import type { INotification } from '../interfaces/models/INotification';
 
 const apiUrl = 'https://localhost:44387/api/1.0';
 
+const axi = axios.create();
+const axiSilent = axios.create(); // no page loader
+
 export function setInterceptor(jwt) {
-    axios.interceptors.request.clear();
-    axios.interceptors.request.use(
+  axi.interceptors.request.clear();
+  axi.interceptors.request.use(
       (config) => {
         loaderService.show();
         config.url = apiUrl + config.url;
@@ -21,9 +24,22 @@ export function setInterceptor(jwt) {
         return Promise.reject(error);
       }
     );
+
+    axiSilent.interceptors.request.clear();
+    axiSilent.interceptors.request.use(
+      (config) => {
+        config.url = apiUrl + config.url;
+        config.headers.Authorization = `Bearer ${jwt}`;
+        return config;
+      },
+      (error) => {
+        console.warn(error);
+        return Promise.reject(error);
+      }
+    );
 }
 
-axios.interceptors.response.use((response) => {
+axi.interceptors.response.use((response) => {
   loaderService.hide();
   return response;
 }, (error) => {
@@ -32,7 +48,15 @@ axios.interceptors.response.use((response) => {
   return Promise.reject(error);
 });
 
-export const http = axios;
+axiSilent.interceptors.response.use((response) => {
+  return response;
+}, (error) => {
+  handleErrorResponse(error);
+  return Promise.reject(error);
+});
+
+export const http = axi;
+export const httpSilent = axiSilent;
 
 function handleErrorResponse(error: AxiosError) {
   if (error.response.status == 404) {

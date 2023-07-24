@@ -1,6 +1,6 @@
 import type { IAppUserDto } from "../interfaces/dtos/interfaces";
 import * as userStore from "../stores/user.store";
-import { http } from './base.controller';
+import { http, httpSilent } from './base.controller';
 
 
 export function register(x: IAppUserDto, onRegisterSuccess: () => void) {
@@ -22,7 +22,7 @@ export function login(x: IAppUserDto, onLoginSuccess: () => void) {
 }
 
 export function refreshSession() {
-    http.get('/users/refresh-session')
+    httpSilent.get('/users/refresh-session')
     .then(jwt => {
         userStore.trySetUser(jwt.data);
     })
