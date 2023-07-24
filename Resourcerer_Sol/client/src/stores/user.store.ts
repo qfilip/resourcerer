@@ -12,6 +12,7 @@ const user$ = writable<IAppUserDto>();
 const jwt$ = writable<string>();
 
 let cacheControl;
+let countInterval;
 let userActive = false;
 
 export const userChangedEvent = user$.subscribe;
@@ -31,6 +32,8 @@ export function checkUserLogged() {
 }
 
 export function trySetUser(jwt: string) {
+    clearInterval(countInterval);
+    countInterval = setInterval(() => console.log('passed'), 3000);
     const [header, body64String, footer] = jwt.split('.');
     
     const body = JSON.parse(atob(body64String));
@@ -40,13 +43,15 @@ export function trySetUser(jwt: string) {
     const now = new Date().getTime();
     
     const sessionTimeLeft = jwtExpiration - now
+    const sessionDurationFifth = jwtExpiration / 5;
     
     if(sessionTimeLeft <= 0) {
         logout();
         return false;
     }
-    else if(userActive && sessionTimeLeft < 10 * 60 * 1000) {
+    else if(userActive && sessionTimeLeft < sessionDurationFifth) {
         // what if less than 10 mins left in session? Call refresh token
+        console.log('call refresh');
     }
     
     let permissions: { [key:string]: number } = {};

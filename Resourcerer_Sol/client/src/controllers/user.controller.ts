@@ -20,3 +20,11 @@ export function login(x: IAppUserDto, onLoginSuccess: () => void) {
     })
     .catch(err => console.warn(err));
 }
+
+export function refreshSession() {
+    http.get('/users/refresh-session')
+    .then(jwt => {
+        userStore.trySetUser(jwt.data);
+    })
+    .catch(err => console.warn(err));
+}

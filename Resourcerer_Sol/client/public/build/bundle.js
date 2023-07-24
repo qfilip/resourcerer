@@ -3874,10 +3874,18 @@ var app = (function () {
         })
             .catch(err => console.warn(err));
     }
+    function refreshSession() {
+        http.get('/users/refresh-session')
+            .then(jwt => {
+            trySetUser(jwt.data);
+        })
+            .catch(err => console.warn(err));
+    }
 
     var userController = /*#__PURE__*/Object.freeze({
         __proto__: null,
         login: login,
+        refreshSession: refreshSession,
         register: register
     });
 
@@ -5899,9 +5907,11 @@ var app = (function () {
     const user$ = writable();
     const jwt$ = writable();
     let cacheControl;
+    let countInterval;
+    let userActive = false;
     const userChangedEvent = user$.subscribe;
     const jwtChangedEvent = jwt$.subscribe;
-    userActiveEvent(x => x);
+    userActiveEvent(x => userActive = x);
     checkUserLogged();
     function checkUserLogged() {
         const jwtString = window.localStorage.getItem(key);
@@ -5911,15 +5921,22 @@ var app = (function () {
         return trySetUser(jwtString);
     }
     function trySetUser(jwt) {
+        clearInterval(countInterval);
+        countInterval = setInterval(() => console.log('passed'), 3000);
         const [header, body64String, footer] = jwt.split('.');
         const body = JSON.parse(atob(body64String));
         const name = body.sub;
         const jwtExpiration = new Date(1000 * body.exp).getTime();
         const now = new Date().getTime();
         const sessionTimeLeft = jwtExpiration - now;
+        const sessionDurationFifth = jwtExpiration / 5;
         if (sessionTimeLeft <= 0) {
             logout();
             return false;
+        }
+        else if (userActive && sessionTimeLeft < sessionDurationFifth) {
+            // what if less than 10 mins left in session? Call refresh token
+            console.log('call refresh');
         }
         let permissions = {};
         for (let member in ePermissionSection) {

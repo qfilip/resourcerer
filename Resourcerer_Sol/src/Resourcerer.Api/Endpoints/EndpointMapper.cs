@@ -13,9 +13,9 @@ public static class EndpointMapper
 
     public static void AddAuthorization(
         RouteHandlerBuilder route,
-        List<(ePermissionSection claimType, ePermission[] claimValues)> claims)
+        List<(ePermissionSection claimType, ePermission[] claimValues)>? claims = null)
     {
-        if (true)
+        if (claims != null)
         {
             route.RequireAuthorization(cfg =>
                 claims.ForEach(c =>
@@ -24,6 +24,10 @@ public static class EndpointMapper
                     var cValues = c.claimValues.Select(x => x.ToString());
                     cfg.RequireClaim(cType, cValues);
                 }));
+        }
+        else
+        {
+            route.RequireAuthorization(cfg => cfg.RequireAuthenticatedUser());
         }
     }
 
