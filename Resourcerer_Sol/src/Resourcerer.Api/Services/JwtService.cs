@@ -13,13 +13,15 @@ public class JwtService
         claims.Add(new Claim(JwtRegisteredClaimNames.Sub, dto.Name!));
         
         var creadentials = new SigningCredentials(AppStaticData.Jwt.Key, SecurityAlgorithms.HmacSha256);
+        var now = DateTime.UtcNow;
 
         var token = new JwtSecurityToken(
             AppStaticData.Jwt.Issuer,
             AppStaticData.Jwt.Audience,
             claims,
-            DateTime.UtcNow,
-            DateTime.UtcNow.AddMinutes(30),
+            now,
+            // DateTime.UtcNow.AddMinutes(30),
+            now.AddSeconds(5),
             creadentials);
 
         var handler = new JwtSecurityTokenHandler();

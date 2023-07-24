@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -102,28 +103,26 @@ public static partial class ServiceRegistry
 
     private static void AddAuth(this IServiceCollection services)
     {
-        var jwtScheme = "jwt";
-
-        services.AddAuthentication(jwtScheme)
-            .AddJwtBearer(jwtScheme, o =>
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
+        {
+            o.TokenValidationParameters = new TokenValidationParameters
             {
-                o.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = AppStaticData.Jwt.Issuer,
-                    ValidAudience = AppStaticData.Jwt.Audience,
-                    IssuerSigningKey = AppStaticData.Jwt.Key,
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = false,
-                    ValidateIssuerSigningKey = true
-                };
-            });
+                ValidIssuer = AppStaticData.Jwt.Issuer,
+                ValidAudience = AppStaticData.Jwt.Audience,
+                IssuerSigningKey = AppStaticData.Jwt.Key,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true
+            };
+        });
 
         services.AddAuthorization(cfg =>
         {
             cfg.AddPolicy(AppStaticData.AuthorizationPolicy.Jwt, b =>
                 b.RequireAuthenticatedUser()
-                    .AddAuthenticationSchemes(jwtScheme));
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme));
         });
     }
 }

@@ -1,8 +1,7 @@
-import type ICategoryDto from '../interfaces/dtos/ICategoryDto';
-import * as base from './base.controller';
+import { http } from './base.controller';
 
 export async function getAllCategories() {
-    const data = await base.sendGet('/categories/all', 'Fetching categories...');
-    return data as ICategoryDto[];
+    return http.get('/categories')
+    .then(x => console.log(x.data));
 }
 

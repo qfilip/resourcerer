@@ -15,7 +15,7 @@ public static class EndpointMapper
         RouteHandlerBuilder route,
         List<(ePermissionSection claimType, ePermission[] claimValues)> claims)
     {
-        if (false)
+        if (true)
         {
             route.RequireAuthorization(cfg =>
                 claims.ForEach(c =>

@@ -5,17 +5,13 @@
     import * as categoryController from "../../controllers/category.controller";
     import type { ICategoryDto } from '../../interfaces/dtos/interfaces';
 
-    // onMount(() => {
-    //     categoryController.getAllCategories()
-    //         .then(x => {
-    //             console.log(x);
-    //             categories = x;
-    //         });
+    onMount(() => {
+        categoryController.getAllCategories();
 
-    //     categoryService.selectedCategoryId$.subscribe(x => {
-    //         selectedCategory = categories.find(c => c.id === x);
-    //     });
-    // });
+        categoryService.selectedCategoryId$.subscribe(x => {
+            selectedCategory = categories.find(c => c.id === x);
+        });
+    });
     let categories: ICategoryDto[] = [];
     let selectedCategory;
     $: mainCategories = categories.filter(x => !x.parentCategoryId);

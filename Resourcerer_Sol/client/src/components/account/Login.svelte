@@ -7,6 +7,7 @@
     
     onMount(() => {
         userChangedEvent(x => {
+            console.log('user', x);
             if(!x) return;
             pageService.goto.home();
         });
@@ -19,7 +20,6 @@
     } as IAppUserDto;
 
     function handleSubmit() {
-        debugger
         userController.login(dto, () => pageService.goto.home());
     }
 
