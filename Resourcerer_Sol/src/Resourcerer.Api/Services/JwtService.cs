@@ -21,7 +21,7 @@ public class JwtService
             claims,
             now,
             // DateTime.UtcNow.AddMinutes(30),
-            now.AddSeconds(5),
+            now.AddMinutes(10),
             creadentials);
 
         var handler = new JwtSecurityTokenHandler();

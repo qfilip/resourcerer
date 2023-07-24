@@ -35,6 +35,7 @@ public class Webapi
         app.UseCors();
 
         app.UseAuthentication();
+        app.UseRouting();
         app.UseAuthorization();
 
         app.UseMiddleware<AppHttpMiddleware>();

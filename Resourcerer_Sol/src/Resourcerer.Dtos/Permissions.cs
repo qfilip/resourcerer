@@ -63,9 +63,17 @@ public class Permissions
             .Where(x => AllSections.Contains(x.Key))
             .ToList();
 
-        return setPermissions
-            .Select(x => new Claim(x.Key, x.Value.ToString()))
-            .ToList();
+        var claims = new List<Claim>();
+        setPermissions.ForEach(x =>
+        {
+            AllPermissions.ForEach(p =>
+            {
+                if (((int)p & x.Value) > 0)
+                    claims.Add(new Claim(x.Key.ToString(), p.ToString()));
+            });
+        });
+        
+        return claims;
     }
 
     public static Dictionary<string, int> GetPermissionDictionaryFromClaims(List<Claim> claims)
