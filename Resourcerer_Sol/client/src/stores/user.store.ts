@@ -4,54 +4,33 @@ import { ePermissionSection } from "../interfaces/dtos/enums";
 import * as pageStore from './commonUi/page.store';
 import { addNotification } from "./commonUi/notification.store";
 import { eSeverity } from "../interfaces/enums/eSeverity";
-import * as sleepStore from "./commonUi/sleep.store";
+import { refreshSession } from "../controllers/user.controller";
 
 const key = 'rscr-user';
 
-const user$ = writable<IAppUserDto>();
 const jwt$ = writable<string>();
+const user$ = writable<IAppUserDto>();
 
 let cacheControl;
-let countInterval;
-let userActive = false;
 
 export const userChangedEvent = user$.subscribe;
 export const jwtChangedEvent = jwt$.subscribe;
 
-sleepStore.userActiveEvent(x => userActive = x);
-
-checkUserLogged();
-
-export function checkUserLogged() {
-    const jwtString = window.localStorage.getItem(key);
-    if(!jwtString) {
-        return false;
-    }
-
-    return trySetUser(jwtString);
-}
+let jwt = window.localStorage.getItem(key);
+if(jwt) trySetUser(jwt as string);
 
 export function trySetUser(jwt: string) {
-    clearInterval(countInterval);
-    countInterval = setInterval(() => console.log('passed'), 3000);
-    const [header, body64String, footer] = jwt.split('.');
-    
-    const body = JSON.parse(atob(body64String));
+    const body = getJwtBody(jwt);
     const name = body.sub;
     
-    const jwtExpiration = new Date(1000 * body.exp).getTime();
+    const jwtExpiration = getJwtExpiration(body);
     const now = new Date().getTime();
     
     const sessionTimeLeft = jwtExpiration - now
-    const sessionDurationFifth = jwtExpiration / 5;
     
     if(sessionTimeLeft <= 0) {
         logout();
-        return false;
-    }
-    else if(userActive && sessionTimeLeft < sessionDurationFifth) {
-        // what if less than 10 mins left in session? Call refresh token
-        console.log('call refresh');
+        return;
     }
     
     let permissions: { [key:string]: number } = {};
@@ -78,12 +57,24 @@ export function trySetUser(jwt: string) {
         name: name,
         permissions: permissions
     } as IAppUserDto);
-
-    return true;
 }
 
 export function logout() {
+    jwt$.set(null);
+    user$.set(null);
     window.localStorage.removeItem(key);
     pageStore.goto.login();
-    user$.set(null);
+}
+
+export function refreshToken() {
+    refreshSession()
+}
+
+export function getJwtBody(jwt: string) {
+    const [header, body64String, footer] = jwt.split('.');
+    return JSON.parse(atob(body64String)) as { [key: string]: any };
+}
+
+export function getJwtExpiration(jwtBody: { [key: string]: any }) {
+    return new Date(1000 * jwtBody.exp).getTime();
 }

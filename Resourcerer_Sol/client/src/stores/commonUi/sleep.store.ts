@@ -1,19 +1,34 @@
-import { writable } from "svelte/store";
+import { getJwtBody, getJwtExpiration, jwtChangedEvent, logout, refreshToken } from "../user.store";
 
+let jwtExists = false;
+let userActive = true;
 let sleepInterval;
+let sessionDuration: number;
 
-const userActiveEvent$ = writable<boolean>(true);
-export const userActiveEvent = userActiveEvent$.subscribe;
+jwtChangedEvent(jwt => {
+    if(!jwt) {
+        jwtExists = false;
+        return;
+    };
+    
+    jwtExists = true;
+    userActive = true;
+    const jwtBody = getJwtBody(jwt);
+    sessionDuration = getJwtExpiration(jwtBody);
+    const now = new Date().getTime();
 
-sleepInterval = setInterval(onLongSleep, 3000);
+    clearInterval(sleepInterval);
+    sleepInterval = setInterval(() => onLongSleep(), (sessionDuration - now) / 2);
+});
 
 export function wakeUp() {
-    userActiveEvent$.set(true);
-    clearInterval(sleepInterval);
-    sleepInterval = setInterval(onLongSleep, 3000);
+    if(!userActive && jwtExists) {
+        refreshToken();
+    }
 }
 
 function onLongSleep() {
-    userActiveEvent$.set(false);
+    console.log('user sleeps')
+    userActive = false;
     clearInterval(sleepInterval);
 }

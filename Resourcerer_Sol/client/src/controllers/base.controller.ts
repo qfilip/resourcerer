@@ -11,7 +11,6 @@ export function setInterceptor(jwt) {
     axios.interceptors.request.use(
       (config) => {
         loaderService.show();
-        console.log(config)
         config.url = apiUrl + config.url;
         config.headers.Authorization = `Bearer ${jwt}`;
         return config;

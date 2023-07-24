@@ -7,7 +7,6 @@
     import { setInterceptor } from "./controllers/base.controller";
     import { wakeUp } from "./stores/commonUi/sleep.store";
 
-
     onMount(() => {
         jwtChangedEvent(x => setInterceptor(x));
     });
