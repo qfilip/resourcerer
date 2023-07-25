@@ -21,11 +21,31 @@ public static class SeedMockData
 
             // categories
             var bar = M.MockCategory(ctx, x => x.Name = "Bar");
-            var spirits = M.MockCategory(ctx, x => x.Name = "Spirits");
-            var ales = M.MockCategory(ctx, x => x.Name = "Ales");
-            var waters = M.MockCategory(ctx, x => x.Name = "Waters");
-            var veggies = M.MockCategory(ctx, x => x.Name = "Veggies");
-            var cocktails = M.MockCategory(ctx, x => x.Name = "Cocktails");
+            var spirits = M.MockCategory(ctx, x =>
+            {
+                x.Name = "Spirits";
+                x.ParentCategoryId = bar.Id;
+            });
+            var ales = M.MockCategory(ctx, x =>
+            {
+                x.Name = "Ales";
+                x.ParentCategoryId = bar.Id;
+            });
+            var waters = M.MockCategory(ctx, x =>
+            {
+                x.Name = "Waters";
+                x.ParentCategoryId = bar.Id;
+            });
+            var veggies = M.MockCategory(ctx, x =>
+            {
+                x.Name = "Veggies";
+                x.ParentCategoryId = bar.Id;
+            });
+            var cocktails = M.MockCategory(ctx, x =>
+            {
+                x.Name = "Cocktails";
+                x.ParentCategoryId = bar.Id;
+            });
             var tikiCocktails = M.MockCategory(ctx, x =>
             {
                 x.Name = "Tiki";
@@ -103,16 +123,22 @@ public static class SeedMockData
             }, 7, 1);
 
             // excerpts
-            var moscowMuleExcerpts = M.MockExcerpts(ctx, moscowMule, new (Item, double)[] {
-            (vodka, 0.005d), (gingerAle, 0.003d), (lime, 0.025d)
-        });
-            var darkNStormyExcerpts = M.MockExcerpts(ctx, darkNstormy, new (Item, double)[] {
-            (rum, 0.005d), (gingerAle, 0.003d), (lime, 0.025d)
-        });
-            var ginFizzExcerpts = M.MockExcerpts(ctx, ginFizz, new (Item, double)[] {
-            (gin, 0.005d), (sparklingWater, 0.003d), (lime, 0.025d)
-        });
+            var moscowMuleExcerpts = M.MockExcerpts(ctx, moscowMule, new (Item, double)[]
+            {
+                (vodka, 0.005d), (gingerAle, 0.003d), (lime, 0.025d)
+            });
+            var darkNStormyExcerpts = M.MockExcerpts(ctx, darkNstormy, new (Item, double)[]
+            {
+                (rum, 0.005d), (gingerAle, 0.003d), (lime, 0.025d)
+            });
+            var ginFizzExcerpts = M.MockExcerpts(ctx, ginFizz, new (Item, double)[]
+            {
+                (gin, 0.005d), (sparklingWater, 0.003d), (lime, 0.025d)
+            });
 
+            // remove generated extras
+            ctx.Categories.RemoveRange(ctx.Categories.Where(x => x.Name!.StartsWith("test")).ToArray());
+            
             await ctx.BaseSaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());

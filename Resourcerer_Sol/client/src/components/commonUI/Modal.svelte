@@ -1,33 +1,30 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import * as modalService from '../../stores/commonUi/modal.service';
+    import * as modalStore from '../../stores/commonUi/modal.store';
     import type { IModalOptions } from "../../interfaces/models/IModalOptions";
 
     let dialog: HTMLDialogElement;
-    let options: IModalOptions = modalService.defaultOptions;
+    let options: IModalOptions = modalStore.defaultOptions;
     
     onMount(() => {
-        modalService.onOpen(x => {
-            if(!x.open) return;
-
-            options.buttons = x.buttons.length > 0 ?
-                x.buttons :
-                [{ text: 'Close', onClick: closeDialog }]
-            
+        modalStore.onOpen(x => {
+            if(x.open) {
+                options = x;
                 dialog.showModal();
+            }
+            else {
+                dialog.close();
+            }
         });
     })
-
-    function closeDialog() {
-        dialog.close();
-    }
 </script>
 
 <dialog bind:this={dialog}>
+    <h4>{options.header}</h4>
     <slot name="content"></slot>
     <div class="dialog-footer">
         {#each options.buttons as btn}
-            <button on:click={btn.onClick}>{ btn.text }</button>
+            <button on:click={() => btn.onClick()}>{ btn.text }</button>
         {/each}
     </div>
 </dialog>

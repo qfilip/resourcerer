@@ -1,20 +1,31 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import CategoryDropdown from './CategoryDropdown.svelte';
-    import * as categoryService from "../../stores/category.service";
+    import * as categoryStore from "../../stores/category.store";
+    import * as modalStore from "../../stores/commonUi/modal.store";
     import * as categoryController from "../../controllers/category.controller";
     import type { ICategoryDto } from '../../interfaces/dtos/interfaces';
+    import type { IModalOptions } from '../../interfaces/models/IModalOptions';
 
     onMount(() => {
-        categoryController.getAllCategories();
+        categoryController.getAllCategories()
+            .then(xs => categories = xs);
 
-        categoryService.selectedCategoryId$.subscribe(x => {
+            categoryStore.selectedCategoryId$.subscribe(x => {
             selectedCategory = categories.find(c => c.id === x);
         });
     });
+
     let categories: ICategoryDto[] = [];
     let selectedCategory;
     $: mainCategories = categories.filter(x => !x.parentCategoryId);
+
+    function deleteCategory() {
+        console.log(selectedCategory.name);
+        modalStore.open({
+            header: `Delete category ${selectedCategory.name}`,
+        } as IModalOptions, () => console.log(selectedCategory.id));
+    }
 </script>
 
 <h2>
@@ -36,7 +47,7 @@
         <button>
             <i class="las la-chart-line"></i>
         </button>
-        <button>
+        <button on:click={deleteCategory}>
             <i class="las la-trash"></i>
         </button>
     </div>

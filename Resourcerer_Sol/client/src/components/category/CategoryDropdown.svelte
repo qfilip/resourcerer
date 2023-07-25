@@ -1,25 +1,25 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import * as categoryService from "../../stores/category.service";
+    import * as categoryStore from "../../stores/category.store";
     import type { ICategoryDto } from "../../interfaces/dtos/interfaces";
 
     export let category: ICategoryDto;
     export let allCategories: ICategoryDto[];
 
     onMount(() => {
-        categoryService.selectedCategoryId$.subscribe(x => {
+        categoryStore.selectedCategoryId$.subscribe(x => {
             selectedCategoryId = x;
         });
     });
 
 
-    let expanded = true;
+    let expanded = false;
     let selectedCategoryId = '';
     let childCategories = allCategories.filter(x => x.parentCategoryId === category.id);
 
     function toggleExpandAndSelect() {
         expanded = !expanded;
-        categoryService.selectedCategoryId$.set(category.id);
+        categoryStore.selectedCategoryId$.set(category.id);
     }
 </script>
 

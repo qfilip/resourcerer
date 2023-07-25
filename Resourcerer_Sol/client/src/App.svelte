@@ -6,6 +6,7 @@
     import { jwtChangedEvent } from "./stores/user.store";
     import { setInterceptor } from "./controllers/base.controller";
     import { wakeUp } from "./stores/commonUi/sleep.store";
+    import Modal from "./components/commonUI/Modal.svelte";
 
     onMount(() => {
         jwtChangedEvent(x => setInterceptor(x));
@@ -19,6 +20,7 @@
 <div on:click={onClicked} on:keyup={onClicked}>
     <PageLoader />
     <AppHeader />
+    <Modal />
     <main>
         <PageSelector />
     </main>
