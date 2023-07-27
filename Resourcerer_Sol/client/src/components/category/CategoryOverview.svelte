@@ -21,7 +21,6 @@
     $: mainCategories = categories.filter(x => !x.parentCategoryId);
 
     function deleteCategory() {
-        console.log(selectedCategory.name);
         modalStore.open({
             header: `Delete category ${selectedCategory.name}`,
         } as IModalOptions, () => console.log(selectedCategory.id));

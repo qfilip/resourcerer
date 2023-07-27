@@ -2,6 +2,11 @@ import type { IAppUserDto } from "../interfaces/dtos/interfaces";
 import * as userStore from "../stores/user.store";
 import { http, httpSilent } from './base.controller';
 
+export function getAll() {
+    return http.get('/users/')
+    .then(xs => xs.data as IAppUserDto[])
+    .catch(err => console.warn(err));
+}
 
 export function register(x: IAppUserDto, onRegisterSuccess: () => void) {
     http.post('/users/register', x)

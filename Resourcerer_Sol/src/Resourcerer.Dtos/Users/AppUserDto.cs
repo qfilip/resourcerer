@@ -1,8 +1,7 @@
 ﻿using FluentValidation;
-using System.Security.Claims;
 
 namespace Resourcerer.Dtos;
-public class AppUserDto : BaseDto<AppUserDto>
+public class AppUserDto : EntityDto<AppUserDto>
 {
     public string? Name { get; set; }
     public string? Password { get; set; }

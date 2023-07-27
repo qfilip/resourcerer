@@ -6,6 +6,7 @@ import CategoryOverview from '../../components/category/CategoryOverview.svelte'
 import ElementList from '../../components/element/ElementList.svelte';
 import { writable } from "svelte/store";
 import type { HomeComponentName } from "../../interfaces/types/HomeComponentName";
+import UserList from "../../components/user/UserList.svelte";
 
 export const components: IHomeComponent[] = [
     { 
@@ -20,12 +21,12 @@ export const components: IHomeComponent[] = [
         minPermission: ePermissionSection[ePermissionSection.Element],
         icon: 'las la-vial'
     },
-    // { 
-    //     name: 'Users',
-    //     component: Register,
-    //     minPermission: ePermissionSection[ePermissionSection.User],
-    //     icon: 'las la-users'
-    // },
+    { 
+        name: 'Users',
+        component: UserList,
+        minPermission: ePermissionSection[ePermissionSection.User],
+        icon: 'las la-users'
+    },
     { 
         name: 'Settings',
         component: Settings,
