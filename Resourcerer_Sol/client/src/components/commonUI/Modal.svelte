@@ -33,11 +33,26 @@
     dialog {
         padding: var(--padding);
         width: 30%;
+        min-height: 5rem;
+        border: .15rem ridge var(--color-red);
+        position: relative;
+    }
+
+    h4 {
+        margin: 0;
     }
 
     .dialog-footer {
+        padding: var(--padding);
+        width: 95%;
+        position: absolute;
+        bottom: 0;
         display: flex;
         justify-content: flex-end;
         align-items: center;
+    }
+
+    button {
+        margin-left: .5rem;
     }
 </style>
