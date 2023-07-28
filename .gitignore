@@ -4,7 +4,7 @@ bin/
 debug/
 obj/
 /obj/
-builid/
+build/
 node_modules/
 
 # compiled output
