@@ -16,13 +16,16 @@ public class GetAllUsers
 
         public async Task<HandlerResult<AppUserDto[]>> Handle(Unit _)
         {
-            var users = await _appDbContext.AppUsers.ToArrayAsync();
+            var users = await _appDbContext.AppUsers
+                .IgnoreQueryFilters()
+                .ToArrayAsync();
 
             var dtos = users.Select(x => new AppUserDto
             {
                 Id = x.Id,
                 Name = x.Name,
-                Permissions = Permissions.GetPermissionDictFromString(x.Permissions!)
+                Permissions = Permissions.GetPermissionDictFromString(x.Permissions!),
+                EntityStatus = x.EntityStatus
             })
             .ToArray();
 
