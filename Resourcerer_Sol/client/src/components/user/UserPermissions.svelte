@@ -5,12 +5,12 @@
 
     export let user: IAppUserDto;
 
-    let allPermissions = getAllPermissions();
     let lookup: { [key: string]: { sectionIdx: number,  permissionMap: { [key: string]: number } } } = {};
+    let allPermissions = getAllPermissions();
 
     function getAllPermissions() {
         lookup = {};
-        
+
         return getEnumKeys(ePermissionSection).map((s, si) => {
             lookup[s] = {
                 sectionIdx: si,
@@ -32,13 +32,17 @@
     $: {
         if(user) {
             const sections = Object.keys(user.permissions);
-            const permissionKeys = getEnumKeys(ePermission);
+            const permissions = getEnumKeys(ePermission);
             
-            sections.map(s => {
-                console.log(s);
+            sections.forEach(s => {
                 const permissionLevel = user.permissions[s];
-                permissionKeys.forEach(k => {
-                    console.log(ePermission[k] & permissionLevel);
+                permissions.forEach(p => {
+                    if((ePermission[p] & permissionLevel) > 0) {
+                        const sGroup = lookup[s];
+                        const pIdx = sGroup.permissionMap[p];
+
+                        allPermissions[sGroup.sectionIdx].permissions[pIdx].hasPermission = true;
+                    }
                 });
             });
         
