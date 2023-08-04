@@ -31,11 +31,13 @@
 
     $: {
         if(user) {
-            const sections = Object.keys(user.permissions);
+            const sections = getEnumKeys(ePermissionSection);
             const permissions = getEnumKeys(ePermission);
             
             sections.forEach(s => {
                 const permissionLevel = user.permissions[s];
+                if(!permissionLevel) return;
+                
                 permissions.forEach(p => {
                     if((ePermission[p] & permissionLevel) > 0) {
                         const sGroup = lookup[s];
