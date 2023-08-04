@@ -15,7 +15,7 @@
         selectedUser = users.find(x => x.id === userId);
         if(!selectedUser) return;
 
-        controller.getUser(userId).then(x => console.log(x));
+        controller.getUser(userId).then();
     }
 </script>
 
