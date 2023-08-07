@@ -1,4 +1,4 @@
-import type { IAppUserDto } from "../interfaces/dtos/interfaces";
+import type { IAppUserDto, ISetUserPermissionsDto } from "../interfaces/dtos/interfaces";
 import * as userStore from "../stores/user.store";
 import { http, httpSilent } from './base.controller';
 
@@ -21,6 +21,12 @@ export function register(x: IAppUserDto, onRegisterSuccess: () => void) {
         onRegisterSuccess();
     })
     .catch(err => console.warn(err));
+}
+
+export function setPermissions(x: ISetUserPermissionsDto) {
+    http.post('/users/set-permissions', x)
+        .then(x => x)
+        .catch(err => console.warn(err));
 }
 
 export function login(x: IAppUserDto, onLoginSuccess: () => void) {

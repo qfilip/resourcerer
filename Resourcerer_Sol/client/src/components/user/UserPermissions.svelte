@@ -1,7 +1,8 @@
 <script lang="ts">
+    import { setPermissions } from "../../controllers/user.controller";
     import { getEnumKeys } from "../../functions/enums";
     import { ePermission, ePermissionSection } from "../../interfaces/dtos/enums";
-    import type { IAppUserDto } from "../../interfaces/dtos/interfaces";
+    import type { IAppUserDto, ISetUserPermissionsDto } from "../../interfaces/dtos/interfaces";
 
     export let user: IAppUserDto;
 
@@ -41,7 +42,12 @@
             newPermissions[x.section] = permissionLevel;
         });
 
-        // call api
+        const dto: ISetUserPermissionsDto = {
+            userId: user.id,
+            permissions: newPermissions
+        };
+
+        setPermissions(dto);
     }
 
     function togglePermission(p: { permission: string, hasPermission: boolean}) {
