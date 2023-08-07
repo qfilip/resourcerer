@@ -29,8 +29,28 @@
         });
     }
 
+    function updatePermissions() {
+        let newPermissions: { [key: string]: number } = {}
+        
+        allPermissions.forEach(x => {
+            const permissionLevel: number = x.permissions
+                .filter(p => p.hasPermission)
+                .map(p => ePermission[p.permission])
+                .reduce((acc, x) => acc | x, 0);
+
+            newPermissions[x.section] = permissionLevel;
+        });
+
+        // call api
+    }
+
+    function togglePermission(p: { permission: string, hasPermission: boolean}) {
+        p.hasPermission = !p.hasPermission;
+    }
+
     $: {
         if(user) {
+            allPermissions = getAllPermissions();
             const sections = getEnumKeys(ePermissionSection);
             const permissions = getEnumKeys(ePermission);
             
@@ -47,14 +67,13 @@
                     }
                 });
             });
-        
         }
     }
     
     
 </script>
 
-
+<button on:click={updatePermissions}>Set permissions</button>
 <div>
     {#each allPermissions as ps}
         <div>
@@ -63,8 +82,8 @@
         <div class="permission-box">
             {#each ps.permissions as p}
                 <label>
-                    {p.permission}
-                    <input type="checkbox" checked={p.hasPermission}>
+                    <span>{p.permission} &nbsp;</span>
+                    <input type="checkbox" checked={p.hasPermission} on:click={() => togglePermission(p)}>
                 </label>
             {/each}
         </div>
@@ -72,7 +91,22 @@
 </div>
 
 <style>
+    button {
+        width: 100%;
+    }
+
     .permission-box {
         display: flex;
+    }
+
+    label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: .5rem;
+    }
+
+    label > input {
+        margin: 0;
     }
 </style>
