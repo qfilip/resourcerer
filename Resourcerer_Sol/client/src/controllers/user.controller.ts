@@ -24,8 +24,8 @@ export function register(x: IAppUserDto, onRegisterSuccess: () => void) {
 }
 
 export function setPermissions(x: ISetUserPermissionsDto) {
-    http.post('/users/set-permissions', x)
-        .then(x => x)
+    return http.post('/users/set-permissions', x)
+        .then(x => x.data as IAppUserDto)
         .catch(err => console.warn(err));
 }
 

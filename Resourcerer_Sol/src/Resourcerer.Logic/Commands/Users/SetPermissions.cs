@@ -7,7 +7,7 @@ namespace Resourcerer.Logic.Commands.Users;
 
 public static class SetPermissions
 {
-    public class Handler : IAppHandler<SetUserPermissionsDto, Unit>
+    public class Handler : IAppHandler<SetUserPermissionsDto, AppUserDto>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -16,12 +16,12 @@ public static class SetPermissions
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(SetUserPermissionsDto request)
+        public async Task<HandlerResult<AppUserDto>> Handle(SetUserPermissionsDto request)
         {
             var errors = Permissions.Validate(request.Permissions!);
             if(errors.Any())
             {
-                return HandlerResult<Unit>.Rejected(errors.ToArray());
+                return HandlerResult<AppUserDto>.Rejected(errors.ToArray());
             }
 
             var user = await _appDbContext.AppUsers
@@ -29,14 +29,21 @@ public static class SetPermissions
 
             if(user == null)
             {
-                return HandlerResult<Unit>.NotFound($"User with Id {request.UserId} not found");
+                return HandlerResult<AppUserDto>.NotFound($"User with Id {request.UserId} not found");
             }
 
             user.Permissions = JsonSerializer.Serialize(request.Permissions);
 
             await _appDbContext.SaveChangesAsync();
 
-            return HandlerResult<Unit>.Ok(new Unit());
+            var dto = new AppUserDto
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Permissions = Permissions.GetPermissionDictFromString(user.Permissions!)
+            };
+
+            return HandlerResult<AppUserDto>.Ok(dto);
         }
     }
 }

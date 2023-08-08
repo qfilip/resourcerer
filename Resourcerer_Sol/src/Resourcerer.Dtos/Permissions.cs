@@ -21,16 +21,6 @@ public class Permissions
             {
                 errors.Add($"Permission of type {l.Key} doesn't exist");
             }
-            else
-            {
-                foreach (var kv in lookup[l.Key])
-                {
-                    if(!Enum.IsDefined((ePermission)kv.Value))
-                    {
-                        errors.Add($"Permission of value {kv.Value} doesn't exist");
-                    }
-                }
-            }
         }
 
         return errors;

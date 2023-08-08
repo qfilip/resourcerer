@@ -3,6 +3,9 @@
     import { getEnumKeys } from "../../functions/enums";
     import { ePermission, ePermissionSection } from "../../interfaces/dtos/enums";
     import type { IAppUserDto, ISetUserPermissionsDto } from "../../interfaces/dtos/interfaces";
+    import { createEventDispatcher } from 'svelte';
+
+    const dispatch = createEventDispatcher();
 
     export let user: IAppUserDto;
 
@@ -47,7 +50,9 @@
             permissions: newPermissions
         };
 
-        setPermissions(dto);
+        setPermissions(dto).then(x => {
+            dispatch('permissionsUpdated', x as IAppUserDto);
+        });
     }
 
     function togglePermission(p: { permission: string, hasPermission: boolean}) {

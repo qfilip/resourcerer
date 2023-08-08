@@ -5,7 +5,10 @@
     import UserPermissions from "./UserPermissions.svelte";
     
     onMount(() => {
-        controller.getAll().then(xs => users = xs as IAppUserDto[]);
+        controller.getAll().then(xs => {
+            users = (xs as IAppUserDto[])
+                .sort((a, b) => a.name.localeCompare(b.name));
+        });
     })
 
     let users: IAppUserDto[] = [];
@@ -16,6 +19,17 @@
         if(!selectedUser) return;
 
         controller.getUser(userId).then();
+    }
+
+    function handlePermissionUpdate(event: any) {
+        const updatedUser = event.detail as IAppUserDto;
+        
+        users = users
+            .filter(x => x.id !== updatedUser.id)
+            .concat(updatedUser)
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+        selectedUser = updatedUser;
     }
 </script>
 
@@ -49,7 +63,7 @@
         <div>
             Permissions:
             {#if selectedUser !== null}
-                <UserPermissions user={selectedUser}/>
+                <UserPermissions user={selectedUser} on:permissionsUpdated={handlePermissionUpdate}/>
             {/if}
         </div>
     </div>
