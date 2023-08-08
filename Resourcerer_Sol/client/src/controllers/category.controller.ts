@@ -6,3 +6,8 @@ export async function getAllCategories() {
     .then(x => x.data as ICategoryDto[]);
 }
 
+export function removeCategory(x: ICategoryDto) {
+    return http.post('/categories/remove', x)
+        .then(x => x.data as string);
+}
+

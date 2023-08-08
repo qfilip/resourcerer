@@ -17,13 +17,21 @@
     });
 
     let categories: ICategoryDto[] = [];
-    let selectedCategory;
+    let selectedCategory: ICategoryDto;
     $: mainCategories = categories.filter(x => !x.parentCategoryId);
 
     function deleteCategory() {
         modalStore.open({
             header: `Delete category ${selectedCategory.name}`,
-        } as IModalOptions, () => console.log(selectedCategory.id));
+        } as IModalOptions, () => {
+            categoryController.removeCategory(selectedCategory)
+                .then(x => removeDeletedCategory(x));
+        });
+    }
+
+    function removeDeletedCategory(categoryId: string) {
+        categories = categories.filter(x => x.id !== categoryId);
+        categoryStore.selectedCategoryId$.set('');
     }
 </script>
 
@@ -32,11 +40,13 @@
 </h2>
 
 <section>
-    <div class="dropdowns">
+    <div>
         <h3>Tree</h3>
-        {#each mainCategories as ctg}
-            <CategoryDropdown category={ctg} allCategories={categories} />
-        {/each}
+        <div class="dropdowns scroll">
+            {#each mainCategories as ctg}
+                <CategoryDropdown category={ctg} allCategories={categories} />
+            {/each}
+        </div>
     </div>
     <div class="actions">
         <h3>Actions</h3>
@@ -71,11 +81,11 @@
         
         display: flex;
         justify-content: space-evenly;
-        align-items: center;
     }
 
     section > div {
         min-height: 50vh;
+        min-width: 15vw;
         overflow-y: auto;
     }
 

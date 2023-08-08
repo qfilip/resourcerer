@@ -78,6 +78,11 @@
         background-color: var(--color-black);
     }
 
+    :global(.scroll) {
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+
     :global(.b-blue) {
         background-color: var(--color-blue);
     }

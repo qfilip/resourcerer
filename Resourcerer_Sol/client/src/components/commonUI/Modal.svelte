@@ -32,7 +32,7 @@
 <style>
     dialog {
         padding: var(--padding);
-        width: 30%;
+        width: 40%;
         min-height: 5rem;
         border: .15rem ridge var(--color-red);
         position: relative;

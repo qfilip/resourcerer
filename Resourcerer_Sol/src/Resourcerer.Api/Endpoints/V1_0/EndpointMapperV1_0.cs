@@ -26,6 +26,7 @@ public class EndpointMapperV1_0
 
         GetAllCategoriesEndpoint.MapToGroup(g);
         CreateCategoryEndpoint.MapToGroup(g);
+        RemoveCategoryEndpoint.MapToGroup(g);
     }
 
     private static void MapEvents(WebApplication app)
@@ -62,6 +63,7 @@ public class EndpointMapperV1_0
     private static void MapUsers(WebApplication app)
     {
         var g = EndpointMapper.GetGroup(app, Version, "Users");
+        
         GetAllUsersEndpoint.MapToGroup(g);
         GetUserEndpoint.MapToGroup(g);
         LoginEndpoint.MapToGroup(g);
