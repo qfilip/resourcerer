@@ -42,14 +42,14 @@ public static partial class Mocker
     {
         var entity = MakeEntity(() => new InstanceCancelledEvent
         {
-            InstanceBuyRequestedEvent = MockOrderedEvent(context)
+            InstanceBoughtEvent = MockOrderedEvent(context)
         });
 
         modifier?.Invoke(entity);
 
         if (instanceItem != null)
         {
-            entity.InstanceBuyRequestedEvent!.Instance!.Item = instanceItem;
+            entity.InstanceBoughtEvent!.Instance!.Item = instanceItem;
         }
 
         context.InstanceCancelledEvents.Add(entity);
@@ -64,14 +64,14 @@ public static partial class Mocker
     {
         var entity = MakeEntity(() => new InstanceDeliveredEvent
         {
-            InstanceBuyRequestedEvent = MockOrderedEvent(context)
+            InstanceBoughtEvent = MockOrderedEvent(context)
         });
 
         modifier?.Invoke(entity);
 
         if (instanceItem != null)
         {
-            entity.InstanceBuyRequestedEvent!.Instance!.Item = instanceItem;
+            entity.InstanceBoughtEvent!.Instance!.Item = instanceItem;
         }
 
         context.InstanceDeliveredEvents.Add(entity);

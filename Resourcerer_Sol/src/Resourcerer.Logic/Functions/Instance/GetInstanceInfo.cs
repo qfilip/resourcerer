@@ -9,13 +9,13 @@ public static partial class Instances
 {
     public static InstanceInfoDto? GetInstanceInfo(Instance i, DateTime now)
     {
-        if (i.InstanceBuyRequestedEvent!.InstanceRequestDeliveredEvent == null)
+        if (i.InstanceBuyRequestedEvent!.InstanceDeliveredEvent == null)
         {
             return null;
         }
 
         var soldEvents = i.InstanceSellRequestedEvents
-            .Where(x => x.InstanceRequestCancelledEvent == null)
+            .Where(x => x.InstanceCancelledEvent == null)
             .ToArray();
 
         var sold = soldEvents

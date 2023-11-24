@@ -91,23 +91,23 @@ public partial class AppDbContext
 
         ConfigureEntity<InstanceCancelledEvent>(modelBuilder, (e) =>
         {
-            e.HasOne(x => x.InstanceBuyRequestedEvent).WithOne(x => x.InstanceRequestCancelledEvent)
-                .HasForeignKey<InstanceCancelledEvent>(x => x.InstanceBuyRequestedEventId)
+            e.HasOne(x => x.InstanceBoughtEvent).WithOne(x => x.InstanceCancelledEvent)
+                .HasForeignKey<InstanceCancelledEvent>(x => x.InstanceBoughtEventId)
                 .HasConstraintName($"FK_{nameof(InstanceBoughtEvent)}_{nameof(InstanceCancelledEvent)}");
 
-            e.HasOne(x => x.InstanceSellRequestedEvent).WithOne(x => x.InstanceRequestCancelledEvent)
-                .HasForeignKey<InstanceCancelledEvent>(x => x.InstanceSellRequestedEventId)
+            e.HasOne(x => x.InstanceSoldEvent).WithOne(x => x.InstanceCancelledEvent)
+                .HasForeignKey<InstanceCancelledEvent>(x => x.InstanceSoldEventId)
                 .HasConstraintName($"FK_{nameof(InstanceSoldEvents)}_{nameof(InstanceCancelledEvent)}");
         });
 
         ConfigureEntity<InstanceDeliveredEvent>(modelBuilder, (e) =>
         {
-            e.HasOne(x => x.InstanceBuyRequestedEvent).WithOne(x => x.InstanceRequestDeliveredEvent)
-                .HasForeignKey<InstanceDeliveredEvent>(x => x.InstanceBuyRequestedEventId)
+            e.HasOne(x => x.InstanceBoughtEvent).WithOne(x => x.InstanceDeliveredEvent)
+                .HasForeignKey<InstanceDeliveredEvent>(x => x.InstanceBoughtEventId)
                 .HasConstraintName($"FK_{nameof(InstanceBoughtEvent)}_{nameof(InstanceDeliveredEvent)}");
 
-            e.HasOne(x => x.InstanceSellRequestedEvent).WithOne(x => x.InstanceRequestDeliveredEvent)
-                .HasForeignKey<InstanceDeliveredEvent>(x => x.InstanceSellRequestedEventId)
+            e.HasOne(x => x.InstanceSoldEvent).WithOne(x => x.InstanceDeliveredEvent)
+                .HasForeignKey<InstanceDeliveredEvent>(x => x.InstanceSoldEventId)
                 .HasConstraintName($"FK_{nameof(InstanceSoldEvents)}_{nameof(InstanceDeliveredEvent)}");
         });
 

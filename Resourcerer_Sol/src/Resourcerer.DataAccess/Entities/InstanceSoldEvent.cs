@@ -9,9 +9,9 @@ public class InstanceSoldEvent : EntityBase
     public Guid InstanceId { get; set; }
     public virtual Instance? Instance { get; set; }
 
-    public Guid? InstanceRequestCancelledEventId { get; set; }
-    public virtual InstanceCancelledEvent? InstanceRequestCancelledEvent { get; set; }
+    public Guid? InstanceCancelledEventId { get; set; }
+    public virtual InstanceCancelledEvent? InstanceCancelledEvent { get; set; }
 
-    public Guid? InstanceRequestDeliveredEventId { get; set; }
-    public virtual InstanceDeliveredEvent? InstanceRequestDeliveredEvent { get; set; }
+    public Guid? InstanceDeliveredEventId { get; set; }
+    public virtual InstanceDeliveredEvent? InstanceDeliveredEvent { get; set; }
 }

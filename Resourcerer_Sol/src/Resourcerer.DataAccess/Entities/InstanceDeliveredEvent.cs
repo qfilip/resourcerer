@@ -2,9 +2,9 @@
 
 public class InstanceDeliveredEvent : EntityBase
 {
-    public Guid? InstanceBuyRequestedEventId { get; set; }
-    public virtual InstanceBoughtEvent? InstanceBuyRequestedEvent { get; set; }
+    public Guid? InstanceBoughtEventId { get; set; }
+    public virtual InstanceBoughtEvent? InstanceBoughtEvent { get; set; }
 
-    public Guid? InstanceSellRequestedEventId { get; set; }
-    public virtual InstanceSoldEvent? InstanceSellRequestedEvent { get; set; }
+    public Guid? InstanceSoldEventId { get; set; }
+    public virtual InstanceSoldEvent? InstanceSoldEvent { get; set; }
 }

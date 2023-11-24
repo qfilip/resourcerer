@@ -5,7 +5,7 @@ namespace Resourcerer.UnitTests.Utilities.Mocker;
 
 internal static partial class Mocker
 {
-    public static InstanceBoughtEvent MockOrderedEvent(
+    public static InstanceBoughtEvent MockBoughtEvent(
         AppDbContext context,
         Action<InstanceBoughtEvent>? modifier = null,
         Item? instanceItem = null)
@@ -35,21 +35,21 @@ internal static partial class Mocker
         return entity;
     }
 
-    public static InstanceCancelledEvent MockOrderCancelledEvent(
+    public static InstanceCancelledEvent MockBoughtCancelledEvent(
         AppDbContext context,
         Action<InstanceCancelledEvent>? modifier = null,
         Item? instanceItem = null)
     {
         var entity = MakeEntity(() => new InstanceCancelledEvent
         {
-            InstanceBuyRequestedEvent = MockOrderedEvent(context)
+            InstanceBoughtEvent = MockBoughtEvent(context)
         });
 
         modifier?.Invoke(entity);
 
         if (instanceItem != null)
         {
-            entity.InstanceBuyRequestedEvent!.Instance!.Item = instanceItem;
+            entity.InstanceBoughtEvent!.Instance!.Item = instanceItem;
         }
 
         context.InstanceCancelledEvents.Add(entity);
@@ -64,21 +64,20 @@ internal static partial class Mocker
     {
         var entity = MakeEntity(() => new InstanceDeliveredEvent
         {
-            InstanceBuyRequestedEvent = MockOrderedEvent(context)
+            InstanceBoughtEvent = MockBoughtEvent(context)
         });
 
         modifier?.Invoke(entity);
 
         if (instanceItem != null)
         {
-            entity.InstanceBuyRequestedEvent!.Instance!.Item = instanceItem;
+            entity.InstanceBoughtEvent!.Instance!.Item = instanceItem;
         }
 
         context.InstanceDeliveredEvents.Add(entity);
 
         return entity;
     }
-
 
     public static InstanceSoldEvent MockSellEvent(
         AppDbContext context,
@@ -87,7 +86,6 @@ internal static partial class Mocker
     {
         var entity = MakeEntity(() => new InstanceSoldEvent
         {
-            ExpectedDeliveryDate = DateTime.UtcNow,
             TotalDiscountPercent = 0,
             UnitPrice = 1,
             Quantity = 1,
@@ -105,7 +103,7 @@ internal static partial class Mocker
             entity.Instance!.Item = instanceItem;
         }
 
-        context.Ins.Add(entity);
+        context.InstanceSoldEvents.Add(entity);
 
         return entity;
     }

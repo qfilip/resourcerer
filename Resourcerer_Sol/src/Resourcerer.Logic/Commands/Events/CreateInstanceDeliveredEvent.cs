@@ -18,8 +18,8 @@ public static class CreateInstanceDeliveredEvent
         public async Task<HandlerResult<Unit>> Handle(InstanceDeliveredEventDto request)
         {
             var orderEvent = await _appDbContext.InstanceBoughtEvents
-                .Include(x => x.InstanceRequestCancelledEvent)
-                .Include(x => x.InstanceRequestDeliveredEvent)
+                .Include(x => x.InstanceCancelledEvent)
+                .Include(x => x.InstanceDeliveredEvent)
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceOrderedEventId);
 
             if (orderEvent == null)
@@ -28,20 +28,20 @@ public static class CreateInstanceDeliveredEvent
                 return HandlerResult<Unit>.Rejected(message);
             }
 
-            if (orderEvent.InstanceRequestCancelledEvent != null)
+            if (orderEvent.InstanceCancelledEvent != null)
             {
                 var error = "Order was cancelled, and cannot be delivered";
                 return HandlerResult<Unit>.Rejected(error);
             }
 
-            if (orderEvent.InstanceRequestDeliveredEvent != null)
+            if (orderEvent.InstanceDeliveredEvent != null)
             {
                 return HandlerResult<Unit>.Ok(new Unit());
             }
 
             var deliveredEvent = new InstanceDeliveredEvent
             {
-                InstanceBuyRequestedEventId = orderEvent.Id
+                InstanceBoughtEventId = orderEvent.Id
             };
 
             _appDbContext.InstanceDeliveredEvents.Add(deliveredEvent);

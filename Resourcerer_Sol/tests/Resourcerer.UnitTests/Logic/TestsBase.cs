@@ -29,8 +29,8 @@ public class TestsBase
         var sand = ctx.Items.AsNoTracking().Where(x => x.Name == "sand").First();
         var now = Mocker.Now.AddMonths(4);
 
-        Mocker.MockOrderedEvent(ctx, null, sand);
-        Mocker.MockOrderCancelledEvent(ctx, null, sand);
+        Mocker.MockBoughtEvent(ctx, null, sand);
+        Mocker.MockBoughtCancelledEvent(ctx, null, sand);
         Mocker.MockDeliveredEvent(ctx, x => x.CreatedAt = Mocker.Now.AddMonths(1), sand);
 
         ctx.SaveChanges();
