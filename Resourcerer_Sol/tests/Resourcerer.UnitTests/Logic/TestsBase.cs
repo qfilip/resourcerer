@@ -20,24 +20,46 @@ public class TestsBase
 
     protected ILogger<T> MockLogger<T>() => A.Fake<ILogger<T>>();
 
-    [Fact]
-    public void Test()
-    {
-        var ctx = new ContextCreator().GetTestDbContext();
-        Mocker.MockDbData(ctx);
+    //[Fact]
+    //public void Test()
+    //{
+    //    var ctx = new ContextCreator().GetTestDbContext();
+    //    Mocker.MockDbData(ctx);
 
-        var sand = ctx.Items.AsNoTracking().Where(x => x.Name == "sand").First();
-        var now = Mocker.Now.AddMonths(4);
+    //    var sand = ctx.Items.AsNoTracking().Where(x => x.Name == "sand").First();
+    //    var now = Mocker.Now.AddMonths(4);
 
-        Mocker.MockBoughtEvent(ctx, null, sand);
-        Mocker.MockBoughtCancelledEvent(ctx, null, sand);
-        Mocker.MockDeliveredEvent(ctx, x => x.CreatedAt = Mocker.Now.AddMonths(1), sand);
+    //    // bought and delivered
+    //    var boughtEvent1 = Mocker.MockBoughtEvent(ctx, null, sand);
+    //    Mocker.MockDeliveredEvent(ctx, x =>
+    //    {
+    //        x.InstanceBoughtEvent = boughtEvent1;
+    //        x.CreatedAt = Mocker.Now.AddMonths(1);
+    //    }, sand);
 
-        ctx.SaveChanges();
+    //    // bought and delivered
+    //    var boughtEvent2 = Mocker.MockBoughtEvent(ctx, null, sand);
+    //    Mocker.MockDeliveredEvent(ctx, x =>
+    //    {
+    //        x.InstanceBoughtEvent = boughtEvent2;
+    //        x.CreatedAt = Mocker.Now.AddMonths(1);
+    //    }, sand);
 
-        var handler = new GetItemStatistics.Handler(ctx);
-        var result = handler.Handle((sand.Id, now)).GetAwaiter().GetResult();
-    }
+    //    // bought but cancelled
+    //    var boughtEvent3 = Mocker.MockBoughtEvent(ctx, null, sand);
+    //    Mocker.MockBoughtCancelledEvent(ctx, x =>
+    //    {
+    //        x.InstanceBoughtEvent = boughtEvent3;
+    //    }, sand);
+
+    //    Mocker.MockSoldEvent
+        
+
+    //    ctx.SaveChanges();
+
+    //    var handler = new GetItemStatistics.Handler(ctx);
+    //    var result = handler.Handle((sand.Id, now)).GetAwaiter().GetResult();
+    //}
 
     //[Fact]
     //public void SeedCocktailDb()

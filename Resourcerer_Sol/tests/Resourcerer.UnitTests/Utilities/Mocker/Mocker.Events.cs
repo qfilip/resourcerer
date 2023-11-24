@@ -115,7 +115,7 @@ internal static partial class Mocker
     {
         var entity = MakeEntity(() => new InstanceCancelledEvent
         {
-            InstanceBoughtEvent = MockBoughtEvent(context)
+            InstanceSoldEvent = MockSoldEvent(context)
         });
 
         modifier?.Invoke(entity);

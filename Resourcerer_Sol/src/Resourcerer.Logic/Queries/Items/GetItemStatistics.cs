@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
+using Resourcerer.DataAccess.QueryUtils;
 using Resourcerer.Dtos.Elements;
 
 namespace Resourcerer.Logic.Queries.Items;
@@ -16,30 +17,18 @@ public static class GetItemStatistics
 
         public async Task<HandlerResult<List<ItemStatisticsDto>>> Handle((Guid ItemId, DateTime Now) query)
         {
-            var item = await _appDbContext.Items
+            var itemQuery = _appDbContext.Items
                 .Include(x => x.Category)
                 .Include(x => x.UnitOfMeasure)
                 .Include(x => x.Prices)
                 .Include(x => x.ElementExcerpts)
                 .Include(x => x.CompositeExcerpts)
                     .ThenInclude(x => x.Element)
-                        .ThenInclude(x => x!.Prices)
-                // delivered
-                .Include(x => x.Instances)
-                    .ThenInclude(x => x.InstanceBoughtEvent)
-                        .ThenInclude(x => x!.InstanceDeliveredEvent)
-                // sells
-                .Include(x => x.Instances)
-                    .ThenInclude(x => x.InstanceSoldEvents)
-                        .ThenInclude(x => x!.InstanceCancelledEvent)
-                // cancelations
-                .Include(x => x.Instances)
-                    .ThenInclude(x => x.InstanceBoughtEvent)
-                        .ThenInclude(x => x!.InstanceCancelledEvent)
-                // discards
-                .Include(x => x.Instances)
-                    .ThenInclude(x => x.InstanceDiscardedEvents)
-                .FirstOrDefaultAsync(x => x.Id == query.ItemId);
+                        .ThenInclude(x => x!.Prices);
+
+            ItemQueryUtils.IncludeInstanceEvents(itemQuery);
+            
+            var item = await itemQuery.FirstOrDefaultAsync(x => x.Id == query.ItemId);
 
             if (item == null)
             {

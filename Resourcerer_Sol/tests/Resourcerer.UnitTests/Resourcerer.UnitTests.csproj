@@ -30,4 +30,8 @@
     <ProjectReference Include="..\..\src\Resourcerer.Logic\Resourcerer.Logic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Logic\Functions\" />
+  </ItemGroup>
+
 </Project>
