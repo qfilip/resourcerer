@@ -55,7 +55,7 @@ public static class CreateInstanceOrderedEvent
                 ItemId = item.Id
             };
 
-            var orderedEvent = new InstanceBuyRequestedEvent
+            var orderedEvent = new InstanceBoughtEvent
             {
                 InstanceId = instance.Id,
                 UnitPrice = request.UnitPrice,
@@ -64,7 +64,7 @@ public static class CreateInstanceOrderedEvent
                 ExpectedDeliveryDate = request.ExpectedDeliveryDate,
             };
 
-            _appDbContext.InstanceOrderedEvents.Add(orderedEvent);
+            _appDbContext.InstanceBoughtEvents.Add(orderedEvent);
             _appDbContext.Instances.Add(instance);
             
             await _appDbContext.SaveChangesAsync();

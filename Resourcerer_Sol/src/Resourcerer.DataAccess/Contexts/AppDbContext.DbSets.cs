@@ -17,9 +17,10 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<Price> Prices { get; set; }
     public virtual DbSet<Item> Items { get; set; }
     public virtual DbSet<Instance> Instances { get; set; }
-    public virtual DbSet<InstanceBuyRequestedEvent> InstanceOrderedEvents { get; set; }
-    public virtual DbSet<InstanceRequestCancelledEvent> InstanceOrderCancelledEvents { get; set; }
-    public virtual DbSet<InstanceRequestDeliveredEvent> InstanceOrderDeliveredEvents { get; set; }
+    public virtual DbSet<InstanceBoughtEvent> InstanceBoughtEvents { get; set; }
+    public virtual DbSet<InstanceSoldEvent> InstanceSoldEvents { get; set; }
+    public virtual DbSet<InstanceCancelledEvent> InstanceCancelledEvents { get; set; }
+    public virtual DbSet<InstanceDeliveredEvent> InstanceDeliveredEvents { get; set; }
     public virtual DbSet<InstanceDiscardedEvent> InstanceDiscardedEvents { get; set; }
 
 

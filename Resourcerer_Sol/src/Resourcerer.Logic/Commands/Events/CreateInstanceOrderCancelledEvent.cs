@@ -16,7 +16,7 @@ public static class CreateInstanceOrderCancelledEvent
         }
         public async Task<HandlerResult<Unit>> Handle(InstanceOrderCancelledEventDto request)
         {
-            var orderedEvent = await _appDbContext.InstanceOrderedEvents
+            var orderedEvent = await _appDbContext.InstanceBoughtEvents
                 .Include(x => x.InstanceRequestCancelledEvent)
                 .Include(x => x.InstanceRequestDeliveredEvent)
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceOrderedEventId);
@@ -38,12 +38,12 @@ public static class CreateInstanceOrderCancelledEvent
                 return HandlerResult<Unit>.Ok(new Unit());
             }
 
-            var entity = new InstanceRequestCancelledEvent
+            var entity = new InstanceCancelledEvent
             {
                 InstanceBuyRequestedEventId = orderedEvent.Id
             };
 
-            _appDbContext.InstanceOrderCancelledEvents.Add(entity);
+            _appDbContext.InstanceCancelledEvents.Add(entity);
             await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());

@@ -1,8 +1,7 @@
 ﻿using FakeItEasy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Enums;
 using Resourcerer.Logic.Queries.Items;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Mocker;
@@ -27,23 +26,23 @@ public class TestsBase
         var ctx = new ContextCreator().GetTestDbContext();
         Mocker.MockDbData(ctx);
 
-        var sand = ctx.Items.Where(x => x.Name == "sand").First();
+        var sand = ctx.Items.AsNoTracking().Where(x => x.Name == "sand").First();
         var now = Mocker.Now.AddMonths(4);
-        
+
+        Mocker.MockOrderedEvent(ctx, null, sand);
+        Mocker.MockOrderCancelledEvent(ctx, null, sand);
         Mocker.MockDeliveredEvent(ctx, x => x.CreatedAt = Mocker.Now.AddMonths(1), sand);
-        Mocker.MockDeliveredEvent(ctx, x => x.CreatedAt = Mocker.Now.AddMonths(2), sand);
-        Mocker.MockDeliveredEvent(ctx, x => x.CreatedAt = Mocker.Now.AddMonths(3), sand);
 
         ctx.SaveChanges();
 
         var handler = new GetItemStatistics.Handler(ctx);
-        handler.Handle((sand.Id, now)).GetAwaiter().GetResult();
+        var result = handler.Handle((sand.Id, now)).GetAwaiter().GetResult();
     }
 
-    [Fact]
-    public void SeedCocktailDb()
-    {
-        var seed = CocktailDbMocker.GetSeed();
-        var json = JsonSerializer.Serialize(seed);
-    }
+    //[Fact]
+    //public void SeedCocktailDb()
+    //{
+    //    var seed = CocktailDbMocker.GetSeed();
+    //    var json = JsonSerializer.Serialize(seed);
+    //}
 }

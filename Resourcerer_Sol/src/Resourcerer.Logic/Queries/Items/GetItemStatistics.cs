@@ -24,10 +24,14 @@ public static class GetItemStatistics
                 .Include(x => x.CompositeExcerpts)
                     .ThenInclude(x => x.Element)
                         .ThenInclude(x => x!.Prices)
-                // orders
+                // delivered
                 .Include(x => x.Instances)
                     .ThenInclude(x => x.InstanceBuyRequestedEvent)
                         .ThenInclude(x => x!.InstanceRequestDeliveredEvent)
+                // sells
+                .Include(x => x.Instances)
+                    .ThenInclude(x => x.InstanceSellRequestedEvents)
+                        .ThenInclude(x => x!.InstanceRequestCancelledEvent)
                 // cancelations
                 .Include(x => x.Instances)
                     .ThenInclude(x => x.InstanceBuyRequestedEvent)

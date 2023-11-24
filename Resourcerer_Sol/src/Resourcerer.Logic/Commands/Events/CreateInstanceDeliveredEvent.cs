@@ -17,7 +17,7 @@ public static class CreateInstanceDeliveredEvent
 
         public async Task<HandlerResult<Unit>> Handle(InstanceDeliveredEventDto request)
         {
-            var orderEvent = await _appDbContext.InstanceOrderedEvents
+            var orderEvent = await _appDbContext.InstanceBoughtEvents
                 .Include(x => x.InstanceRequestCancelledEvent)
                 .Include(x => x.InstanceRequestDeliveredEvent)
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceOrderedEventId);
@@ -39,12 +39,12 @@ public static class CreateInstanceDeliveredEvent
                 return HandlerResult<Unit>.Ok(new Unit());
             }
 
-            var deliveredEvent = new InstanceRequestDeliveredEvent
+            var deliveredEvent = new InstanceDeliveredEvent
             {
                 InstanceBuyRequestedEventId = orderEvent.Id
             };
 
-            _appDbContext.InstanceOrderDeliveredEvents.Add(deliveredEvent);
+            _appDbContext.InstanceDeliveredEvents.Add(deliveredEvent);
 
             await _appDbContext.SaveChangesAsync();
 

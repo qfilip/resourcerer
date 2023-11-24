@@ -5,12 +5,12 @@ namespace Resourcerer.Logic.Commands.Mocks.Helpers;
 
 public static partial class Mocker
 {
-    public static InstanceBuyRequestedEvent MockOrderedEvent(
+    public static InstanceBoughtEvent MockOrderedEvent(
         AppDbContext context,
-        Action<InstanceBuyRequestedEvent>? modifier = null,
+        Action<InstanceBoughtEvent>? modifier = null,
         Item? instanceItem = null)
     {
-        var entity = MakeEntity(() => new InstanceBuyRequestedEvent
+        var entity = MakeEntity(() => new InstanceBoughtEvent
         {
             ExpectedDeliveryDate = DateTime.UtcNow,
             TotalDiscountPercent = 0,
@@ -30,17 +30,17 @@ public static partial class Mocker
             entity.Instance!.Item = instanceItem;
         }
 
-        context.InstanceOrderedEvents.Add(entity);
+        context.InstanceBoughtEvents.Add(entity);
         
         return entity;
     }
 
-    public static InstanceRequestCancelledEvent MockOrderCancelledEvent(
+    public static InstanceCancelledEvent MockOrderCancelledEvent(
         AppDbContext context,
-        Action<InstanceRequestCancelledEvent>? modifier = null,
+        Action<InstanceCancelledEvent>? modifier = null,
         Item? instanceItem = null)
     {
-        var entity = MakeEntity(() => new InstanceRequestCancelledEvent
+        var entity = MakeEntity(() => new InstanceCancelledEvent
         {
             InstanceBuyRequestedEvent = MockOrderedEvent(context)
         });
@@ -52,17 +52,17 @@ public static partial class Mocker
             entity.InstanceBuyRequestedEvent!.Instance!.Item = instanceItem;
         }
 
-        context.InstanceOrderCancelledEvents.Add(entity);
+        context.InstanceCancelledEvents.Add(entity);
 
         return entity;
     }
 
-    public static InstanceRequestDeliveredEvent MockDeliveredEvent(
+    public static InstanceDeliveredEvent MockDeliveredEvent(
         AppDbContext context,
-        Action<InstanceRequestDeliveredEvent>? modifier = null,
+        Action<InstanceDeliveredEvent>? modifier = null,
         Item? instanceItem = null)
     {
-        var entity = MakeEntity(() => new InstanceRequestDeliveredEvent
+        var entity = MakeEntity(() => new InstanceDeliveredEvent
         {
             InstanceBuyRequestedEvent = MockOrderedEvent(context)
         });
@@ -74,7 +74,7 @@ public static partial class Mocker
             entity.InstanceBuyRequestedEvent!.Instance!.Item = instanceItem;
         }
 
-        context.InstanceOrderDeliveredEvents.Add(entity);
+        context.InstanceDeliveredEvents.Add(entity);
 
         return entity;
     }
