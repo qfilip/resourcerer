@@ -36,7 +36,7 @@ public class ContextCreator: IDisposable
         {
             var dbData = seeder();
             // write to disk if mocks are needed
-            var dbDataJson = JsonSerializer.Serialize(dbData);
+            // var dbDataJson = JsonSerializer.Serialize(dbData);
 
             context.AppUsers.AddRange(dbData.AppUsers!);
             context.Categories.AddRange(dbData.Categories!);

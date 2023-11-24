@@ -7,8 +7,8 @@ internal static partial class Mocker
 {
     public static InstanceBoughtEvent MockBoughtEvent(
         AppDbContext context,
-        Action<InstanceBoughtEvent>? modifier = null,
-        Item? instanceItem = null)
+        Item item,
+        Action<InstanceBoughtEvent>? modifier = null)
     {
         var entity = MakeEntity(() => new InstanceBoughtEvent
         {
@@ -25,10 +25,7 @@ internal static partial class Mocker
 
         modifier?.Invoke(entity);
 
-        if(instanceItem != null)
-        {
-            entity.Instance!.Item = instanceItem;
-        }
+        entity.Instance!.Item = item;
 
         context.InstanceBoughtEvents.Add(entity);
         
@@ -37,20 +34,15 @@ internal static partial class Mocker
 
     public static InstanceCancelledEvent MockBoughtCancelledEvent(
         AppDbContext context,
-        Action<InstanceCancelledEvent>? modifier = null,
-        Item? instanceItem = null)
+        InstanceBoughtEvent boughtEvent,
+        Action<InstanceCancelledEvent>? modifier = null)
     {
         var entity = MakeEntity(() => new InstanceCancelledEvent
         {
-            InstanceBoughtEvent = MockBoughtEvent(context)
+            InstanceBoughtEvent = boughtEvent
         });
 
         modifier?.Invoke(entity);
-
-        if (instanceItem != null)
-        {
-            entity.InstanceBoughtEvent!.Instance!.Item = instanceItem;
-        }
 
         context.InstanceCancelledEvents.Add(entity);
 
@@ -59,20 +51,16 @@ internal static partial class Mocker
 
     public static InstanceDeliveredEvent MockDeliveredEvent(
         AppDbContext context,
-        Action<InstanceDeliveredEvent>? modifier = null,
-        Item? instanceItem = null)
+        // Item item,
+        InstanceBoughtEvent boughtEvent,
+        Action<InstanceDeliveredEvent>? modifier = null)
     {
         var entity = MakeEntity(() => new InstanceDeliveredEvent
         {
-            InstanceBoughtEvent = MockBoughtEvent(context)
+            InstanceBoughtEvent = boughtEvent
         });
 
         modifier?.Invoke(entity);
-
-        if (instanceItem != null)
-        {
-            entity.InstanceBoughtEvent!.Instance!.Item = instanceItem;
-        }
 
         context.InstanceDeliveredEvents.Add(entity);
 
@@ -81,52 +69,59 @@ internal static partial class Mocker
 
     public static InstanceSoldEvent MockSoldEvent(
         AppDbContext context,
-        Action<InstanceSoldEvent>? modifier = null,
-        Item? instanceItem = null)
+        InstanceBoughtEvent boughtEvent,
+        Action<InstanceSoldEvent>? modifier = null)
     {
         var entity = MakeEntity(() => new InstanceSoldEvent
         {
             TotalDiscountPercent = 0,
             UnitPrice = 1,
             Quantity = 1,
-
-            Instance = MakeEntity(() => new Instance
-            {
-                ExpiryDate = DateTime.UtcNow,
-            })
         });
 
         modifier?.Invoke(entity);
 
-        if (instanceItem != null)
-        {
-            entity.Instance!.Item = instanceItem;
-        }
+        boughtEvent.Instance!.InstanceSoldEvents.Add(entity);
 
         context.InstanceSoldEvents.Add(entity);
 
         return entity;
     }
 
-    public static InstanceCancelledEvent MockSoldCancelledEvent(
-        AppDbContext context,
-        Action<InstanceCancelledEvent>? modifier = null,
-        Item? instanceItem = null)
-    {
-        var entity = MakeEntity(() => new InstanceCancelledEvent
-        {
-            InstanceSoldEvent = MockSoldEvent(context)
-        });
+    //public static InstanceCancelledEvent MockSoldCancelledEvent(
+    //    AppDbContext context,
+    //    Action<InstanceCancelledEvent>? modifier = null,
+    //    Item? instanceItem = null)
+    //{
+    //    var entity = MakeEntity(() => new InstanceSoldCancelledEvent
+    //    {
+    //        InstanceBoughtEvent = MockBoughtEvent(context)
+    //    });
 
-        modifier?.Invoke(entity);
+    //    modifier?.Invoke(entity);
 
-        if (instanceItem != null)
-        {
-            entity.InstanceSoldEvent!.Instance!.Item = instanceItem;
-        }
+    //    if (instanceItem != null)
+    //    {
+    //        entity.InstanceBoughtEvent!.Instance!.Item = instanceItem;
+    //    }
 
-        context.InstanceCancelledEvents.Add(entity);
+    //    context.InstanceCancelledEvents.Add(entity);
 
-        return entity;
-    }
+    //    return entity;
+    //    var entity = MakeEntity(() => new InstanceCancelledEvent
+    //    {
+    //        InstanceSoldEvent = MockSoldEvent(context)
+    //    });
+
+    //    modifier?.Invoke(entity);
+
+    //    if (instanceItem != null)
+    //    {
+    //        entity.InstanceSoldEvent!.Instance!.Item = instanceItem;
+    //    }
+
+    //    context.InstanceCancelledEvents.Add(entity);
+
+    //    return entity;
+    //}
 }

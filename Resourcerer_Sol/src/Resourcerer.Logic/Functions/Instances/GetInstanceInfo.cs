@@ -9,27 +9,14 @@ public static partial class Instances
 {
     public static InstanceInfoDto GetInstanceInfo(Instance i, DateTime now)
     {
-        if (i.InstanceBoughtEvent!.InstanceDeliveredEvent == null)
-        {
-            return new InstanceInfoDto()
-            {
-                InstanceId = i.Id,
-                PendingToArrive = i.InstanceBoughtEvent.Quantity,
-                PurchaseCost = i.InstanceBoughtEvent.UnitPrice * i.InstanceBoughtEvent.Quantity
-            };
-        }
-
         if (i.InstanceBoughtEvent!.InstanceCancelledEvent != null)
         {
-            var buyEvent = i.InstanceBoughtEvent;
-            var cancelEvent = i.InstanceBoughtEvent.InstanceCancelledEvent;
-            
-            return new InstanceInfoDto()
-            {
-                InstanceId = i.Id,
-                PendingToArrive = 0,
-                PurchaseCost = (buyEvent.UnitPrice * buyEvent.Quantity) - cancelEvent.RefundedAmount
-            };
+            return MapCancelled(i);
+        }
+
+        if (i.InstanceBoughtEvent!.InstanceDeliveredEvent == null)
+        {
+            return MapNotDelivered(i);
         }
 
         var soldEvents = i.InstanceSoldEvents
@@ -60,12 +47,35 @@ public static partial class Instances
         return new InstanceInfoDto()
         {
             InstanceId = i.Id,
-            PendingToArrive = i.InstanceBoughtEvent.Quantity,
+            PendingToArrive = 0,
             PurchaseCost = i.InstanceBoughtEvent.UnitPrice * i.InstanceBoughtEvent.Quantity,
             Discards = discards,
             ExpiryDate = i.ExpiryDate,
             QuantityLeft = quantityLeft,
             SellProfit = sellProfits
+        };
+    }
+
+    private static InstanceInfoDto MapNotDelivered(Instance i)
+    {
+        return new InstanceInfoDto()
+        {
+            InstanceId = i.Id,
+            PendingToArrive = i.InstanceBoughtEvent!.Quantity,
+            PurchaseCost = i.InstanceBoughtEvent.UnitPrice * i.InstanceBoughtEvent.Quantity
+        };
+    }
+
+    private static InstanceInfoDto MapCancelled(Instance i)
+    {
+        var buyEvent = i.InstanceBoughtEvent!;
+        var cancelEvent = i.InstanceBoughtEvent!.InstanceCancelledEvent!;
+
+        return new InstanceInfoDto()
+        {
+            InstanceId = i.Id,
+            PendingToArrive = 0,
+            PurchaseCost = (buyEvent.UnitPrice * buyEvent.Quantity) - cancelEvent.RefundedAmount
         };
     }
 }

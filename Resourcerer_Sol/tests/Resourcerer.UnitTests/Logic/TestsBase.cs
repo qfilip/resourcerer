@@ -1,21 +1,22 @@
 ﻿using FakeItEasy;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resourcerer.DataAccess.Contexts;
-using Resourcerer.Logic.Queries.Items;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Mocker;
-using Resourcerer.UnitTests.Utilities.TestDatabaseMocks;
-using System.Text.Json;
 
 namespace Resourcerer.UnitTests.Logic;
 
 public class TestsBase
 {
     protected readonly AppDbContext _testDbContext;
+    protected readonly Item _sand;
+    
     public TestsBase()
     {
         _testDbContext = new ContextCreator().GetTestDbContext();
+        Mocker.MockDbData(_testDbContext);
+        _sand = _testDbContext.Items.First(x => x.Name == "sand");
     }
 
     protected ILogger<T> MockLogger<T>() => A.Fake<ILogger<T>>();

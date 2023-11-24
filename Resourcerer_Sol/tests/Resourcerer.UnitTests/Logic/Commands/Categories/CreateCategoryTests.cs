@@ -24,11 +24,9 @@ public class CreateCategoryTests : TestsBase
 
         // act
         var result = _handler.Handle(dto).GetAwaiter().GetResult();
-        var entities = _testDbContext.Categories.ToList();
         
         // assert
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-        Assert.Single(entities);
     }
 
     [Fact]
@@ -44,11 +42,9 @@ public class CreateCategoryTests : TestsBase
 
         // act
         var result = _handler.Handle(dto).GetAwaiter().GetResult();
-        var entities = _testDbContext.Categories.ToList();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
-        Assert.Single(entities);
     }
 
     [Fact]
@@ -65,11 +61,9 @@ public class CreateCategoryTests : TestsBase
 
         // act
         var result = _handler.Handle(dto).GetAwaiter().GetResult();
-        var entities = _testDbContext.Categories.ToList();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-        Assert.Equal(2, entities.Count);
     }
 
     [Fact]

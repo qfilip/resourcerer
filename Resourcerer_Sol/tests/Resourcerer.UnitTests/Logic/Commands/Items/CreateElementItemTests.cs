@@ -34,7 +34,7 @@ public class CreateElementItemTests : TestsBase
 
         // assert
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-        Assert.Equal(dto.Name, entity.Name);
+        Assert.Contains(_testDbContext.Items, x => x.Name == dto.Name);
     }
 
     [Fact]
