@@ -28,11 +28,11 @@ public static class GetItemStockInfo
                         .ThenInclude(x => x!.Prices)
                 // orders
                 .Include(x => x.Instances)
-                    .ThenInclude(x => x.InstanceBuyRequestedEvent)
+                    .ThenInclude(x => x.InstanceBoughtEvent)
                         .ThenInclude(x => x!.InstanceDeliveredEvent)
                 // cancelations
                 .Include(x => x.Instances)
-                    .ThenInclude(x => x.InstanceBuyRequestedEvent)
+                    .ThenInclude(x => x.InstanceBoughtEvent)
                         .ThenInclude(x => x!.InstanceCancelledEvent)
                 // discards
                 .Include(x => x.Instances)

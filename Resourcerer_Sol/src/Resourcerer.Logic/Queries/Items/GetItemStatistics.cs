@@ -26,15 +26,15 @@ public static class GetItemStatistics
                         .ThenInclude(x => x!.Prices)
                 // delivered
                 .Include(x => x.Instances)
-                    .ThenInclude(x => x.InstanceBuyRequestedEvent)
+                    .ThenInclude(x => x.InstanceBoughtEvent)
                         .ThenInclude(x => x!.InstanceDeliveredEvent)
                 // sells
                 .Include(x => x.Instances)
-                    .ThenInclude(x => x.InstanceSellRequestedEvents)
+                    .ThenInclude(x => x.InstanceSoldEvents)
                         .ThenInclude(x => x!.InstanceCancelledEvent)
                 // cancelations
                 .Include(x => x.Instances)
-                    .ThenInclude(x => x.InstanceBuyRequestedEvent)
+                    .ThenInclude(x => x.InstanceBoughtEvent)
                         .ThenInclude(x => x!.InstanceCancelledEvent)
                 // discards
                 .Include(x => x.Instances)

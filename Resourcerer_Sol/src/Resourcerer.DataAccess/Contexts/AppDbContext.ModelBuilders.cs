@@ -75,7 +75,7 @@ public partial class AppDbContext
 
         ConfigureEntity<InstanceBoughtEvent>(modelBuilder, (e) =>
         {
-            e.HasOne(x => x.Instance).WithOne(x => x.InstanceBuyRequestedEvent)
+            e.HasOne(x => x.Instance).WithOne(x => x.InstanceBoughtEvent)
                 .HasForeignKey<InstanceBoughtEvent>(x => x.InstanceId)
                 .IsRequired()
                 .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceBoughtEvent)}");
@@ -83,7 +83,7 @@ public partial class AppDbContext
         
         ConfigureEntity<InstanceSoldEvent>(modelBuilder, (e) =>
         {
-            e.HasOne(x => x.Instance).WithMany(x => x.InstanceSellRequestedEvents)
+            e.HasOne(x => x.Instance).WithMany(x => x.InstanceSoldEvents)
                 .HasForeignKey(x => x.InstanceId)
                 .IsRequired()
                 .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceSoldEvents)}");

@@ -9,12 +9,12 @@ public static partial class Instances
 {
     public static InstanceInfoDto? GetInstanceInfo(Instance i, DateTime now)
     {
-        if (i.InstanceBuyRequestedEvent!.InstanceDeliveredEvent == null)
+        if (i.InstanceBoughtEvent!.InstanceDeliveredEvent == null)
         {
             return null;
         }
 
-        var soldEvents = i.InstanceSellRequestedEvents
+        var soldEvents = i.InstanceSoldEvents
             .Where(x => x.InstanceCancelledEvent == null)
             .ToArray();
 
@@ -36,7 +36,7 @@ public static partial class Instances
         
         if(i.ExpiryDate < now)
         {
-            quantityLeft = i.InstanceBuyRequestedEvent!.Quantity - sold - discards.Sum(x => x.Quantity);
+            quantityLeft = i.InstanceBoughtEvent!.Quantity - sold - discards.Sum(x => x.Quantity);
         }
 
         return new InstanceInfoDto
@@ -44,7 +44,7 @@ public static partial class Instances
             InstanceId = i.Id,
             Discards = discards,
             ExpiryDate = i.ExpiryDate,
-            PurchaseCost = i.InstanceBuyRequestedEvent!.UnitPrice,
+            PurchaseCost = i.InstanceBoughtEvent!.UnitPrice,
             QuantityLeft = quantityLeft,
             SellProfit = sellProfits
         };
