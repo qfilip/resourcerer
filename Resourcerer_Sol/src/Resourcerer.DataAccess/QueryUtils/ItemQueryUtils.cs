@@ -5,9 +5,9 @@ namespace Resourcerer.DataAccess.QueryUtils;
 
 public static class ItemQueryUtils
 {
-    public static void IncludeInstanceEvents(IQueryable<Item> query)
+    public static IQueryable<Item> IncludeInstanceEvents(IQueryable<Item> query)
     {
-        query
+        return query
              // delivered
             .Include(x => x.Instances)
                 .ThenInclude(x => x.InstanceBoughtEvent)

@@ -7,11 +7,29 @@ namespace Resourcerer.Logic.Functions;
 
 public static partial class Instances
 {
-    public static InstanceInfoDto? GetInstanceInfo(Instance i, DateTime now)
+    public static InstanceInfoDto GetInstanceInfo(Instance i, DateTime now)
     {
         if (i.InstanceBoughtEvent!.InstanceDeliveredEvent == null)
         {
-            return null;
+            return new InstanceInfoDto()
+            {
+                InstanceId = i.Id,
+                PendingToArrive = i.InstanceBoughtEvent.Quantity,
+                PurchaseCost = i.InstanceBoughtEvent.UnitPrice * i.InstanceBoughtEvent.Quantity
+            };
+        }
+
+        if (i.InstanceBoughtEvent!.InstanceCancelledEvent != null)
+        {
+            var buyEvent = i.InstanceBoughtEvent;
+            var cancelEvent = i.InstanceBoughtEvent.InstanceCancelledEvent;
+            
+            return new InstanceInfoDto()
+            {
+                InstanceId = i.Id,
+                PendingToArrive = 0,
+                PurchaseCost = (buyEvent.UnitPrice * buyEvent.Quantity) - cancelEvent.RefundedAmount
+            };
         }
 
         var soldEvents = i.InstanceSoldEvents
@@ -32,19 +50,20 @@ public static partial class Instances
             })
             .ToArray();
 
-        var quantityLeft = 0d;
+        var quantityLeft = i.InstanceBoughtEvent.Quantity - sold - discards.Sum(x => x.Quantity);
         
         if(i.ExpiryDate < now)
         {
             quantityLeft = i.InstanceBoughtEvent!.Quantity - sold - discards.Sum(x => x.Quantity);
         }
 
-        return new InstanceInfoDto
+        return new InstanceInfoDto()
         {
             InstanceId = i.Id,
+            PendingToArrive = i.InstanceBoughtEvent.Quantity,
+            PurchaseCost = i.InstanceBoughtEvent.UnitPrice * i.InstanceBoughtEvent.Quantity,
             Discards = discards,
             ExpiryDate = i.ExpiryDate,
-            PurchaseCost = i.InstanceBoughtEvent!.UnitPrice,
             QuantityLeft = quantityLeft,
             SellProfit = sellProfits
         };

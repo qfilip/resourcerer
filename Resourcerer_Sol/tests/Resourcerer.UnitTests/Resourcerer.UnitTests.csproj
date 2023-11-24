@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Logic\Functions\" />
+    <Folder Include="Logic\Queries\Items\" />
   </ItemGroup>
 
 </Project>

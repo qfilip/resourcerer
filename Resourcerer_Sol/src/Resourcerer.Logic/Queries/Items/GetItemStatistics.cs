@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.QueryUtils;
 using Resourcerer.Dtos.Elements;
 
@@ -24,9 +25,9 @@ public static class GetItemStatistics
                 .Include(x => x.ElementExcerpts)
                 .Include(x => x.CompositeExcerpts)
                     .ThenInclude(x => x.Element)
-                        .ThenInclude(x => x!.Prices);
+                        .ThenInclude(x => x!.Prices) as IQueryable<Item>;
 
-            ItemQueryUtils.IncludeInstanceEvents(itemQuery);
+            itemQuery = ItemQueryUtils.IncludeInstanceEvents(itemQuery);
             
             var item = await itemQuery.FirstOrDefaultAsync(x => x.Id == query.ItemId);
 

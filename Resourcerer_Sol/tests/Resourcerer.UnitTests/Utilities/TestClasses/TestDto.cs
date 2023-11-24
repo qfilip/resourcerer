@@ -12,7 +12,6 @@ public class TestDto : BaseDto<TestDto>
     public const string ErrorMessage = "Test property must not be Invalid";
     private class Validator : AbstractValidator<TestDto>
     {
-
         public Validator()
         {
             RuleFor(x => x.Property)

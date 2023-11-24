@@ -3,6 +3,7 @@
 public class InstanceCancelledEvent : EntityBase
 {
     public string? Reason { get; set; }
+    public double RefundedAmount { get; set; }
     
     public Guid? InstanceBoughtEventId { get; set; }
     public virtual InstanceBoughtEvent? InstanceBoughtEvent { get; set; }
