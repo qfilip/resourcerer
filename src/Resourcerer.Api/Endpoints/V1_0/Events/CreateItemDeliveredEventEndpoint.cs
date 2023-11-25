@@ -5,19 +5,19 @@ using Resourcerer.Logic.Commands.V1_0;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
 
-public class CreateInstanceBoughtEventEndpoint
+public class CreateItemDeliveredEventEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] ItemOrderedEventDto dto,
+        [FromBody] ItemDeliveredEventDto dto,
         [FromServices] Pipeline pipeline,
-        [FromServices] CreateItemOrderedEvent.Handler handler)
+        [FromServices] CreateItemDeliveredEvent.Handler handler)
     {
-        return await pipeline.Pipe(handler, dto, new ItemOrderedEventDto.Validator());
+        return await pipeline.Pipe(handler, dto, new ItemDeliveredEventDto.Validator());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/bought", Action);
+        var endpoint = group.MapPost("/order-delivered", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

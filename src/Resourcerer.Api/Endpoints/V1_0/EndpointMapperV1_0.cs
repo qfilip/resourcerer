@@ -26,9 +26,9 @@ public class EndpointMapperV1_0
     {
         var g = EndpointMapper.GetGroup(app, Version, "Events");
         
-        CreateInstanceDeliveredEndpoint.MapToGroup(g);
-        CreateInstanceOrderCancelledEventEndpoint.MapToGroup(g);
-        CreateInstanceBoughtEventEndpoint.MapToGroup(g);
+        CreateItemDeliveredEventEndpoint.MapToGroup(g);
+        CreateItemOrderCancelledEventEndpoint.MapToGroup(g);
+        CreateItemOrderedEventEndpoint.MapToGroup(g);
     }
 
     private static void MapItems(WebApplication app)
