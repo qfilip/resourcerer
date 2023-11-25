@@ -127,7 +127,6 @@ public class GetInstanceInfoTests : TestsBase
         SaveToDb();
 
         var instance = ExecuteTestQuery().Instances.First();
-        var sev = _testDbContext.InstanceSoldEvents.ToList();
 
         var expected = new InstanceInfoDto
         {
@@ -136,6 +135,50 @@ public class GetInstanceInfoTests : TestsBase
             PurchaseCost = 2,
             SellProfit = 2,
             QuantityLeft = 1,
+            Discards = Array.Empty<DiscardInfoDto>(),
+            ExpiryDate = instance.ExpiryDate
+        };
+        var actual = _sut(instance, Mocker.Now.AddMonths(2));
+
+        Assert.Equivalent(expected, actual);
+    }
+
+    [Fact]
+    public void Item_Bought_Delivered_Sold_SellCancelledWithRefund()
+    {
+        var boughtEvent = Mocker.MockBoughtEvent(_testDbContext, _sand, (ev) =>
+        {
+            ev.UnitPrice = 1;
+            ev.Quantity = 2;
+        });
+
+        var deliveredEvent = Mocker.MockDeliveredEvent(_testDbContext, boughtEvent, x =>
+        {
+            x.CreatedAt = Mocker.Now.AddMonths(1);
+        });
+
+        var soldEvent = Mocker.MockSoldEvent(_testDbContext, boughtEvent, x =>
+        {
+            x.UnitPrice = 2;
+            x.Quantity = 1;
+        });
+
+        Mocker.MockSoldCancelledEvent(_testDbContext, soldEvent, x =>
+        {
+            x.RefundedAmount = 2;
+        });
+
+        SaveToDb();
+
+        var instance = ExecuteTestQuery().Instances.First();
+
+        var expected = new InstanceInfoDto
+        {
+            InstanceId = instance.Id,
+            PendingToArrive = 0,
+            PurchaseCost = 2,
+            SellProfit = 0,
+            QuantityLeft = boughtEvent.Quantity,
             Discards = Array.Empty<DiscardInfoDto>(),
             ExpiryDate = instance.ExpiryDate
         };
