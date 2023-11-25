@@ -26,6 +26,10 @@ public static partial class Instances
         var sold = soldEvents
             .Sum(x => x.Quantity);
 
+        var sellCancellationsPenaltyDifference = i.InstanceSoldEvents
+            .Where(x => x.InstanceCancelledEvent != null)
+            .Sum(x => x.InstanceCancelledEvent!.RefundedAmount - (x.UnitPrice * x.Quantity));
+
         var sellProfits = soldEvents
             .Sum(x => Maths.Discount(x.Quantity * x.UnitPrice, x.TotalDiscountPercent));
 
@@ -52,7 +56,8 @@ public static partial class Instances
             Discards = discards,
             ExpiryDate = i.ExpiryDate,
             QuantityLeft = quantityLeft,
-            SellProfit = sellProfits
+            SellProfit = sellProfits,
+            SellCancellationsPenaltyDifference = (float)sellCancellationsPenaltyDifference
         };
     }
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.QueryUtils;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Instances;
@@ -144,7 +143,7 @@ public class GetInstanceInfoTests : TestsBase
     }
 
     [Fact]
-    public void Item_Bought_Delivered_Sold_SellCancelledWithRefund()
+    public void Item_Bought_Delivered_Sold_SellCancelledWithPenalty()
     {
         var boughtEvent = Mocker.MockBoughtEvent(_testDbContext, _sand, (ev) =>
         {
@@ -163,9 +162,9 @@ public class GetInstanceInfoTests : TestsBase
             x.Quantity = 1;
         });
 
-        Mocker.MockSoldCancelledEvent(_testDbContext, soldEvent, x =>
+        var sellCancelledEvent = Mocker.MockSoldCancelledEvent(_testDbContext, soldEvent, x =>
         {
-            x.RefundedAmount = 2;
+            x.RefundedAmount = 2.2;
         });
 
         SaveToDb();
@@ -178,6 +177,7 @@ public class GetInstanceInfoTests : TestsBase
             PendingToArrive = 0,
             PurchaseCost = 2,
             SellProfit = 0,
+            SellCancellationsPenaltyDifference = 0.2f,
             QuantityLeft = boughtEvent.Quantity,
             Discards = Array.Empty<DiscardInfoDto>(),
             ExpiryDate = instance.ExpiryDate

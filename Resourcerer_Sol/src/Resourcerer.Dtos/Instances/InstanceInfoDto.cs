@@ -11,4 +11,5 @@ public class InstanceInfoDto : IBaseDto
     public DateTime? ExpiryDate { get; set; }
     public double PurchaseCost { get; set; }
     public double SellProfit { get; set; }
+    public float SellCancellationsPenaltyDifference { get; set; }
 }
