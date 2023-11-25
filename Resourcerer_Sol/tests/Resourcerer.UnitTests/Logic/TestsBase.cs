@@ -11,12 +11,15 @@ public class TestsBase
 {
     protected readonly AppDbContext _testDbContext;
     protected readonly Item _sand;
-    
+    protected readonly Item _meat;
+
     public TestsBase()
     {
         _testDbContext = new ContextCreator().GetTestDbContext();
         Mocker.MockDbData(_testDbContext);
+
         _sand = _testDbContext.Items.First(x => x.Name == "sand");
+        _meat = _testDbContext.Items.First(x => x.Name == "meat");
     }
 
     protected ILogger<T> MockLogger<T>() => A.Fake<ILogger<T>>();

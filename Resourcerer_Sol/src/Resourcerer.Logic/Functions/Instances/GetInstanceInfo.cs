@@ -43,9 +43,9 @@ public static partial class Instances
 
         var quantityLeft = i.InstanceBoughtEvent.Quantity - sold - discards.Sum(x => x.Quantity);
         
-        if(i.ExpiryDate < now)
+        if(i.ExpiryDate >= now)
         {
-            quantityLeft = i.InstanceBoughtEvent!.Quantity - sold - discards.Sum(x => x.Quantity);
+            quantityLeft = 0;
         }
 
         return new InstanceInfoDto()

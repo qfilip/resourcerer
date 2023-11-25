@@ -33,6 +33,13 @@ internal static partial class Mocker
             x.Name = "hourglass";
         }, 10);
 
+        var meat = MockItem(context, x =>
+        {
+            x.Category = product;
+            x.Name = "meat";
+            x.ExpirationTimeSeconds = TimeSpan.FromDays(7).Seconds;
+        });
+
         MockExcerpts(context, mortar, new[]
         {
             (cement, 2d),
