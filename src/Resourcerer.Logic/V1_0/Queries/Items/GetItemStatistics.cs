@@ -3,6 +3,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.QueryUtils;
 using Resourcerer.Dtos.Elements;
+using Resourcerer.Dtos.Items;
 
 namespace Resourcerer.Logic.Queries.V1_0;
 public static class GetItemStatistics
@@ -44,11 +45,22 @@ public static class GetItemStatistics
 
             var usedInComposites = item.ElementExcerpts.Count();
 
-            var makingCostAsComposite = item.CompositeExcerpts
+            var productionCostAsComposite = item.CompositeExcerpts
                 .SelectMany(x => x.Element!.Prices)
                 .Sum(x => x.UnitValue);
 
             var sellingCost = item.Prices.Single().UnitValue;
+
+            var result = new ItemStockInfoDto
+            {
+                Id = item.Id,
+                Name = item.Name,
+                TotalUnitsInStock = instanceInfos.Sum(x => x.QuantityLeft),
+                InstancesInfo = instanceInfos,
+                ItemType = isComposite ? new[] { "Element", "Composite" } : new[] { "Element" },
+                ProductionCostAsComposite = productionCostAsComposite,
+                SellingPrice = item.Prices.Single().UnitValue
+            };
 
             return HandlerResult<List<ItemStatisticsDto>>.Ok(new List<ItemStatisticsDto>());
         }

@@ -5,20 +5,20 @@ using Resourcerer.Dtos;
 
 namespace Resourcerer.Logic.Commands.V1_0;
 
-public static class CreateInstanceOrderCancelledEvent
+public static class CreateItemOrderCancelledEvent
 {
-    public class Handler : IAppHandler<InstanceOrderCancelledEventDto, Unit>
+    public class Handler : IAppHandler<ItemOrderCancelledEventDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
-        public async Task<HandlerResult<Unit>> Handle(InstanceOrderCancelledEventDto request)
+        public async Task<HandlerResult<Unit>> Handle(ItemOrderCancelledEventDto request)
         {
             var orderedEvent = await _appDbContext.InstanceBoughtEvents
-                .Include(x => x.InstanceCancelledEvent)
-                .Include(x => x.InstanceDeliveredEvent)
+                .Include(x => x.ItemSellCancelledEvent)
+                .Include(x => x.ItemDeliveredEvent)
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceOrderedEventId);
 
             if (orderedEvent == null)
@@ -27,18 +27,18 @@ public static class CreateInstanceOrderCancelledEvent
                 return HandlerResult<Unit>.Rejected(error);
             }
 
-            if (orderedEvent.InstanceDeliveredEvent != null)
+            if (orderedEvent.ItemDeliveredEvent != null)
             {
                 var error = "Order was delivered, and cannot be cancelled";
                 return HandlerResult<Unit>.Rejected(error);
             }
 
-            if (orderedEvent.InstanceCancelledEventId != null)
+            if (orderedEvent.ItemSellCancelledEventId != null)
             {
                 return HandlerResult<Unit>.Ok(new Unit());
             }
 
-            var entity = new InstanceCancelledEvent
+            var entity = new ItemSellCancelledEvent
             {
                 InstanceBoughtEventId = orderedEvent.Id
             };

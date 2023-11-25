@@ -8,11 +8,11 @@ namespace Resourcerer.Api.Endpoints.V1_0;
 public class CreateInstanceOrderCancelledEventEndpoint
 {
     public static async Task<IResult> Action(
-       [FromBody] InstanceOrderCancelledEventDto dto,
+       [FromBody] ItemOrderCancelledEventDto dto,
        [FromServices] Pipeline pipeline,
-       [FromServices] CreateInstanceOrderCancelledEvent.Handler handler)
+       [FromServices] CreateItemOrderCancelledEvent.Handler handler)
     {
-        return await pipeline.Pipe(handler, dto, new InstanceOrderCancelledEventDto.Validator());
+        return await pipeline.Pipe(handler, dto, new ItemOrderCancelledEventDto.Validator());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

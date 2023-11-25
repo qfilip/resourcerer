@@ -31,10 +31,19 @@ export interface IExcerptDto
 	element: IItemDto;
 	quantity: number;
 }
+export interface IInstanceBoughtEventDto
+{
+	itemId: string;
+	expiryDate: Date;
+	unitsOrdered: number;
+	unitPrice: number;
+	totalDiscountPercent: number;
+	expectedDeliveryDate: Date;
+}
 export interface IInstanceDeliveredEventDto
 {
 	instanceOrderedEventId: string;
-	instanceOrderedEvent: IInstanceOrderedEventDto;
+	instanceOrderedEvent: IInstanceBoughtEventDto;
 }
 export interface IInstanceDiscardedEventDto
 {
@@ -49,7 +58,7 @@ export interface IInstanceDto
 	expiryDate: Date;
 	elementId: string;
 	element: IItemDto;
-	instanceOrderedEvents: IInstanceOrderedEventDto[];
+	instanceOrderedEvents: IInstanceBoughtEventDto[];
 	instanceOrderCancelledEvents: IInstanceOrderCancelledEventDto[];
 	instanceDeliveredEvents: IInstanceDeliveredEventDto[];
 	instanceDiscardedEvents: IInstanceDiscardedEventDto[];
@@ -68,15 +77,6 @@ export interface IInstanceInfoDto
 export interface IInstanceOrderCancelledEventDto
 {
 	instanceOrderedEventId: string;
-}
-export interface IInstanceOrderedEventDto
-{
-	itemId: string;
-	expiryDate: Date;
-	unitsOrdered: number;
-	unitPrice: number;
-	totalDiscountPercent: number;
-	expectedDeliveryDate: Date;
 }
 export interface ICreateCompositeItemDto
 {

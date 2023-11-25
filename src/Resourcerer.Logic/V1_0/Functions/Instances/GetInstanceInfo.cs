@@ -9,26 +9,26 @@ public static partial class Instances
 {
     public static InstanceInfoDto GetInstanceInfo(Instance i, DateTime now)
     {
-        if (i.InstanceBoughtEvent!.InstanceCancelledEvent != null)
+        if (i.InstanceBoughtEvent!.ItemSellCancelledEvent != null)
         {
             return MapCancelled(i);
         }
 
-        if (i.InstanceBoughtEvent!.InstanceDeliveredEvent == null)
+        if (i.InstanceBoughtEvent!.ItemDeliveredEvent == null)
         {
             return MapNotDelivered(i);
         }
 
         var soldEvents = i.InstanceSoldEvents
-            .Where(x => x.InstanceCancelledEvent == null)
+            .Where(x => x.ItemSellCancelledEvent == null)
             .ToArray();
 
         var sold = soldEvents
             .Sum(x => x.Quantity);
 
         var sellCancellationsPenaltyDifference = i.InstanceSoldEvents
-            .Where(x => x.InstanceCancelledEvent != null)
-            .Sum(x => x.InstanceCancelledEvent!.RefundedAmount - (x.UnitPrice * x.Quantity));
+            .Where(x => x.ItemSellCancelledEvent != null)
+            .Sum(x => x.ItemSellCancelledEvent!.RefundedAmount - (x.UnitPrice * x.Quantity));
 
         var sellProfits = soldEvents
             .Sum(x => Maths.Discount(x.Quantity * x.UnitPrice, x.TotalDiscountPercent));
@@ -69,7 +69,7 @@ public static partial class Instances
     private static InstanceInfoDto MapCancelled(Instance i)
     {
         var buyEvent = i.InstanceBoughtEvent!;
-        var cancelEvent = i.InstanceBoughtEvent!.InstanceCancelledEvent!;
+        var cancelEvent = i.InstanceBoughtEvent!.ItemSellCancelledEvent!;
 
         return new InstanceInfoDto()
         {

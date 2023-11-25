@@ -8,7 +8,7 @@ namespace Resourcerer.UnitTests.Logic.V1_0;
 
 public class CreateInstanceDeliveredEventTests : TestsBase
 {
-    public readonly CreateInstanceDeliveredEvent.Handler _handler;
+    public readonly CreateItemDeliveredEvent.Handler _handler;
     public CreateInstanceDeliveredEventTests()
     {
         _handler = new(_testDbContext);
@@ -19,7 +19,7 @@ public class CreateInstanceDeliveredEventTests : TestsBase
     {
         // arrange
         var orderEventId = Mocker.MockBoughtEvent(_testDbContext, _sand).Id;
-        var dto = new InstanceDeliveredEventDto
+        var dto = new ItemDeliveredEventDto
         {
             InstanceOrderedEventId = orderEventId
         };
@@ -35,7 +35,7 @@ public class CreateInstanceDeliveredEventTests : TestsBase
     [Fact]
     public void When_OrderEvent_NotFound_Then_ValidationError()
     {
-        var dto = new InstanceDeliveredEventDto
+        var dto = new ItemDeliveredEventDto
         {
             InstanceOrderedEventId = Guid.NewGuid()
         };
@@ -52,7 +52,7 @@ public class CreateInstanceDeliveredEventTests : TestsBase
     {
         var boughtEvent = Mocker.MockBoughtEvent(_testDbContext, _sand);
         var cancelledEvent = Mocker.MockBoughtCancelledEvent(_testDbContext, boughtEvent);
-        var dto = new InstanceDeliveredEventDto
+        var dto = new ItemDeliveredEventDto
         {
             InstanceOrderedEventId = cancelledEvent.InstanceBoughtEvent!.Id
         };
@@ -70,9 +70,9 @@ public class CreateInstanceDeliveredEventTests : TestsBase
     {
         var boughtEvent = Mocker.MockBoughtEvent(_testDbContext, _sand);
         var orderCancelledEvent = Mocker.MockDeliveredEvent(_testDbContext, boughtEvent);
-        var dto = new InstanceDeliveredEventDto
+        var dto = new ItemDeliveredEventDto
         {
-            InstanceOrderedEventId = (Guid)orderCancelledEvent.InstanceBoughtEventId!
+            InstanceOrderedEventId = (Guid)orderCancelledEvent.ItemOrderedEventId!
         };
         _testDbContext.SaveChanges();
 

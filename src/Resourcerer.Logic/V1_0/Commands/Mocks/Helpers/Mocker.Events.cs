@@ -5,12 +5,12 @@ namespace Resourcerer.Logic.Commands.Mocks.Helpers;
 
 public static partial class Mocker
 {
-    public static InstanceBoughtEvent MockOrderedEvent(
+    public static ItemOrderedEvent MockOrderedEvent(
         AppDbContext context,
-        Action<InstanceBoughtEvent>? modifier = null,
+        Action<ItemOrderedEvent>? modifier = null,
         Item? instanceItem = null)
     {
-        var entity = MakeEntity(() => new InstanceBoughtEvent
+        var entity = MakeEntity(() => new ItemOrderedEvent
         {
             ExpectedDeliveryDate = DateTime.UtcNow,
             TotalDiscountPercent = 0,
@@ -35,12 +35,12 @@ public static partial class Mocker
         return entity;
     }
 
-    public static InstanceCancelledEvent MockOrderCancelledEvent(
+    public static ItemSellCancelledEvent MockOrderCancelledEvent(
         AppDbContext context,
-        Action<InstanceCancelledEvent>? modifier = null,
+        Action<ItemSellCancelledEvent>? modifier = null,
         Item? instanceItem = null)
     {
-        var entity = MakeEntity(() => new InstanceCancelledEvent
+        var entity = MakeEntity(() => new ItemSellCancelledEvent
         {
             InstanceBoughtEvent = MockOrderedEvent(context)
         });
@@ -57,21 +57,21 @@ public static partial class Mocker
         return entity;
     }
 
-    public static InstanceDeliveredEvent MockDeliveredEvent(
+    public static ItemDeliveredEvent MockDeliveredEvent(
         AppDbContext context,
-        Action<InstanceDeliveredEvent>? modifier = null,
+        Action<ItemDeliveredEvent>? modifier = null,
         Item? instanceItem = null)
     {
-        var entity = MakeEntity(() => new InstanceDeliveredEvent
+        var entity = MakeEntity(() => new ItemDeliveredEvent
         {
-            InstanceBoughtEvent = MockOrderedEvent(context)
+            ItemOrderedEvent = MockOrderedEvent(context)
         });
 
         modifier?.Invoke(entity);
 
         if (instanceItem != null)
         {
-            entity.InstanceBoughtEvent!.Instance!.Item = instanceItem;
+            entity.ItemOrderedEvent!.Instance!.Item = instanceItem;
         }
 
         context.InstanceDeliveredEvents.Add(entity);

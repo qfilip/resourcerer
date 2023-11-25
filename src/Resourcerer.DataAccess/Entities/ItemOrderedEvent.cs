@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.DataAccess.Entities;
 
-public class InstanceBoughtEvent : EntityBase
+public class ItemOrderedEvent : EntityBase
 {
     public double Quantity { get; set; }
     public double UnitPrice { get; set; }
@@ -10,9 +10,9 @@ public class InstanceBoughtEvent : EntityBase
     public Guid InstanceId { get; set; }
     public virtual Instance? Instance { get; set; }
 
-    public Guid? InstanceCancelledEventId { get; set; }
-    public virtual InstanceCancelledEvent? InstanceCancelledEvent { get; set; }
+    public Guid? ItemSellCancelledEventId { get; set; }
+    public virtual ItemSellCancelledEvent? ItemSellCancelledEvent { get; set; }
 
-    public Guid? InstanceDeliveredEventId { get; set; }
-    public virtual InstanceDeliveredEvent? InstanceDeliveredEvent { get; set; }
+    public Guid? ItemDeliveredEventId { get; set; }
+    public virtual ItemDeliveredEvent? ItemDeliveredEvent { get; set; }
 }

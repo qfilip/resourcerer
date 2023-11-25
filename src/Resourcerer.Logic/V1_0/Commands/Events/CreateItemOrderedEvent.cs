@@ -5,16 +5,16 @@ using Resourcerer.Dtos;
 
 namespace Resourcerer.Logic.Commands.V1_0;
 
-public static class CreateInstanceOrderedEvent
+public static class CreateItemOrderedEvent
 {
-    public class Handler : IAppHandler<InstanceOrderedEventDto, Unit>
+    public class Handler : IAppHandler<ItemOrderedEventDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
-        public async Task<HandlerResult<Unit>> Handle(InstanceOrderedEventDto request)
+        public async Task<HandlerResult<Unit>> Handle(ItemOrderedEventDto request)
         {
             var item = await _appDbContext.Items
                 .Include(x => x.UnitOfMeasure)
@@ -55,7 +55,7 @@ public static class CreateInstanceOrderedEvent
                 ItemId = item.Id
             };
 
-            var orderedEvent = new InstanceBoughtEvent
+            var orderedEvent = new ItemOrderedEvent
             {
                 InstanceId = instance.Id,
                 UnitPrice = request.UnitPrice,

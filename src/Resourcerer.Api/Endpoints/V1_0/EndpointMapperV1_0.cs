@@ -28,7 +28,7 @@ public class EndpointMapperV1_0
         
         CreateInstanceDeliveredEndpoint.MapToGroup(g);
         CreateInstanceOrderCancelledEventEndpoint.MapToGroup(g);
-        CreateInstanceOrderedEventEndpoint.MapToGroup(g);
+        CreateInstanceBoughtEventEndpoint.MapToGroup(g);
     }
 
     private static void MapItems(WebApplication app)

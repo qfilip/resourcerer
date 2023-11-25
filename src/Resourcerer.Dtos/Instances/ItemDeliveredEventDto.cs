@@ -2,12 +2,12 @@
 
 namespace Resourcerer.Dtos;
 
-public class InstanceDeliveredEventDto : IBaseDto
+public class ItemDeliveredEventDto : IBaseDto
 {
     public Guid InstanceOrderedEventId { get; set; }
-    public virtual InstanceOrderedEventDto? InstanceOrderedEvent { get; set; }
+    public virtual ItemOrderedEventDto? InstanceOrderedEvent { get; set; }
 
-    public class Validator : AbstractValidator<InstanceDeliveredEventDto>
+    public class Validator : AbstractValidator<ItemDeliveredEventDto>
     {
         public Validator()
         {

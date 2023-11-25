@@ -9,9 +9,9 @@ public class InstanceDto : IBaseDto
     public Guid? ElementId { get; set; }
     public virtual ItemDto? Element { get; set; }
 
-    public List<InstanceOrderedEventDto>? InstanceOrderedEvents { get; set; }
-    public List<InstanceOrderCancelledEventDto>? InstanceOrderCancelledEvents { get; set; }
-    public List<InstanceDeliveredEventDto>? InstanceDeliveredEvents { get; set; }
+    public List<ItemOrderedEventDto>? InstanceOrderedEvents { get; set; }
+    public List<ItemOrderCancelledEventDto>? InstanceOrderCancelledEvents { get; set; }
+    public List<ItemDeliveredEventDto>? InstanceDeliveredEvents { get; set; }
     public List<InstanceDiscardedEventDto>? InstanceDiscardedEvents { get; set; }
 
     public class Validator : AbstractValidator<InstanceDto>

@@ -5,9 +5,9 @@ using Resourcerer.Dtos;
 
 namespace Resourcerer.Logic.Commands.V1_0;
 
-public static class CreateInstanceDeliveredEvent
+public static class CreateItemDeliveredEvent
 {
-    public class Handler : IAppHandler<InstanceDeliveredEventDto, Unit>
+    public class Handler : IAppHandler<ItemDeliveredEventDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
@@ -15,11 +15,11 @@ public static class CreateInstanceDeliveredEvent
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(InstanceDeliveredEventDto request)
+        public async Task<HandlerResult<Unit>> Handle(ItemDeliveredEventDto request)
         {
             var orderEvent = await _appDbContext.InstanceBoughtEvents
-                .Include(x => x.InstanceCancelledEvent)
-                .Include(x => x.InstanceDeliveredEvent)
+                .Include(x => x.ItemSellCancelledEvent)
+                .Include(x => x.ItemDeliveredEvent)
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceOrderedEventId);
 
             if (orderEvent == null)
@@ -28,20 +28,20 @@ public static class CreateInstanceDeliveredEvent
                 return HandlerResult<Unit>.Rejected(message);
             }
 
-            if (orderEvent.InstanceCancelledEvent != null)
+            if (orderEvent.ItemSellCancelledEvent != null)
             {
                 var error = "Order was cancelled, and cannot be delivered";
                 return HandlerResult<Unit>.Rejected(error);
             }
 
-            if (orderEvent.InstanceDeliveredEvent != null)
+            if (orderEvent.ItemDeliveredEvent != null)
             {
                 return HandlerResult<Unit>.Ok(new Unit());
             }
 
-            var deliveredEvent = new InstanceDeliveredEvent
+            var deliveredEvent = new ItemDeliveredEvent
             {
-                InstanceBoughtEventId = orderEvent.Id
+                ItemOrderedEventId = orderEvent.Id
             };
 
             _appDbContext.InstanceDeliveredEvents.Add(deliveredEvent);

@@ -10,7 +10,7 @@ namespace Resourcerer.UnitTests.Logic.V1_0;
 
 public class CreateInstanceOrderedEventTests : TestsBase
 {
-    private readonly CreateInstanceOrderedEvent.Handler _handler;
+    private readonly CreateItemOrderedEvent.Handler _handler;
     public CreateInstanceOrderedEventTests()
     {
         _handler = new(_testDbContext);
@@ -104,9 +104,9 @@ public class CreateInstanceOrderedEventTests : TestsBase
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
     }
 
-    private InstanceOrderedEventDto GetDto(Action<InstanceOrderedEventDto>? modifier = null, Action<Item>? itemModifier = null)
+    private ItemOrderedEventDto GetDto(Action<ItemOrderedEventDto>? modifier = null, Action<Item>? itemModifier = null)
     {
-        var dto = new InstanceOrderedEventDto()
+        var dto = new ItemOrderedEventDto()
         {
             ItemId = Mocker.MockItem(_testDbContext, itemModifier).Id,
             ExpiryDate = DateTime.UtcNow.AddDays(5),

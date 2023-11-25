@@ -8,11 +8,11 @@ namespace Resourcerer.Api.Endpoints.V1_0;
 public class CreateInstanceDeliveredEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] InstanceDeliveredEventDto dto,
+        [FromBody] ItemDeliveredEventDto dto,
         [FromServices] Pipeline pipeline,
-        [FromServices] CreateInstanceDeliveredEvent.Handler handler)
+        [FromServices] CreateItemDeliveredEvent.Handler handler)
     {
-        return await pipeline.Pipe(handler, dto, new InstanceDeliveredEventDto.Validator());
+        return await pipeline.Pipe(handler, dto, new ItemDeliveredEventDto.Validator());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

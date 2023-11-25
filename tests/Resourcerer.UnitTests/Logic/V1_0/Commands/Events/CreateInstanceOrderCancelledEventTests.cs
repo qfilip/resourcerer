@@ -8,7 +8,7 @@ namespace Resourcerer.UnitTests.Logic.V1_0;
 
 public class CreateInstanceOrderCancelledEventTests : TestsBase
 {
-    private readonly CreateInstanceOrderCancelledEvent.Handler _handler;
+    private readonly CreateItemOrderCancelledEvent.Handler _handler;
     public CreateInstanceOrderCancelledEventTests()
     {
         _handler = new(_testDbContext);
@@ -19,7 +19,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     {
         // arrange
         var orderEventId = Mocker.MockBoughtEvent(_testDbContext, _sand).Id;
-        var dto = new InstanceOrderCancelledEventDto
+        var dto = new ItemOrderCancelledEventDto
         {
             InstanceOrderedEventId = orderEventId
         };
@@ -35,7 +35,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     [Fact]
     public void When_OrderEvent_NotFound_Then_ValidationError()
     {
-        var dto = new InstanceOrderCancelledEventDto
+        var dto = new ItemOrderCancelledEventDto
         {
             InstanceOrderedEventId = Guid.NewGuid()
         };
@@ -52,9 +52,9 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     {
         var boughtEvent = Mocker.MockBoughtEvent(_testDbContext, _sand);
         var deliveredEvent = Mocker.MockDeliveredEvent(_testDbContext, boughtEvent);
-        var dto = new InstanceOrderCancelledEventDto
+        var dto = new ItemOrderCancelledEventDto
         {
-            InstanceOrderedEventId = deliveredEvent.InstanceBoughtEvent!.Id
+            InstanceOrderedEventId = deliveredEvent.ItemOrderedEvent!.Id
         };
         _testDbContext.SaveChanges();
 
@@ -70,7 +70,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     {
         var boughtEvent = Mocker.MockBoughtEvent(_testDbContext, _sand);
         var orderCancelledEvent = Mocker.MockBoughtCancelledEvent(_testDbContext, boughtEvent);
-        var dto = new InstanceOrderCancelledEventDto
+        var dto = new ItemOrderCancelledEventDto
         {
             InstanceOrderedEventId = (Guid)orderCancelledEvent.InstanceBoughtEventId!
         };

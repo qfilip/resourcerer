@@ -73,15 +73,15 @@ public partial class AppDbContext
                 .HasConstraintName($"FK_{nameof(Item)}_{nameof(Instance)}");
         });
 
-        ConfigureEntity<InstanceBoughtEvent>(modelBuilder, (e) =>
+        ConfigureEntity<ItemOrderedEvent>(modelBuilder, (e) =>
         {
             e.HasOne(x => x.Instance).WithOne(x => x.InstanceBoughtEvent)
-                .HasForeignKey<InstanceBoughtEvent>(x => x.InstanceId)
+                .HasForeignKey<ItemOrderedEvent>(x => x.InstanceId)
                 .IsRequired()
-                .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceBoughtEvent)}");
+                .HasConstraintName($"FK_{nameof(Instance)}_{nameof(ItemOrderedEvent)}");
         });
         
-        ConfigureEntity<InstanceSoldEvent>(modelBuilder, (e) =>
+        ConfigureEntity<ItemSoldEvent>(modelBuilder, (e) =>
         {
             e.HasOne(x => x.Instance).WithMany(x => x.InstanceSoldEvents)
                 .HasForeignKey(x => x.InstanceId)
@@ -89,34 +89,34 @@ public partial class AppDbContext
                 .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceSoldEvents)}");
         });
 
-        ConfigureEntity<InstanceCancelledEvent>(modelBuilder, (e) =>
+        ConfigureEntity<ItemSellCancelledEvent>(modelBuilder, (e) =>
         {
-            e.HasOne(x => x.InstanceBoughtEvent).WithOne(x => x.InstanceCancelledEvent)
-                .HasForeignKey<InstanceCancelledEvent>(x => x.InstanceBoughtEventId)
-                .HasConstraintName($"FK_{nameof(InstanceBoughtEvent)}_{nameof(InstanceCancelledEvent)}");
+            e.HasOne(x => x.InstanceBoughtEvent).WithOne(x => x.ItemSellCancelledEvent)
+                .HasForeignKey<ItemSellCancelledEvent>(x => x.InstanceBoughtEventId)
+                .HasConstraintName($"FK_{nameof(ItemOrderedEvent)}_{nameof(ItemSellCancelledEvent)}");
 
-            e.HasOne(x => x.InstanceSoldEvent).WithOne(x => x.InstanceCancelledEvent)
-                .HasForeignKey<InstanceCancelledEvent>(x => x.InstanceSoldEventId)
-                .HasConstraintName($"FK_{nameof(InstanceSoldEvents)}_{nameof(InstanceCancelledEvent)}");
+            e.HasOne(x => x.InstanceSoldEvent).WithOne(x => x.ItemSellCancelledEvent)
+                .HasForeignKey<ItemSellCancelledEvent>(x => x.InstanceSoldEventId)
+                .HasConstraintName($"FK_{nameof(InstanceSoldEvents)}_{nameof(ItemSellCancelledEvent)}");
         });
 
-        ConfigureEntity<InstanceDeliveredEvent>(modelBuilder, (e) =>
+        ConfigureEntity<ItemDeliveredEvent>(modelBuilder, (e) =>
         {
-            e.HasOne(x => x.InstanceBoughtEvent).WithOne(x => x.InstanceDeliveredEvent)
-                .HasForeignKey<InstanceDeliveredEvent>(x => x.InstanceBoughtEventId)
-                .HasConstraintName($"FK_{nameof(InstanceBoughtEvent)}_{nameof(InstanceDeliveredEvent)}");
+            e.HasOne(x => x.ItemOrderedEvent).WithOne(x => x.ItemDeliveredEvent)
+                .HasForeignKey<ItemDeliveredEvent>(x => x.ItemOrderedEventId)
+                .HasConstraintName($"FK_{nameof(ItemOrderedEvent)}_{nameof(ItemDeliveredEvent)}");
 
-            e.HasOne(x => x.InstanceSoldEvent).WithOne(x => x.InstanceDeliveredEvent)
-                .HasForeignKey<InstanceDeliveredEvent>(x => x.InstanceSoldEventId)
-                .HasConstraintName($"FK_{nameof(InstanceSoldEvents)}_{nameof(InstanceDeliveredEvent)}");
+            e.HasOne(x => x.ItemSoldEvent).WithOne(x => x.ItemDeliveredEvent)
+                .HasForeignKey<ItemDeliveredEvent>(x => x.ItemSoldEventId)
+                .HasConstraintName($"FK_{nameof(InstanceSoldEvents)}_{nameof(ItemDeliveredEvent)}");
         });
 
-        ConfigureEntity<InstanceDiscardedEvent>(modelBuilder, e =>
+        ConfigureEntity<ItemDiscardedEvent>(modelBuilder, e =>
         {
             e.HasOne(x => x.Instance).WithMany(x => x.InstanceDiscardedEvents)
                 .HasForeignKey(x => x.InstanceId)
                 .IsRequired()
-                .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceDiscardedEvent)}");
+                .HasConstraintName($"FK_{nameof(Instance)}_{nameof(ItemDiscardedEvent)}");
         });
 
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())

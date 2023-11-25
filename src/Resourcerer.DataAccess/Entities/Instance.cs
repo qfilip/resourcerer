@@ -4,8 +4,8 @@ public class Instance : EntityBase
 {
     public Instance()
     {
-        InstanceSoldEvents = new HashSet<InstanceSoldEvent>();
-        InstanceDiscardedEvents = new HashSet<InstanceDiscardedEvent>();
+        InstanceSoldEvents = new HashSet<ItemSoldEvent>();
+        InstanceDiscardedEvents = new HashSet<ItemDiscardedEvent>();
     }
     
     public DateTime? ExpiryDate { get; set; }
@@ -14,8 +14,8 @@ public class Instance : EntityBase
     public virtual Item? Item { get; set; }
 
     public Guid InstanceBoughtEventId { get; set; }
-    public virtual InstanceBoughtEvent? InstanceBoughtEvent { get; set; }
+    public virtual ItemOrderedEvent? InstanceBoughtEvent { get; set; }
     
-    public ICollection<InstanceSoldEvent> InstanceSoldEvents { get; set; }
-    public ICollection<InstanceDiscardedEvent> InstanceDiscardedEvents { get; set; }    
+    public ICollection<ItemSoldEvent> InstanceSoldEvents { get; set; }
+    public ICollection<ItemDiscardedEvent> InstanceDiscardedEvents { get; set; }    
 }
