@@ -30,7 +30,7 @@ public static partial class Mocker
             entity.Instance!.Item = instanceItem;
         }
 
-        context.InstanceBoughtEvents.Add(entity);
+        context.ItemOrderedEvents.Add(entity);
         
         return entity;
     }
@@ -52,7 +52,7 @@ public static partial class Mocker
             entity.InstanceBoughtEvent!.Instance!.Item = instanceItem;
         }
 
-        context.InstanceCancelledEvents.Add(entity);
+        context.ItemSellCancelledEvents.Add(entity);
 
         return entity;
     }
@@ -74,7 +74,7 @@ public static partial class Mocker
             entity.ItemOrderedEvent!.Instance!.Item = instanceItem;
         }
 
-        context.InstanceDeliveredEvents.Add(entity);
+        context.ItemDeliveredEvents.Add(entity);
 
         return entity;
     }

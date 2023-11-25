@@ -86,7 +86,7 @@ public partial class AppDbContext
             e.HasOne(x => x.Instance).WithMany(x => x.InstanceSoldEvents)
                 .HasForeignKey(x => x.InstanceId)
                 .IsRequired()
-                .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceSoldEvents)}");
+                .HasConstraintName($"FK_{nameof(Instance)}_{nameof(ItemSoldEvents)}");
         });
 
         ConfigureEntity<ItemSellCancelledEvent>(modelBuilder, (e) =>
@@ -97,7 +97,7 @@ public partial class AppDbContext
 
             e.HasOne(x => x.InstanceSoldEvent).WithOne(x => x.ItemSellCancelledEvent)
                 .HasForeignKey<ItemSellCancelledEvent>(x => x.InstanceSoldEventId)
-                .HasConstraintName($"FK_{nameof(InstanceSoldEvents)}_{nameof(ItemSellCancelledEvent)}");
+                .HasConstraintName($"FK_{nameof(ItemSoldEvents)}_{nameof(ItemSellCancelledEvent)}");
         });
 
         ConfigureEntity<ItemDeliveredEvent>(modelBuilder, (e) =>
@@ -108,7 +108,7 @@ public partial class AppDbContext
 
             e.HasOne(x => x.ItemSoldEvent).WithOne(x => x.ItemDeliveredEvent)
                 .HasForeignKey<ItemDeliveredEvent>(x => x.ItemSoldEventId)
-                .HasConstraintName($"FK_{nameof(InstanceSoldEvents)}_{nameof(ItemDeliveredEvent)}");
+                .HasConstraintName($"FK_{nameof(ItemSoldEvents)}_{nameof(ItemDeliveredEvent)}");
         });
 
         ConfigureEntity<ItemDiscardedEvent>(modelBuilder, e =>

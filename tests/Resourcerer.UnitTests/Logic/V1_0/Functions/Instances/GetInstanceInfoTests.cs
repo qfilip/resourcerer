@@ -18,7 +18,7 @@ public class GetInstanceInfoTests : TestsBase
     [Fact]
     public void Item_Bought()
     {
-        var boughtEvent1 = Mocker.MockBoughtEvent(_testDbContext, _sand, (ev) =>
+        var boughtEvent1 = Mocker.MockOrderedEvent(_testDbContext, _sand, (ev) =>
         {
             ev.UnitPrice = 1;
             ev.Quantity = 1;
@@ -42,7 +42,7 @@ public class GetInstanceInfoTests : TestsBase
     [Fact]
     public void Item_BoughtAndDelivered()
     {
-        var boughtEvent1 = Mocker.MockBoughtEvent(_testDbContext, _sand, (ev) =>
+        var boughtEvent1 = Mocker.MockOrderedEvent(_testDbContext, _sand, (ev) =>
         {
             ev.UnitPrice = 1;
             ev.Quantity = 1;
@@ -75,13 +75,13 @@ public class GetInstanceInfoTests : TestsBase
     [Fact]
     public void Item_BoughtAndCancelled_WithRefund()
     {
-        var boughtEvent = Mocker.MockBoughtEvent(_testDbContext, _sand, (ev) =>
+        var boughtEvent = Mocker.MockOrderedEvent(_testDbContext, _sand, (ev) =>
         {
             ev.UnitPrice = 1;
             ev.Quantity = 1;
         });
 
-        Mocker.MockBoughtCancelledEvent(_testDbContext, boughtEvent, x =>
+        Mocker.MockOrderCancelledEvent(_testDbContext, boughtEvent, x =>
         {
             x.Reason = "test-reason";
             x.RefundedAmount = 0.5d;
@@ -107,7 +107,7 @@ public class GetInstanceInfoTests : TestsBase
     [Fact]
     public void Item_Bought_Delivered_Sold()
     {
-        var boughtEvent = Mocker.MockBoughtEvent(_testDbContext, _sand, (ev) =>
+        var boughtEvent = Mocker.MockOrderedEvent(_testDbContext, _sand, (ev) =>
         {
             ev.UnitPrice = 1;
             ev.Quantity = 2;
@@ -146,7 +146,7 @@ public class GetInstanceInfoTests : TestsBase
     [Fact]
     public void Item_Bought_Delivered_Sold_SellCancelledWithPenalty()
     {
-        var boughtEvent = Mocker.MockBoughtEvent(_testDbContext, _sand, (ev) =>
+        var boughtEvent = Mocker.MockOrderedEvent(_testDbContext, _sand, (ev) =>
         {
             ev.UnitPrice = 1;
             ev.Quantity = 2;
@@ -163,7 +163,7 @@ public class GetInstanceInfoTests : TestsBase
             x.Quantity = 1;
         });
 
-        var sellCancelledEvent = Mocker.MockSoldCancelledEvent(_testDbContext, soldEvent, x =>
+        var sellCancelledEvent = Mocker.MockSellCancelledEvent(_testDbContext, soldEvent, x =>
         {
             x.RefundedAmount = 2.2;
         });

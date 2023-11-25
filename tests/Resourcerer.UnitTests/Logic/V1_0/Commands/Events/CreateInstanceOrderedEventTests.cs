@@ -31,7 +31,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
-        var entity = _testDbContext.InstanceBoughtEvents
+        var entity = _testDbContext.ItemOrderedEvents
             .Include(x => x.Instance)
             .Single();
 

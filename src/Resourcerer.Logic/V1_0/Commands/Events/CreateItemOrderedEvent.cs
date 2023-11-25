@@ -64,7 +64,7 @@ public static class CreateItemOrderedEvent
                 ExpectedDeliveryDate = request.ExpectedDeliveryDate,
             };
 
-            _appDbContext.InstanceBoughtEvents.Add(orderedEvent);
+            _appDbContext.ItemOrderedEvents.Add(orderedEvent);
             _appDbContext.Instances.Add(instance);
             
             await _appDbContext.SaveChangesAsync();
