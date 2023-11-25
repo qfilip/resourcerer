@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
-using Resourcerer.Logic.Commands.Users;
+using Resourcerer.Logic.Commands.V1_0;
 
-namespace Resourcerer.Api.Endpoints.V1_0.Users;
+namespace Resourcerer.Api.Endpoints.V1_0;
 
 public static class RegisterEndpoint
 {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
-using Resourcerer.Logic.Queries.Users;
+using Resourcerer.Logic.Queries.V1_0;
 
-namespace Resourcerer.Api.Endpoints.V1_0.Users;
+namespace Resourcerer.Api.Endpoints.V1_0;
 
 public class LoginEndpoint
 {

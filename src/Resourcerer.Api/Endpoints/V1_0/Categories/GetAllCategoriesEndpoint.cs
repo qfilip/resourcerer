@@ -2,9 +2,9 @@
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Logic;
-using Resourcerer.Logic.Queries.Categories;
+using Resourcerer.Logic.Queries.V1_0;
 
-namespace Resourcerer.Api.Endpoints.V1_0.Categories;
+namespace Resourcerer.Api.Endpoints.V1_0;
 
 public class GetAllCategoriesEndpoint
 {

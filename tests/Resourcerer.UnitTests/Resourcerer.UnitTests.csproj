@@ -10,6 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Logic\V1_0\Queries\Items\**" />
+    <EmbeddedResource Remove="Logic\V1_0\Queries\Items\**" />
+    <None Remove="Logic\V1_0\Queries\Items\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FakeItEasy" Version="7.4.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="MockQueryable.FakeItEasy" Version="7.0.0" />
@@ -28,10 +34,6 @@
     <ProjectReference Include="..\..\src\Resourcerer.Api\Resourcerer.Api.csproj" />
     <ProjectReference Include="..\..\src\Resourcerer.DataAccess\Resourcerer.DataAccess.csproj" />
     <ProjectReference Include="..\..\src\Resourcerer.Logic\Resourcerer.Logic.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Logic\Queries\Items\" />
   </ItemGroup>
 
 </Project>

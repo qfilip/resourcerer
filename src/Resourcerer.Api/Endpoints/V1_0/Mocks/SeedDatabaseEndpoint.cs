@@ -1,8 +1,8 @@
 ﻿using Resourcerer.Api.Services;
 using Resourcerer.Logic;
-using Resourcerer.Logic.Commands.Mocks;
+using Resourcerer.Logic.Commands.V1_0;
 
-namespace Resourcerer.Api.Endpoints.V1_0.Mocks;
+namespace Resourcerer.Api.Endpoints.V1_0;
 
 public class SeedDatabaseEndpoint
 {

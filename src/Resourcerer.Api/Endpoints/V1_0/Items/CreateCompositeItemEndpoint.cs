@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
-using Resourcerer.Logic.Commands.Items;
+using Resourcerer.Logic.Commands.V1_0;
 
-namespace Resourcerer.Api.Endpoints.V1_0.Items;
+namespace Resourcerer.Api.Endpoints.V1_0;
 
 public class CreateCompositeItemEndpoint
 {

@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Resourcerer.Api.Services;
+﻿using Resourcerer.Api.Services;
 
-namespace Resourcerer.Api.Endpoints.V1_0.Users;
+namespace Resourcerer.Api.Endpoints.V1_0;
 
 public static class RefreshSessionEndpoint
 {

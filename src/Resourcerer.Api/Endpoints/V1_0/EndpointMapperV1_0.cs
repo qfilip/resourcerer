@@ -1,11 +1,4 @@
-﻿using Resourcerer.Api.Endpoints.V1_0.Categories;
-using Resourcerer.Api.Endpoints.V1_0.Events;
-using Resourcerer.Api.Endpoints.V1_0.Items;
-using Resourcerer.Api.Endpoints.V1_0.Mocks;
-using Resourcerer.Api.Endpoints.V1_0.UnitsOfMeasure;
-using Resourcerer.Api.Endpoints.V1_0.Users;
-
-namespace Resourcerer.Api.Endpoints.V1_0;
+﻿namespace Resourcerer.Api.Endpoints.V1_0;
 
 public class EndpointMapperV1_0
 {
