@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class InstanceOrderedEventDto : BaseDto<InstanceOrderedEventDto>
+public class InstanceOrderedEventDto : IBaseDto
 {
     public Guid ItemId { get; set; }
     public DateTime? ExpiryDate { get; set; }
@@ -11,10 +11,7 @@ public class InstanceOrderedEventDto : BaseDto<InstanceOrderedEventDto>
     public int TotalDiscountPercent { get; set; }
     public DateTime? ExpectedDeliveryDate { get; set; }
 
-    public override AbstractValidator<InstanceOrderedEventDto> GetValidator() =>
-        new Validator();
-
-    private class Validator : AbstractValidator<InstanceOrderedEventDto>
+    public class Validator : AbstractValidator<InstanceOrderedEventDto>
     {
         public Validator()
         {

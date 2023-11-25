@@ -12,7 +12,7 @@ public static class GetAllUsersEndpoint
         [FromServices] Pipeline pipeline,
         [FromServices] GetAllUsers.Handler handler)
     {
-        return await pipeline.PipeAny(handler, new Unit());
+        return await pipeline.Pipe(handler, new Unit());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

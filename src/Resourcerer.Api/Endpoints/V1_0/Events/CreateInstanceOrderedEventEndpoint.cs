@@ -12,7 +12,7 @@ public class CreateInstanceOrderedEventEndpoint
         [FromServices] Pipeline pipeline,
         [FromServices] CreateInstanceOrderedEvent.Handler handler)
     {
-        return await pipeline.PipeWithValidator(handler, dto);
+        return await pipeline.Pipe(handler, dto, new InstanceOrderedEventDto.Validator());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

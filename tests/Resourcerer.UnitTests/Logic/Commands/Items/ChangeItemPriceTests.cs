@@ -5,6 +5,7 @@ using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Items;
+using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Mocker;
 
 namespace Resourcerer.UnitTests.Logic.Commands.Items;
@@ -33,7 +34,7 @@ public class ChangeItemPriceTests : TestsBase
         _testDbContext.SaveChanges();
 
         // act
-        var result = _handler.Handle(dto).GetAwaiter().GetResult();
+        var result = _handler.Handle(dto).Await();
         var newPrices = _testDbContext.Prices
             .Where(x => x.ItemId == item.Id)
             .IgnoreQueryFilters()
@@ -57,7 +58,7 @@ public class ChangeItemPriceTests : TestsBase
         _testDbContext.SaveChanges();
 
         // act
-        var result = _handler.Handle(dto).GetAwaiter().GetResult();
+        var result = _handler.Handle(dto).Await();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
@@ -77,7 +78,7 @@ public class ChangeItemPriceTests : TestsBase
         _testDbContext.SaveChanges();
 
         // act
-        var result = _handler.Handle(dto).GetAwaiter().GetResult();
+        var result = _handler.Handle(dto).Await();
         var newPrices = _testDbContext.Prices
             .Where(x => x.ItemId == item.Id)
             .IgnoreQueryFilters()

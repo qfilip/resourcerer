@@ -1,7 +1,7 @@
-﻿using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
+﻿using Resourcerer.Dtos;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Items;
+using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Mocker;
 
 namespace Resourcerer.UnitTests.Logic.Commands.Items;
@@ -22,7 +22,7 @@ public class CreateCompositeItemTests : TestsBase
         _testDbContext.SaveChanges();
 
         // act
-        var result = _handler.Handle(dto).GetAwaiter().GetResult();
+        var result = _handler.Handle(dto).Await();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
@@ -37,7 +37,7 @@ public class CreateCompositeItemTests : TestsBase
         _testDbContext.SaveChanges();
 
         // act
-        var result = _handler.Handle(dto).GetAwaiter().GetResult();
+        var result = _handler.Handle(dto).Await();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
@@ -51,7 +51,7 @@ public class CreateCompositeItemTests : TestsBase
         _testDbContext.SaveChanges();
 
         // act
-        var result = _handler.Handle(dto).GetAwaiter().GetResult();
+        var result = _handler.Handle(dto).Await();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
@@ -65,7 +65,7 @@ public class CreateCompositeItemTests : TestsBase
         _testDbContext.SaveChanges();
 
         // act
-        var result = _handler.Handle(dto).GetAwaiter().GetResult();
+        var result = _handler.Handle(dto).Await();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
@@ -83,7 +83,7 @@ public class CreateCompositeItemTests : TestsBase
         _testDbContext.SaveChanges();
 
         // act
-        var result = _handler.Handle(dto).GetAwaiter().GetResult();
+        var result = _handler.Handle(dto).Await();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);

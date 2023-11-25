@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class InstanceDiscardedEventDto : BaseDto<InstanceDiscardedEventDto>
+public class InstanceDiscardedEventDto : IBaseDto
 {
     public double Quantity { get; set; }
     public string? Reason { get; set; }
@@ -10,10 +10,7 @@ public class InstanceDiscardedEventDto : BaseDto<InstanceDiscardedEventDto>
     public Guid InstanceId { get; set; }
     public virtual InstanceDto? Instance { get; set; }
 
-    public override AbstractValidator<InstanceDiscardedEventDto> GetValidator() =>
-        new Validator();
-
-    private class Validator : AbstractValidator<InstanceDiscardedEventDto>
+    public class Validator : AbstractValidator<InstanceDiscardedEventDto>
     {
         public Validator()
         {

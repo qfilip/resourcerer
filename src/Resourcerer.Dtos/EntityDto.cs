@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public abstract class EntityDto<T> : BaseDto<T>
+public abstract class EntityDto<T> : IBaseDto
 {
     public Guid Id { get; set; }
     public eEntityStatus EntityStatus { get; set; }

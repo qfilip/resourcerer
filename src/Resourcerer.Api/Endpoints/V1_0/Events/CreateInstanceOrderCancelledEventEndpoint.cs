@@ -12,7 +12,7 @@ public class CreateInstanceOrderCancelledEventEndpoint
        [FromServices] Pipeline pipeline,
        [FromServices] CreateInstanceOrderCancelledEvent.Handler handler)
     {
-        return await pipeline.PipeWithValidator(handler, dto);
+        return await pipeline.Pipe(handler, dto, new InstanceOrderCancelledEventDto.Validator());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

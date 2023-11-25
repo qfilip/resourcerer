@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 
 namespace Resourcerer.Dtos;
-public class InstanceDto : BaseDto<InstanceDto>
+public class InstanceDto : IBaseDto
 {
     public double Quantity { get; set; }
     public DateTime? ExpiryDate { get; set; }
@@ -14,9 +14,7 @@ public class InstanceDto : BaseDto<InstanceDto>
     public List<InstanceDeliveredEventDto>? InstanceDeliveredEvents { get; set; }
     public List<InstanceDiscardedEventDto>? InstanceDiscardedEvents { get; set; }
 
-
-    public override AbstractValidator<InstanceDto> GetValidator() => new Validator();
-    private class Validator : AbstractValidator<InstanceDto>
+    public class Validator : AbstractValidator<InstanceDto>
     {
         public Validator()
         {

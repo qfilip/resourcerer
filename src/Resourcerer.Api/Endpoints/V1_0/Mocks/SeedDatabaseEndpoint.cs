@@ -1,5 +1,4 @@
 ﻿using Resourcerer.Api.Services;
-using Resourcerer.DataAccess.Mocks;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Mocks;
 
@@ -11,7 +10,7 @@ public class SeedDatabaseEndpoint
         Pipeline pipeline,
         SeedMockData.Handler seedHandler)
     {
-        return await pipeline.PipeAny(seedHandler, new Unit());
+        return await pipeline.Pipe(seedHandler, new Unit());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

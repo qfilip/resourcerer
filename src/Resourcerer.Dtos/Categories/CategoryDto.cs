@@ -11,15 +11,13 @@ public class CategoryDto : EntityDto<CategoryDto>
     public List<CategoryDto> ChildCategories { get; set; } = new();
     public List<ItemDto> Elements { get; set; } = new();
 
-    public override AbstractValidator<CategoryDto> GetValidator() => new CategoryDtoValidator();
-}
-
-public class CategoryDtoValidator : AbstractValidator<CategoryDto>
-{
-    public CategoryDtoValidator()
+    public class Validator : AbstractValidator<CategoryDto>
     {
-        RuleFor(x => x.Name)
-            .NotEmpty().WithMessage("Category name cannot be empty")
-            .Length(min: 3, max: 50).WithMessage("Category name must be between 3 and 50 characters long");
+        public Validator()
+        {
+            RuleFor(x => x.Name)
+                .NotEmpty().WithMessage("Category name cannot be empty")
+                .Length(min: 3, max: 50).WithMessage("Category name must be between 3 and 50 characters long");
+        }
     }
 }

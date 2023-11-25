@@ -2,14 +2,12 @@
 
 namespace Resourcerer.Dtos;
 
-public class ChangePriceDto : BaseDto<ChangePriceDto>
+public class ChangePriceDto : IBaseDto
 {
     public Guid ItemId { get; set; }
     public double UnitPrice { get; set; }
 
-    public override AbstractValidator<ChangePriceDto>? GetValidator() => new Validator();
-
-    private class Validator : AbstractValidator<ChangePriceDto>
+    public class Validator : AbstractValidator<ChangePriceDto>
     {
         public Validator()
         {

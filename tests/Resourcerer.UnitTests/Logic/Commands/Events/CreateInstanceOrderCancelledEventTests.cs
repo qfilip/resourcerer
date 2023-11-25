@@ -2,6 +2,7 @@
 using Resourcerer.Dtos;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Events;
+using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Mocker;
 
 namespace Resourcerer.UnitTests.Logic.Commands.Events;
@@ -26,7 +27,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
         _testDbContext.SaveChanges();
 
         // act
-        var result = _handler.Handle(dto).GetAwaiter().GetResult();
+        var result = _handler.Handle(dto).Await();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
@@ -41,7 +42,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
         };
 
         // act
-        var result = _handler.Handle(dto).GetAwaiter().GetResult();
+        var result = _handler.Handle(dto).Await();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
@@ -59,7 +60,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
         _testDbContext.SaveChanges();
 
         // act
-        var result = _handler.Handle(dto).GetAwaiter().GetResult();
+        var result = _handler.Handle(dto).Await();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
@@ -77,7 +78,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
         _testDbContext.SaveChanges();
 
         // act
-        var result = _handler.Handle(dto).GetAwaiter().GetResult();
+        var result = _handler.Handle(dto).Await();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);

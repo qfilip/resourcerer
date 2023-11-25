@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
-using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
-using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Users;
 
 namespace Resourcerer.Api.Endpoints.V1_0.Users;
@@ -14,7 +12,7 @@ public class SetPermissionsEndpoint
        [FromServices] Pipeline pipeline,
        [FromServices] SetPermissions.Handler handler)
     {
-        return await pipeline.PipeWithValidator(handler, dto);
+        return await pipeline.Pipe(handler, dto, new SetUserPermissionsDto.Validator());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

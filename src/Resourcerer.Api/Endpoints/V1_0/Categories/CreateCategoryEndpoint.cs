@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
-using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
-using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.Categories;
 
 namespace Resourcerer.Api.Endpoints.V1_0.Categories;
@@ -14,7 +12,7 @@ public class CreateCategoryEndpoint
         [FromServices] Pipeline pipeline,
         [FromServices] CreateCategory.Handler handler)
     {
-        return await pipeline.PipeWithValidator(handler, categoryDto);
+        return await pipeline.Pipe(handler, categoryDto, new CategoryDto.Validator());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

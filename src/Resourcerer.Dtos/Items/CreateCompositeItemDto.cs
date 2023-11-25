@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class CreateCompositeItemDto : BaseDto<CreateCompositeItemDto>
+public class CreateCompositeItemDto : IBaseDto
 {
     public string? Name { get; set; }
     public double PreparationTimeSeconds { get; set; }
@@ -11,9 +11,8 @@ public class CreateCompositeItemDto : BaseDto<CreateCompositeItemDto>
     public Guid UnitOfMeasureId { get; set; }
     public double UnitPrice { get; set; }
     public Dictionary<Guid, double>? ExcerptMap { get; set; }
-    public override AbstractValidator<CreateCompositeItemDto>? GetValidator() => new Validator();
 
-    private class Validator : AbstractValidator<CreateCompositeItemDto>
+    public class Validator : AbstractValidator<CreateCompositeItemDto>
     {
         public Validator()
         {

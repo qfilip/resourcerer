@@ -12,7 +12,7 @@ public class RemoveCategoryEndpoint
         [FromServices] Pipeline pipeline,
         [FromServices] RemoveCategory.Handler handler)
     {
-        return await pipeline.PipeWithValidator(handler, categoryDto);
+        return await pipeline.Pipe(handler, categoryDto, new CategoryDto.Validator());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

@@ -12,7 +12,7 @@ public class CreateCompositeItemEndpoint
        [FromServices] Pipeline pipeline,
        [FromServices] CreateCompositeItem.Handler handler)
     {
-        return await pipeline.PipeWithValidator(handler, dto);
+        return await pipeline.Pipe(handler, dto, new CreateCompositeItemDto.Validator());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

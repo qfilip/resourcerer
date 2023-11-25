@@ -4,9 +4,6 @@
 
 import { eEntityStatus } from './enums';
 
-export interface IBaseDto<T>
-{
-}
 export interface ICategoryDto extends IEntityDto<ICategoryDto>
 {
 	name: string;
@@ -20,33 +17,33 @@ export interface ICreateCategoryDto
 	name: string;
 	parentCategoryId: string;
 }
-export interface IEntityDto<T> extends IBaseDto<T>
+export interface IEntityDto<T>
 {
 	id: string;
 	entityStatus: eEntityStatus;
 	createdAt: Date;
 	modifiedAt: Date;
 }
-export interface IExcerptDto extends IBaseDto<IExcerptDto>
+export interface IExcerptDto
 {
 	compositeId: string;
 	elementId: string;
 	element: IItemDto;
 	quantity: number;
 }
-export interface IInstanceDeliveredEventDto extends IBaseDto<IInstanceDeliveredEventDto>
+export interface IInstanceDeliveredEventDto
 {
 	instanceOrderedEventId: string;
 	instanceOrderedEvent: IInstanceOrderedEventDto;
 }
-export interface IInstanceDiscardedEventDto extends IBaseDto<IInstanceDiscardedEventDto>
+export interface IInstanceDiscardedEventDto
 {
 	quantity: number;
 	reason: string;
 	instanceId: string;
 	instance: IInstanceDto;
 }
-export interface IInstanceDto extends IBaseDto<IInstanceDto>
+export interface IInstanceDto
 {
 	quantity: number;
 	expiryDate: Date;
@@ -68,11 +65,11 @@ export interface IInstanceInfoDto
 	sellProfit: number;
 	sellCancellationsPenaltyDifference: number;
 }
-export interface IInstanceOrderCancelledEventDto extends IBaseDto<IInstanceOrderCancelledEventDto>
+export interface IInstanceOrderCancelledEventDto
 {
 	instanceOrderedEventId: string;
 }
-export interface IInstanceOrderedEventDto extends IBaseDto<IInstanceOrderedEventDto>
+export interface IInstanceOrderedEventDto
 {
 	itemId: string;
 	expiryDate: Date;
@@ -81,7 +78,7 @@ export interface IInstanceOrderedEventDto extends IBaseDto<IInstanceOrderedEvent
 	totalDiscountPercent: number;
 	expectedDeliveryDate: Date;
 }
-export interface ICreateCompositeItemDto extends IBaseDto<ICreateCompositeItemDto>
+export interface ICreateCompositeItemDto
 {
 	name: string;
 	preparationTimeSeconds: number;
@@ -91,7 +88,7 @@ export interface ICreateCompositeItemDto extends IBaseDto<ICreateCompositeItemDt
 	unitPrice: number;
 	excerptMap: { [key:string]: number };
 }
-export interface ICreateElementItemDto extends IBaseDto<ICreateElementItemDto>
+export interface ICreateElementItemDto
 {
 	name: string;
 	preparationTimeSeconds: number;
@@ -100,7 +97,7 @@ export interface ICreateElementItemDto extends IBaseDto<ICreateElementItemDto>
 	unitOfMeasureId: string;
 	unitPrice: number;
 }
-export interface IItemDto extends IBaseDto<IItemDto>
+export interface IItemDto
 {
 	name: string;
 	categoryId: string;
@@ -110,18 +107,18 @@ export interface IItemDto extends IBaseDto<IItemDto>
 	excerpts: IExcerptDto[];
 	prices: any[];
 }
-export interface IChangePriceDto extends IBaseDto<IChangePriceDto>
+export interface IChangePriceDto
 {
 	itemId: string;
 	unitPrice: number;
 }
-export interface IPriceDto extends IBaseDto<IPriceDto>
+export interface IPriceDto
 {
 	unitValue: number;
 	elementId: string;
 	element: IItemDto;
 }
-export interface IUnitOfMeasureDto extends IBaseDto<IUnitOfMeasureDto>
+export interface IUnitOfMeasureDto
 {
 	name: string;
 	symbol: string;
@@ -134,7 +131,7 @@ export interface IAppUserDto extends IEntityDto<IAppUserDto>
 	password: string;
 	permissions: { [key:string]: number };
 }
-export interface ISetUserPermissionsDto extends IBaseDto<ISetUserPermissionsDto>
+export interface ISetUserPermissionsDto
 {
 	userId: string;
 	permissions: { [key:string]: number };

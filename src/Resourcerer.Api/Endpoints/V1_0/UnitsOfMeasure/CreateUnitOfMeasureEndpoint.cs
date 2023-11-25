@@ -12,7 +12,7 @@ public class CreateUnitOfMeasureEndpoint
        [FromServices] Pipeline pipeline,
        [FromServices] CreateUnitOfMeasure.Handler handler)
     {
-        return await pipeline.PipeWithValidator(handler, dto);
+        return await pipeline.Pipe(handler, dto, new UnitOfMeasureDto.Validator());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

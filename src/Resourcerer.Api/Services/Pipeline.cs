@@ -1,4 +1,4 @@
-﻿using Resourcerer.Dtos;
+﻿using FluentValidation;
 using Resourcerer.Logic;
 
 namespace Resourcerer.Api.Services;
@@ -12,7 +12,7 @@ public class Pipeline
         _logger = logger;
     }
 
-    public async Task<IResult> PipeAny<TRequest, TResponse>(
+    public async Task<IResult> Pipe<TRequest, TResponse>(
         IAppHandler<TRequest, TResponse> handler,
         TRequest request,
         Func<TResponse, IResult>? customOkResultMapper = null)
@@ -28,21 +28,22 @@ public class Pipeline
         return MapResult(handlerResult, customOkResultMapper);
     }
 
-    public async Task<IResult> PipeWithValidator<TRequest, TResponse>(
+    public async Task<IResult> Pipe<TRequest, TResponse>(
         IAppHandler<TRequest, TResponse> handler,
         TRequest request,
+        AbstractValidator<TRequest> requestValidator,
         Func<TResponse, IResult>? customOkResultMapper = null)
-        where TRequest : BaseDto<TRequest>
     {
         var actionName = GetHandlerName(handler);
 
         _logger.LogInformation("Action {Action} started", actionName);
 
-        var validationErrors = DtoValidator.Validate(request, request.GetValidator());
-        if (validationErrors.Any())
+        var validationResult = requestValidator.Validate(request);
+        if (!validationResult.IsValid)
         {
+            var errors = validationResult.Errors.Select(x => x.ErrorMessage);
             _logger.LogInformation("Action {Action} finished with validation errors", actionName);
-            return Results.BadRequest(validationErrors);
+            return Results.BadRequest(errors);
         }
 
         var handlerResult = await handler.Handle(request);

@@ -12,7 +12,7 @@ public class CreateElementItemEndpoint
        [FromServices] Pipeline pipeline,
        [FromServices] CreateElementItem.Handler handler)
     {
-        return await pipeline.PipeWithValidator(handler, dto);
+        return await pipeline.Pipe(handler, dto, new CreateElementItemDto.Validator());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

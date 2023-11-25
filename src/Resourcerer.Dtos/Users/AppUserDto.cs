@@ -7,9 +7,7 @@ public class AppUserDto : EntityDto<AppUserDto>
     public string? Password { get; set; }
     public Dictionary<string, int>? Permissions { get; set; }
 
-    public override AbstractValidator<AppUserDto> GetValidator() => new Validator();
-
-    private class Validator : AbstractValidator<AppUserDto>
+    public class Validator : AbstractValidator<AppUserDto>
     {
         public Validator()
         {

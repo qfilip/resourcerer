@@ -12,7 +12,7 @@ public class CreateInstanceDeliveredEndpoint
         [FromServices] Pipeline pipeline,
         [FromServices] CreateInstanceDeliveredEvent.Handler handler)
     {
-        return await pipeline.PipeWithValidator(handler, dto);
+        return await pipeline.Pipe(handler, dto, new InstanceDeliveredEventDto.Validator());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

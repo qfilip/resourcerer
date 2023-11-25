@@ -3,7 +3,7 @@ using Resourcerer.DataAccess.Entities;
 
 namespace Resourcerer.Dtos;
 
-public class ItemDto : BaseDto<ItemDto>
+public class ItemDto : IBaseDto
 {
     public string? Name { get; set; }
 
@@ -15,8 +15,6 @@ public class ItemDto : BaseDto<ItemDto>
 
     public List<ExcerptDto>? Excerpts { get; set; }
     public List<Price>? Prices { get; set; }
-
-    public override AbstractValidator<ItemDto> GetValidator() => new Validator();
 
     public class Validator : AbstractValidator<ItemDto>
     {

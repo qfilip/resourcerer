@@ -2,15 +2,13 @@
 
 namespace Resourcerer.Dtos;
 
-public class UnitOfMeasureDto : BaseDto<UnitOfMeasureDto>
+public class UnitOfMeasureDto : IBaseDto
 {
     public string? Name { get; set; }
     public string? Symbol { get; set; }
 
     public List<ExcerptDto> Excerpts { get; set; } = new();
     public List<ItemDto> Elements { get; set; } = new();
-
-    public override AbstractValidator<UnitOfMeasureDto> GetValidator() => new Validator();
 
     public class Validator : AbstractValidator<UnitOfMeasureDto>
     {
