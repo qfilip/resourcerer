@@ -188,38 +188,6 @@ public class GetInstanceInfoTests : TestsBase
         Assert.Equivalent(expected, actual);
     }
 
-    [Fact]
-    public void Item_Bought_Delivered_Expired()
-    {
-        var boughtEvent = Mocker.MockBoughtEvent(_testDbContext, _meat, x =>
-        {
-            x.Quantity = 2;
-            x.UnitPrice = 1;
-        });
-
-        var deliveredEvent = Mocker.MockDeliveredEvent(_testDbContext, boughtEvent, x =>
-        {
-            x.CreatedAt = Mocker.Now.AddMonths(1);
-        });
-        
-        var expirationDate = deliveredEvent.CreatedAt.AddSeconds(_meat.ExpirationTimeSeconds ?? 0 + 1);
-        
-        SaveToDb();
-
-        var instance = ExecuteTestQuery(x => x.Id == _meat.Id).Instances.First();
-
-        var expected = new InstanceInfoDto
-        {
-            ExpiryDate = instance.ExpiryDate,
-            QuantityLeft = 0
-        };
-        var actual = _sut(instance, expirationDate);
-
-        Assert.True(actual.Discards!.Length == 1);
-        Assert.Equal(expected.ExpiryDate, actual.ExpiryDate);
-        Assert.Equal(expected.QuantityLeft, actual.QuantityLeft);
-    }
-
     private Item ExecuteTestQuery(Expression<Func<Item, bool>>? predicate = null)
     {
         if(predicate == null)
