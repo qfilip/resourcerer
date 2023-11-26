@@ -1,8 +1,9 @@
 ﻿using FluentValidation;
+using Resourcerer.Dtos.Events;
 
 namespace Resourcerer.Dtos;
 
-public class ItemDiscardedEventDto : IBaseDto
+public class ItemDiscardedEventDto : ItemEventDtoBase
 {
     public double Quantity { get; set; }
     public string? Reason { get; set; }

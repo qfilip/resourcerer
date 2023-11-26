@@ -1,12 +1,13 @@
 ﻿using FluentValidation;
+using Resourcerer.Dtos.Events;
 
 namespace Resourcerer.Dtos;
 
-public class ItemOrderCancelledEventDto : IBaseDto
+public class ItemCancelledEventDto : ItemEventDtoBase
 {
     public Guid InstanceOrderedEventId { get; set; }
 
-    public class Validator : AbstractValidator<ItemOrderCancelledEventDto>
+    public class Validator : AbstractValidator<ItemCancelledEventDto>
     {
         public Validator()
         {

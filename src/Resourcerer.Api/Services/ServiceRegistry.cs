@@ -4,10 +4,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Resourcerer.Api.Services.V1_0;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
+using Resourcerer.Dtos.Events;
 using Resourcerer.Logic;
+using System.Threading.Channels;
 
 namespace Resourcerer.Api.Services;
 public static partial class ServiceRegistry
@@ -27,6 +30,11 @@ public static partial class ServiceRegistry
         handlers.ForEach(x => services.AddTransient(x));
 
         services.AddScoped<Pipeline>();
+
+        services.AddSingleton<ChannelWriter<ItemEventDtoBase>>();
+        services.AddSingleton<ChannelReader<ItemEventDtoBase>>();
+
+        services.AddHostedService<ItemEventHandler>();
     }
 
     public static void AddAspNetServices(this IServiceCollection services)

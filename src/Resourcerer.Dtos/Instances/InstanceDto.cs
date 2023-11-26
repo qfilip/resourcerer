@@ -10,7 +10,7 @@ public class InstanceDto : IBaseDto
     public virtual ItemDto? Element { get; set; }
 
     public List<ItemOrderedEventDto>? InstanceOrderedEvents { get; set; }
-    public List<ItemOrderCancelledEventDto>? InstanceOrderCancelledEvents { get; set; }
+    public List<ItemCancelledEventDto>? InstanceOrderCancelledEvents { get; set; }
     public List<ItemDeliveredEventDto>? InstanceDeliveredEvents { get; set; }
     public List<ItemDiscardedEventDto>? InstanceDiscardedEvents { get; set; }
 

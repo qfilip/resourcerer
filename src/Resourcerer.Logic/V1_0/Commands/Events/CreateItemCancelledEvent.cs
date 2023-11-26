@@ -5,16 +5,16 @@ using Resourcerer.Dtos;
 
 namespace Resourcerer.Logic.Commands.V1_0;
 
-public static class CreateItemOrderCancelledEvent
+public static class CreateItemCancelledEvent
 {
-    public class Handler : IAppHandler<ItemOrderCancelledEventDto, Unit>
+    public class Handler : IAppHandler<ItemCancelledEventDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
-        public async Task<HandlerResult<Unit>> Handle(ItemOrderCancelledEventDto request)
+        public async Task<HandlerResult<Unit>> Handle(ItemCancelledEventDto request)
         {
             var orderedEvent = await _appDbContext.ItemOrderedEvents
                 .Include(x => x.ItemOrderCancelledEvent)

@@ -5,14 +5,14 @@ using Resourcerer.Logic.Commands.V1_0;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
 
-public class CreateItemOrderCancelledEventEndpoint
+public class CreateItemCancelledEventEndpoint
 {
     public static async Task<IResult> Action(
-       [FromBody] ItemOrderCancelledEventDto dto,
+       [FromBody] ItemCancelledEventDto dto,
        [FromServices] Pipeline pipeline,
-       [FromServices] CreateItemOrderCancelledEvent.Handler handler)
+       [FromServices] CreateItemCancelledEvent.Handler handler)
     {
-        return await pipeline.Pipe(handler, dto, new ItemOrderCancelledEventDto.Validator());
+        return await pipeline.Pipe(handler, dto, new ItemCancelledEventDto.Validator());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

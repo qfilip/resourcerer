@@ -8,7 +8,7 @@ namespace Resourcerer.UnitTests.Logic.V1_0;
 
 public class CreateInstanceOrderCancelledEventTests : TestsBase
 {
-    private readonly CreateItemOrderCancelledEvent.Handler _handler;
+    private readonly CreateItemCancelledEvent.Handler _handler;
     public CreateInstanceOrderCancelledEventTests()
     {
         _handler = new(_testDbContext);
@@ -19,7 +19,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     {
         // arrange
         var orderEventId = Mocker.MockOrderedEvent(_testDbContext, _sand).Id;
-        var dto = new ItemOrderCancelledEventDto
+        var dto = new ItemCancelledEventDto
         {
             InstanceOrderedEventId = orderEventId
         };
@@ -35,7 +35,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     [Fact]
     public void When_OrderEvent_NotFound_Then_ValidationError()
     {
-        var dto = new ItemOrderCancelledEventDto
+        var dto = new ItemCancelledEventDto
         {
             InstanceOrderedEventId = Guid.NewGuid()
         };
@@ -52,7 +52,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     {
         var boughtEvent = Mocker.MockOrderedEvent(_testDbContext, _sand);
         var deliveredEvent = Mocker.MockDeliveredEvent(_testDbContext, boughtEvent);
-        var dto = new ItemOrderCancelledEventDto
+        var dto = new ItemCancelledEventDto
         {
             InstanceOrderedEventId = deliveredEvent.ItemOrderedEvent!.Id
         };
@@ -70,7 +70,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     {
         var boughtEvent = Mocker.MockOrderedEvent(_testDbContext, _sand);
         var orderCancelledEvent = Mocker.MockOrderCancelledEvent(_testDbContext, boughtEvent);
-        var dto = new ItemOrderCancelledEventDto
+        var dto = new ItemCancelledEventDto
         {
             InstanceOrderedEventId = (Guid)orderCancelledEvent.InstanceBoughtEventId!
         };

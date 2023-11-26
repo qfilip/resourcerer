@@ -1,8 +1,9 @@
 ﻿using FluentValidation;
+using Resourcerer.Dtos.Events;
 
 namespace Resourcerer.Dtos;
 
-public class ItemDeliveredEventDto : IBaseDto
+public class ItemDeliveredEventDto : ItemEventDtoBase
 {
     public Guid InstanceOrderedEventId { get; set; }
     public virtual ItemOrderedEventDto? InstanceOrderedEvent { get; set; }

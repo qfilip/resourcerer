@@ -1,8 +1,9 @@
 ﻿using FluentValidation;
+using Resourcerer.Dtos.Events;
 
 namespace Resourcerer.Dtos;
 
-public class ItemOrderedEventDto : IBaseDto
+public class ItemOrderedEventDto : ItemEventDtoBase
 {
     public Guid ItemId { get; set; }
     public DateTime? ExpiryDate { get; set; }
