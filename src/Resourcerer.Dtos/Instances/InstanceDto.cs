@@ -12,7 +12,7 @@ public class InstanceDto : IBaseDto
     public List<ItemOrderedEventDto>? InstanceOrderedEvents { get; set; }
     public List<ItemOrderCancelledEventDto>? InstanceOrderCancelledEvents { get; set; }
     public List<ItemDeliveredEventDto>? InstanceDeliveredEvents { get; set; }
-    public List<InstanceDiscardedEventDto>? InstanceDiscardedEvents { get; set; }
+    public List<ItemDiscardedEventDto>? InstanceDiscardedEvents { get; set; }
 
     public class Validator : AbstractValidator<InstanceDto>
     {

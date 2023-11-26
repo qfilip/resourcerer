@@ -9,31 +9,31 @@ public static partial class Instances
 {
     public static InstanceInfoDto GetInstanceInfo(Instance i, DateTime now)
     {
-        if (i.InstanceBoughtEvent!.ItemSellCancelledEvent != null)
+        if (i.ItemOrderedEvent!.ItemOrderCancelledEvent != null)
         {
             return MapCancelled(i);
         }
 
-        if (i.InstanceBoughtEvent!.ItemDeliveredEvent == null)
+        if (i.ItemOrderedEvent!.ItemDeliveredEvent == null)
         {
             return MapNotDelivered(i);
         }
 
-        var soldEvents = i.InstanceSoldEvents
+        var soldEvents = i.ItemSoldEvents
             .Where(x => x.ItemSellCancelledEvent == null)
             .ToArray();
 
         var sold = soldEvents
             .Sum(x => x.Quantity);
 
-        var sellCancellationsPenaltyDifference = i.InstanceSoldEvents
+        var sellCancellationsPenaltyDifference = i.ItemSoldEvents
             .Where(x => x.ItemSellCancelledEvent != null)
             .Sum(x => x.ItemSellCancelledEvent!.RefundedAmount - (x.UnitPrice * x.Quantity));
 
         var sellProfits = soldEvents
             .Sum(x => Maths.Discount(x.Quantity * x.UnitPrice, x.TotalDiscountPercent));
 
-        var discards = i.InstanceDiscardedEvents
+        var discards = i.ItemDiscardedEvents
             .Select(x => new DiscardInfoDto
             {
                 Quantity = x.Quantity,
@@ -41,13 +41,13 @@ public static partial class Instances
             })
             .ToArray();
 
-        var quantityLeft = i.InstanceBoughtEvent.Quantity - sold - discards.Sum(x => x.Quantity);
+        var quantityLeft = i.ItemOrderedEvent.Quantity - sold - discards.Sum(x => x.Quantity);
         
         return new InstanceInfoDto()
         {
             InstanceId = i.Id,
             PendingToArrive = 0,
-            PurchaseCost = i.InstanceBoughtEvent.UnitPrice * i.InstanceBoughtEvent.Quantity,
+            PurchaseCost = i.ItemOrderedEvent.UnitPrice * i.ItemOrderedEvent.Quantity,
             Discards = discards,
             ExpiryDate = i.ExpiryDate,
             QuantityLeft = quantityLeft,
@@ -61,15 +61,15 @@ public static partial class Instances
         return new InstanceInfoDto()
         {
             InstanceId = i.Id,
-            PendingToArrive = i.InstanceBoughtEvent!.Quantity,
-            PurchaseCost = i.InstanceBoughtEvent.UnitPrice * i.InstanceBoughtEvent.Quantity
+            PendingToArrive = i.ItemOrderedEvent!.Quantity,
+            PurchaseCost = i.ItemOrderedEvent.UnitPrice * i.ItemOrderedEvent.Quantity
         };
     }
 
     private static InstanceInfoDto MapCancelled(Instance i)
     {
-        var buyEvent = i.InstanceBoughtEvent!;
-        var cancelEvent = i.InstanceBoughtEvent!.ItemSellCancelledEvent!;
+        var buyEvent = i.ItemOrderedEvent!;
+        var cancelEvent = i.ItemOrderedEvent!.ItemOrderCancelledEvent!;
 
         return new InstanceInfoDto()
         {

@@ -10,8 +10,8 @@ public class ItemOrderedEvent : EntityBase
     public Guid InstanceId { get; set; }
     public virtual Instance? Instance { get; set; }
 
-    public Guid? ItemSellCancelledEventId { get; set; }
-    public virtual ItemSellCancelledEvent? ItemSellCancelledEvent { get; set; }
+    public Guid? ItemOrderCancelledEventId { get; set; }
+    public virtual ItemCancelledEvent? ItemOrderCancelledEvent { get; set; }
 
     public Guid? ItemDeliveredEventId { get; set; }
     public virtual ItemDeliveredEvent? ItemDeliveredEvent { get; set; }

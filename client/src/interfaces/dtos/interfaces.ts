@@ -24,46 +24,17 @@ export interface IEntityDto<T>
 	createdAt: Date;
 	modifiedAt: Date;
 }
-export interface IExcerptDto
+export interface IItemDeliveredEventDto
 {
-	compositeId: string;
-	elementId: string;
-	element: IItemDto;
-	quantity: number;
+	instanceOrderedEventId: string;
+	instanceOrderedEvent: IItemOrderedEventDto;
 }
-export interface IInstanceDiscardedEventDto
+export interface IItemDiscardedEventDto
 {
 	quantity: number;
 	reason: string;
 	instanceId: string;
 	instance: IInstanceDto;
-}
-export interface IInstanceDto
-{
-	quantity: number;
-	expiryDate: Date;
-	elementId: string;
-	element: IItemDto;
-	instanceOrderedEvents: IItemOrderedEventDto[];
-	instanceOrderCancelledEvents: IItemOrderCancelledEventDto[];
-	instanceDeliveredEvents: IItemDeliveredEventDto[];
-	instanceDiscardedEvents: IInstanceDiscardedEventDto[];
-}
-export interface IInstanceInfoDto
-{
-	instanceId: string;
-	pendingToArrive: number;
-	quantityLeft: number;
-	discards: IDiscardInfoDto[];
-	expiryDate: Date;
-	purchaseCost: number;
-	sellProfit: number;
-	sellCancellationsPenaltyDifference: number;
-}
-export interface IItemDeliveredEventDto
-{
-	instanceOrderedEventId: string;
-	instanceOrderedEvent: IItemOrderedEventDto;
 }
 export interface IItemOrderCancelledEventDto
 {
@@ -77,6 +48,35 @@ export interface IItemOrderedEventDto
 	unitPrice: number;
 	totalDiscountPercent: number;
 	expectedDeliveryDate: Date;
+}
+export interface IExcerptDto
+{
+	compositeId: string;
+	elementId: string;
+	element: IItemDto;
+	quantity: number;
+}
+export interface IInstanceDto
+{
+	quantity: number;
+	expiryDate: Date;
+	elementId: string;
+	element: IItemDto;
+	instanceOrderedEvents: IItemOrderedEventDto[];
+	instanceOrderCancelledEvents: IItemOrderCancelledEventDto[];
+	instanceDeliveredEvents: IItemDeliveredEventDto[];
+	instanceDiscardedEvents: IItemDiscardedEventDto[];
+}
+export interface IInstanceInfoDto
+{
+	instanceId: string;
+	pendingToArrive: number;
+	quantityLeft: number;
+	discards: IDiscardInfoDto[];
+	expiryDate: Date;
+	purchaseCost: number;
+	sellProfit: number;
+	sellCancellationsPenaltyDifference: number;
 }
 export interface ICreateCompositeItemDto
 {

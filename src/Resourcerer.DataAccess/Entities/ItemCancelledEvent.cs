@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.DataAccess.Entities;
 
-public class ItemSellCancelledEvent : EntityBase
+public class ItemCancelledEvent : EntityBase
 {
     public string? Reason { get; set; }
     public double RefundedAmount { get; set; }

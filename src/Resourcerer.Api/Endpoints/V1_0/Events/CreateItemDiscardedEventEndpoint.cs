@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
-using Resourcerer.Logic.Commands.V1_0;
+using Resourcerer.Logic.V1_0.Commands;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
 
-public class CreateItemOrderedEventEndpoint
+public class CreateItemDiscardedEventEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] ItemOrderedEventDto dto,
+        [FromBody] ItemDiscardedEventDto dto,
         [FromServices] Pipeline pipeline,
-        [FromServices] CreateItemOrderedEvent.Handler handler)
+        [FromServices] CreateItemDiscardedEvent.Handler handler)
     {
-        return await pipeline.Pipe(handler, dto, new ItemOrderedEventDto.Validator());
+        return await pipeline.Pipe(handler, dto, new ItemDiscardedEventDto.Validator());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/order", Action);
+        var endpoint = group.MapPost("/discard", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

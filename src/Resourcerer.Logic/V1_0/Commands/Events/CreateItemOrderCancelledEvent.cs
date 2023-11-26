@@ -17,7 +17,7 @@ public static class CreateItemOrderCancelledEvent
         public async Task<HandlerResult<Unit>> Handle(ItemOrderCancelledEventDto request)
         {
             var orderedEvent = await _appDbContext.ItemOrderedEvents
-                .Include(x => x.ItemSellCancelledEvent)
+                .Include(x => x.ItemOrderCancelledEvent)
                 .Include(x => x.ItemDeliveredEvent)
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceOrderedEventId);
 
@@ -33,12 +33,12 @@ public static class CreateItemOrderCancelledEvent
                 return HandlerResult<Unit>.Rejected(error);
             }
 
-            if (orderedEvent.ItemSellCancelledEventId != null)
+            if (orderedEvent.ItemOrderCancelledEventId != null)
             {
                 return HandlerResult<Unit>.Ok(new Unit());
             }
 
-            var entity = new ItemSellCancelledEvent
+            var entity = new ItemCancelledEvent
             {
                 InstanceBoughtEventId = orderedEvent.Id
             };

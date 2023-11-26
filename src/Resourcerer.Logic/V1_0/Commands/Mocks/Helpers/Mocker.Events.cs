@@ -35,12 +35,12 @@ public static partial class Mocker
         return entity;
     }
 
-    public static ItemSellCancelledEvent MockOrderCancelledEvent(
+    public static ItemCancelledEvent MockOrderCancelledEvent(
         AppDbContext context,
-        Action<ItemSellCancelledEvent>? modifier = null,
+        Action<ItemCancelledEvent>? modifier = null,
         Item? instanceItem = null)
     {
-        var entity = MakeEntity(() => new ItemSellCancelledEvent
+        var entity = MakeEntity(() => new ItemCancelledEvent
         {
             InstanceBoughtEvent = MockOrderedEvent(context)
         });

@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class InstanceDiscardedEventDto : IBaseDto
+public class ItemDiscardedEventDto : IBaseDto
 {
     public double Quantity { get; set; }
     public string? Reason { get; set; }
@@ -10,7 +10,7 @@ public class InstanceDiscardedEventDto : IBaseDto
     public Guid InstanceId { get; set; }
     public virtual InstanceDto? Instance { get; set; }
 
-    public class Validator : AbstractValidator<InstanceDiscardedEventDto>
+    public class Validator : AbstractValidator<ItemDiscardedEventDto>
     {
         public Validator()
         {
