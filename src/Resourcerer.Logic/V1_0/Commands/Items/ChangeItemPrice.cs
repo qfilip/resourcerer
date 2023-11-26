@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
@@ -50,6 +52,20 @@ public class ChangeItemPrice
             await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());
+        }
+
+        public ValidationResult Validate(ChangePriceDto request) => new Validator().Validate(request);
+
+        private class Validator : AbstractValidator<ChangePriceDto>
+        {
+            public Validator()
+            {
+                RuleFor(x => x.ItemId)
+                    .NotEmpty().WithMessage("Item id cannot be default value");
+
+                RuleFor(x => x.UnitPrice)
+                    .GreaterThan(0).WithMessage("Item price must be greater than 0");
+            }
         }
     }
 }

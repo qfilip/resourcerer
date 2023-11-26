@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
@@ -46,6 +48,22 @@ public class CreateCategory
             await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());
+        }
+
+        public ValidationResult Validate(CategoryDto request)
+        {
+            var validator = new Validator();
+            return validator.Validate(request);
+        }
+
+        private class Validator : AbstractValidator<CategoryDto>
+        {
+            public Validator()
+            {
+                RuleFor(x => x.Name)
+                    .NotEmpty().WithMessage("Category name cannot be empty")
+                    .Length(min: 3, max: 50).WithMessage("Category name must be between 3 and 50 characters long");
+            }
         }
     }
 }

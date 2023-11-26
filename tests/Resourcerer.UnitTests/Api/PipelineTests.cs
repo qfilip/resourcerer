@@ -13,11 +13,9 @@ namespace Resourcerer.UnitTests.Api;
 public class PipelineTests
 {
     private readonly Pipeline _pipeline;
-    private readonly AbstractValidator<TestDto> _validator;
     public PipelineTests()
     {
         var fakeLogger = A.Fake<ILogger<Pipeline>>();
-        _validator = new TestDto.Validator();
         _pipeline = new Pipeline(fakeLogger);
     }
 
@@ -27,7 +25,7 @@ public class PipelineTests
         var handler = new TestHandler.Handler();
         var dto = new TestDto();
 
-        var result = _pipeline.Pipe(handler, dto, _validator).Await();
+        var result = _pipeline.Pipe(handler, dto).Await();
 
         Assert.True(result is Ok<Unit>);
     }
@@ -38,7 +36,7 @@ public class PipelineTests
         var handler = new TestHandler.Handler();
         var dto = new TestDto() { Property = eHandlerResult.Invalid };
 
-        var result = _pipeline.Pipe(handler, dto, _validator).Await();
+        var result = _pipeline.Pipe(handler, dto).Await();
 
         var r = result as BadRequest<IEnumerable<string>>;
         Assert.NotNull(r);
@@ -53,7 +51,7 @@ public class PipelineTests
         var dto = new TestDto();
         var customMapper = (Unit e) => Results.Accepted();
 
-        var result = _pipeline.Pipe(handler, dto, _validator, customMapper).Await();
+        var result = _pipeline.Pipe(handler, dto, customMapper).Await();
 
         Assert.NotNull(result);
         Assert.True(result is Accepted);
@@ -66,7 +64,7 @@ public class PipelineTests
         var dto = new TestDto() { Property = eHandlerResult.NotFound };
         var customMapper = (Unit e) => Results.Accepted();
 
-        var result = _pipeline.Pipe(handler, dto, _validator, customMapper).Await();
+        var result = _pipeline.Pipe(handler, dto, customMapper).Await();
 
         Assert.NotNull(result);
         Assert.True(result is NotFound<Unit>);

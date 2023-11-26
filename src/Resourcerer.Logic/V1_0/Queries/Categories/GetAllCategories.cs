@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos;
 
@@ -29,5 +30,7 @@ public static class GetAllCategories
 
             return HandlerResult<List<CategoryDto>>.Ok(result);
         }
+
+        public ValidationResult Validate(Unit request) => new ValidationResult();
     }
 }

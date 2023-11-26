@@ -12,7 +12,7 @@ public class CreateItemDiscardedEventEndpoint
         [FromServices] Pipeline pipeline,
         [FromServices] CreateItemDiscardedEvent.Handler handler)
     {
-        return await pipeline.Pipe(handler, dto, new ItemDiscardedEventDto.Validator());
+        return await pipeline.Pipe(handler, dto);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

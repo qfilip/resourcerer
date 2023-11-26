@@ -24,23 +24,23 @@ export interface IEntityDto<T>
 	createdAt: Date;
 	modifiedAt: Date;
 }
-export interface IItemDeliveredEventDto
+export interface IItemCancelledEventDto extends IItemEventDtoBase
+{
+	instanceOrderedEventId: string;
+}
+export interface IItemDeliveredEventDto extends IItemEventDtoBase
 {
 	instanceOrderedEventId: string;
 	instanceOrderedEvent: IItemOrderedEventDto;
 }
-export interface IItemDiscardedEventDto
+export interface IItemDiscardedEventDto extends IItemEventDtoBase
 {
 	quantity: number;
 	reason: string;
 	instanceId: string;
 	instance: IInstanceDto;
 }
-export interface IItemOrderCancelledEventDto
-{
-	instanceOrderedEventId: string;
-}
-export interface IItemOrderedEventDto
+export interface IItemOrderedEventDto extends IItemEventDtoBase
 {
 	itemId: string;
 	expiryDate: Date;
@@ -63,7 +63,7 @@ export interface IInstanceDto
 	elementId: string;
 	element: IItemDto;
 	instanceOrderedEvents: IItemOrderedEventDto[];
-	instanceOrderCancelledEvents: IItemOrderCancelledEventDto[];
+	instanceOrderCancelledEvents: IItemCancelledEventDto[];
 	instanceDeliveredEvents: IItemDeliveredEventDto[];
 	instanceDiscardedEvents: IItemDiscardedEventDto[];
 }
@@ -165,4 +165,7 @@ export interface IDiscardInfoDto
 {
 	reason: string;
 	quantity: number;
+}
+export interface IItemEventDtoBase
+{
 }

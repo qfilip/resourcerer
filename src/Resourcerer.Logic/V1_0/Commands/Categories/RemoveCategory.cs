@@ -1,4 +1,6 @@
-﻿using Resourcerer.DataAccess.Contexts;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.Functions.V1_0;
@@ -19,6 +21,20 @@ public static class RemoveCategory
         {
             return await EntityAction
                 .Remove<Category>(_dbContext, request.Id, $"Category with id {request.Id} doesn't exist");
+        }
+
+        public ValidationResult Validate(CategoryDto request)
+        {
+            return new Validator().Validate(request);
+        }
+
+        private class Validator : AbstractValidator<CategoryDto>
+        {
+            public Validator()
+            {
+                RuleFor(x => x.Id)
+                    .NotEmpty().WithMessage("Category Id cannot be empty");
+            }
         }
     }
 }

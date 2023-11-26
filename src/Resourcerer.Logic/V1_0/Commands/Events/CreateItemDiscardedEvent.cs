@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
@@ -67,6 +68,11 @@ public static class CreateItemDiscardedEvent
 
                 return HandlerResult<Unit>.Ok(Unit.New);
             }
+        }
+
+        public ValidationResult Validate(ItemDiscardedEventDto request)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
@@ -43,6 +45,23 @@ public static class Register
             };
 
             return HandlerResult<AppUserDto>.Ok(dto);
+        }
+
+        public ValidationResult Validate(AppUserDto request) => new Validator().Validate(request);
+
+
+        private class Validator : AbstractValidator<AppUserDto>
+        {
+            public Validator()
+            {
+                RuleFor(x => x.Name)
+                    .NotEmpty()
+                    .WithMessage("User name cannot be empty");
+
+                RuleFor(x => x.Password)
+                    .NotEmpty()
+                    .WithMessage("User password cannot be empty");
+            }
         }
     }
 }

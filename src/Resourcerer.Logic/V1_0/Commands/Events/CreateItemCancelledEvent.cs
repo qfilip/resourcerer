@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
@@ -47,6 +48,11 @@ public static class CreateItemCancelledEvent
             await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());
+        }
+
+        public ValidationResult Validate(ItemCancelledEventDto request)
+        {
+            throw new NotImplementedException();
         }
     }
 }

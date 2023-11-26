@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.QueryUtils;
@@ -65,6 +67,14 @@ public static class GetItemStatistics
             return HandlerResult<List<ItemStatisticsDto>>.Ok(new List<ItemStatisticsDto>());
         }
 
-        
+        public ValidationResult Validate((Guid ItemId, DateTime Now) request) => new Validator().Validate(request);
+
+        private class Validator : AbstractValidator<(Guid ItemId, DateTime Now)>
+        {
+            public Validator()
+            {
+                RuleFor(x => x.ItemId).NotEmpty();
+            }
+        }
     }
 }

@@ -21,24 +21,7 @@ public class Pipeline
 
         _logger.LogInformation("Action {Action} started", actionName);
 
-        var handlerResult = await handler.Handle(request);
-
-        _logger.LogInformation("Action {Action} finished", actionName);
-
-        return MapResult(handlerResult, customOkResultMapper);
-    }
-
-    public async Task<IResult> Pipe<TRequest, TResponse>(
-        IAppHandler<TRequest, TResponse> handler,
-        TRequest request,
-        AbstractValidator<TRequest> requestValidator,
-        Func<TResponse, IResult>? customOkResultMapper = null)
-    {
-        var actionName = GetHandlerName(handler);
-
-        _logger.LogInformation("Action {Action} started", actionName);
-
-        var validationResult = requestValidator.Validate(request);
+        var validationResult = handler.Validate(request);
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors.Select(x => x.ErrorMessage);

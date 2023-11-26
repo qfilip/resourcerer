@@ -1,4 +1,5 @@
-﻿using Resourcerer.DataAccess.Contexts;
+﻿using FluentValidation.Results;
+using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using M = Resourcerer.Logic.Commands.Mocks.Helpers.Mocker;
 
@@ -142,6 +143,11 @@ public static class SeedMockData
             await ctx.BaseSaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());
+        }
+
+        public ValidationResult Validate(Unit request)
+        {
+            return new ValidationResult();
         }
     }
 }

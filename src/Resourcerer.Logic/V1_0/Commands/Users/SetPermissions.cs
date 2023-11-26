@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos;
 using System.Text.Json;
@@ -44,6 +46,22 @@ public static class SetPermissions
             };
 
             return HandlerResult<AppUserDto>.Ok(dto);
+        }
+
+        public ValidationResult Validate(SetUserPermissionsDto request) => new Validator().Validate(request);
+
+        public class Validator : AbstractValidator<SetUserPermissionsDto>
+        {
+            public Validator()
+            {
+                RuleFor(x => x.Permissions)
+                    .NotEmpty()
+                    .WithMessage("User id cannot be empty");
+
+                RuleFor(x => x.Permissions)
+                    .NotNull()
+                    .WithMessage("Permissions cannot be null");
+            }
         }
     }
 }

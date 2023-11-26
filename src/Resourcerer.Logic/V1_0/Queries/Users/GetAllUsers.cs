@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos;
 
@@ -31,5 +32,7 @@ public class GetAllUsers
 
             return HandlerResult<AppUserDto[]>.Ok(dtos);
         }
+
+        public ValidationResult Validate(Unit request) => new ValidationResult();
     }
 }

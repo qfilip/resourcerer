@@ -1,4 +1,5 @@
-﻿using Resourcerer.Logic;
+﻿using FluentValidation.Results;
+using Resourcerer.Logic;
 
 namespace Resourcerer.UnitTests.Utilities.TestClasses;
 
@@ -18,5 +19,7 @@ public static class TestHandler
 
             return Task.FromResult(r);
         }
+
+        public ValidationResult Validate(TestDto request) => new ValidationResult();
     }
 }

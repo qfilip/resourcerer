@@ -12,12 +12,12 @@ public class CreateItemCancelledEventEndpoint
        [FromServices] Pipeline pipeline,
        [FromServices] CreateItemCancelledEvent.Handler handler)
     {
-        return await pipeline.Pipe(handler, dto, new ItemCancelledEventDto.Validator());
+        return await pipeline.Pipe(handler, dto);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/order-cancel", Action);
+        var endpoint = group.MapPost("/cancel", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
