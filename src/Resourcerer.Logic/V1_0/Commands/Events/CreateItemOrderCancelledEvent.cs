@@ -6,7 +6,7 @@ using Resourcerer.Dtos;
 
 namespace Resourcerer.Logic.Commands.V1_0;
 
-public static class CreateItemCancelledEvent
+public static class CreateItemOrderCancelledEvent
 {
     public class Handler : IAppHandler<ItemCancelledEventDto, Unit>
     {
@@ -44,7 +44,7 @@ public static class CreateItemCancelledEvent
                 InstanceBoughtEventId = orderedEvent.Id
             };
 
-            _appDbContext.ItemSellCancelledEvents.Add(entity);
+            _appDbContext.ItemCancelledEvents.Add(entity);
             await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());

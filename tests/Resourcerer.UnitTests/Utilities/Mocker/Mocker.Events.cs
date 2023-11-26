@@ -44,7 +44,7 @@ internal static partial class Mocker
 
         modifier?.Invoke(entity);
 
-        context.ItemSellCancelledEvents.Add(entity);
+        context.ItemCancelledEvents.Add(entity);
 
         return entity;
     }
@@ -99,7 +99,7 @@ internal static partial class Mocker
 
         modifier?.Invoke(entity);
 
-        context.ItemSellCancelledEvents.Add(entity);
+        context.ItemCancelledEvents.Add(entity);
 
         return entity;
     }

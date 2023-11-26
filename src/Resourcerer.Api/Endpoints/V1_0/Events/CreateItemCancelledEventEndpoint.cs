@@ -10,7 +10,7 @@ public class CreateItemCancelledEventEndpoint
     public static async Task<IResult> Action(
        [FromBody] ItemCancelledEventDto dto,
        [FromServices] Pipeline pipeline,
-       [FromServices] CreateItemCancelledEvent.Handler handler)
+       [FromServices] CreateItemOrderCancelledEvent.Handler handler)
     {
         return await pipeline.Pipe(handler, dto);
     }

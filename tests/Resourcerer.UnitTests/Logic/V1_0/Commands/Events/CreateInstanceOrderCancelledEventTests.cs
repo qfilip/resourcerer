@@ -8,7 +8,7 @@ namespace Resourcerer.UnitTests.Logic.V1_0;
 
 public class CreateInstanceOrderCancelledEventTests : TestsBase
 {
-    private readonly CreateItemCancelledEvent.Handler _handler;
+    private readonly CreateItemOrderCancelledEvent.Handler _handler;
     public CreateInstanceOrderCancelledEventTests()
     {
         _handler = new(_testDbContext);

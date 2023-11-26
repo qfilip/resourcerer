@@ -49,7 +49,7 @@ public class ItemEventHandler : BackgroundService
         }
         else if (message is ItemCancelledEventDto cancelEv)
         {
-            var handler = new CreateItemCancelledEvent.Handler(appDbContext);
+            var handler = new CreateItemOrderCancelledEvent.Handler(appDbContext);
             return handler.Handle(cancelEv);
         }
         else if (message is ItemDeliveredEventDto deliverEv)

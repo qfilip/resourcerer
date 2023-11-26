@@ -52,7 +52,7 @@ public static partial class Mocker
             entity.InstanceBoughtEvent!.Instance!.Item = instanceItem;
         }
 
-        context.ItemSellCancelledEvents.Add(entity);
+        context.ItemCancelledEvents.Add(entity);
 
         return entity;
     }
