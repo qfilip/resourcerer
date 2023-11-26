@@ -26,7 +26,9 @@ export interface IEntityDto<T>
 }
 export interface IItemCancelledEventDto extends IItemEventDtoBase
 {
-	instanceOrderedEventId: string;
+	targetEventId: string;
+	reason: string;
+	refundedAmount: number;
 }
 export interface IItemDeliveredEventDto extends IItemEventDtoBase
 {

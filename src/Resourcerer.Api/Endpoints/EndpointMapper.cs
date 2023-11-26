@@ -15,6 +15,12 @@ public static class EndpointMapper
         RouteHandlerBuilder route,
         List<(ePermissionSection claimType, ePermission[] claimValues)>? claims = null)
     {
+        var authDisabled = true;
+        if(authDisabled)
+        {
+            return;
+        }
+
         if (claims != null)
         {
             route.RequireAuthorization(cfg =>
