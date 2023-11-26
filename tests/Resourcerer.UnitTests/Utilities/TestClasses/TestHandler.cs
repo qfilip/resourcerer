@@ -20,6 +20,21 @@ public static class TestHandler
             return Task.FromResult(r);
         }
 
-        public ValidationResult Validate(TestDto request) => new ValidationResult();
+        public ValidationResult Validate(TestDto request)
+        {
+            var errors = new List<string>();
+            if(request.Property == eHandlerResult.Invalid)
+            {
+                errors.Add(TestDto.ErrorMessage);
+            }
+
+            return new ValidationResult
+            {
+                Errors = errors.Select(x => new ValidationFailure
+                {
+                    ErrorMessage = x,
+                }).ToList()
+            };
+        }
     }
 }
