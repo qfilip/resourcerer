@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Resourcerer.Logic;
+﻿using Resourcerer.Logic;
 
 namespace Resourcerer.Api.Services;
 

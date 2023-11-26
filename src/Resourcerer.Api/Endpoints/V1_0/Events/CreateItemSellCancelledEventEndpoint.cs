@@ -3,12 +3,12 @@ using Resourcerer.Dtos;
 using Resourcerer.Dtos.Events;
 using System.Threading.Channels;
 
-namespace Resourcerer.Api.Endpoints.V1_0;
+namespace Resourcerer.Api.Endpoints.V1_0.Events;
 
-public class CreateItemOrderedEventEndpoint
+public class CreateItemSellCancelledEventEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] ItemOrderedEventDto dto,
+        [FromBody] ItemCancelledEventDto dto,
         [FromServices] ChannelWriter<ItemEventDtoBase> writer)
     {
         await writer.WriteAsync(dto);
@@ -17,7 +17,7 @@ public class CreateItemOrderedEventEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/order", Action);
+        var endpoint = group.MapPost("/sell-cancel", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

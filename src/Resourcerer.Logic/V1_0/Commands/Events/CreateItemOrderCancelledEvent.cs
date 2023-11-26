@@ -20,11 +20,11 @@ public static class CreateItemOrderCancelledEvent
             var orderedEvent = await _appDbContext.ItemOrderedEvents
                 .Include(x => x.ItemOrderCancelledEvent)
                 .Include(x => x.ItemDeliveredEvent)
-                .FirstOrDefaultAsync(x => x.Id == request.InstanceOrderedEventId);
+                .FirstOrDefaultAsync(x => x.Id == request.TargetEventId);
 
             if (orderedEvent == null)
             {
-                var error = $"Order event with id {request.InstanceOrderedEventId} not found";
+                var error = $"Order event with id {request.TargetEventId} not found";
                 return HandlerResult<Unit>.Rejected(error);
             }
 
