@@ -8,10 +8,10 @@ using Resourcerer.UnitTests.Utilities.Mocker;
 
 namespace Resourcerer.UnitTests.Logic.V1_0;
 
-public class CreateInstanceOrderedEventTests : TestsBase
+public class CreateItemOrderedEventTests : TestsBase
 {
     private readonly CreateItemOrderedEvent.Handler _handler;
-    public CreateInstanceOrderedEventTests()
+    public CreateItemOrderedEventTests()
     {
         _handler = new(_testDbContext);
     }
