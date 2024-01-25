@@ -25,13 +25,15 @@ public static class CreateItemDiscardedEvent
                     .Include(x => x.ItemDiscardedEvents)
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
-            var noInstance =
-                instance == null ||
-                instance.ItemOrderedEvent!.ItemOrderCancelledEventId != null;
-
-            if (noInstance)
+            if (instance == null)
             {
                 return HandlerResult<Unit>.NotFound($"Instance with id {request.InstanceId} not found");
+            }
+
+            var alreadyCancelled = instance.ItemOrderedEvent!.ItemOrderCancelledEventId != null;
+            if (alreadyCancelled)
+            {
+                return HandlerResult<Unit>.Rejected($"Instance with id {request.InstanceId} already discarded");
             }
 
             var quantity = instance!.ItemOrderedEvent!.Quantity;
