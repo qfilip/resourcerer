@@ -1,4 +1,5 @@
-﻿using FluentValidation.Results;
+﻿using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
@@ -73,9 +74,39 @@ public static class CreateItemOrderedEvent
             return HandlerResult<Unit>.Ok(new Unit());
         }
 
-        public ValidationResult Validate(ItemOrderedEventDto request)
+        public ValidationResult Validate(ItemOrderedEventDto request) =>
+            new Validator().Validate(request);
+
+        private class Validator : AbstractValidator<ItemOrderedEventDto>
         {
-            throw new NotImplementedException();
+            public Validator()
+            {
+                RuleFor(x => x.ItemId)
+                    .NotEmpty()
+                    .WithMessage("Item id cannot be empty");
+
+                RuleFor(x => x.Seller)
+                    .NotNull()
+                    .NotEmpty()
+                    .WithMessage("Seller cannot be empty");
+
+                RuleFor(x => x.Buyer)
+                    .NotNull()
+                    .NotEmpty()
+                    .WithMessage("Buyer cannot be empty");
+
+                RuleFor(x => x.UnitsOrdered)
+                    .GreaterThan(0)
+                    .WithMessage("Number of ordered units must be greater than 0");
+
+                RuleFor(x => x.UnitPrice)
+                    .GreaterThan(0)
+                    .WithMessage("Unit price must be greater than 0");
+
+                RuleFor(x => x.TotalDiscountPercent)
+                    .InclusiveBetween(0, 100)
+                    .WithMessage("Total discount must be greater between in 0 and 100");
+            }
         }
     }
 }
