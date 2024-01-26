@@ -19,11 +19,12 @@ public class CreateItemOrderCancelledEventTests : TestsBase
     {
         // arrange
         var orderEventId = Mocker.MockOrderedEvent(_testDbContext, _sand).Id;
+        _testDbContext.SaveChanges();
+        
         var dto = new ItemCancelledEventDto
         {
             TargetEventId = orderEventId
         };
-        _testDbContext.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -52,11 +53,12 @@ public class CreateItemOrderCancelledEventTests : TestsBase
     {
         var boughtEvent = Mocker.MockOrderedEvent(_testDbContext, _sand);
         var deliveredEvent = Mocker.MockDeliveredEvent(_testDbContext, boughtEvent);
+        _testDbContext.SaveChanges();
+        
         var dto = new ItemCancelledEventDto
         {
             TargetEventId = deliveredEvent.ItemOrderedEvent!.Id
         };
-        _testDbContext.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -70,11 +72,12 @@ public class CreateItemOrderCancelledEventTests : TestsBase
     {
         var boughtEvent = Mocker.MockOrderedEvent(_testDbContext, _sand);
         var orderCancelledEvent = Mocker.MockOrderCancelledEvent(_testDbContext, boughtEvent);
+        _testDbContext.SaveChanges();
+        
         var dto = new ItemCancelledEventDto
         {
             TargetEventId = (Guid)orderCancelledEvent.ItemOrderedEventId!
         };
-        _testDbContext.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
