@@ -52,7 +52,23 @@ public class CreateItemDiscardedEventTests : TestsBase
     [Fact]
     public void When_AlreadyDiscarded_Then_Rejected()
     {
+        // arrange
+        var orderEvent = Mocker.MockOrderedEvent(_testDbContext, _sand);
+        Mocker.MockDeliveredEvent(_testDbContext, orderEvent);
+        Mocker.MockDiscardedEvent(_testDbContext, orderEvent);
+        
+        _testDbContext.SaveChanges();
+        
+        var dto = new ItemDiscardedEventDto
+        {
+            InstanceId = orderEvent.InstanceId
+        };
 
+        // act
+        var result = _handler.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
     }
 
     [Fact]

@@ -21,6 +21,9 @@ public static class CreateItemDiscardedEvent
         {
             var instance = await _appDbContext.Instances
                     .Include(x => x.ItemOrderedEvent)
+                        .ThenInclude(x => x!.ItemDeliveredEvent)
+                    .Include(x => x.ItemOrderedEvent)
+                        .ThenInclude(x => x!.ItemOrderCancelledEvent)
                     .Include(x => x.ItemSoldEvents)
                     .Include(x => x.ItemDiscardedEvents)
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
