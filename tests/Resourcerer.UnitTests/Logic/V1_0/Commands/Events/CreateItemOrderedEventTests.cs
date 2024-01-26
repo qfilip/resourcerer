@@ -25,7 +25,6 @@ public class CreateItemOrderedEventTests : TestsBase
             x.ExpiryDate = DateTime.UtcNow.AddDays(3);
             x.ExpectedDeliveryDate = DateTime.UtcNow;
         });
-        _testDbContext.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -40,11 +39,31 @@ public class CreateItemOrderedEventTests : TestsBase
     }
 
     [Fact]
-    public void When_Item_CanExpire_And_ExpectedDeliveryDate_IsNull_Then_ValidationError()
+    public void When_RequestDto_IsInvalid_Then_ValidationError()
+    {
+        // arrange
+        var dto = GetDto(x =>
+        {
+            x.ItemId = Guid.Empty;
+            x.Seller = null;
+            x.Buyer = null;
+            x.UnitPrice = -1;
+            x.UnitsOrdered = -1;
+            x.TotalDiscountPercent = -1;
+        });
+
+        // act
+        var result = _handler.Validate(dto);
+
+        // assert
+        Assert.Equal(6, result.Errors.Count);
+    }
+
+    [Fact]
+    public void When_Item_CanExpire_And_ExpectedDeliveryDate_IsNull_Then_Rejected()
     {
         // arrange
         var dto = GetDto(x => x.ExpectedDeliveryDate = null);
-        _testDbContext.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -54,11 +73,10 @@ public class CreateItemOrderedEventTests : TestsBase
     }
 
     [Fact]
-    public void When_Item_CanExpire_And_ExpiryDate_IsNull_Then_ValidationError()
+    public void When_Item_CanExpire_And_ExpiryDate_IsNull_Then_Rejected()
     {
         // arrange
         var dto = GetDto(x => x.ExpiryDate = null);
-        _testDbContext.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -68,7 +86,7 @@ public class CreateItemOrderedEventTests : TestsBase
     }
 
     [Fact]
-    public void When_Item_CanExpire_And_ExpiryDate_IsLower_Than_ExpectedDeliveryDate_Then_ValidationError()
+    public void When_Item_CanExpire_And_ExpiryDate_IsLower_Than_ExpectedDeliveryDate_Then_Rejected()
     {
         // arrange
         var dto = GetDto(x =>
@@ -76,7 +94,6 @@ public class CreateItemOrderedEventTests : TestsBase
             x.ExpiryDate = DateTime.Now;
             x.ExpectedDeliveryDate = DateTime.Now.AddDays(1);
         });
-        _testDbContext.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -95,7 +112,6 @@ public class CreateItemOrderedEventTests : TestsBase
             x.ExpectedDeliveryDate = null;
         },
         i => i.ExpirationTimeSeconds = null);
-        _testDbContext.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -111,6 +127,8 @@ public class CreateItemOrderedEventTests : TestsBase
             ItemId = Mocker.MockItem(_testDbContext, itemModifier).Id,
             ExpiryDate = DateTime.UtcNow.AddDays(5),
             ExpectedDeliveryDate = DateTime.UtcNow.AddDays(1),
+            Seller = "seller",
+            Buyer = "buyer",
             TotalDiscountPercent = 5,
             UnitPrice = 1,
             UnitsOrdered = 10,
