@@ -39,9 +39,9 @@ public static class CreateItemOrderCancelledEvent
                 return HandlerResult<Unit>.Ok(new Unit());
             }
 
-            var entity = new ItemCancelledEvent
+            var entity = new ItemOrderCancelledEvent
             {
-                InstanceBoughtEventId = orderedEvent.Id
+                ItemOrderedEventId = orderedEvent.Id
             };
 
             _appDbContext.ItemCancelledEvents.Add(entity);

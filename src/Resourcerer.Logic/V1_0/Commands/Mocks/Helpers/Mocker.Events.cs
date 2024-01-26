@@ -35,21 +35,21 @@ public static partial class Mocker
         return entity;
     }
 
-    public static ItemCancelledEvent MockOrderCancelledEvent(
+    public static ItemOrderCancelledEvent MockOrderCancelledEvent(
         AppDbContext context,
-        Action<ItemCancelledEvent>? modifier = null,
+        Action<ItemOrderCancelledEvent>? modifier = null,
         Item? instanceItem = null)
     {
-        var entity = MakeEntity(() => new ItemCancelledEvent
+        var entity = MakeEntity(() => new ItemOrderCancelledEvent
         {
-            InstanceBoughtEvent = MockOrderedEvent(context)
+            ItemOrderedEvent = MockOrderedEvent(context)
         });
 
         modifier?.Invoke(entity);
 
         if (instanceItem != null)
         {
-            entity.InstanceBoughtEvent!.Instance!.Item = instanceItem;
+            entity.ItemOrderedEvent!.Instance!.Item = instanceItem;
         }
 
         context.ItemCancelledEvents.Add(entity);

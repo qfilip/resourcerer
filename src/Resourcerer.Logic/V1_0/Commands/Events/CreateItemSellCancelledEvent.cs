@@ -40,7 +40,7 @@ public static class CreateItemSellCancelledEvent
                 return HandlerResult<Unit>.Rejected("Item already delivered and cannot be cancelled");
             }
 
-            var entity = new ItemCancelledEvent
+            var entity = new ItemOrderCancelledEvent
             {
                 InstanceSoldEventId = soldEvent.Id,
                 Reason = request.Reason,

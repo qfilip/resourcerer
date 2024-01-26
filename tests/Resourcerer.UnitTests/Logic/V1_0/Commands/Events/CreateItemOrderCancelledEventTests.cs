@@ -72,7 +72,7 @@ public class CreateItemOrderCancelledEventTests : TestsBase
         var orderCancelledEvent = Mocker.MockOrderCancelledEvent(_testDbContext, boughtEvent);
         var dto = new ItemCancelledEventDto
         {
-            TargetEventId = (Guid)orderCancelledEvent.InstanceBoughtEventId!
+            TargetEventId = (Guid)orderCancelledEvent.ItemOrderedEventId!
         };
         _testDbContext.SaveChanges();
 

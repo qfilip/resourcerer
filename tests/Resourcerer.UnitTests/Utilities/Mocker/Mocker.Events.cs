@@ -32,14 +32,14 @@ internal static partial class Mocker
         return entity;
     }
 
-    public static ItemCancelledEvent MockOrderCancelledEvent(
+    public static ItemOrderCancelledEvent MockOrderCancelledEvent(
         AppDbContext context,
         ItemOrderedEvent boughtEvent,
-        Action<ItemCancelledEvent>? modifier = null)
+        Action<ItemOrderCancelledEvent>? modifier = null)
     {
-        var entity = MakeEntity(() => new ItemCancelledEvent
+        var entity = MakeEntity(() => new ItemOrderCancelledEvent
         {
-            InstanceBoughtEvent = boughtEvent
+            ItemOrderedEvent = boughtEvent
         });
 
         modifier?.Invoke(entity);
@@ -106,12 +106,12 @@ internal static partial class Mocker
         return entity;
     }
 
-    public static ItemCancelledEvent MockSellCancelledEvent(
+    public static ItemOrderCancelledEvent MockSellCancelledEvent(
         AppDbContext context,
         ItemSoldEvent soldEvent,
-        Action<ItemCancelledEvent>? modifier = null)
+        Action<ItemOrderCancelledEvent>? modifier = null)
     {
-        var entity = MakeEntity(() => new ItemCancelledEvent
+        var entity = MakeEntity(() => new ItemOrderCancelledEvent
         {
             InstanceSoldEvent = soldEvent
         });

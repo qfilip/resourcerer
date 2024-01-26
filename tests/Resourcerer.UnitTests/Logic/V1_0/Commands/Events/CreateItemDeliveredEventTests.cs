@@ -54,7 +54,7 @@ public class CreateItemDeliveredEventTests : TestsBase
         var cancelledEvent = Mocker.MockOrderCancelledEvent(_testDbContext, boughtEvent);
         var dto = new ItemDeliveredEventDto
         {
-            InstanceOrderedEventId = cancelledEvent.InstanceBoughtEvent!.Id
+            InstanceOrderedEventId = cancelledEvent.ItemOrderedEvent!.Id
         };
         _testDbContext.SaveChanges();
 
