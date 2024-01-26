@@ -75,10 +75,13 @@ public partial class AppDbContext
 
         ConfigureEntity<ItemOrderedEvent>(modelBuilder, (e) =>
         {
-            e.HasOne(x => x.Instance).WithOne(x => x.ItemOrderedEvent)
-                .HasForeignKey<ItemOrderedEvent>(x => x.InstanceId)
+            e.HasOne(x => x.Instance).WithMany(x => x.ItemOrderedEvents)
+                .HasForeignKey(x => x.InstanceId)
                 .IsRequired()
                 .HasConstraintName($"FK_{nameof(Instance)}_{nameof(ItemOrderedEvent)}");
+
+            e.Property(x => x.Buyer).IsRequired();
+            e.Property(x => x.Seller).IsRequired();
         });
 
         ConfigureEntity<ItemOrderCancelledEvent>(modelBuilder, (e) =>
@@ -108,6 +111,8 @@ public partial class AppDbContext
                 .HasForeignKey(x => x.InstanceId)
                 .IsRequired()
                 .HasConstraintName($"FK_{nameof(Instance)}_{nameof(ItemDiscardedEvent)}");
+
+            e.Property(x => x.Owner).IsRequired();
         });
 
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())

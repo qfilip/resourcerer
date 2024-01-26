@@ -4,6 +4,7 @@ public class Instance : EntityBase
 {
     public Instance()
     {
+        ItemOrderedEvents = new HashSet<ItemOrderedEvent>();
         ItemDiscardedEvents = new HashSet<ItemDiscardedEvent>();
     }
     
@@ -13,6 +14,6 @@ public class Instance : EntityBase
     public virtual Item? Item { get; set; }
 
     public Guid ItemOrderedEventId { get; set; }
-    public virtual ItemOrderedEvent? ItemOrderedEvent { get; set; }
+    public ICollection<ItemOrderedEvent> ItemOrderedEvents { get; set; }
     public ICollection<ItemDiscardedEvent> ItemDiscardedEvents { get; set; }    
 }

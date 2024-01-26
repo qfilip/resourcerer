@@ -1,4 +1,5 @@
-﻿using FluentValidation.Results;
+﻿using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
@@ -20,9 +21,9 @@ public static class CreateItemDiscardedEvent
         public async Task<HandlerResult<Unit>> Handle(ItemDiscardedEventDto request)
         {
             var instance = await _appDbContext.Instances
-                    .Include(x => x.ItemOrderedEvent)
+                    .Include(x => x.ItemOrderedEvents)
                         .ThenInclude(x => x!.ItemDeliveredEvent)
-                    .Include(x => x.ItemOrderedEvent)
+                    .Include(x => x.ItemOrderedEvents)
                         .ThenInclude(x => x!.ItemOrderCancelledEvent)
                     .Include(x => x.ItemDiscardedEvents)
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
@@ -32,19 +33,26 @@ public static class CreateItemDiscardedEvent
                 return HandlerResult<Unit>.NotFound($"Instance with id {request.InstanceId} not found");
             }
 
-            var alreadyCancelled = instance.ItemOrderedEvent!.ItemOrderCancelledEventId != null;
-            if (alreadyCancelled)
-            {
-                return HandlerResult<Unit>.Rejected($"Instance with id {request.InstanceId} already discarded");
-            }
+            var delivered = instance.ItemOrderedEvents
+                .Where(x =>
+                    x.Buyer == request.Owner &&
+                    x.ItemOrderCancelledEvent == null &&
+                    x.ItemDeliveredEvent != null)
+                .Sum(x => x.Quantity);
 
-            var quantity = instance!.ItemOrderedEvent!.Quantity;
-            
-            var quantitySpent =
-                instance!.ItemSoldEvents.Sum(x => x.Quantity) +
-                instance!.ItemDiscardedEvents.Sum(x => x.Quantity);
+            var sent = instance.ItemOrderedEvents
+                .Where(x =>
+                    x.Seller == request.Owner &&
+                    x.ItemOrderCancelledEvent == null &&
+                    x.ItemSentEvent != null)
+                .Sum(x => x.Quantity);
 
-            var quantityLeft = quantity - quantitySpent;
+            var discarded = instance.ItemDiscardedEvents
+                .Where(x => x.Owner == request.Owner)
+                .Sum(x => x.Quantity);
+
+            var quantityLeft = delivered - sent - discarded;
+
             if (quantityLeft < 0)
             {
                 var error = $"More instances spent than ordered for instance id: {instance!.Id}";
@@ -56,7 +64,7 @@ public static class CreateItemDiscardedEvent
             }
             else if (quantityLeft - request.Quantity < 0)
             {
-                return HandlerResult<Unit>.Rejected($"Remaining quantity is 0. Cannot discard {request.Quantity} number of items");
+                return HandlerResult<Unit>.Rejected($"Remaining quantity is {quantityLeft}. Cannot discard {request.Quantity} number of items");
             }
             else
             {
@@ -74,9 +82,29 @@ public static class CreateItemDiscardedEvent
             }
         }
 
-        public ValidationResult Validate(ItemDiscardedEventDto request)
+        public ValidationResult Validate(ItemDiscardedEventDto request) =>
+            new Validator().Validate(request);
+
+        private class Validator : AbstractValidator<ItemDiscardedEventDto>
         {
-            throw new NotImplementedException();
+            public Validator()
+            {
+                RuleFor(x => x.Owner)
+                    .NotEmpty()
+                    .WithMessage("Owner cannot be empty");
+
+                RuleFor(x => x.Quantity)
+                    .GreaterThan(0)
+                    .WithMessage("Quantity must be larger than 0");
+
+                RuleFor(x => x.Reason)
+                    .NotEmpty()
+                    .WithMessage("Reason cannot be empty");
+
+                RuleFor(x => x.InstanceId)
+                    .NotEmpty()
+                    .WithMessage("InstanceId cannot be empty");
+            }
         }
     }
 }

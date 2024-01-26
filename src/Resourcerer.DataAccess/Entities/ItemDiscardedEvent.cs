@@ -2,6 +2,7 @@
 
 public class ItemDiscardedEvent : EntityBase
 {
+    public string? Owner { get; set; }
     public double Quantity { get; set; }
     public string? Reason { get; set; }
 
