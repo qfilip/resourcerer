@@ -7,7 +7,7 @@ namespace Resourcerer.Logic.Functions.V1_0;
 
 public static partial class Instances
 {
-    public static InstanceInfoDto GetInstanceInfo(Instance i, DateTime now)
+    public static InstanceInfoDto GetInstanceInfo(Instance i, string owner, DateTime now)
     {
         if (i.ItemOrderedEvent!.ItemOrderCancelledEvent != null)
         {
