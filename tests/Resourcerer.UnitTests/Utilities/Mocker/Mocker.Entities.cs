@@ -63,7 +63,7 @@ internal static partial class Mocker
         {
             Name = MakeName(),
             ExpirationTimeSeconds = 1200,
-            PreparationTimeSeconds = 10,
+            ProductionTimeSeconds = 10,
             
             Category = MockCategory(context),
             UnitOfMeasure = MockUnitOfMeasure(context),

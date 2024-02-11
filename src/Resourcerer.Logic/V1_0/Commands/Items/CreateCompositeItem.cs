@@ -64,7 +64,7 @@ public static class CreateCompositeItem
                 Id = Guid.NewGuid(),
                 
                 Name = request.Name,
-                PreparationTimeSeconds = request.PreparationTimeSeconds,
+                ProductionTimeSeconds = request.PreparationTimeSeconds,
                 ExpirationTimeSeconds = request.ExpirationTimeSeconds,
                 
                 CategoryId = category.Id,

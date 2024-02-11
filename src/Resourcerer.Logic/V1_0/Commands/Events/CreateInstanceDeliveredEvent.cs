@@ -38,35 +38,26 @@ public static class CreateInstanceDeliveredEvent
                 return HandlerResult<Unit>.Rejected(error);
             }
 
-            if(orderEvent.InstanceSentEvent == null)
+            if(orderEvent.SentEvent == null)
             {
                 var error = "Instance was not sent, so it cannot be delivered";
                 return HandlerResult<Unit>.Rejected(error);
             }
 
-            if (orderEvent.InstanceOrderCancelledEvent != null)
+            if (orderEvent.OrderCancelledEvent != null)
             {
                 var error = "Order was cancelled, so it cannot be delivered";
                 return HandlerResult<Unit>.Rejected(error);
             }
 
-            if (orderEvent.InstanceDeliveredEvent != null)
+            if (orderEvent.DeliveredEvent != null)
             {
                 return HandlerResult<Unit>.Ok(Unit.New);
             }
 
             var deliveredEvent = JsonEntityBase.CreateEntity(() => new InstanceDeliveredEvent());
-            orderEvent.InstanceDeliveredEvent = deliveredEvent;
+            orderEvent.DeliveredEvent = deliveredEvent;
 
-            var newOwnerInstance = new Instance
-            {
-                OwnerCompanyId = orderEvent.BuyerCompanyId,
-                ItemId = instance.ItemId,
-                Quantity = orderEvent.Quantity,
-                ExpiryDate = instance.ExpiryDate
-            };
-
-            _appDbContext.Instances.Add(newOwnerInstance);
             await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());

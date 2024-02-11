@@ -5,8 +5,11 @@ namespace Resourcerer.DataAccess.Entities;
 
 public class Instance : EntityBase
 {
-    public int PurchaseDiscountPercent { get; set; }
-    public double UnitPurchasePrice { get; set; }
+    public Instance()
+    {
+        DerivedInstances = new HashSet<Instance>();
+    }
+
     public double Quantity { get; set; }
     public DateTime? ExpiryDate { get; set; }
     
@@ -14,10 +17,12 @@ public class Instance : EntityBase
     public virtual Item? Item { get; set; }
 
     public Guid OwnerCompanyId { get; set; }
-    public Company? OwnerCompany { get; set; }
+    public virtual Company? OwnerCompany { get; set; }
 
-    public Guid? SellerCompanyId { get; set; }
-    public Company? SellerCompany { get; set; }
+    public Guid? SourceInstanceId { get; set; }
+    public virtual Instance? SourceInstance { get; set; }
+
+    public ICollection<Instance> DerivedInstances { get; set; }
 
     public string OrderedEventsJson
     {

@@ -5,6 +5,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos;
+using Resourcerer.Logic.Functions.V1_0;
 
 namespace Resourcerer.Logic.Commands.V1_0;
 
@@ -44,6 +45,7 @@ public static class CreateInstanceOrderedEvent
 
             var instance = await _appDbContext.Instances
                 .Include(x => x.Item)
+                .Include(x => x.SourceInstance)
                 .FirstOrDefaultAsync(x =>
                     x.Id == request.InstanceId &&
                     x.OwnerCompanyId == request.SellerCompanyId);
@@ -81,11 +83,11 @@ public static class CreateInstanceOrderedEvent
 
             var unitsSent = instance.OrderedEvents
                 .Where(x =>
-                    x.InstanceOrderCancelledEvent == null &&
-                    x.InstanceSentEvent != null)
+                    x.OrderCancelledEvent == null &&
+                    x.SentEvent != null)
                 .Sum(x => x.Quantity);
 
-            var unitsInStock = instance.Quantity - unitsSent;
+            var unitsInStock = Instances.GetUnitsInStock(instance) - unitsSent;
 
             if(unitsInStock - request.UnitsOrdered <= 0)
             {
@@ -97,6 +99,10 @@ public static class CreateInstanceOrderedEvent
             {
                 return new InstanceOrderedEvent
                 {
+                    DerivedInstanceId = Guid.NewGuid(),
+                    BuyerCompanyId = request.BuyerCompanyId,
+                    SellerCompanyId = request.SellerCompanyId,
+                    
                     UnitPrice = request.UnitPrice,
                     Quantity = request.UnitsOrdered,
                     TotalDiscountPercent = request.TotalDiscountPercent,
@@ -105,6 +111,17 @@ public static class CreateInstanceOrderedEvent
             });
 
             instance.OrderedEvents.Add(orderedEvent);
+            
+            var newOwnerInstance = new Instance
+            {
+                OwnerCompanyId = orderedEvent.BuyerCompanyId,
+                SourceInstanceId = instance.Id,
+                ItemId = instance.ItemId,
+                ExpiryDate = instance.ExpiryDate
+            };
+
+            _appDbContext.Instances.Add(newOwnerInstance);
+
             await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());

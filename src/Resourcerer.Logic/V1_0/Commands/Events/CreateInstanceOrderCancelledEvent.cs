@@ -37,19 +37,19 @@ public static class CreateInstanceOrderCancelledEvent
                 return HandlerResult<Unit>.Rejected(error);
             }
 
-            if (orderEvent.InstanceSentEvent != null)
+            if (orderEvent.SentEvent != null)
             {
                 var error = "Order sent and cannot be cancelled";
                 return HandlerResult<Unit>.Rejected(error);
             }
 
-            if (orderEvent.InstanceDeliveredEvent != null)
+            if (orderEvent.DeliveredEvent != null)
             {
                 var error = "Order already delivered";
                 return HandlerResult<Unit>.Rejected(error);
             }
 
-            if (orderEvent.InstanceOrderCancelledEvent != null)
+            if (orderEvent.OrderCancelledEvent != null)
             {
                 return HandlerResult<Unit>.Ok(new Unit());
             }
@@ -63,7 +63,7 @@ public static class CreateInstanceOrderCancelledEvent
                 };
             });
 
-            orderEvent.InstanceOrderCancelledEvent = cancelEvent;
+            orderEvent.OrderCancelledEvent = cancelEvent;
 
             await _appDbContext.SaveChangesAsync();
 

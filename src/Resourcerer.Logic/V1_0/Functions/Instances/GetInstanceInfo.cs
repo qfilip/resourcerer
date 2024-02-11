@@ -7,19 +7,39 @@ namespace Resourcerer.Logic.Functions.V1_0;
 
 public static partial class Instances
 {
+    public static double GetUnitsInStock(Instance i)
+    {
+        if (i.SourceInstanceId == null)
+        {
+            return i.Quantity;
+        }
+
+        if(i.SourceInstance == null)
+        {
+            throw new InvalidOperationException($"Source instance for instance {i.Id} is null");
+        }
+
+        var completedOrderEvent = i.SourceInstance.OrderedEvents
+            .Where(x =>
+                x.DerivedInstanceId == i.Id &&
+                x.DeliveredEvent != null)
+            .FirstOrDefault();
+
+        return completedOrderEvent == null ? 0 : completedOrderEvent.Quantity;
+    }
     public static InstanceInfoDto GetInstanceInfo(Instance i, DateTime now)
     {
         var soldEvents = i.OrderedEvents
-            .Where(x => x.InstanceOrderCancelledEvent == null)
+            .Where(x => x.OrderCancelledEvent == null)
             .ToArray();
 
         var sold = soldEvents.Sum(x => x.Quantity);
 
         var sellCancellationsPenaltyDifference = i.OrderedEvents
-            .Where(x => x.InstanceOrderCancelledEvent != null)
+            .Where(x => x.OrderCancelledEvent != null)
             .Select(x => new
             {
-                RefundedAmount = x.InstanceOrderCancelledEvent!.RefundedAmount,
+                RefundedAmount = x.OrderCancelledEvent!.RefundedAmount,
                 UnitPrice = x.UnitPrice,
                 Quantity = x.Quantity
             })

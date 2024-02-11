@@ -31,8 +31,8 @@ public static class CreateInstanceDiscardedEvent
 
             var sent = instance.OrderedEvents
                 .Where(x =>
-                    x.InstanceOrderCancelledEvent == null &&
-                    x.InstanceSentEvent != null)
+                    x.OrderCancelledEvent == null &&
+                    x.SentEvent != null)
                 .Sum(x => x.Quantity);
 
             var discarded = instance.DiscardedEvents

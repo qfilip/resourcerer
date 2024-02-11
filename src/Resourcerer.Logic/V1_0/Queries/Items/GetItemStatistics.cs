@@ -26,6 +26,8 @@ public static class GetItemStatistics
                 .Include(x => x.UnitOfMeasure)
                 .Include(x => x.Prices)
                 .Include(x => x.ElementExcerpts)
+                .Include(x => x.Instances)
+                    .ThenInclude(x => x.SourceInstance)
                 .Include(x => x.CompositeExcerpts)
                     .ThenInclude(x => x.Element)
                         .ThenInclude(x => x!.Prices) as IQueryable<Item>;
