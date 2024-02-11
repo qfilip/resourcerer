@@ -52,14 +52,14 @@ public class InstanceEventHandler : BackgroundService
             var handler = new CreateInstanceOrderCancelledEvent.Handler(appDbContext);
             return Execute(handler, cancelEv);
         }
-        else if (message is ItemDeliveredEventDto deliverEv)
+        else if (message is InstanceDeliveredRequestDto deliverEv)
         {
-            var handler = new CreateItemDeliveredEvent.Handler(appDbContext);
+            var handler = new CreateInstanceDeliveredEvent.Handler(appDbContext);
             return Execute(handler, deliverEv);
         }
-        else if (message is ItemDiscardedEventDto discardEv)
+        else if (message is InstanceDiscardedRequestDto discardEv)
         {
-            var handler = new CreateItemDiscardedEvent.Handler(appDbContext);
+            var handler = new CreateInstanceDiscardedEvent.Handler(appDbContext);
             return Execute(handler, discardEv);
         }
         else

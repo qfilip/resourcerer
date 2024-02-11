@@ -8,7 +8,7 @@ namespace Resourcerer.Api.Endpoints.V1_0;
 public class CreateItemDeliveredEventEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] ItemDeliveredEventDto dto,
+        [FromBody] InstanceDeliveredRequestDto dto,
          ChannelWriter<InstanceEventDtoBase> writer)
     {
         await writer.WriteAsync(dto);

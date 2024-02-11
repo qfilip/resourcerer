@@ -8,7 +8,7 @@ namespace Resourcerer.UnitTests.Logic.V1_0.Commands.Events;
 
 public class CreateItemDiscardedEventTests : TestsBase
 {
-    public readonly CreateItemDiscardedEvent.Handler _handler;
+    public readonly CreateInstanceDiscardedEvent.Handler _handler;
     public CreateItemDiscardedEventTests()
     {
         _handler = new(_testDbContext);
@@ -19,7 +19,7 @@ public class CreateItemDiscardedEventTests : TestsBase
     {
         // arrange
         var orderEvent = Mocker.MockOrderedEvent(_testDbContext, _sand);
-        var dto = new ItemDiscardedEventDto
+        var dto = new InstanceDiscardedRequestDto
         {
             InstanceId = orderEvent.InstanceId
         };
@@ -37,7 +37,7 @@ public class CreateItemDiscardedEventTests : TestsBase
     public void When_NotOrdered_Then_NotFound()
     {
         // arrange
-        var dto = new ItemDiscardedEventDto
+        var dto = new InstanceDiscardedRequestDto
         {
             InstanceId = Guid.NewGuid()
         };
@@ -59,7 +59,7 @@ public class CreateItemDiscardedEventTests : TestsBase
         
         _testDbContext.SaveChanges();
         
-        var dto = new ItemDiscardedEventDto
+        var dto = new InstanceDiscardedRequestDto
         {
             InstanceId = orderEvent.InstanceId
         };

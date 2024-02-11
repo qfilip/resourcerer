@@ -8,7 +8,7 @@ namespace Resourcerer.UnitTests.Logic.V1_0;
 
 public class CreateItemDeliveredEventTests : TestsBase
 {
-    public readonly CreateItemDeliveredEvent.Handler _handler;
+    public readonly CreateInstanceDeliveredEvent.Handler _handler;
     public CreateItemDeliveredEventTests()
     {
         _handler = new(_testDbContext);
@@ -19,9 +19,9 @@ public class CreateItemDeliveredEventTests : TestsBase
     {
         // arrange
         var orderEventId = Mocker.MockOrderedEvent(_testDbContext, _sand).Id;
-        var dto = new ItemDeliveredEventDto
+        var dto = new InstanceDeliveredRequestDto
         {
-            InstanceOrderedEventId = orderEventId
+            InstanceId = orderEventId
         };
         _testDbContext.SaveChanges();
 
@@ -35,9 +35,9 @@ public class CreateItemDeliveredEventTests : TestsBase
     [Fact]
     public void When_OrderEvent_NotFound_Then_ValidationError()
     {
-        var dto = new ItemDeliveredEventDto
+        var dto = new InstanceDeliveredRequestDto
         {
-            InstanceOrderedEventId = Guid.NewGuid()
+            InstanceId = Guid.NewGuid()
         };
 
         // act
@@ -52,9 +52,9 @@ public class CreateItemDeliveredEventTests : TestsBase
     {
         var boughtEvent = Mocker.MockOrderedEvent(_testDbContext, _sand);
         var cancelledEvent = Mocker.MockOrderCancelledEvent(_testDbContext, boughtEvent);
-        var dto = new ItemDeliveredEventDto
+        var dto = new InstanceDeliveredRequestDto
         {
-            InstanceOrderedEventId = cancelledEvent.ItemOrderedEvent!.Id
+            InstanceId = cancelledEvent.ItemOrderedEvent!.Id
         };
         _testDbContext.SaveChanges();
 
@@ -70,9 +70,9 @@ public class CreateItemDeliveredEventTests : TestsBase
     {
         var boughtEvent = Mocker.MockOrderedEvent(_testDbContext, _sand);
         var orderCancelledEvent = Mocker.MockDeliveredEvent(_testDbContext, boughtEvent);
-        var dto = new ItemDeliveredEventDto
+        var dto = new InstanceDeliveredRequestDto
         {
-            InstanceOrderedEventId = (Guid)orderCancelledEvent.ItemOrderedEventId!
+            InstanceId = (Guid)orderCancelledEvent.ItemOrderedEventId!
         };
         _testDbContext.SaveChanges();
 

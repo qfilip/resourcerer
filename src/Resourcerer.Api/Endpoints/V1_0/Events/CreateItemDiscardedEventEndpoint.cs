@@ -8,7 +8,7 @@ namespace Resourcerer.Api.Endpoints.V1_0;
 public class CreateItemDiscardedEventEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] ItemDiscardedEventDto dto,
+        [FromBody] InstanceDiscardedRequestDto dto,
         [FromServices] ChannelWriter<InstanceEventDtoBase> writer)
     {
         await writer.WriteAsync(dto);

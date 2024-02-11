@@ -1,8 +1,9 @@
-﻿namespace Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities.JsonEntities;
 
-public class InstanceDiscardedEvent : EntityBase
+namespace Resourcerer.DataAccess.Entities;
+
+public class InstanceDiscardedEvent : JsonEntityBase
 {
-    public string? Owner { get; set; }
     public double Quantity { get; set; }
     public string? Reason { get; set; }
 }

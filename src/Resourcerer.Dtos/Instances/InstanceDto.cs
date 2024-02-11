@@ -11,8 +11,8 @@ public class InstanceDto : IBaseDto
 
     public List<InstanceOrderRequestDto>? InstanceOrderedEvents { get; set; }
     public List<InstanceCancelRequestDto>? InstanceOrderCancelledEvents { get; set; }
-    public List<ItemDeliveredEventDto>? InstanceDeliveredEvents { get; set; }
-    public List<ItemDiscardedEventDto>? InstanceDiscardedEvents { get; set; }
+    public List<InstanceDeliveredRequestDto>? InstanceDeliveredEvents { get; set; }
+    public List<InstanceDiscardedRequestDto>? InstanceDiscardedEvents { get; set; }
 
     public class Validator : AbstractValidator<InstanceDto>
     {
