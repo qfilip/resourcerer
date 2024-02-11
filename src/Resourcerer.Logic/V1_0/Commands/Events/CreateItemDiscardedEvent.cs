@@ -35,14 +35,14 @@ public static class CreateItemDiscardedEvent
 
             var delivered = instance.ItemOrderedEvents
                 .Where(x =>
-                    x.Buyer == request.Owner &&
+                    x.BuyerCompanyId == request.Owner &&
                     x.InstanceOrderCancelledEvent == null &&
                     x.InstanceDeliveredEvent != null)
                 .Sum(x => x.Quantity);
 
             var sent = instance.ItemOrderedEvents
                 .Where(x =>
-                    x.Seller == request.Owner &&
+                    x.SellerCompanyId == request.Owner &&
                     x.InstanceOrderCancelledEvent == null &&
                     x.InstanceSentEvent != null)
                 .Sum(x => x.Quantity);

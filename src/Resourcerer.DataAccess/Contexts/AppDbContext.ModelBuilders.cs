@@ -9,10 +9,19 @@ public partial class AppDbContext
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        ConfigureEntity<Company>(modelBuilder, e =>
+        {
+            e.Property(x => x.Name).IsRequired();
+        });
+
         ConfigureEntity<AppUser>(modelBuilder, (e) =>
         {
             e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
+
+            e.HasOne(x => x.Company).WithMany(x => x.Employees)
+                .HasForeignKey(x => x.CompanyId)
+                .HasConstraintName($"FK_{nameof(AppUser)}_{nameof(Company)}");
         });
 
         ConfigureEntity<Category>(modelBuilder, e =>

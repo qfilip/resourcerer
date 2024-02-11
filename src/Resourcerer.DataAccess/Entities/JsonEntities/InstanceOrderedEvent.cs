@@ -2,8 +2,8 @@
 
 public class InstanceOrderedEvent : EntityBase
 {
-    public string? Seller { get; set; }
-    public string? Buyer { get; set; }
+    public Guid SellerCompanyId { get; set; }
+    public Guid BuyerCompanyId { get; set; }
     public double Quantity { get; set; }
     public double UnitPrice { get; set; }
     public int TotalDiscountPercent { get; set; }
