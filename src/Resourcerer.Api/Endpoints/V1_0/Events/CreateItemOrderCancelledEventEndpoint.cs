@@ -9,7 +9,7 @@ public class CreateItemOrderCancelledEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] ItemCancelledEventDto dto,
-        [FromServices] ChannelWriter<ItemEventDtoBase> writer)
+        [FromServices] ChannelWriter<InstanceEventDtoBase> writer)
     {
         await writer.WriteAsync(dto);
         return Results.Accepted();

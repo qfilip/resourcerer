@@ -2,12 +2,12 @@
 
 namespace Resourcerer.Dtos;
 
-public class ItemOrderedEventDto : ItemEventDtoBase
+public class InstanceOrderRequestDto : InstanceEventDtoBase
 {
-    public Guid ItemId { get; set; }
+    public Guid InstanceId { get; set; }
     public DateTime? ExpiryDate { get; set; }
-    public string? Seller { get; set; }
-    public string? Buyer { get; set; }
+    public Guid SellerCompanyId { get; set; }
+    public Guid BuyerCompanyId { get; set; }
     public double UnitsOrdered { get; set; }
     public double UnitPrice { get; set; }
     public int TotalDiscountPercent { get; set; }

@@ -31,10 +31,10 @@ public static partial class ServiceRegistry
 
         services.AddScoped<Pipeline>();
 
-        services.AddSingleton<ChannelWriter<ItemEventDtoBase>>(_ => Channel.CreateUnbounded<ItemEventDtoBase>().Writer);
-        services.AddSingleton<ChannelReader<ItemEventDtoBase>>(_ => Channel.CreateUnbounded<ItemEventDtoBase>().Reader);
+        services.AddSingleton<ChannelWriter<InstanceEventDtoBase>>(_ => Channel.CreateUnbounded<InstanceEventDtoBase>().Writer);
+        services.AddSingleton<ChannelReader<InstanceEventDtoBase>>(_ => Channel.CreateUnbounded<InstanceEventDtoBase>().Reader);
 
-        services.AddHostedService<ItemEventHandler>();
+        services.AddHostedService<InstanceEventHandler>();
     }
 
     public static void AddAspNetServices(this IServiceCollection services)

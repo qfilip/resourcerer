@@ -9,7 +9,7 @@ public class CreateItemDeliveredEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] ItemDeliveredEventDto dto,
-         ChannelWriter<ItemEventDtoBase> writer)
+         ChannelWriter<InstanceEventDtoBase> writer)
     {
         await writer.WriteAsync(dto);
         return Results.Accepted();

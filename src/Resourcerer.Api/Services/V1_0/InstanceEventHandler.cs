@@ -8,13 +8,13 @@ using System.Threading.Channels;
 
 namespace Resourcerer.Api.Services.V1_0;
 
-public class ItemEventHandler : BackgroundService
+public class InstanceEventHandler : BackgroundService
 {
-    private readonly ChannelReader<ItemEventDtoBase> _reader;
+    private readonly ChannelReader<InstanceEventDtoBase> _reader;
     private readonly IServiceProvider _serviceProvider;
 
-    public ItemEventHandler(
-        ChannelReader<ItemEventDtoBase> reader,
+    public InstanceEventHandler(
+        ChannelReader<InstanceEventDtoBase> reader,
         IServiceProvider serviceProvider)
     {
         _reader = reader;
@@ -40,11 +40,11 @@ public class ItemEventHandler : BackgroundService
         }
     }
 
-    private static Task HandleEvent(ItemEventDtoBase message, AppDbContext appDbContext)
+    private static Task HandleEvent(InstanceEventDtoBase message, AppDbContext appDbContext)
     {
-        if (message is ItemOrderedEventDto orderEv)
+        if (message is InstanceOrderRequestDto orderEv)
         {
-            var handler = new CreateItemOrderedEvent.Handler(appDbContext);
+            var handler = new CreateInstanceOrderedEvent.Handler(appDbContext);
             return Execute(handler, orderEv);
         }
         else if (message is ItemCancelledEventDto cancelEv)

@@ -10,7 +10,7 @@ namespace Resourcerer.UnitTests.Logic.V1_0;
 
 public class CreateItemOrderedEventTests : TestsBase
 {
-    private readonly CreateItemOrderedEvent.Handler _handler;
+    private readonly CreateInstanceOrderedEvent.Handler _handler;
     public CreateItemOrderedEventTests()
     {
         _handler = new(_testDbContext);
@@ -44,9 +44,9 @@ public class CreateItemOrderedEventTests : TestsBase
         // arrange
         var dto = GetDto(x =>
         {
-            x.ItemId = Guid.Empty;
-            x.Seller = null;
-            x.Buyer = null;
+            x.InstanceId = Guid.Empty;
+            x.SellerCompanyId = null;
+            x.BuyerCompanyId = null;
             x.UnitPrice = -1;
             x.UnitsOrdered = -1;
             x.TotalDiscountPercent = -1;
@@ -120,15 +120,15 @@ public class CreateItemOrderedEventTests : TestsBase
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
     }
 
-    private ItemOrderedEventDto GetDto(Action<ItemOrderedEventDto>? modifier = null, Action<Item>? itemModifier = null)
+    private InstanceOrderRequestDto GetDto(Action<InstanceOrderRequestDto>? modifier = null, Action<Item>? itemModifier = null)
     {
-        var dto = new ItemOrderedEventDto()
+        var dto = new InstanceOrderRequestDto()
         {
-            ItemId = Mocker.MockItem(_testDbContext, itemModifier).Id,
+            InstanceId = Mocker.MockItem(_testDbContext, itemModifier).Id,
             ExpiryDate = DateTime.UtcNow.AddDays(5),
             ExpectedDeliveryDate = DateTime.UtcNow.AddDays(1),
-            Seller = "seller",
-            Buyer = "buyer",
+            SellerCompanyId = "seller",
+            BuyerCompanyId = "buyer",
             TotalDiscountPercent = 5,
             UnitPrice = 1,
             UnitsOrdered = 10,

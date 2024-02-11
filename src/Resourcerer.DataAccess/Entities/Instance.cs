@@ -4,7 +4,8 @@ using System.Text.Json;
 namespace Resourcerer.DataAccess.Entities;
 
 public class Instance : EntityBase
-{   
+{
+    public double Quantity { get; set; }
     public DateTime? ExpiryDate { get; set; }
     
     public Guid? ItemId { get; set; }
@@ -13,9 +14,9 @@ public class Instance : EntityBase
     public Guid OwnerCompanyId { get; set; }
     public Company? Company { get; set; }
 
-    public string InstanceOrderedEventsJson
+    public string OrderedEventsJson
     {
-        get => JsonSerializer.Serialize(InstanceOrderedEvents);
+        get => JsonSerializer.Serialize(OrderedEvents);
         set
         {
             if(value == null)
@@ -23,13 +24,13 @@ public class Instance : EntityBase
                 return;
             }
 
-            InstanceOrderedEvents = JsonSerializer.Deserialize<List<InstanceOrderedEvent>>(value)!;
+            OrderedEvents = JsonSerializer.Deserialize<List<InstanceOrderedEvent>>(value)!;
         }
     }
 
-    public string InstanceDiscardedEventsJson
+    public string DiscardedEventsJson
     {
-        get => JsonSerializer.Serialize(InstanceDiscardedEvents);
+        get => JsonSerializer.Serialize(DiscardedEvents);
         set
         {
             if (value == null)
@@ -37,12 +38,12 @@ public class Instance : EntityBase
                 return;
             }
 
-            InstanceDiscardedEvents = JsonSerializer.Deserialize<List<InstanceDiscardedEvent>>(value)!;
+            DiscardedEvents = JsonSerializer.Deserialize<List<InstanceDiscardedEvent>>(value)!;
         }
     }
 
     [NotMapped]
-    public List<InstanceOrderedEvent> InstanceOrderedEvents { get; set; } = new();
+    public List<InstanceOrderedEvent> OrderedEvents { get; set; } = new();
     [NotMapped]
-    public List<InstanceDiscardedEvent> InstanceDiscardedEvents { get; set; } = new();
+    public List<InstanceDiscardedEvent> DiscardedEvents { get; set; } = new();
 }

@@ -31,7 +31,7 @@ public class EndpointMapperV1_0
         CreateItemOrderCancelledEventEndpoint.MapToGroup(g);
         CreateItemDeliveredEventEndpoint.MapToGroup(g);
         CreateItemDiscardedEventEndpoint.MapToGroup(g);
-        CreateItemOrderedEventEndpoint.MapToGroup(g);
+        CreateInstanceOrderedEventEndpoint.MapToGroup(g);
         CreateItemSellCancelledEventEndpoint.MapToGroup(g);
     }
 

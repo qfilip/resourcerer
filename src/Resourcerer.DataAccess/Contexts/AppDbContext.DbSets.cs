@@ -10,7 +10,7 @@ public partial class AppDbContext : DbContext
 	}
 
 	public virtual DbSet<AppUser> AppUsers { get; set; }
-    
+    public virtual DbSet<Company> Companies { get; set; }
     public virtual DbSet<Category> Categories { get; set; }
     public virtual DbSet<Excerpt> Excerpts { get; set; }
     public virtual DbSet<UnitOfMeasure> UnitsOfMeasure { get; set; }

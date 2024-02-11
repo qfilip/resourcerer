@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class ItemDiscardedEventDto : ItemEventDtoBase
+public class ItemDiscardedEventDto : InstanceEventDtoBase
 {
     public string? Owner { get; set; }
     public double Quantity { get; set; }

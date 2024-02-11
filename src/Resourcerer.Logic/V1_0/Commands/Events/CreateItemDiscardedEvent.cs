@@ -21,11 +21,11 @@ public static class CreateItemDiscardedEvent
         public async Task<HandlerResult<Unit>> Handle(ItemDiscardedEventDto request)
         {
             var instance = await _appDbContext.Instances
-                    .Include(x => x.InstanceOrderedEvents)
+                    .Include(x => x.OrderedEvents)
                         .ThenInclude(x => x!.InstanceDeliveredEvent)
-                    .Include(x => x.InstanceOrderedEvents)
+                    .Include(x => x.OrderedEvents)
                         .ThenInclude(x => x!.InstanceOrderCancelledEvent)
-                    .Include(x => x.InstanceDiscardedEvents)
+                    .Include(x => x.DiscardedEvents)
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
             if (instance == null)
@@ -33,21 +33,21 @@ public static class CreateItemDiscardedEvent
                 return HandlerResult<Unit>.NotFound($"Instance with id {request.InstanceId} not found");
             }
 
-            var delivered = instance.InstanceOrderedEvents
+            var delivered = instance.OrderedEvents
                 .Where(x =>
                     x.BuyerCompanyId == request.Owner &&
                     x.InstanceOrderCancelledEvent == null &&
                     x.InstanceDeliveredEvent != null)
                 .Sum(x => x.Quantity);
 
-            var sent = instance.InstanceOrderedEvents
+            var sent = instance.OrderedEvents
                 .Where(x =>
                     x.SellerCompanyId == request.Owner &&
                     x.InstanceOrderCancelledEvent == null &&
                     x.InstanceSentEvent != null)
                 .Sum(x => x.Quantity);
 
-            var discarded = instance.InstanceDiscardedEvents
+            var discarded = instance.DiscardedEvents
                 .Where(x => x.Owner == request.Owner)
                 .Sum(x => x.Quantity);
 

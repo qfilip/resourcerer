@@ -5,11 +5,11 @@ using System.Threading.Channels;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
 
-public class CreateItemOrderedEventEndpoint
+public class CreateInstanceOrderedEventEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] ItemOrderedEventDto dto,
-        [FromServices] ChannelWriter<ItemEventDtoBase> writer)
+        [FromBody] InstanceOrderRequestDto dto,
+        [FromServices] ChannelWriter<InstanceEventDtoBase> writer)
     {
         await writer.WriteAsync(dto);
         return Results.Accepted();

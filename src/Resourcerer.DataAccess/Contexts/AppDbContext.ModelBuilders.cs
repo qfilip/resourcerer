@@ -11,6 +11,7 @@ public partial class AppDbContext
     {
         ConfigureEntity<Company>(modelBuilder, e =>
         {
+            e.ToTable("Companies");
             e.Property(x => x.Name).IsRequired();
         });
 

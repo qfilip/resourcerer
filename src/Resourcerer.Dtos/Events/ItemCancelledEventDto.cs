@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class ItemCancelledEventDto : ItemEventDtoBase
+public class ItemCancelledEventDto : InstanceEventDtoBase
 {
     public Guid TargetEventId { get; set; }
     public string? Reason { get; set; }

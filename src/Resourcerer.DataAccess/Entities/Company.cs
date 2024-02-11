@@ -9,7 +9,7 @@ public class Company : EntityBase
     }
 
     public string? Name { get; set; }
+    
     public ICollection<AppUser> Employees { get; set; }
-
     public ICollection<Instance> Instances { get; set; }
 }

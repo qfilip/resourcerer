@@ -9,7 +9,7 @@ public class InstanceDto : IBaseDto
     public Guid? ElementId { get; set; }
     public virtual ItemDto? Element { get; set; }
 
-    public List<ItemOrderedEventDto>? InstanceOrderedEvents { get; set; }
+    public List<InstanceOrderRequestDto>? InstanceOrderedEvents { get; set; }
     public List<ItemCancelledEventDto>? InstanceOrderCancelledEvents { get; set; }
     public List<ItemDeliveredEventDto>? InstanceDeliveredEvents { get; set; }
     public List<ItemDiscardedEventDto>? InstanceDiscardedEvents { get; set; }

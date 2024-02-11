@@ -32,6 +32,11 @@ public class HandlerResult<T>
         return new HandlerResult<T>(eHandlerResultStatus.Rejected, errors);
     }
 
+    public static HandlerResult<T> Rejected(List<string> errors)
+    {
+        return new HandlerResult<T>(eHandlerResultStatus.Rejected, errors.ToArray());
+    }
+
     private HandlerResult(T? obj)
     {
         Object = obj;

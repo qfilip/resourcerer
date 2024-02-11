@@ -9,7 +9,7 @@ public class CreateItemDiscardedEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] ItemDiscardedEventDto dto,
-        [FromServices] ChannelWriter<ItemEventDtoBase> writer)
+        [FromServices] ChannelWriter<InstanceEventDtoBase> writer)
     {
         await writer.WriteAsync(dto);
         return Results.Accepted();

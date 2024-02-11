@@ -3,10 +3,10 @@ using Resourcerer.Dtos.Events;
 
 namespace Resourcerer.Dtos;
 
-public class ItemDeliveredEventDto : ItemEventDtoBase
+public class ItemDeliveredEventDto : InstanceEventDtoBase
 {
     public Guid InstanceOrderedEventId { get; set; }
-    public virtual ItemOrderedEventDto? InstanceOrderedEvent { get; set; }
+    public virtual InstanceOrderRequestDto? InstanceOrderedEvent { get; set; }
 
     public class Validator : AbstractValidator<ItemDeliveredEventDto>
     {

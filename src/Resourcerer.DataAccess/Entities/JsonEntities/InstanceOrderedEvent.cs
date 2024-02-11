@@ -1,6 +1,8 @@
-﻿namespace Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities.JsonEntities;
 
-public class InstanceOrderedEvent : EntityBase
+namespace Resourcerer.DataAccess.Entities;
+
+public class InstanceOrderedEvent : JsonEntityBase
 {
     public Guid SellerCompanyId { get; set; }
     public Guid BuyerCompanyId { get; set; }
