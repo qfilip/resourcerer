@@ -47,9 +47,9 @@ public class InstanceEventHandler : BackgroundService
             var handler = new CreateInstanceOrderedEvent.Handler(appDbContext);
             return Execute(handler, orderEv);
         }
-        else if (message is ItemCancelledEventDto cancelEv)
+        else if (message is InstanceCancelRequestDto cancelEv)
         {
-            var handler = new CreateItemOrderCancelledEvent.Handler(appDbContext);
+            var handler = new CreateInstanceOrderCancelledEvent.Handler(appDbContext);
             return Execute(handler, cancelEv);
         }
         else if (message is ItemDeliveredEventDto deliverEv)

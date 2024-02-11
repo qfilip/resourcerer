@@ -2,9 +2,10 @@
 
 namespace Resourcerer.Dtos;
 
-public class ItemCancelledEventDto : InstanceEventDtoBase
+public class InstanceCancelRequestDto : InstanceEventDtoBase
 {
-    public Guid TargetEventId { get; set; }
+    public Guid InstanceId { get; set; }
+    public Guid OrderEventId { get; set; }
     public string? Reason { get; set; }
     public double RefundedAmount { get; set; }
 }

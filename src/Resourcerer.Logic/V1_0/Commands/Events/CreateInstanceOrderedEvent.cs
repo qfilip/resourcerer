@@ -57,6 +57,7 @@ public static class CreateInstanceOrderedEvent
             if (instance.Item!.ExpirationTimeSeconds != null)
             {
                 errors.Clear();
+
                 if (request.ExpectedDeliveryDate == null)
                 {
                     errors.Add($"Expected delivery time must be set for instances that can expire");

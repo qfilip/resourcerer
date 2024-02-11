@@ -8,7 +8,7 @@ namespace Resourcerer.Api.Endpoints.V1_0;
 public class CreateItemOrderCancelledEventEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] ItemCancelledEventDto dto,
+        [FromBody] InstanceCancelRequestDto dto,
         [FromServices] ChannelWriter<InstanceEventDtoBase> writer)
     {
         await writer.WriteAsync(dto);

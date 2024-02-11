@@ -8,7 +8,7 @@ namespace Resourcerer.UnitTests.Logic.V1_0;
 
 public class CreateItemOrderCancelledEventTests : TestsBase
 {
-    private readonly CreateItemOrderCancelledEvent.Handler _handler;
+    private readonly CreateInstanceOrderCancelledEvent.Handler _handler;
     public CreateItemOrderCancelledEventTests()
     {
         _handler = new(_testDbContext);
@@ -21,9 +21,9 @@ public class CreateItemOrderCancelledEventTests : TestsBase
         var orderEventId = Mocker.MockOrderedEvent(_testDbContext, _sand).Id;
         _testDbContext.SaveChanges();
         
-        var dto = new ItemCancelledEventDto
+        var dto = new InstanceCancelRequestDto
         {
-            TargetEventId = orderEventId
+            OrderEventId = orderEventId
         };
 
         // act
@@ -36,9 +36,9 @@ public class CreateItemOrderCancelledEventTests : TestsBase
     [Fact]
     public void When_OrderEvent_NotFound_Then_ValidationError()
     {
-        var dto = new ItemCancelledEventDto
+        var dto = new InstanceCancelRequestDto
         {
-            TargetEventId = Guid.NewGuid()
+            OrderEventId = Guid.NewGuid()
         };
 
         // act
@@ -55,9 +55,9 @@ public class CreateItemOrderCancelledEventTests : TestsBase
         var deliveredEvent = Mocker.MockDeliveredEvent(_testDbContext, boughtEvent);
         _testDbContext.SaveChanges();
         
-        var dto = new ItemCancelledEventDto
+        var dto = new InstanceCancelRequestDto
         {
-            TargetEventId = deliveredEvent.ItemOrderedEvent!.Id
+            OrderEventId = deliveredEvent.ItemOrderedEvent!.Id
         };
 
         // act
@@ -74,9 +74,9 @@ public class CreateItemOrderCancelledEventTests : TestsBase
         var orderCancelledEvent = Mocker.MockOrderCancelledEvent(_testDbContext, boughtEvent);
         _testDbContext.SaveChanges();
         
-        var dto = new ItemCancelledEventDto
+        var dto = new InstanceCancelRequestDto
         {
-            TargetEventId = (Guid)orderCancelledEvent.ItemOrderedEventId!
+            OrderEventId = (Guid)orderCancelledEvent.ItemOrderedEventId!
         };
 
         // act

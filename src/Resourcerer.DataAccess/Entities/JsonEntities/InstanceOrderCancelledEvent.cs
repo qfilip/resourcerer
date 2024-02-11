@@ -1,6 +1,8 @@
-﻿namespace Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities.JsonEntities;
 
-public class InstanceOrderCancelledEvent : EntityBase
+namespace Resourcerer.DataAccess.Entities;
+
+public class InstanceOrderCancelledEvent : JsonEntityBase
 {
     public string? Reason { get; set; }
     public double RefundedAmount { get; set; }
