@@ -80,6 +80,10 @@ public partial class AppDbContext
             e.HasOne(x => x.Item).WithMany(x => x.Instances)
                 .HasForeignKey(x => x.ItemId)
                 .HasConstraintName($"FK_{nameof(Item)}_{nameof(Instance)}");
+
+            e.HasOne(x => x.Company).WithMany(x => x.Instances)
+                .HasForeignKey(x => x.OwnerCompanyId)
+                .HasConstraintName($"FK_{nameof(Company)}_{nameof(Instance)}");
         });
 
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())

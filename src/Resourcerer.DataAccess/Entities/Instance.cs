@@ -6,12 +6,16 @@ namespace Resourcerer.DataAccess.Entities;
 public class Instance : EntityBase
 {   
     public DateTime? ExpiryDate { get; set; }
+    
     public Guid? ItemId { get; set; }
     public virtual Item? Item { get; set; }
 
-    public string ItemOrderedEventsJson
+    public Guid OwnerCompanyId { get; set; }
+    public Company? Company { get; set; }
+
+    public string InstanceOrderedEventsJson
     {
-        get => JsonSerializer.Serialize(ItemOrderedEvents);
+        get => JsonSerializer.Serialize(InstanceOrderedEvents);
         set
         {
             if(value == null)
@@ -19,13 +23,13 @@ public class Instance : EntityBase
                 return;
             }
 
-            ItemOrderedEvents = JsonSerializer.Deserialize<List<InstanceOrderedEvent>>(value)!;
+            InstanceOrderedEvents = JsonSerializer.Deserialize<List<InstanceOrderedEvent>>(value)!;
         }
     }
 
-    public string ItemDiscardedEventsJson
+    public string InstanceDiscardedEventsJson
     {
-        get => JsonSerializer.Serialize(ItemDiscardedEvents);
+        get => JsonSerializer.Serialize(InstanceDiscardedEvents);
         set
         {
             if (value == null)
@@ -33,12 +37,12 @@ public class Instance : EntityBase
                 return;
             }
 
-            ItemDiscardedEvents = JsonSerializer.Deserialize<List<InstanceDiscardedEvent>>(value)!;
+            InstanceDiscardedEvents = JsonSerializer.Deserialize<List<InstanceDiscardedEvent>>(value)!;
         }
     }
 
     [NotMapped]
-    public List<InstanceOrderedEvent> ItemOrderedEvents { get; set; } = new();
+    public List<InstanceOrderedEvent> InstanceOrderedEvents { get; set; } = new();
     [NotMapped]
-    public List<InstanceDiscardedEvent> ItemDiscardedEvents { get; set; } = new();
+    public List<InstanceDiscardedEvent> InstanceDiscardedEvents { get; set; } = new();
 }
