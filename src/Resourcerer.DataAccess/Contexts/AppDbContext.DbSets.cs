@@ -17,12 +17,6 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<Price> Prices { get; set; }
     public virtual DbSet<Item> Items { get; set; }
     public virtual DbSet<Instance> Instances { get; set; }
-    public virtual DbSet<ItemOrderedEvent> ItemOrderedEvents { get; set; }
-    public virtual DbSet<ItemOrderCancelledEvent> ItemCancelledEvents { get; set; }
-    public virtual DbSet<ItemSentEvent> ItemSentEvents { get; set; }
-    public virtual DbSet<ItemDeliveredEvent> ItemDeliveredEvents { get; set; }
-    public virtual DbSet<ItemDiscardedEvent> ItemDiscardedEvents { get; set; }
-
 
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

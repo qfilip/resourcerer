@@ -29,4 +29,8 @@
     <ProjectReference Include="..\Resourcerer.Utilities\Resourcerer.Utilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

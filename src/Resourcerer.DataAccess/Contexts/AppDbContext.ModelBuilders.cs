@@ -73,48 +73,6 @@ public partial class AppDbContext
                 .HasConstraintName($"FK_{nameof(Item)}_{nameof(Instance)}");
         });
 
-        ConfigureEntity<ItemOrderedEvent>(modelBuilder, (e) =>
-        {
-            e.HasOne(x => x.Instance).WithMany(x => x.ItemOrderedEvents)
-                .HasForeignKey(x => x.InstanceId)
-                .IsRequired()
-                .HasConstraintName($"FK_{nameof(Instance)}_{nameof(ItemOrderedEvent)}");
-
-            e.Property(x => x.Buyer).IsRequired();
-            e.Property(x => x.Seller).IsRequired();
-        });
-
-        ConfigureEntity<ItemOrderCancelledEvent>(modelBuilder, (e) =>
-        {
-            e.HasOne(x => x.ItemOrderedEvent).WithOne(x => x.ItemOrderCancelledEvent)
-                .HasForeignKey<ItemOrderCancelledEvent>(x => x.ItemOrderedEventId)
-                .HasConstraintName($"FK_{nameof(ItemOrderedEvent)}_{nameof(ItemOrderCancelledEvent)}");
-        });
-
-        ConfigureEntity<ItemSentEvent>(modelBuilder, (e) =>
-        {
-            e.HasOne(x => x.ItemOrderedEvent).WithOne(x => x.ItemSentEvent)
-                .HasForeignKey<ItemSentEvent>(x => x.ItemOrderedEventId)
-                .HasConstraintName($"FK_{nameof(ItemOrderedEvent)}_{nameof(ItemSentEvent)}");
-        });
-
-        ConfigureEntity<ItemDeliveredEvent>(modelBuilder, (e) =>
-        {
-            e.HasOne(x => x.ItemOrderedEvent).WithOne(x => x.ItemDeliveredEvent)
-                .HasForeignKey<ItemDeliveredEvent>(x => x.ItemOrderedEventId)
-                .HasConstraintName($"FK_{nameof(ItemOrderedEvent)}_{nameof(ItemDeliveredEvent)}");
-        });
-
-        ConfigureEntity<ItemDiscardedEvent>(modelBuilder, e =>
-        {
-            e.HasOne(x => x.Instance).WithMany(x => x.ItemDiscardedEvents)
-                .HasForeignKey(x => x.InstanceId)
-                .IsRequired()
-                .HasConstraintName($"FK_{nameof(Instance)}_{nameof(ItemDiscardedEvent)}");
-
-            e.Property(x => x.Owner).IsRequired();
-        });
-
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
             if(typeof(EntityBase).IsAssignableFrom(entityType.ClrType))

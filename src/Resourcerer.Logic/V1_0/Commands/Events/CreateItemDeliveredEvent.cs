@@ -40,7 +40,7 @@ public static class CreateItemDeliveredEvent
                 return HandlerResult<Unit>.Ok(new Unit());
             }
 
-            var deliveredEvent = new ItemDeliveredEvent
+            var deliveredEvent = new InstanceDeliveredEvent
             {
                 ItemOrderedEventId = orderEvent.Id
             };

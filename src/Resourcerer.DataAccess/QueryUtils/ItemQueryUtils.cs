@@ -11,17 +11,17 @@ public static class ItemQueryUtils
              // delivered
             .Include(x => x.Instances)
                 .ThenInclude(x => x.ItemOrderedEvents)
-                    .ThenInclude(x => x!.ItemDeliveredEvent)
+                    .ThenInclude(x => x!.InstanceDeliveredEvent)
             
             // cancelations
             .Include(x => x.Instances)
                 .ThenInclude(x => x.ItemOrderedEvents)
-                    .ThenInclude(x => x!.ItemOrderCancelledEvent)
+                    .ThenInclude(x => x!.InstanceOrderCancelledEvent)
 
             // sent
             .Include(x => x.Instances)
                 .ThenInclude(x => x.ItemOrderedEvents)
-                    .ThenInclude(x => x!.ItemSentEvent)
+                    .ThenInclude(x => x!.InstanceSentEvent)
 
             // discards
             .Include(x => x.Instances)

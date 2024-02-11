@@ -39,7 +39,7 @@ public static class CreateItemOrderCancelledEvent
                 return HandlerResult<Unit>.Ok(new Unit());
             }
 
-            var entity = new ItemOrderCancelledEvent
+            var entity = new InstanceOrderCancelledEvent
             {
                 ItemOrderedEventId = orderedEvent.Id
             };

@@ -22,9 +22,9 @@ public static class CreateItemDiscardedEvent
         {
             var instance = await _appDbContext.Instances
                     .Include(x => x.ItemOrderedEvents)
-                        .ThenInclude(x => x!.ItemDeliveredEvent)
+                        .ThenInclude(x => x!.InstanceDeliveredEvent)
                     .Include(x => x.ItemOrderedEvents)
-                        .ThenInclude(x => x!.ItemOrderCancelledEvent)
+                        .ThenInclude(x => x!.InstanceOrderCancelledEvent)
                     .Include(x => x.ItemDiscardedEvents)
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
@@ -36,15 +36,15 @@ public static class CreateItemDiscardedEvent
             var delivered = instance.ItemOrderedEvents
                 .Where(x =>
                     x.Buyer == request.Owner &&
-                    x.ItemOrderCancelledEvent == null &&
-                    x.ItemDeliveredEvent != null)
+                    x.InstanceOrderCancelledEvent == null &&
+                    x.InstanceDeliveredEvent != null)
                 .Sum(x => x.Quantity);
 
             var sent = instance.ItemOrderedEvents
                 .Where(x =>
                     x.Seller == request.Owner &&
-                    x.ItemOrderCancelledEvent == null &&
-                    x.ItemSentEvent != null)
+                    x.InstanceOrderCancelledEvent == null &&
+                    x.InstanceSentEvent != null)
                 .Sum(x => x.Quantity);
 
             var discarded = instance.ItemDiscardedEvents
@@ -68,7 +68,7 @@ public static class CreateItemDiscardedEvent
             }
             else
             {
-                var entity = new ItemDiscardedEvent
+                var entity = new InstanceDiscardedEvent
                 {
                     InstanceId = instance!.Id,
                     Quantity = request.Quantity,

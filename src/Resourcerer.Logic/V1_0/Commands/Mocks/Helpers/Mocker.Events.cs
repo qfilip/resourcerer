@@ -5,12 +5,12 @@ namespace Resourcerer.Logic.Commands.Mocks.Helpers;
 
 public static partial class Mocker
 {
-    public static ItemOrderedEvent MockOrderedEvent(
+    public static InstanceOrderedEvent MockOrderedEvent(
         AppDbContext context,
-        Action<ItemOrderedEvent>? modifier = null,
+        Action<InstanceOrderedEvent>? modifier = null,
         Item? instanceItem = null)
     {
-        var entity = MakeEntity(() => new ItemOrderedEvent
+        var entity = MakeEntity(() => new InstanceOrderedEvent
         {
             ExpectedDeliveryDate = DateTime.UtcNow,
             TotalDiscountPercent = 0,
@@ -35,12 +35,12 @@ public static partial class Mocker
         return entity;
     }
 
-    public static ItemOrderCancelledEvent MockOrderCancelledEvent(
+    public static InstanceOrderCancelledEvent MockOrderCancelledEvent(
         AppDbContext context,
-        Action<ItemOrderCancelledEvent>? modifier = null,
+        Action<InstanceOrderCancelledEvent>? modifier = null,
         Item? instanceItem = null)
     {
-        var entity = MakeEntity(() => new ItemOrderCancelledEvent
+        var entity = MakeEntity(() => new InstanceOrderCancelledEvent
         {
             ItemOrderedEvent = MockOrderedEvent(context)
         });
@@ -57,12 +57,12 @@ public static partial class Mocker
         return entity;
     }
 
-    public static ItemDeliveredEvent MockDeliveredEvent(
+    public static InstanceDeliveredEvent MockDeliveredEvent(
         AppDbContext context,
-        Action<ItemDeliveredEvent>? modifier = null,
+        Action<InstanceDeliveredEvent>? modifier = null,
         Item? instanceItem = null)
     {
-        var entity = MakeEntity(() => new ItemDeliveredEvent
+        var entity = MakeEntity(() => new InstanceDeliveredEvent
         {
             ItemOrderedEvent = MockOrderedEvent(context)
         });

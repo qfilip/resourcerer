@@ -57,9 +57,8 @@ public static class CreateItemOrderedEvent
                 ItemId = item.Id
             };
 
-            var orderedEvent = new ItemOrderedEvent
+            var orderedEvent = new InstanceOrderedEvent
             {
-                InstanceId = instance.Id,
                 UnitPrice = request.UnitPrice,
                 Quantity = request.UnitsOrdered,
                 TotalDiscountPercent = request.TotalDiscountPercent,
