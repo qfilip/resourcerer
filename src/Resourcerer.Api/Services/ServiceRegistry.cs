@@ -1,6 +1,4 @@
-﻿using Mapster;
-using MapsterMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -51,31 +49,31 @@ public static partial class ServiceRegistry
         services.AddDbContext<AppDbContext>(cfg =>
             cfg.UseSqlite(AppInitializer.GetDbConnection(env)));
 
-        services.AddMapster();
+        // services.AddMapster();
     }
 
-    private static void AddMapster(this IServiceCollection services)
-    {
-        // mapster
-        // check Mapster.Tool package
-        var mapsterConfig = new TypeAdapterConfig();
-        void TwoWayMap<TSource, TTarget>()
-        {
-            mapsterConfig!.NewConfig<TSource, TTarget>();
-            mapsterConfig!.NewConfig<TTarget, TSource>();
-        }
+    //private static void AddMapster(this IServiceCollection services)
+    //{
+    //    // mapster
+    //    // check Mapster.Tool package
+    //    var mapsterConfig = new TypeAdapterConfig();
+    //    void TwoWayMap<TSource, TTarget>()
+    //    {
+    //        mapsterConfig!.NewConfig<TSource, TTarget>();
+    //        mapsterConfig!.NewConfig<TTarget, TSource>();
+    //    }
 
-        TwoWayMap<AppUser, AppUserDto>();
-        TwoWayMap<Category, CategoryDto>();
-        TwoWayMap<Item, ItemDto>();
-        TwoWayMap<Excerpt, ExcerptDto>();
-        TwoWayMap<Price, PriceDto>();
-        TwoWayMap<UnitOfMeasure, UnitOfMeasureDto>();
+    //    TwoWayMap<AppUser, AppUserDto>();
+    //    TwoWayMap<Category, CategoryDto>();
+    //    TwoWayMap<Item, ItemDto>();
+    //    TwoWayMap<Excerpt, ExcerptDto>();
+    //    TwoWayMap<Price, PriceDto>();
+    //    TwoWayMap<UnitOfMeasure, UnitOfMeasureDto>();
 
-        mapsterConfig.Compile(failFast: true);
-        services.AddSingleton(mapsterConfig);
-        services.AddScoped<IMapper, ServiceMapper>();
-    }
+    //    mapsterConfig.Compile(failFast: true);
+    //    services.AddSingleton(mapsterConfig);
+    //    services.AddScoped<IMapper, ServiceMapper>();
+    //}
 
     private static void AddSwagger(this IServiceCollection services)
     {
