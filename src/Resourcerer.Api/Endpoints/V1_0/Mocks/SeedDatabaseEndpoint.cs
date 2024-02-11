@@ -6,11 +6,9 @@ namespace Resourcerer.Api.Endpoints.V1_0;
 
 public class SeedDatabaseEndpoint
 {
-    public static async Task<IResult> Action(
-        Pipeline pipeline,
-        SeedMockData.Handler seedHandler)
+    public static Task<IResult> Action()
     {
-        return await pipeline.Pipe(seedHandler, new Unit());
+        return Task.FromResult(Results.Ok());
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

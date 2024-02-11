@@ -1,6 +1,4 @@
-﻿using Resourcerer.Api.Endpoints.V1_0.Events;
-
-namespace Resourcerer.Api.Endpoints.V1_0;
+﻿namespace Resourcerer.Api.Endpoints.V1_0;
 
 public class EndpointMapperV1_0
 {
@@ -32,7 +30,7 @@ public class EndpointMapperV1_0
         CreateItemDeliveredEventEndpoint.MapToGroup(g);
         CreateItemDiscardedEventEndpoint.MapToGroup(g);
         CreateInstanceOrderedEventEndpoint.MapToGroup(g);
-        CreateItemSellCancelledEventEndpoint.MapToGroup(g);
+        // CreateItemSellCancelledEventEndpoint.MapToGroup(g);
     }
 
     private static void MapItems(WebApplication app)
