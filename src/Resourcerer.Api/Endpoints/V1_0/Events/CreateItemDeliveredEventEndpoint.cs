@@ -11,7 +11,7 @@ public class CreateItemDeliveredEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] InstanceDeliveredRequestDto dto,
-         ChannelWriter<EventDtoBase> writer
+         ChannelWriter<EventDtoBase> writer,
         [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeToChannel(
