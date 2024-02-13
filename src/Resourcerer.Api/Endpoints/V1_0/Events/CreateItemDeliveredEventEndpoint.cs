@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Events;
+using Resourcerer.Logic.Commands.V1_0;
 using System.Threading.Channels;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
@@ -9,10 +11,14 @@ public class CreateItemDeliveredEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] InstanceDeliveredRequestDto dto,
-         ChannelWriter<InstanceEventDtoBase> writer)
+         ChannelWriter<EventDtoBase> writer
+        [FromServices] Pipeline pipeline)
     {
-        await writer.WriteAsync(dto);
-        return Results.Accepted();
+        return await pipeline.PipeToChannel(
+            dto,
+            CreateInstanceDeliveredEvent.Handler.ValidateRequest,
+            writer,
+            nameof(CreateInstanceDeliveredEvent));
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

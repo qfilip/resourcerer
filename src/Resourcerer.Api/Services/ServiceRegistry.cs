@@ -29,8 +29,8 @@ public static partial class ServiceRegistry
 
         services.AddScoped<Pipeline>();
 
-        services.AddSingleton<ChannelWriter<InstanceEventDtoBase>>(_ => Channel.CreateUnbounded<InstanceEventDtoBase>().Writer);
-        services.AddSingleton<ChannelReader<InstanceEventDtoBase>>(_ => Channel.CreateUnbounded<InstanceEventDtoBase>().Reader);
+        services.AddSingleton<ChannelWriter<EventDtoBase>>(_ => Channel.CreateUnbounded<EventDtoBase>().Writer);
+        services.AddSingleton<ChannelReader<EventDtoBase>>(_ => Channel.CreateUnbounded<EventDtoBase>().Reader);
 
         services.AddHostedService<InstanceEventHandler>();
     }

@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class InstanceCancelRequestDto : InstanceEventDtoBase
+public class InstanceCancelRequestDto : EventDtoBase
 {
     public Guid InstanceId { get; set; }
     public Guid OrderEventId { get; set; }

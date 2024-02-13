@@ -74,6 +74,9 @@ public static class CreateInstanceDiscardedEvent
         public ValidationResult Validate(InstanceDiscardedRequestDto request) =>
             new Validator().Validate(request);
 
+        public static ValidationResult ValidateRequest(InstanceDiscardedRequestDto request) =>
+            new Validator().Validate(request);
+
         private class Validator : AbstractValidator<InstanceDiscardedRequestDto>
         {
             public Validator()

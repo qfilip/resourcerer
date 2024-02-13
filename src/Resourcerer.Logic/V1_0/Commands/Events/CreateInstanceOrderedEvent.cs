@@ -130,6 +130,9 @@ public static class CreateInstanceOrderedEvent
         public ValidationResult Validate(InstanceOrderRequestDto request) =>
             new Validator().Validate(request);
 
+        public static ValidationResult ValidateRequest(InstanceOrderRequestDto request) =>
+            new Validator().Validate(request);
+
         private class Validator : AbstractValidator<InstanceOrderRequestDto>
         {
             public Validator()

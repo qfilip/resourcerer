@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Events;
+using Resourcerer.Logic.Commands.V1_0;
+using Resourcerer.Logic.V1_0.Commands;
 using System.Threading.Channels;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
@@ -9,10 +12,14 @@ public class CreateItemDiscardedEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] InstanceDiscardedRequestDto dto,
-        [FromServices] ChannelWriter<InstanceEventDtoBase> writer)
+        [FromServices] ChannelWriter<EventDtoBase> writer,
+        [FromServices] Pipeline pipeline)
     {
-        await writer.WriteAsync(dto);
-        return Results.Accepted();
+        return await pipeline.PipeToChannel(
+            dto,
+            CreateInstanceDiscardedEvent.Handler.ValidateRequest,
+            writer,
+            nameof(CreateInstanceDiscardedEvent));
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

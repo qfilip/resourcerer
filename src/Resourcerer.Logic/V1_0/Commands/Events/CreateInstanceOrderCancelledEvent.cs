@@ -73,6 +73,9 @@ public static class CreateInstanceOrderCancelledEvent
         public ValidationResult Validate(InstanceCancelRequestDto request) =>
             new Validator().Validate(request);
 
+        public static ValidationResult ValidateRequest(InstanceCancelRequestDto request) =>
+            new Validator().Validate(request);
+
         private class Validator : AbstractValidator<InstanceCancelRequestDto>
         {
             public Validator()

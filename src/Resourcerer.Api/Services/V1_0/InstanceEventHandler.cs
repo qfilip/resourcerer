@@ -1,7 +1,6 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Events;
-using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.Logic.V1_0.Commands;
 using System.Threading.Channels;
@@ -10,11 +9,11 @@ namespace Resourcerer.Api.Services.V1_0;
 
 public class InstanceEventHandler : BackgroundService
 {
-    private readonly ChannelReader<InstanceEventDtoBase> _reader;
+    private readonly ChannelReader<EventDtoBase> _reader;
     private readonly IServiceProvider _serviceProvider;
 
     public InstanceEventHandler(
-        ChannelReader<InstanceEventDtoBase> reader,
+        ChannelReader<EventDtoBase> reader,
         IServiceProvider serviceProvider)
     {
         _reader = reader;
@@ -40,43 +39,31 @@ public class InstanceEventHandler : BackgroundService
         }
     }
 
-    private static Task HandleEvent(InstanceEventDtoBase message, AppDbContext appDbContext)
+    private static Task HandleEvent(EventDtoBase message, AppDbContext appDbContext)
     {
         if (message is InstanceOrderRequestDto orderEv)
         {
             var handler = new CreateInstanceOrderedEvent.Handler(appDbContext);
-            return Execute(handler, orderEv);
+            return handler.Handle(orderEv);
         }
         else if (message is InstanceCancelRequestDto cancelEv)
         {
             var handler = new CreateInstanceOrderCancelledEvent.Handler(appDbContext);
-            return Execute(handler, cancelEv);
+            return handler.Handle(cancelEv);
         }
         else if (message is InstanceDeliveredRequestDto deliverEv)
         {
             var handler = new CreateInstanceDeliveredEvent.Handler(appDbContext);
-            return Execute(handler, deliverEv);
+            return handler.Handle(deliverEv);
         }
         else if (message is InstanceDiscardedRequestDto discardEv)
         {
             var handler = new CreateInstanceDiscardedEvent.Handler(appDbContext);
-            return Execute(handler, discardEv);
+            return handler.Handle(discardEv);
         }
         else
         {
             throw new InvalidOperationException("Unsupported event type");
         }
-    }
-
-    private static Task Execute<TRequest>(IAppHandler<TRequest, Unit> handler, TRequest request)
-    {
-        var validationResult = handler.Validate(request);
-        if(validationResult.IsValid)
-        {
-            var errors = validationResult.Errors.Select(x => x.ErrorMessage);
-            return Task.CompletedTask;
-        }
-
-        return handler.Handle(request);
     }
 }

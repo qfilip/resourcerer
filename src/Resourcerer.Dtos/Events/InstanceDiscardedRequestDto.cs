@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class InstanceDiscardedRequestDto : InstanceEventDtoBase
+public class InstanceDiscardedRequestDto : EventDtoBase
 {
     public Guid InstanceId { get; set; }
     public double Quantity { get; set; }

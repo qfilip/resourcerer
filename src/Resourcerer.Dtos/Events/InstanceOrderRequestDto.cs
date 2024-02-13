@@ -2,7 +2,7 @@
 
 namespace Resourcerer.Dtos;
 
-public class InstanceOrderRequestDto : InstanceEventDtoBase
+public class InstanceOrderRequestDto : EventDtoBase
 {
     public Guid InstanceId { get; set; }
     public DateTime? ExpiryDate { get; set; }

@@ -1,4 +1,7 @@
-﻿using Resourcerer.Logic;
+﻿using FluentValidation.Results;
+using Resourcerer.Dtos.Events;
+using Resourcerer.Logic;
+using System.Threading.Channels;
 
 namespace Resourcerer.Api.Services;
 
@@ -33,6 +36,30 @@ public class Pipeline
         _logger.LogInformation("Action {Action} finished", actionName);
 
         return MapResult(handlerResult, customOkResultMapper);
+    }
+
+    public async Task<IResult> PipeToChannel<TRequest>(
+        TRequest request,
+        Func<TRequest, ValidationResult> validator,
+        ChannelWriter<EventDtoBase> writer,
+        string actionName) where TRequest : EventDtoBase
+    {
+        _logger.LogInformation("Action {Action} started", actionName);
+
+        var validationResult = validator(request);
+        if (!validationResult.IsValid)
+        {
+            var errors = validationResult.Errors.Select(x => x.ErrorMessage);
+            _logger.LogInformation("Action {Action} finished with validation errors", actionName);
+            
+            return Results.BadRequest(errors);
+        }
+
+        await writer.WriteAsync(request);
+
+        _logger.LogInformation("Action {Action} finished", actionName);
+
+        return Results.Accepted();
     }
 
     private static IResult MapResult<TResponse>(

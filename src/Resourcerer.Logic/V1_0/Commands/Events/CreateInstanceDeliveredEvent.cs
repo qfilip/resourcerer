@@ -66,6 +66,9 @@ public static class CreateInstanceDeliveredEvent
         public ValidationResult Validate(InstanceDeliveredRequestDto request) =>
             new Validator().Validate(request);
 
+        public static ValidationResult ValidateRequest(InstanceDeliveredRequestDto request) =>
+            new Validator().Validate(request);
+
         public class Validator : AbstractValidator<InstanceDeliveredRequestDto>
         {
             public Validator()
