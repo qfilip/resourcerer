@@ -1,5 +1,6 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.Logic.Functions.V1_0;
 
 namespace Resourcerer.UnitTests.Utilities.Mocker;
 
@@ -7,9 +8,11 @@ internal static partial class Mocker
 {
     public static InstanceOrderedEvent MockOrderedEvent(
         AppDbContext context,
-        Item item,
         Action<InstanceOrderedEvent>? modifier = null)
     {
+        var sourceInstance = MockInstance(context);
+        var derivedInstance = MockInstance(context);
+        
         var entity = MakeEntity(() => new InstanceOrderedEvent
         {
             ExpectedDeliveryDate = DateTime.UtcNow,
@@ -17,88 +20,59 @@ internal static partial class Mocker
             UnitPrice = 1,
             Quantity = 1,
 
-            Instance = MakeEntity(() => new Instance
-            {
-                ExpiryDate = DateTime.UtcNow,
-            })
+            BuyerCompanyId = MockCompany(context).Id,
+            SellerCompanyId = sourceInstance.Item!.Company!.Id,
+            DerivedInstanceId = derivedInstance.Id,
         });
 
         modifier?.Invoke(entity);
-
-        entity.Instance!.Item = item;
-
-        context.ItemOrderedEvents.Add(entity);
+        sourceInstance.OrderedEvents.Add(entity);
+        derivedInstance.Quantity = entity.Quantity;
         
         return entity;
     }
 
     public static InstanceOrderCancelledEvent MockOrderCancelledEvent(
-        AppDbContext context,
-        InstanceOrderedEvent boughtEvent,
+        InstanceOrderedEvent orderEv,
         Action<InstanceOrderCancelledEvent>? modifier = null)
     {
-        var entity = MakeEntity(() => new InstanceOrderCancelledEvent
+        var cancelEv = MakeEntity(() => new InstanceOrderCancelledEvent
         {
-            ItemOrderedEvent = boughtEvent
+            Reason = "test",
+            RefundedAmount = 0
         });
 
-        modifier?.Invoke(entity);
+        modifier?.Invoke(cancelEv);
+        orderEv.OrderCancelledEvent = cancelEv;
 
-        context.ItemCancelledEvents.Add(entity);
-
-        return entity;
+        return cancelEv;
     }
 
     public static InstanceDeliveredEvent MockDeliveredEvent(
-        AppDbContext context,
-        InstanceOrderedEvent orderEvent,
+        InstanceOrderedEvent orderEv,
         Action<InstanceDeliveredEvent>? modifier = null)
     {
-        var entity = MakeEntity(() => new InstanceDeliveredEvent
-        {
-            ItemOrderedEvent = orderEvent
-        });
+        var deliverEv = MakeEntity(() => new InstanceDeliveredEvent());
 
-        modifier?.Invoke(entity);
+        modifier?.Invoke(deliverEv);
+        orderEv.DeliveredEvent = deliverEv;
 
-        context.ItemDeliveredEvents.Add(entity);
-
-        return entity;
+        return deliverEv;
     }
 
     public static InstanceDiscardedEvent MockDiscardedEvent(
-        AppDbContext context,
-        InstanceOrderedEvent orderEvent,
+        Instance instance,
         Action<InstanceDiscardedEvent>? modifier = null)
     {
-        var entity = MakeEntity(() => new InstanceDiscardedEvent
+        var discardEv = MakeEntity(() => new InstanceDiscardedEvent()
         {
-            Instance = orderEvent.Instance,
-            Quantity = 1,
-            Reason = "test reason"
+            Quantity = instance.Quantity,
+            Reason = "test"
         });
 
-        modifier?.Invoke(entity);
+        modifier?.Invoke(discardEv);
+        instance.DiscardedEvents.Add(discardEv);
 
-        context.ItemDiscardedEvents.Add(entity);
-
-        return entity;
-    }
-
-    public static InstanceOrderCancelledEvent MockSellCancelledEvent(
-        AppDbContext context,
-        InstanceOrderedEvent orderEvent,
-        Action<InstanceOrderCancelledEvent>? modifier = null)
-    {
-        var entity = MakeEntity(() => new InstanceOrderCancelledEvent
-        {
-            ItemOrderedEvent = orderEvent
-        });
-
-        modifier?.Invoke(entity);
-
-        context.ItemCancelledEvents.Add(entity);
-
-        return entity;
+        return discardEv;
     }
 }

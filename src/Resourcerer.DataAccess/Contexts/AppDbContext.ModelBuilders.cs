@@ -22,13 +22,17 @@ public partial class AppDbContext
 
             e.HasOne(x => x.Company).WithMany(x => x.Employees)
                 .HasForeignKey(x => x.CompanyId)
-                .HasConstraintName($"FK_{nameof(AppUser)}_{nameof(Company)}");
+                .HasConstraintName($"FK_{nameof(Company)}_{nameof(AppUser)}");
         });
 
         ConfigureEntity<Category>(modelBuilder, e =>
         {
             e.Property(x => x.Name).IsRequired();
-            
+
+            e.HasOne(x => x.Company).WithMany(x => x.Categories)
+                .HasForeignKey(x => x.ParentCategoryId)
+                .HasConstraintName($"FK_{nameof(Category)}_{nameof(Company)}");
+
             e.HasOne(x => x.ParentCategory).WithMany(x => x.ChildCategories)
                 .HasForeignKey(x => x.ParentCategoryId)
                 .HasConstraintName($"FK_{nameof(Category)}_{nameof(Category)}");

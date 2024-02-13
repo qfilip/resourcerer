@@ -9,7 +9,10 @@ public class Category : EntityBase
     }
 
     public string? Name { get; set; }
-    
+
+    public Guid CompanyId { get; set; }
+    public virtual Company? Company { get; set; }
+
     public Guid? ParentCategoryId { get; set; }
     public virtual Category? ParentCategory { get; set; }
     

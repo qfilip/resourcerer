@@ -21,12 +21,22 @@ internal static partial class Mocker
         return e;
     }
 
+    public static Company MockCompany(AppDbContext context, Action<Company>? modifier = null)
+    {
+        var entity = MakeEntity(() => new Company { Name = MakeName() });
+        modifier?.Invoke(entity);
+        context.Companies.Add(entity);
+
+        return entity;
+    }
+
     public static AppUser MockUser(AppDbContext context, string password, Action<AppUser>? modifier = null, bool setAdminPermissions = false)
     {
         var user = MakeEntity(() => new AppUser
         {
             Name = MakeName(),
-            PasswordHash = Hasher.GetSha256Hash(password)
+            PasswordHash = Hasher.GetSha256Hash(password),
+            Company = MockCompany(context)
         });
 
         if(setAdminPermissions)
@@ -47,7 +57,8 @@ internal static partial class Mocker
         var id = Guid.NewGuid();
         var category = MakeEntity(() => new Category
         {
-            Name = MakeName()
+            Name = MakeName(),
+            Company = MockCompany(context)
         });
 
         modifier?.Invoke(category);
@@ -59,22 +70,39 @@ internal static partial class Mocker
 
     public static Item MockItem(AppDbContext context, Action<Item>? modifier = null, double unitValue = 1, int priceCount = 3, bool pricesCorrupted = false)
     {
-        var item = MakeEntity(() => new Item
+        var entity = MakeEntity(() => new Item
         {
             Name = MakeName(),
             ExpirationTimeSeconds = 1200,
             ProductionTimeSeconds = 10,
             
+            Company = MockCompany(context),
             Category = MockCategory(context),
             UnitOfMeasure = MockUnitOfMeasure(context),
             Prices = MockPrices(null, unitValue, priceCount, pricesCorrupted),
         });
 
-        modifier?.Invoke(item);
+        modifier?.Invoke(entity);
 
-        context.Items.Add(item);
+        context.Items.Add(entity);
 
-        return item;
+        return entity;
+    }
+
+    public static Instance MockInstance(AppDbContext context, Action<Instance>? modifier = null)
+    {
+        var entity = MakeEntity(() => new Instance
+        {
+            Item = MockItem(context),
+            OwnerCompany = MockCompany(context),
+            
+        });
+
+        modifier?.Invoke(entity);
+
+        context.Instances.Add(entity);
+
+        return entity;
     }
 
     public static UnitOfMeasure MockUnitOfMeasure(AppDbContext context, Action<UnitOfMeasure>? modifier = null)
