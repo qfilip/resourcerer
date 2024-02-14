@@ -94,7 +94,6 @@ internal static partial class Mocker
         {
             Item = MockItem(context),
             OwnerCompany = MockCompany(context),
-            
         });
 
         modifier?.Invoke(entity);

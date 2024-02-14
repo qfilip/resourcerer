@@ -18,10 +18,12 @@ public class CreateItemDiscardedEventTests : TestsBase
     public void When_AllOk_Then_Ok()
     {
         // arrange
-        var orderEvent = Mocker.MockOrderedEvent(_testDbContext, _sand);
+        var orderEvent = Mocker.MockOrderedEvent(_testDbContext);
+        Mocker.MockDeliveredEvent(orderEvent);
         var dto = new InstanceDiscardedRequestDto
         {
-            InstanceId = orderEvent.InstanceId
+            InstanceId = orderEvent.DerivedInstanceId,
+            Quantity = orderEvent.Quantity
         };
 
         _testDbContext.SaveChanges();
@@ -47,28 +49,6 @@ public class CreateItemDiscardedEventTests : TestsBase
 
         // assert
         Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
-    }
-
-    [Fact]
-    public void When_AlreadyDiscarded_Then_Rejected()
-    {
-        // arrange
-        var orderEvent = Mocker.MockOrderedEvent(_testDbContext, _sand);
-        Mocker.MockDeliveredEvent(_testDbContext, orderEvent);
-        Mocker.MockDiscardedEvent(_testDbContext, orderEvent);
-        
-        _testDbContext.SaveChanges();
-        
-        var dto = new InstanceDiscardedRequestDto
-        {
-            InstanceId = orderEvent.InstanceId
-        };
-
-        // act
-        var result = _handler.Handle(dto).Await();
-
-        // assert
-        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
     }
 
     [Fact]

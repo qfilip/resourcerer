@@ -32,6 +32,33 @@ internal static partial class Mocker
         return entity;
     }
 
+    public static Instance MockOrderedEvent(
+        AppDbContext context,
+        Instance sourceInstance,
+        Action<InstanceOrderedEvent>? modifier = null)
+    {
+        sourceInstance = MockInstance(context);
+        var derivedInstance = MockInstance(context);
+
+        var entity = MakeEntity(() => new InstanceOrderedEvent
+        {
+            ExpectedDeliveryDate = DateTime.UtcNow,
+            TotalDiscountPercent = 0,
+            UnitPrice = 1,
+            Quantity = 1,
+
+            BuyerCompanyId = derivedInstance.OwnerCompany!.Id,
+            SellerCompanyId = sourceInstance.OwnerCompanyId,
+            DerivedInstanceId = derivedInstance.Id
+        });
+
+        modifier?.Invoke(entity);
+        sourceInstance.OrderedEvents.Add(entity);
+        derivedInstance.Quantity = entity.Quantity;
+
+        return sourceInstance;
+    }
+
     public static InstanceOrderCancelledEvent MockOrderCancelledEvent(
         InstanceOrderedEvent orderEv,
         Action<InstanceOrderCancelledEvent>? modifier = null)

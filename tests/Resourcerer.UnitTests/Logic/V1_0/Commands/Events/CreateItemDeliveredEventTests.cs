@@ -18,10 +18,11 @@ public class CreateItemDeliveredEventTests : TestsBase
     public void When_AllOk_Then_Ok()
     {
         // arrange
-        var orderEventId = Mocker.MockOrderedEvent(_testDbContext, _sand).Id;
+        var orderEvent = Mocker.MockOrderedEvent(_testDbContext);
         var dto = new InstanceDeliveredRequestDto
         {
-            InstanceId = orderEventId
+            InstanceId = orderEvent.DerivedInstanceId,
+            OrderEventId = orderEvent.Id
         };
         _testDbContext.SaveChanges();
 
@@ -50,11 +51,12 @@ public class CreateItemDeliveredEventTests : TestsBase
     [Fact]
     public void When_CancelledEvent_Exists_Then_ValidationError()
     {
-        var boughtEvent = Mocker.MockOrderedEvent(_testDbContext, _sand);
-        var cancelledEvent = Mocker.MockOrderCancelledEvent(_testDbContext, boughtEvent);
+        var orderedEvent = Mocker.MockOrderedEvent(_testDbContext);
+        var _ = Mocker.MockOrderCancelledEvent(orderedEvent);
         var dto = new InstanceDeliveredRequestDto
         {
-            InstanceId = cancelledEvent.ItemOrderedEvent!.Id
+            InstanceId = orderedEvent.DerivedInstanceId,
+            OrderEventId = orderedEvent.Id
         };
         _testDbContext.SaveChanges();
 
@@ -68,11 +70,12 @@ public class CreateItemDeliveredEventTests : TestsBase
     [Fact]
     public void Is_Idempotent()
     {
-        var boughtEvent = Mocker.MockOrderedEvent(_testDbContext, _sand);
-        var orderCancelledEvent = Mocker.MockDeliveredEvent(_testDbContext, boughtEvent);
+        var orderedEvent = Mocker.MockOrderedEvent(_testDbContext);
+        var _ = Mocker.MockDeliveredEvent(orderedEvent);
         var dto = new InstanceDeliveredRequestDto
         {
-            InstanceId = (Guid)orderCancelledEvent.ItemOrderedEventId!
+            InstanceId = orderedEvent.DerivedInstanceId,
+            OrderEventId = orderedEvent.Id
         };
         _testDbContext.SaveChanges();
 
