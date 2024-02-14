@@ -76,7 +76,6 @@ internal static partial class Mocker
             ExpirationTimeSeconds = 1200,
             ProductionTimeSeconds = 10,
             
-            Company = MockCompany(context),
             Category = MockCategory(context),
             UnitOfMeasure = MockUnitOfMeasure(context),
             Prices = MockPrices(null, unitValue, priceCount, pricesCorrupted),

@@ -71,10 +71,6 @@ public partial class AppDbContext
         {
             e.Property(x => x.Name).IsRequired();
 
-            e.HasOne(x => x.Company).WithMany(x => x.Items)
-                .HasForeignKey(x => x.CategoryId).IsRequired()
-                .HasConstraintName($"FK_{nameof(Company)}_{nameof(Item)}");
-
             e.HasOne(x => x.Category).WithMany(x => x.Items)
                 .HasForeignKey(x => x.CategoryId).IsRequired()
                 .HasConstraintName($"FK_{nameof(Category)}_{nameof(Item)}");

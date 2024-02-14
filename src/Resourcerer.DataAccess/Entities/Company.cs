@@ -6,7 +6,6 @@ public class Company : EntityBase
     {
         Employees = new HashSet<AppUser>();
         Categories = new HashSet<Category>();
-        Items = new HashSet<Item>();
         Instances = new HashSet<Instance>();
     }
 
@@ -14,6 +13,5 @@ public class Company : EntityBase
     
     public ICollection<AppUser> Employees { get; set; }
     public ICollection<Category> Categories { get; set; }
-    public ICollection<Item> Items { get; set; }
     public ICollection<Instance> Instances { get; set; }
 }
