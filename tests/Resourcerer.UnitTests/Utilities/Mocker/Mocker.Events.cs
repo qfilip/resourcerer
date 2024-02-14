@@ -20,9 +20,9 @@ internal static partial class Mocker
             UnitPrice = 1,
             Quantity = 1,
 
-            BuyerCompanyId = MockCompany(context).Id,
-            SellerCompanyId = sourceInstance.Item!.Company!.Id,
-            DerivedInstanceId = derivedInstance.Id,
+            BuyerCompanyId = derivedInstance.OwnerCompany!.Id,
+            SellerCompanyId = sourceInstance.OwnerCompanyId,
+            DerivedInstanceId = derivedInstance.Id
         });
 
         modifier?.Invoke(entity);
