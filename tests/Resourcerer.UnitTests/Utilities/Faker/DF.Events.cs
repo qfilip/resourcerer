@@ -27,6 +27,8 @@ internal static partial class DF
         modifier?.Invoke(entity);
         sourceInstance.OrderedEvents.Add(entity);
         derivedInstance.Quantity = entity.Quantity;
+
+        context.Instances.AddRange(new[] { derivedInstance, sourceInstance });
         
         return entity;
     }
@@ -55,11 +57,12 @@ internal static partial class DF
         sourceInstance.OrderedEvents.Add(entity);
         derivedInstance.Quantity = entity.Quantity;
 
+        context.Instances.AddRange(new[] { derivedInstance, sourceInstance });
+
         return sourceInstance;
     }
 
     public static InstanceOrderCancelledEvent FakeOrderCancelledEvent(
-        InstanceOrderedEvent orderEv,
         Action<InstanceOrderCancelledEvent>? modifier = null)
     {
         var cancelEv = MakeEntity(() => new InstanceOrderCancelledEvent
@@ -69,19 +72,15 @@ internal static partial class DF
         });
 
         modifier?.Invoke(cancelEv);
-        orderEv.OrderCancelledEvent = cancelEv;
 
         return cancelEv;
     }
 
     public static InstanceDeliveredEvent FakeDeliveredEvent(
-        InstanceOrderedEvent orderEv,
         Action<InstanceDeliveredEvent>? modifier = null)
     {
         var deliverEv = MakeEntity(() => new InstanceDeliveredEvent());
-
         modifier?.Invoke(deliverEv);
-        orderEv.DeliveredEvent = deliverEv;
 
         return deliverEv;
     }

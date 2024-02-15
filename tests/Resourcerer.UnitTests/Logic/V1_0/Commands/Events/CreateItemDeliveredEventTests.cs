@@ -51,8 +51,8 @@ public class CreateItemDeliveredEventTests : TestsBase
     [Fact]
     public void When_CancelledEvent_Exists_Then_ValidationError()
     {
-        var orderedEvent = DF.FakeOrderedEvent(_testDbContext);
-        var _ = DF.FakeOrderCancelledEvent(orderedEvent);
+        var orderedEvent = DF.FakeOrderedEvent(_testDbContext, x => x.OrderCancelledEvent = DF.FakeOrderCancelledEvent());
+        
         var dto = new InstanceDeliveredRequestDto
         {
             InstanceId = orderedEvent.DerivedInstanceId,
@@ -70,8 +70,10 @@ public class CreateItemDeliveredEventTests : TestsBase
     [Fact]
     public void Is_Idempotent()
     {
-        var orderedEvent = DF.FakeOrderedEvent(_testDbContext);
-        var _ = DF.FakeDeliveredEvent(orderedEvent);
+        var orderedEvent = DF.FakeOrderedEvent(_testDbContext, x =>
+        {
+            x.DeliveredEvent = DF.FakeDeliveredEvent(); 
+        });
         var dto = new InstanceDeliveredRequestDto
         {
             InstanceId = orderedEvent.DerivedInstanceId,

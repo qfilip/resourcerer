@@ -46,11 +46,10 @@ public class GetInstanceInfoTests : TestsBase
         {
             ev.UnitPrice = 1;
             ev.Quantity = 1;
-        });
-
-        DF.FakeDeliveredEvent(orderEvent, x =>
-        {
-            x.CreatedAt = DF.Now.AddMonths(1);
+            ev.DeliveredEvent = DF.FakeDeliveredEvent(x =>
+            {
+                x.CreatedAt = DF.Now.AddMonths(1);
+            });
         });
 
         SaveToDb();
@@ -79,12 +78,11 @@ public class GetInstanceInfoTests : TestsBase
         {
             ev.UnitPrice = 1;
             ev.Quantity = 1;
-        });
-
-        DF.FakeOrderCancelledEvent(orderEvent, x =>
-        {
-            x.Reason = "test-reason";
-            x.RefundedAmount = 0.5d;
+            ev.OrderCancelledEvent = DF.FakeOrderCancelledEvent(c =>
+            {
+                c.Reason = "test-reason";
+                c.RefundedAmount = 0.5d;
+            });
         });
 
         SaveToDb();

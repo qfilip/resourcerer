@@ -18,8 +18,7 @@ public class CreateItemDiscardedEventTests : TestsBase
     public void When_AllOk_Then_Ok()
     {
         // arrange
-        var orderEvent = DF.FakeOrderedEvent(_testDbContext);
-        DF.FakeDeliveredEvent(orderEvent);
+        var orderEvent = DF.FakeOrderedEvent(_testDbContext, x => x.DeliveredEvent = DF.FakeDeliveredEvent());
         var dto = new InstanceDiscardedRequestDto
         {
             InstanceId = orderEvent.DerivedInstanceId,
