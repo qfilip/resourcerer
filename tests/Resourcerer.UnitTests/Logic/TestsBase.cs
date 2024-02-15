@@ -16,7 +16,7 @@ public class TestsBase
     public TestsBase()
     {
         _testDbContext = new ContextCreator().GetTestDbContext();
-        Mocker.MockDbData(_testDbContext);
+        DF.MockDbData(_testDbContext);
 
         _sand = _testDbContext.Items.First(x => x.Name == "sand");
         _meat = _testDbContext.Items.First(x => x.Name == "meat");

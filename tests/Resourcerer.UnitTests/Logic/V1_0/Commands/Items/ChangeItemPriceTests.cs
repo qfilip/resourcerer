@@ -24,7 +24,7 @@ public class ChangeItemPriceTests : TestsBase
     public void When_AllOk_Then_NewPriceAdded_Ok()
     {
         // arrange
-        var item = Mocker.MockItem(_testDbContext);
+        var item = DF.FakeItem(_testDbContext);
         var oldPrices = item.Prices.Select(x => x).ToList();
         var dto = new ChangePriceDto
         {
@@ -68,7 +68,7 @@ public class ChangeItemPriceTests : TestsBase
     public void When_Element_HasCorruptedPrices_Then_PricesAreFixed_Ok()
     {
         // arrange
-        var item = Mocker.MockItem(_testDbContext, null, 1, 3, true);
+        var item = DF.FakeItem(_testDbContext, null, 1, 3, true);
         var oldPrices = item.Prices.Select(x => x).ToList();
         var dto = new ChangePriceDto
         {

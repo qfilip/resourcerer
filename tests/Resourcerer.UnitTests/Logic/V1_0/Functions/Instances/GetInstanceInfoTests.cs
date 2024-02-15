@@ -18,7 +18,7 @@ public class GetInstanceInfoTests : TestsBase
     [Fact]
     public void Item_Bought()
     {
-        var boughtEvent1 = Mocker.MockOrderedEvent(_testDbContext, _sand, (ev) =>
+        var boughtEvent1 = DF.MockOrderedEvent(_testDbContext, _sand, (ev) =>
         {
             ev.UnitPrice = 1;
             ev.Quantity = 1;
@@ -34,7 +34,7 @@ public class GetInstanceInfoTests : TestsBase
             PendingToArrive = 1,
             PurchaseCost = 1
         };
-        var actual = _sut(instance, Mocker.Now.AddMonths(2));
+        var actual = _sut(instance, DF.Now.AddMonths(2));
 
         Assert.Equivalent(expected, actual);
     }
@@ -42,15 +42,15 @@ public class GetInstanceInfoTests : TestsBase
     [Fact]
     public void Item_BoughtAndDelivered()
     {
-        var boughtEvent1 = Mocker.MockOrderedEvent(_testDbContext, _sand, (ev) =>
+        var boughtEvent1 = DF.MockOrderedEvent(_testDbContext, _sand, (ev) =>
         {
             ev.UnitPrice = 1;
             ev.Quantity = 1;
         });
 
-        Mocker.MockDeliveredEvent(_testDbContext, boughtEvent1, x =>
+        DF.MockDeliveredEvent(_testDbContext, boughtEvent1, x =>
         {
-            x.CreatedAt = Mocker.Now.AddMonths(1);
+            x.CreatedAt = DF.Now.AddMonths(1);
         });
 
         SaveToDb();
@@ -67,7 +67,7 @@ public class GetInstanceInfoTests : TestsBase
             ExpiryDate = instance.ExpiryDate,
             QuantityLeft = 1
         };
-        var actual = _sut(instance, Mocker.Now.AddMonths(2));
+        var actual = _sut(instance, DF.Now.AddMonths(2));
 
         Assert.Equivalent(expected, actual);
     }
@@ -75,13 +75,13 @@ public class GetInstanceInfoTests : TestsBase
     [Fact]
     public void Item_BoughtAndCancelled_WithRefund()
     {
-        var boughtEvent = Mocker.MockOrderedEvent(_testDbContext, _sand, (ev) =>
+        var boughtEvent = DF.MockOrderedEvent(_testDbContext, _sand, (ev) =>
         {
             ev.UnitPrice = 1;
             ev.Quantity = 1;
         });
 
-        Mocker.MockOrderCancelledEvent(_testDbContext, boughtEvent, x =>
+        DF.MockOrderCancelledEvent(_testDbContext, boughtEvent, x =>
         {
             x.Reason = "test-reason";
             x.RefundedAmount = 0.5d;
@@ -99,7 +99,7 @@ public class GetInstanceInfoTests : TestsBase
             SellProfit = 0,
             QuantityLeft = 0
         };
-        var actual = _sut(instance, Mocker.Now.AddMonths(2));
+        var actual = _sut(instance, DF.Now.AddMonths(2));
 
         Assert.Equivalent(expected, actual);
     }
@@ -107,18 +107,18 @@ public class GetInstanceInfoTests : TestsBase
     [Fact]
     public void Item_Bought_Delivered_Sold()
     {
-        var boughtEvent = Mocker.MockOrderedEvent(_testDbContext, _sand, (ev) =>
+        var boughtEvent = DF.MockOrderedEvent(_testDbContext, _sand, (ev) =>
         {
             ev.UnitPrice = 1;
             ev.Quantity = 2;
         });
 
-        var deliveredEvent = Mocker.MockDeliveredEvent(_testDbContext, boughtEvent, x =>
+        var deliveredEvent = DF.MockDeliveredEvent(_testDbContext, boughtEvent, x =>
         {
-            x.CreatedAt = Mocker.Now.AddMonths(1);
+            x.CreatedAt = DF.Now.AddMonths(1);
         });
 
-        Mocker.MockSoldEvent(_testDbContext, boughtEvent, x =>
+        DF.MockSoldEvent(_testDbContext, boughtEvent, x =>
         {
             x.UnitPrice = 2;
             x.Quantity = 1;
@@ -138,7 +138,7 @@ public class GetInstanceInfoTests : TestsBase
             Discards = Array.Empty<DiscardInfoDto>(),
             ExpiryDate = instance.ExpiryDate
         };
-        var actual = _sut(instance, Mocker.Now.AddMonths(2));
+        var actual = _sut(instance, DF.Now.AddMonths(2));
 
         Assert.Equivalent(expected, actual);
     }
@@ -146,24 +146,24 @@ public class GetInstanceInfoTests : TestsBase
     [Fact]
     public void Item_Bought_Delivered_Sold_SellCancelledWithPenalty()
     {
-        var boughtEvent = Mocker.MockOrderedEvent(_testDbContext, _sand, (ev) =>
+        var boughtEvent = DF.MockOrderedEvent(_testDbContext, _sand, (ev) =>
         {
             ev.UnitPrice = 1;
             ev.Quantity = 2;
         });
 
-        var deliveredEvent = Mocker.MockDeliveredEvent(_testDbContext, boughtEvent, x =>
+        var deliveredEvent = DF.MockDeliveredEvent(_testDbContext, boughtEvent, x =>
         {
-            x.CreatedAt = Mocker.Now.AddMonths(1);
+            x.CreatedAt = DF.Now.AddMonths(1);
         });
 
-        var soldEvent = Mocker.MockSoldEvent(_testDbContext, boughtEvent, x =>
+        var soldEvent = DF.MockSoldEvent(_testDbContext, boughtEvent, x =>
         {
             x.UnitPrice = 2;
             x.Quantity = 1;
         });
 
-        var sellCancelledEvent = Mocker.MockSellCancelledEvent(_testDbContext, soldEvent, x =>
+        var sellCancelledEvent = DF.MockSellCancelledEvent(_testDbContext, soldEvent, x =>
         {
             x.RefundedAmount = 2.2;
         });
@@ -183,7 +183,7 @@ public class GetInstanceInfoTests : TestsBase
             Discards = Array.Empty<DiscardInfoDto>(),
             ExpiryDate = instance.ExpiryDate
         };
-        var actual = _sut(instance, Mocker.Now.AddMonths(2));
+        var actual = _sut(instance, DF.Now.AddMonths(2));
 
         Assert.Equivalent(expected, actual);
     }

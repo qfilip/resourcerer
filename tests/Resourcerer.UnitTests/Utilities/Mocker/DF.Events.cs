@@ -4,14 +4,14 @@ using Resourcerer.Logic.Functions.V1_0;
 
 namespace Resourcerer.UnitTests.Utilities.Mocker;
 
-internal static partial class Mocker
+internal static partial class DF
 {
-    public static InstanceOrderedEvent MockOrderedEvent(
+    public static InstanceOrderedEvent FakeOrderedEvent(
         AppDbContext context,
         Action<InstanceOrderedEvent>? modifier = null)
     {
-        var sourceInstance = MockInstance(context);
-        var derivedInstance = MockInstance(context);
+        var sourceInstance = FakeInstance(context);
+        var derivedInstance = FakeInstance(context);
         
         var entity = MakeEntity(() => new InstanceOrderedEvent
         {
@@ -32,13 +32,13 @@ internal static partial class Mocker
         return entity;
     }
 
-    public static Instance MockOrderedEvent(
+    public static Instance FakeOrderedEvent(
         AppDbContext context,
         Instance sourceInstance,
         Action<InstanceOrderedEvent>? modifier = null)
     {
-        sourceInstance = MockInstance(context);
-        var derivedInstance = MockInstance(context);
+        sourceInstance = FakeInstance(context);
+        var derivedInstance = FakeInstance(context);
 
         var entity = MakeEntity(() => new InstanceOrderedEvent
         {
@@ -59,7 +59,7 @@ internal static partial class Mocker
         return sourceInstance;
     }
 
-    public static InstanceOrderCancelledEvent MockOrderCancelledEvent(
+    public static InstanceOrderCancelledEvent FakeOrderCancelledEvent(
         InstanceOrderedEvent orderEv,
         Action<InstanceOrderCancelledEvent>? modifier = null)
     {
@@ -75,7 +75,7 @@ internal static partial class Mocker
         return cancelEv;
     }
 
-    public static InstanceDeliveredEvent MockDeliveredEvent(
+    public static InstanceDeliveredEvent FakeDeliveredEvent(
         InstanceOrderedEvent orderEv,
         Action<InstanceDeliveredEvent>? modifier = null)
     {
@@ -87,7 +87,7 @@ internal static partial class Mocker
         return deliverEv;
     }
 
-    public static InstanceDiscardedEvent MockDiscardedEvent(
+    public static InstanceDiscardedEvent FakeDiscardedEvent(
         Instance instance,
         Action<InstanceDiscardedEvent>? modifier = null)
     {

@@ -18,8 +18,8 @@ public class CreateItemDiscardedEventTests : TestsBase
     public void When_AllOk_Then_Ok()
     {
         // arrange
-        var orderEvent = Mocker.MockOrderedEvent(_testDbContext);
-        Mocker.MockDeliveredEvent(orderEvent);
+        var orderEvent = DF.FakeOrderedEvent(_testDbContext);
+        DF.FakeDeliveredEvent(orderEvent);
         var dto = new InstanceDiscardedRequestDto
         {
             InstanceId = orderEvent.DerivedInstanceId,

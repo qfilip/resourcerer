@@ -19,7 +19,7 @@ public class CreateItemOrderCancelledEventTests : TestsBase
     public void When_AllOk_Then_Ok()
     {
         // arrange
-        var sourceInstance = Mocker.MockOrderedEvent(_testDbContext, new Instance());
+        var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance());
         _testDbContext.SaveChanges();
         
         var dto = new InstanceCancelRequestDto
@@ -54,9 +54,9 @@ public class CreateItemOrderCancelledEventTests : TestsBase
     [Fact]
     public void When_DeliveredEvent_Exists_Then_ValidationError()
     {
-        var sourceInstance = Mocker.MockOrderedEvent(_testDbContext, new Instance());
+        var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance());
         var orderEvent = sourceInstance.OrderedEvents[0];
-        var _ = Mocker.MockDeliveredEvent(orderEvent);
+        var _ = DF.FakeDeliveredEvent(orderEvent);
         _testDbContext.SaveChanges();
         
         var dto = new InstanceCancelRequestDto
@@ -76,9 +76,9 @@ public class CreateItemOrderCancelledEventTests : TestsBase
     [Fact]
     public void Is_Idempotent()
     {
-        var sourceInstance = Mocker.MockOrderedEvent(_testDbContext, new Instance());
+        var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance());
         var orderEvent = sourceInstance.OrderedEvents[0];
-        var _ = Mocker.MockDeliveredEvent(orderEvent);
+        var _ = DF.FakeDeliveredEvent(orderEvent);
         _testDbContext.SaveChanges();
 
         var dto = new InstanceCancelRequestDto

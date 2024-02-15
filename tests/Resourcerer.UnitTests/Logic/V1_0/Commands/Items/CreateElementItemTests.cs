@@ -18,8 +18,8 @@ public class CreateElementItemTests : TestsBase
     public void When_AllOk_Then_Ok()
     {
         // arrange
-        var category = Mocker.MockCategory(_testDbContext);
-        var uom = Mocker.MockUnitOfMeasure(_testDbContext);
+        var category = DF.FakeCategory(_testDbContext);
+        var uom = DF.FakeUnitOfMeasure(_testDbContext);
         var dto = new CreateElementItemDto
         {
             Name = "test",
@@ -42,9 +42,9 @@ public class CreateElementItemTests : TestsBase
     public void When_ElementWithSameName_Exsts_Then_ValidationError()
     {
         // arrange
-        var existingElement = Mocker.MockItem(_testDbContext);
-        var category = Mocker.MockCategory(_testDbContext);
-        var uom = Mocker.MockUnitOfMeasure(_testDbContext);
+        var existingElement = DF.FakeItem(_testDbContext);
+        var category = DF.FakeCategory(_testDbContext);
+        var uom = DF.FakeUnitOfMeasure(_testDbContext);
         var dto = new CreateElementItemDto
         {
             Name = existingElement.Name,
@@ -65,7 +65,7 @@ public class CreateElementItemTests : TestsBase
     public void When_Category_NotFound_Then_ValidationError()
     {
         // arrange
-        var uom = Mocker.MockUnitOfMeasure(_testDbContext);
+        var uom = DF.FakeUnitOfMeasure(_testDbContext);
         var dto = new CreateElementItemDto
         {
             Name = "test",
@@ -86,7 +86,7 @@ public class CreateElementItemTests : TestsBase
     public void When_UnitOfMeasure_NotFound_Then_ValidationError()
     {
         // arrange
-        var category = Mocker.MockCategory(_testDbContext);
+        var category = DF.FakeCategory(_testDbContext);
         var dto = new CreateElementItemDto
         {
             Name = "test",

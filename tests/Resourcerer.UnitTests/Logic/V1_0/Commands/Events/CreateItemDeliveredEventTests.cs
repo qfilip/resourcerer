@@ -18,7 +18,7 @@ public class CreateItemDeliveredEventTests : TestsBase
     public void When_AllOk_Then_Ok()
     {
         // arrange
-        var orderEvent = Mocker.MockOrderedEvent(_testDbContext);
+        var orderEvent = DF.FakeOrderedEvent(_testDbContext);
         var dto = new InstanceDeliveredRequestDto
         {
             InstanceId = orderEvent.DerivedInstanceId,
@@ -51,8 +51,8 @@ public class CreateItemDeliveredEventTests : TestsBase
     [Fact]
     public void When_CancelledEvent_Exists_Then_ValidationError()
     {
-        var orderedEvent = Mocker.MockOrderedEvent(_testDbContext);
-        var _ = Mocker.MockOrderCancelledEvent(orderedEvent);
+        var orderedEvent = DF.FakeOrderedEvent(_testDbContext);
+        var _ = DF.FakeOrderCancelledEvent(orderedEvent);
         var dto = new InstanceDeliveredRequestDto
         {
             InstanceId = orderedEvent.DerivedInstanceId,
@@ -70,8 +70,8 @@ public class CreateItemDeliveredEventTests : TestsBase
     [Fact]
     public void Is_Idempotent()
     {
-        var orderedEvent = Mocker.MockOrderedEvent(_testDbContext);
-        var _ = Mocker.MockDeliveredEvent(orderedEvent);
+        var orderedEvent = DF.FakeOrderedEvent(_testDbContext);
+        var _ = DF.FakeDeliveredEvent(orderedEvent);
         var dto = new InstanceDeliveredRequestDto
         {
             InstanceId = orderedEvent.DerivedInstanceId,

@@ -124,7 +124,7 @@ public class CreateItemOrderedEventTests : TestsBase
     {
         var dto = new InstanceOrderRequestDto()
         {
-            InstanceId = Mocker.MockItem(_testDbContext, itemModifier).Id,
+            InstanceId = DF.FakeItem(_testDbContext, itemModifier).Id,
             ExpiryDate = DateTime.UtcNow.AddDays(5),
             ExpectedDeliveryDate = DateTime.UtcNow.AddDays(1),
             SellerCompanyId = "seller",

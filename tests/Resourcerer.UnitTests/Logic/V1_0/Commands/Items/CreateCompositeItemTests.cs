@@ -32,7 +32,7 @@ public class CreateCompositeItemTests : TestsBase
     public void When_ElementWithSameName_Exsts_Then_ValidationError()
     {
         // arrange
-        var existingElement = Mocker.MockItem(_testDbContext);
+        var existingElement = DF.FakeItem(_testDbContext);
         var dto = GetDto(x => x.Name = existingElement.Name);
         _testDbContext.SaveChanges();
 
@@ -94,15 +94,15 @@ public class CreateCompositeItemTests : TestsBase
         var dto = new CreateCompositeItemDto
         {
             Name = "test",
-            CategoryId = Mocker.MockCategory(_testDbContext).Id,
-            UnitOfMeasureId = Mocker.MockUnitOfMeasure(_testDbContext).Id,
+            CategoryId = DF.FakeCategory(_testDbContext).Id,
+            UnitOfMeasureId = DF.FakeUnitOfMeasure(_testDbContext).Id,
             UnitPrice = 2,
             PreparationTimeSeconds = 2,
             ExpirationTimeSeconds = 2,
             ExcerptMap = new Dictionary<Guid, double>
             {
-                { Mocker.MockItem(_testDbContext).Id, 1 },
-                { Mocker.MockItem(_testDbContext).Id, 2 }
+                { DF.FakeItem(_testDbContext).Id, 1 },
+                { DF.FakeItem(_testDbContext).Id, 2 }
             }
         };
 

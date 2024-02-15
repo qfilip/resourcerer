@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace Resourcerer.UnitTests.Utilities.Mocker;
 
-internal static partial class Mocker
+internal static partial class DF
 {
     public static DateTime Now = new DateTime(2000, 1, 1);
     public static string MakeName() => $"test-{Guid.NewGuid().ToString("n").Substring(0, 6)}";
@@ -21,7 +21,7 @@ internal static partial class Mocker
         return e;
     }
 
-    public static Company MockCompany(AppDbContext context, Action<Company>? modifier = null)
+    public static Company FakeCompany(AppDbContext context, Action<Company>? modifier = null)
     {
         var entity = MakeEntity(() => new Company { Name = MakeName() });
         modifier?.Invoke(entity);
@@ -30,13 +30,13 @@ internal static partial class Mocker
         return entity;
     }
 
-    public static AppUser MockUser(AppDbContext context, string password, Action<AppUser>? modifier = null, bool setAdminPermissions = false)
+    public static AppUser FakeUser(AppDbContext context, string password, Action<AppUser>? modifier = null, bool setAdminPermissions = false)
     {
         var user = MakeEntity(() => new AppUser
         {
             Name = MakeName(),
             PasswordHash = Hasher.GetSha256Hash(password),
-            Company = MockCompany(context)
+            Company = FakeCompany(context)
         });
 
         if(setAdminPermissions)
@@ -52,13 +52,13 @@ internal static partial class Mocker
 
         return user;
     }
-    public static Category MockCategory(AppDbContext context, Action<Category>? modifier = null)
+    public static Category FakeCategory(AppDbContext context, Action<Category>? modifier = null)
     {
         var id = Guid.NewGuid();
         var category = MakeEntity(() => new Category
         {
             Name = MakeName(),
-            Company = MockCompany(context)
+            Company = FakeCompany(context)
         });
 
         modifier?.Invoke(category);
@@ -68,7 +68,7 @@ internal static partial class Mocker
         return category;
     }
 
-    public static Item MockItem(AppDbContext context, Action<Item>? modifier = null, double unitValue = 1, int priceCount = 3, bool pricesCorrupted = false)
+    public static Item FakeItem(AppDbContext context, Action<Item>? modifier = null, double unitValue = 1, int priceCount = 3, bool pricesCorrupted = false)
     {
         var entity = MakeEntity(() => new Item
         {
@@ -76,9 +76,9 @@ internal static partial class Mocker
             ExpirationTimeSeconds = 1200,
             ProductionTimeSeconds = 10,
             
-            Category = MockCategory(context),
-            UnitOfMeasure = MockUnitOfMeasure(context),
-            Prices = MockPrices(null, unitValue, priceCount, pricesCorrupted),
+            Category = FakeCategory(context),
+            UnitOfMeasure = FakeUnitOfMeasure(context),
+            Prices = FakePrices(null, unitValue, priceCount, pricesCorrupted),
         });
 
         modifier?.Invoke(entity);
@@ -88,12 +88,12 @@ internal static partial class Mocker
         return entity;
     }
 
-    public static Instance MockInstance(AppDbContext context, Action<Instance>? modifier = null)
+    public static Instance FakeInstance(AppDbContext context, Action<Instance>? modifier = null)
     {
         var entity = MakeEntity(() => new Instance
         {
-            Item = MockItem(context),
-            OwnerCompany = MockCompany(context),
+            Item = FakeItem(context),
+            OwnerCompany = FakeCompany(context),
         });
 
         modifier?.Invoke(entity);
@@ -103,7 +103,7 @@ internal static partial class Mocker
         return entity;
     }
 
-    public static UnitOfMeasure MockUnitOfMeasure(AppDbContext context, Action<UnitOfMeasure>? modifier = null)
+    public static UnitOfMeasure FakeUnitOfMeasure(AppDbContext context, Action<UnitOfMeasure>? modifier = null)
     {
         
         var uom = MakeEntity(() => new UnitOfMeasure
@@ -119,7 +119,7 @@ internal static partial class Mocker
         return uom;
     }
 
-    public static List<Excerpt> MockExcerpts(AppDbContext context, Item composite, (Item, double)[] itemsDetail)
+    public static List<Excerpt> FakeExcerpts(AppDbContext context, Item composite, (Item, double)[] itemsDetail)
     {
         var excerpts = new List<Excerpt>();
         foreach (var d in itemsDetail)
@@ -137,7 +137,7 @@ internal static partial class Mocker
         return excerpts;
     }
 
-    public static List<Price> MockPrices(Action<Price>? modifier, double unitValue, int priceCount, bool pricesCorrupted)
+    public static List<Price> FakePrices(Action<Price>? modifier, double unitValue, int priceCount, bool pricesCorrupted)
     {
         if (priceCount < 0)
         {

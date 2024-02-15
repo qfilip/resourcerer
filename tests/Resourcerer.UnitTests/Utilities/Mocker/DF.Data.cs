@@ -2,51 +2,51 @@
 
 namespace Resourcerer.UnitTests.Utilities.Mocker;
 
-internal static partial class Mocker
+internal static partial class DF
 {
     public static void MockDbData(AppDbContext context)
     {
-        var material = MockCategory(context, x => x.Name = "material");
-        var product = MockCategory(context, x => x.Name = "product");
+        var material = FakeCategory(context, x => x.Name = "material");
+        var product = FakeCategory(context, x => x.Name = "product");
 
-        var cement = MockItem(context, x =>
+        var cement = FakeItem(context, x =>
         {
             x.Category = material;
             x.Name = "cement";
         }, 1);
 
-        var sand = MockItem(context, x =>
+        var sand = FakeItem(context, x =>
         {
             x.Category = material;
             x.Name = "sand";
         }, 1);
 
-        var mortar = MockItem(context, x =>
+        var mortar = FakeItem(context, x =>
         {
             x.Category = product;
             x.Name = "mortar";
         }, 10);
 
-        var hourglass = MockItem(context, x =>
+        var hourglass = FakeItem(context, x =>
         {
             x.Category = product;
             x.Name = "hourglass";
         }, 10);
 
-        var meat = MockItem(context, x =>
+        var meat = FakeItem(context, x =>
         {
             x.Category = product;
             x.Name = "meat";
             x.ExpirationTimeSeconds = TimeSpan.FromDays(7).Seconds;
         });
 
-        MockExcerpts(context, mortar, new[]
+        FakeExcerpts(context, mortar, new[]
         {
             (cement, 2d),
             (sand, 2d)
         });
 
-        MockExcerpts(context, hourglass, new[]
+        FakeExcerpts(context, hourglass, new[]
         {
             (sand, 2d)
         });

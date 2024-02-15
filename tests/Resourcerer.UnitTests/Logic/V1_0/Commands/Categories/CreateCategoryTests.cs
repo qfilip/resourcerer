@@ -34,7 +34,7 @@ public class CreateCategoryTests : TestsBase
     public void When_Category_WithSameName_Exist_Then_ValidationError()
     {
         // arrange
-        var existing = Mocker.MockCategory(_testDbContext);
+        var existing = DF.FakeCategory(_testDbContext);
         _testDbContext.SaveChanges();
         var dto = new CategoryDto
         {
@@ -52,7 +52,7 @@ public class CreateCategoryTests : TestsBase
     public void When_AddingChildCategory_And_ParentCategory_Exist_Then_Ok()
     {
         // arrange
-        var existing = Mocker.MockCategory(_testDbContext);
+        var existing = DF.FakeCategory(_testDbContext);
         _testDbContext.SaveChanges();
         var dto = new CategoryDto
         {
