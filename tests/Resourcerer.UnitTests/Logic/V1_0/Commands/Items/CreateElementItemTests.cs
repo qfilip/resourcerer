@@ -2,7 +2,7 @@
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.UnitTests.Utilities;
-using Resourcerer.UnitTests.Utilities.Mocker;
+using Resourcerer.UnitTests.Utilities.Faker;
 
 namespace Resourcerer.UnitTests.Logic.V1_0;
 

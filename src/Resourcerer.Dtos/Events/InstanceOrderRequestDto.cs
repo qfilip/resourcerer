@@ -5,7 +5,6 @@ namespace Resourcerer.Dtos;
 public class InstanceOrderRequestDto : EventDtoBase
 {
     public Guid InstanceId { get; set; }
-    public DateTime? ExpiryDate { get; set; }
     public Guid SellerCompanyId { get; set; }
     public Guid BuyerCompanyId { get; set; }
     public double UnitsOrdered { get; set; }

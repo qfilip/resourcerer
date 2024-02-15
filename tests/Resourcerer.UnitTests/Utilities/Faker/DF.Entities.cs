@@ -5,7 +5,7 @@ using Resourcerer.Dtos;
 using Resourcerer.Utilities.Cryptography;
 using System.Text.Json;
 
-namespace Resourcerer.UnitTests.Utilities.Mocker;
+namespace Resourcerer.UnitTests.Utilities.Faker;
 
 internal static partial class DF
 {

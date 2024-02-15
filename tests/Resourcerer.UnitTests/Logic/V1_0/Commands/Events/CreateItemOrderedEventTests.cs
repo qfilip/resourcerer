@@ -4,7 +4,7 @@ using Resourcerer.Dtos;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.UnitTests.Utilities;
-using Resourcerer.UnitTests.Utilities.Mocker;
+using Resourcerer.UnitTests.Utilities.Faker;
 
 namespace Resourcerer.UnitTests.Logic.V1_0;
 
@@ -20,9 +20,13 @@ public class CreateItemOrderedEventTests : TestsBase
     public void When_AllOk_Then_Ok()
     {
         // arrange
-        var dto = GetDto(x =>
+        var sourceInstance = DF.FakeInstance(_testDbContext, x => x.ExpiryDate = DateTime.UtcNow.AddDays(3));
+        var buyerCompany = DF.FakeCompany(_testDbContext);
+        _testDbContext.SaveChanges();
+
+        var dto = GetDto(sourceInstance, x =>
         {
-            x.ExpiryDate = DateTime.UtcNow.AddDays(3);
+            x.BuyerCompanyId = buyerCompany.Id;
             x.ExpectedDeliveryDate = DateTime.UtcNow;
         });
 
@@ -30,23 +34,21 @@ public class CreateItemOrderedEventTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
-        var entity = _testDbContext.ItemOrderedEvents
-            .Include(x => x.Instance)
-            .Single();
+        var entities = _testDbContext.Instances.ToArray();
 
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-        Assert.NotNull(entity.Instance);
+        Assert.True(entities.Length == 2);
     }
 
     [Fact]
     public void When_RequestDto_IsInvalid_Then_ValidationError()
     {
         // arrange
-        var dto = GetDto(x =>
+        var dto = GetDto(new Instance(), x =>
         {
             x.InstanceId = Guid.Empty;
-            x.SellerCompanyId = null;
-            x.BuyerCompanyId = null;
+            x.SellerCompanyId = Guid.Empty;
+            x.BuyerCompanyId = Guid.Empty;
             x.UnitPrice = -1;
             x.UnitsOrdered = -1;
             x.TotalDiscountPercent = -1;
@@ -63,20 +65,10 @@ public class CreateItemOrderedEventTests : TestsBase
     public void When_Item_CanExpire_And_ExpectedDeliveryDate_IsNull_Then_Rejected()
     {
         // arrange
-        var dto = GetDto(x => x.ExpectedDeliveryDate = null);
+        var srcInstance = DF.FakeInstance(_testDbContext, x => x.ExpiryDate = DateTime.UtcNow.AddDays(3));
+        _testDbContext.SaveChanges();
 
-        // act
-        var result = _handler.Handle(dto).Await();
-
-        // assert
-        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
-    }
-
-    [Fact]
-    public void When_Item_CanExpire_And_ExpiryDate_IsNull_Then_Rejected()
-    {
-        // arrange
-        var dto = GetDto(x => x.ExpiryDate = null);
+        var dto = GetDto(srcInstance, x => x.ExpectedDeliveryDate = null);
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -89,10 +81,12 @@ public class CreateItemOrderedEventTests : TestsBase
     public void When_Item_CanExpire_And_ExpiryDate_IsLower_Than_ExpectedDeliveryDate_Then_Rejected()
     {
         // arrange
-        var dto = GetDto(x =>
+        var srcInstance = DF.FakeInstance(_testDbContext, x => x.ExpiryDate = DateTime.UtcNow.AddDays(3));
+        _testDbContext.SaveChanges();
+        
+        var dto = GetDto(srcInstance, x =>
         {
-            x.ExpiryDate = DateTime.Now;
-            x.ExpectedDeliveryDate = DateTime.Now.AddDays(1);
+            x.ExpectedDeliveryDate = srcInstance.ExpiryDate?.AddDays(1);
         });
 
         // act
@@ -106,12 +100,13 @@ public class CreateItemOrderedEventTests : TestsBase
     public void When_Item_CannotExpire_And_ExpiryDate_Or_ExpectedDeliveryDate_Invalid_Then_Ok()
     {
         // arrange
-        var dto = GetDto(x =>
+        var srcInstance = DF.FakeInstance(_testDbContext);
+        _testDbContext.SaveChanges();
+
+        var dto = GetDto(srcInstance, x =>
         {
-            x.ExpiryDate = null;
             x.ExpectedDeliveryDate = null;
-        },
-        i => i.ExpirationTimeSeconds = null);
+        });
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -120,15 +115,14 @@ public class CreateItemOrderedEventTests : TestsBase
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
     }
 
-    private InstanceOrderRequestDto GetDto(Action<InstanceOrderRequestDto>? modifier = null, Action<Item>? itemModifier = null)
+    private InstanceOrderRequestDto GetDto(Instance sourceInstance, Action<InstanceOrderRequestDto>? modifier = null)
     {
         var dto = new InstanceOrderRequestDto()
         {
-            InstanceId = DF.FakeItem(_testDbContext, itemModifier).Id,
-            ExpiryDate = DateTime.UtcNow.AddDays(5),
+            InstanceId = sourceInstance.Id,
             ExpectedDeliveryDate = DateTime.UtcNow.AddDays(1),
-            SellerCompanyId = "seller",
-            BuyerCompanyId = "buyer",
+            SellerCompanyId = sourceInstance.OwnerCompany!.Id,
+            BuyerCompanyId = Guid.Empty,
             TotalDiscountPercent = 5,
             UnitPrice = 1,
             UnitsOrdered = 10,

@@ -1,6 +1,6 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 
-namespace Resourcerer.UnitTests.Utilities.Mocker;
+namespace Resourcerer.UnitTests.Utilities.Faker;
 
 internal static partial class DF
 {

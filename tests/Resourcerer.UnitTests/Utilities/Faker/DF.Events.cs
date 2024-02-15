@@ -1,8 +1,7 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Logic.Functions.V1_0;
 
-namespace Resourcerer.UnitTests.Utilities.Mocker;
+namespace Resourcerer.UnitTests.Utilities.Faker;
 
 internal static partial class DF
 {

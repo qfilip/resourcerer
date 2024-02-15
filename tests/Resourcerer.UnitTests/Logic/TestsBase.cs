@@ -1,25 +1,21 @@
 ﻿using FakeItEasy;
 using Microsoft.Extensions.Logging;
 using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
 using Resourcerer.UnitTests.Utilities;
-using Resourcerer.UnitTests.Utilities.Mocker;
 
 namespace Resourcerer.UnitTests.Logic;
 
 public class TestsBase
 {
     protected readonly AppDbContext _testDbContext;
-    protected readonly Item _sand;
-    protected readonly Item _meat;
 
     public TestsBase()
     {
         _testDbContext = new ContextCreator().GetTestDbContext();
-        DF.MockDbData(_testDbContext);
+        //DF.MockDbData(_testDbContext);
 
-        _sand = _testDbContext.Items.First(x => x.Name == "sand");
-        _meat = _testDbContext.Items.First(x => x.Name == "meat");
+        //_sand = _testDbContext.Items.First(x => x.Name == "sand");
+        //_meat = _testDbContext.Items.First(x => x.Name == "meat");
     }
 
     protected ILogger<T> MockLogger<T>() => A.Fake<ILogger<T>>();

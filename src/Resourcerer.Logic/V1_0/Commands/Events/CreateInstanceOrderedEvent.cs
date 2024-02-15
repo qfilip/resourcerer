@@ -56,7 +56,7 @@ public static class CreateInstanceOrderedEvent
                     .Rejected($"Instance with id {request.InstanceId} not found");
             }
 
-            if (instance.Item!.ExpirationTimeSeconds != null)
+            if (instance.ExpiryDate != null)
             {
                 errors.Clear();
 
@@ -65,12 +65,7 @@ public static class CreateInstanceOrderedEvent
                     errors.Add($"Expected delivery time must be set for instances that can expire");
                 }
 
-                if (request.ExpiryDate == null)
-                {
-                    errors.Add($"Expiry date must be set for instances that can expire");
-                }
-
-                if(request.ExpectedDeliveryDate >= request.ExpiryDate)
+                if(request.ExpectedDeliveryDate >= instance.ExpiryDate)
                 {
                     errors.Add($"Ordered instances will expire before they are delivered");
                 }
