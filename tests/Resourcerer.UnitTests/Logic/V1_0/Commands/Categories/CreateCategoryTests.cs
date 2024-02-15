@@ -1,4 +1,5 @@
-﻿using Resourcerer.Dtos;
+﻿using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.UnitTests.Utilities;
@@ -15,13 +16,14 @@ public class CreateCategoryTests : TestsBase
     }
 
     [Fact]
-    public void When_Category_WithSameName_NotExist_Then_Ok()
+    public void When_HappyPath_TopCategory_Then_Ok()
     {
-        // arrange
-        var dto = new CategoryDto
+        var dto = new CreateCategoryDto
         {
-            Name = "Test"
+            Name = "name",
+            CompanyId = DF.FakeCompany(_testDbContext).Id,
         };
+        _testDbContext.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -31,14 +33,97 @@ public class CreateCategoryTests : TestsBase
     }
 
     [Fact]
-    public void When_Category_WithSameName_Exist_Then_ValidationError()
+    public void When_HappyPath_ChildCategory_Then_Ok()
+    {
+        var parentCategory = DF.FakeCategory(_testDbContext, x =>
+        {
+            x.CompanyId = DF.FakeCompany(_testDbContext).Id;
+        });
+        var dto = new CreateCategoryDto
+        {
+            Name = "name",
+            CompanyId = parentCategory.CompanyId,
+            ParentCategoryId = parentCategory.Id
+        };
+        _testDbContext.SaveChanges();
+
+        // act
+        var result = _handler.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
+    }
+
+    [Fact]
+    public void When_Categories_DifferentCompany_And_SameParentCategory_HaveSameNamee_Then_Ok()
+    {
+        var c = DF.FakeCategory(_testDbContext);
+        var dto = new CreateCategoryDto
+        {
+            Name = c.Name,
+            CompanyId = DF.FakeCompany(_testDbContext).Id
+        };
+        _testDbContext.SaveChanges();
+
+        // act
+        var result = _handler.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
+    }
+
+    [Fact]
+    public void When_SameCompany_And_DifferentParentCategory_HaveSameName_Then_Ok()
+    {
+        var parentCatg = DF.FakeCategory(_testDbContext);
+        var dto = new CreateCategoryDto
+        {
+            Name = parentCatg.Name,
+            CompanyId = parentCatg.CompanyId,
+            ParentCategoryId = parentCatg.Id
+        };
+        _testDbContext.SaveChanges();
+
+        // act
+        var result = _handler.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
+    }
+
+    [Fact]
+    public void When_SameCompany_And_SameParentCategory_HaveSameName_Then_Rejected()
+    {
+        var parentCatg = DF.FakeCategory(_testDbContext);
+        var existingCatg = DF.FakeCategory(_testDbContext, x =>
+        {
+            x.CompanyId = parentCatg.CompanyId;
+            x.ParentCategoryId = parentCatg.Id;
+        });
+        var dto = new CreateCategoryDto
+        {
+            Name = existingCatg.Name,
+            CompanyId = existingCatg.Id,
+            ParentCategoryId = parentCatg.Id
+        };
+        _testDbContext.SaveChanges();
+
+        // act
+        var result = _handler.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
+    public void When_ParentCategory_DoesntExist_Then_Rejected()
     {
         // arrange
-        var existing = DF.FakeCategory(_testDbContext);
-        _testDbContext.SaveChanges();
-        var dto = new CategoryDto
+        var dto = new CreateCategoryDto
         {
-            Name = existing.Name
+            Name = "test",
+            CompanyId = DF.FakeCompany(_testDbContext).Id,
+            ParentCategoryId = Guid.NewGuid()
         };
 
         // act
@@ -49,33 +134,15 @@ public class CreateCategoryTests : TestsBase
     }
 
     [Fact]
-    public void When_AddingChildCategory_And_ParentCategory_Exist_Then_Ok()
+    public void When_ParentCategory_WithDifferentCompany_Exist_Then_Rejected()
     {
         // arrange
-        var existing = DF.FakeCategory(_testDbContext);
-        _testDbContext.SaveChanges();
-        
-        var dto = new CategoryDto
+        var parentCatg = DF.FakeCategory(_testDbContext);
+        var dto = new CreateCategoryDto
         {
-            ParentCategoryId = existing.Id,
-            Name = "test-child"
-        };
-
-        // act
-        var result = _handler.Handle(dto).Await();
-
-        // assert
-        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-    }
-
-    [Fact]
-    public void When_AddingChildCategory_And_ParentCategory_NotExist_Then_ValidationError()
-    {
-        // arrange
-        var dto = new CategoryDto
-        {
-            ParentCategoryId = Guid.NewGuid(),
-            Name = "test-child"
+            Name = "test",
+            CompanyId = DF.FakeCompany(_testDbContext).Id,
+            ParentCategoryId = parentCatg.Id
         };
 
         // act

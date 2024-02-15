@@ -8,7 +8,7 @@ namespace Resourcerer.Api.Endpoints.V1_0;
 public class CreateCategoryEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] CategoryDto categoryDto,
+        [FromBody] CreateCategoryDto categoryDto,
         [FromServices] Pipeline pipeline,
         [FromServices] CreateCategory.Handler handler)
     {
