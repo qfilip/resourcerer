@@ -36,7 +36,7 @@ internal static partial class DF
         {
             Name = MakeName(),
             PasswordHash = Hasher.GetSha256Hash(password),
-            Company = FakeCompany(context)
+            CompanyId = FakeCompany(context).Id
         });
 
         if(setAdminPermissions)
@@ -58,7 +58,7 @@ internal static partial class DF
         var category = MakeEntity(() => new Category
         {
             Name = MakeName(),
-            Company = FakeCompany(context)
+            CompanyId = FakeCompany(context).Id
         });
 
         modifier?.Invoke(category);
@@ -76,9 +76,9 @@ internal static partial class DF
             ExpirationTimeSeconds = 1200,
             ProductionTimeSeconds = 10,
             
-            Category = FakeCategory(context),
-            UnitOfMeasure = FakeUnitOfMeasure(context),
-            Prices = FakePrices(null, unitValue, priceCount, pricesCorrupted),
+            CategoryId = FakeCategory(context).Id,
+            UnitOfMeasureId = FakeUnitOfMeasure(context).Id,
+            // Prices = FakePrices(null, unitValue, priceCount, pricesCorrupted)
         });
 
         modifier?.Invoke(entity);
@@ -92,8 +92,8 @@ internal static partial class DF
     {
         var entity = MakeEntity(() => new Instance
         {
-            Item = FakeItem(context),
-            OwnerCompany = FakeCompany(context),
+            ItemId = FakeItem(context).Id,
+            OwnerCompanyId = FakeCompany(context).Id,
         });
 
         modifier?.Invoke(entity);
@@ -105,7 +105,6 @@ internal static partial class DF
 
     public static UnitOfMeasure FakeUnitOfMeasure(AppDbContext context, Action<UnitOfMeasure>? modifier = null)
     {
-        
         var uom = MakeEntity(() => new UnitOfMeasure
         {
             Name = MakeName(),
@@ -135,6 +134,19 @@ internal static partial class DF
         context.Excerpts.AddRange(excerpts);
 
         return excerpts;
+    }
+
+    public static Price FakePrice(AppDbContext context, Action<Price>? modifier = null)
+    {
+        var entity = MakeEntity(() => new Price
+        {
+            UnitValue = 1,
+            ItemId = FakeItem(context).Id
+        });
+
+        modifier?.Invoke(entity);
+
+        return entity;
     }
 
     public static List<Price> FakePrices(Action<Price>? modifier, double unitValue, int priceCount, bool pricesCorrupted)

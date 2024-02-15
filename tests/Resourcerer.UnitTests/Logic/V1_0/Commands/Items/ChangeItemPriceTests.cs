@@ -25,13 +25,14 @@ public class ChangeItemPriceTests : TestsBase
     {
         // arrange
         var item = DF.FakeItem(_testDbContext);
+        _testDbContext.SaveChanges();
+        
         var oldPrices = item.Prices.Select(x => x).ToList();
         var dto = new ChangePriceDto
         {
             ItemId = item.Id,
             UnitPrice = 20
         };
-        _testDbContext.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
