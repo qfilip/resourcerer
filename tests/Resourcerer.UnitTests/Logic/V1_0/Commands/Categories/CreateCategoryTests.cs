@@ -54,6 +54,7 @@ public class CreateCategoryTests : TestsBase
         // arrange
         var existing = DF.FakeCategory(_testDbContext);
         _testDbContext.SaveChanges();
+        
         var dto = new CategoryDto
         {
             ParentCategoryId = existing.Id,

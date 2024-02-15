@@ -77,8 +77,7 @@ internal static partial class DF
             ProductionTimeSeconds = 10,
             
             CategoryId = FakeCategory(context).Id,
-            UnitOfMeasureId = FakeUnitOfMeasure(context).Id,
-            // Prices = FakePrices(null, unitValue, priceCount, pricesCorrupted)
+            UnitOfMeasureId = FakeUnitOfMeasure(context).Id
         });
 
         modifier?.Invoke(entity);

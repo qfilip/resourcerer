@@ -24,7 +24,8 @@ public class CreateCategory
                 .Where(x =>
                     x.Name == request.Name ||
                     x.Id == request.ParentCategoryId)
-                .ToListAsync();
+                .AsNoTracking()
+                .ToArrayAsync();
 
             if(existing.Any(x => x.Name == request.Name))
             {
@@ -38,10 +39,13 @@ public class CreateCategory
                 return HandlerResult<Unit>.Rejected(error);
             }
 
+            var parentCategory = existing.First(x => x.Id == request.ParentCategoryId);
+
             var entity = new Category
             {
                 Name = request.Name,
-                ParentCategoryId = request.ParentCategoryId
+                CompanyId = parentCategory.CompanyId,
+                ParentCategoryId = parentCategory.Id,
             };
 
             _appDbContext.Categories.Add(entity);
