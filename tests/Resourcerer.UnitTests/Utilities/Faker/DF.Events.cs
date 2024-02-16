@@ -5,14 +5,13 @@ namespace Resourcerer.UnitTests.Utilities.Faker;
 
 internal static partial class DF
 {
-    public static InstanceOrderedEvent FakeOrderedEvent(
+    private static InstanceOrderedEvent CreateOrder(
         AppDbContext context,
-        Action<InstanceOrderedEvent>? modifier = null)
+        Instance sourceInstance,
+        Instance derivedInstance,
+        Action<InstanceOrderedEvent>? modifier = null
+    )
     {
-        var sourceInstance = FakeInstance(context);
-        var derivedInstance = FakeInstance(context,
-            x => x.SourceInstanceId = sourceInstance.Id);
-        
         var entity = MakeEntity(() => new InstanceOrderedEvent
         {
             ExpectedDeliveryDate = DateTime.UtcNow,
@@ -30,8 +29,18 @@ internal static partial class DF
         derivedInstance.Quantity = entity.Quantity;
 
         context.Instances.AddRange(new[] { derivedInstance, sourceInstance });
-        
+
         return entity;
+    }
+    public static InstanceOrderedEvent FakeOrderedEvent(
+        AppDbContext context,
+        Action<InstanceOrderedEvent>? modifier = null)
+    {
+        var sourceInstance = FakeInstance(context);
+        var derivedInstance = FakeInstance(context,
+            x => x.SourceInstanceId = sourceInstance.Id);
+        
+        return CreateOrder(context, sourceInstance, derivedInstance, modifier);
     }
 
     public static Instance FakeOrderedEvent(
@@ -43,23 +52,7 @@ internal static partial class DF
         var derivedInstance = FakeInstance(context,
             x => x.SourceInstanceId = sourceInstance.Id);
 
-        var entity = MakeEntity(() => new InstanceOrderedEvent
-        {
-            ExpectedDeliveryDate = DateTime.UtcNow,
-            TotalDiscountPercent = 0,
-            UnitPrice = 1,
-            Quantity = 1,
-
-            BuyerCompanyId = derivedInstance.OwnerCompany!.Id,
-            SellerCompanyId = sourceInstance.OwnerCompanyId,
-            DerivedInstanceId = derivedInstance.Id
-        });
-
-        modifier?.Invoke(entity);
-        sourceInstance.OrderedEvents.Add(entity);
-        derivedInstance.Quantity = entity.Quantity;
-
-        context.Instances.AddRange(new[] { derivedInstance, sourceInstance });
+        CreateOrder(context, sourceInstance, derivedInstance, modifier);
 
         return sourceInstance;
     }
