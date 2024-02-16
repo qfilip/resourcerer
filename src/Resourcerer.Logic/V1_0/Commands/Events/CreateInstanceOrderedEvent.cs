@@ -28,12 +28,12 @@ public static class CreateInstanceOrderedEvent
 
             var errors = new List<string>();
             
-            if (companies.Any(x => x.Id == request.BuyerCompanyId))
+            if (!companies.Any(x => x.Id == request.BuyerCompanyId))
             {
                 errors.Add($"Buyer with id {request.BuyerCompanyId} not found");
             }
 
-            if (companies.Any(x => x.Id == request.SellerCompanyId))
+            if (!companies.Any(x => x.Id == request.SellerCompanyId))
             {
                 errors.Add($"Seller with id {request.SellerCompanyId} not found");
             }
@@ -46,9 +46,7 @@ public static class CreateInstanceOrderedEvent
             var instance = await _appDbContext.Instances
                 .Include(x => x.Item)
                 .Include(x => x.SourceInstance)
-                .FirstOrDefaultAsync(x =>
-                    x.Id == request.InstanceId &&
-                    x.OwnerCompanyId == request.SellerCompanyId);
+                .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
             if (instance == null)
             {
@@ -84,7 +82,7 @@ public static class CreateInstanceOrderedEvent
 
             var unitsInStock = Instances.GetUnitsInStock(instance) - unitsSent;
 
-            if(unitsInStock - request.UnitsOrdered <= 0)
+            if(unitsInStock - request.UnitsOrdered < 0)
             {
                 return HandlerResult<Unit>
                     .Rejected($"Not enough units left in stock for this instance");

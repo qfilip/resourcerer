@@ -20,14 +20,20 @@ public class CreateItemOrderedEventTests : TestsBase
     public void When_AllOk_Then_Ok()
     {
         // arrange
-        var sourceInstance = DF.FakeInstance(_testDbContext, x => x.ExpiryDate = DateTime.UtcNow.AddDays(3));
         var buyerCompany = DF.FakeCompany(_testDbContext);
+        var sellerCompany = DF.FakeCompany(_testDbContext);
+        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        {
+            x.OwnerCompanyId = sellerCompany.Id;
+            x.Quantity = 1;
+        });
         _testDbContext.SaveChanges();
 
         var dto = GetDto(sourceInstance, x =>
         {
             x.BuyerCompanyId = buyerCompany.Id;
-            x.ExpectedDeliveryDate = DateTime.UtcNow;
+            x.SellerCompanyId = sellerCompany.Id;
+            x.UnitsOrdered = 1;
         });
 
         // act
@@ -44,15 +50,15 @@ public class CreateItemOrderedEventTests : TestsBase
     public void When_RequestDto_IsInvalid_Then_ValidationError()
     {
         // arrange
-        var dto = GetDto(new Instance(), x =>
+        var dto = new InstanceOrderRequestDto
         {
-            x.InstanceId = Guid.Empty;
-            x.SellerCompanyId = Guid.Empty;
-            x.BuyerCompanyId = Guid.Empty;
-            x.UnitPrice = -1;
-            x.UnitsOrdered = -1;
-            x.TotalDiscountPercent = -1;
-        });
+            InstanceId = Guid.Empty,
+            SellerCompanyId = Guid.Empty,
+            BuyerCompanyId = Guid.Empty,
+            UnitPrice = -1,
+            UnitsOrdered = -1,
+            TotalDiscountPercent = -1
+        };
 
         // act
         var result = _handler.Validate(dto);
@@ -62,31 +68,21 @@ public class CreateItemOrderedEventTests : TestsBase
     }
 
     [Fact]
-    public void When_Item_CanExpire_And_ExpectedDeliveryDate_IsNull_Then_Rejected()
+    public void When_BuyerNotFound_Then_Rejected()
     {
-        // arrange
-        var srcInstance = DF.FakeInstance(_testDbContext, x => x.ExpiryDate = DateTime.UtcNow.AddDays(3));
-        _testDbContext.SaveChanges();
-
-        var dto = GetDto(srcInstance, x => x.ExpectedDeliveryDate = null);
-
-        // act
-        var result = _handler.Handle(dto).Await();
-
-        // assert
-        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
-    }
-
-    [Fact]
-    public void When_Item_CanExpire_And_ExpiryDate_IsLower_Than_ExpectedDeliveryDate_Then_Rejected()
-    {
-        // arrange
-        var srcInstance = DF.FakeInstance(_testDbContext, x => x.ExpiryDate = DateTime.UtcNow.AddDays(3));
-        _testDbContext.SaveChanges();
-        
-        var dto = GetDto(srcInstance, x =>
+        var sellerCompany = DF.FakeCompany(_testDbContext);
+        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
         {
-            x.ExpectedDeliveryDate = srcInstance.ExpiryDate?.AddDays(1);
+            x.OwnerCompanyId = sellerCompany.Id;
+            x.Quantity = 1;
+        });
+        _testDbContext.SaveChanges();
+
+        var dto = GetDto(sourceInstance, x =>
+        {
+            x.BuyerCompanyId = Guid.NewGuid();
+            x.SellerCompanyId = sellerCompany.Id;
+            x.UnitsOrdered = 1;
         });
 
         // act
@@ -97,15 +93,190 @@ public class CreateItemOrderedEventTests : TestsBase
     }
 
     [Fact]
-    public void When_Item_CannotExpire_And_ExpiryDate_Or_ExpectedDeliveryDate_Invalid_Then_Ok()
+    public void When_SellerNotFound_Then_Rejected()
     {
-        // arrange
-        var srcInstance = DF.FakeInstance(_testDbContext);
+        var buyerCompany = DF.FakeCompany(_testDbContext);
+        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        {
+            x.OwnerCompanyId = DF.FakeCompany(_testDbContext).Id;
+            x.Quantity = 1;
+        });
         _testDbContext.SaveChanges();
 
-        var dto = GetDto(srcInstance, x =>
+        var dto = GetDto(sourceInstance, x =>
         {
+            x.BuyerCompanyId = buyerCompany.Id;
+            x.SellerCompanyId = Guid.NewGuid();
+            x.UnitsOrdered = 1;
+        });
+
+        // act
+        var result = _handler.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
+    public void When_InstanceNotFound_Then_Rejected()
+    {
+        var buyerCompany = DF.FakeCompany(_testDbContext);
+        var sellerCompany = DF.FakeCompany(_testDbContext);
+        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        {
+            x.OwnerCompanyId = DF.FakeCompany(_testDbContext).Id;
+            x.Quantity = 1;
+        });
+        _testDbContext.SaveChanges();
+
+        var dto = GetDto(sourceInstance, x =>
+        {
+            x.InstanceId = Guid.NewGuid();
+            x.BuyerCompanyId = buyerCompany.Id;
+            x.SellerCompanyId = sellerCompany.Id;
+            x.UnitsOrdered = 1;
+        });
+
+        // act
+        var result = _handler.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
+    public void When_ExpectedDeliveryDate_NotSet_And_Instance_HasExpiryDate_Then_Rejected()
+    {
+        var buyerCompany = DF.FakeCompany(_testDbContext);
+        var sellerCompany = DF.FakeCompany(_testDbContext);
+        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        {
+            x.OwnerCompanyId = DF.FakeCompany(_testDbContext).Id;
+            x.Quantity = 1;
+            x.ExpiryDate = DateTime.UtcNow;
+        });
+        _testDbContext.SaveChanges();
+
+        var dto = GetDto(sourceInstance, x =>
+        {
+            x.InstanceId = sourceInstance.Id;
+            x.BuyerCompanyId = buyerCompany.Id;
+            x.SellerCompanyId = sellerCompany.Id;
+            x.UnitsOrdered = 1;
             x.ExpectedDeliveryDate = null;
+        });
+
+        // act
+        var result = _handler.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
+    public void When_DeliveryDate_LargerOrEqualTo_InstanceExpiryDate_Then_Rejected()
+    {
+        var buyerCompany = DF.FakeCompany(_testDbContext);
+        var sellerCompany = DF.FakeCompany(_testDbContext);
+        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        {
+            x.OwnerCompanyId = DF.FakeCompany(_testDbContext).Id;
+            x.Quantity = 1;
+            x.ExpiryDate = DateTime.UtcNow;
+        });
+        _testDbContext.SaveChanges();
+
+        var dto = GetDto(sourceInstance, x =>
+        {
+            x.InstanceId = sourceInstance.Id;
+            x.BuyerCompanyId = buyerCompany.Id;
+            x.SellerCompanyId = sellerCompany.Id;
+            x.UnitsOrdered = 1;
+            x.ExpectedDeliveryDate = sourceInstance.ExpiryDate?.AddSeconds(1);
+        });
+
+        // act
+        var result = _handler.Handle(dto).Await();
+
+        // assert
+        var entities = _testDbContext.Instances.ToArray();
+
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
+    public void When_UnitsOrdered_LargerThan_UnitsInStock_Then_Rejected()
+    {
+        var buyerCompany = DF.FakeCompany(_testDbContext);
+        var sellerCompany = DF.FakeCompany(_testDbContext);
+        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        {
+            x.OwnerCompanyId = DF.FakeCompany(_testDbContext).Id;
+            x.Quantity = 2;
+            x.ExpiryDate = DateTime.UtcNow;
+            x.OrderedEvents = new List<InstanceOrderedEvent>
+            {
+                DF.FakeOrderedEvent(_testDbContext, ev =>
+                {
+                    ev.Quantity = 1;
+                    ev.SentEvent = DF.FakeSentEvent();
+                })
+            };
+            x.DiscardedEvents = new List<InstanceDiscardedEvent>
+            {
+                DF.FakeDiscardedEvent(x, x => x.Quantity = 1)
+            };
+        });
+        _testDbContext.SaveChanges();
+
+        var dto = GetDto(sourceInstance, x =>
+        {
+            x.InstanceId = sourceInstance.Id;
+            x.BuyerCompanyId = buyerCompany.Id;
+            x.SellerCompanyId = sellerCompany.Id;
+            x.UnitsOrdered = 2;
+            x.ExpectedDeliveryDate = sourceInstance.ExpiryDate?.AddSeconds(1);
+        });
+
+        // act
+        var result = _handler.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
+    public void When_UnitsOrdered_LessOrEqualTo_UnitsInStock_Then_Ok()
+    {
+        var buyerCompany = DF.FakeCompany(_testDbContext);
+        var sellerCompany = DF.FakeCompany(_testDbContext);
+        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        {
+            x.OwnerCompanyId = DF.FakeCompany(_testDbContext).Id;
+            x.Quantity = 4;
+            x.ExpiryDate = DateTime.UtcNow;
+            x.OrderedEvents = new List<InstanceOrderedEvent>
+            {
+                DF.FakeOrderedEvent(_testDbContext, ev =>
+                {
+                    ev.Quantity = 1;
+                    ev.SentEvent = DF.FakeSentEvent();
+                })
+            };
+            x.DiscardedEvents = new List<InstanceDiscardedEvent>
+            {
+                DF.FakeDiscardedEvent(x, x => x.Quantity = 1)
+            };
+        });
+        _testDbContext.SaveChanges();
+
+        var dto = GetDto(sourceInstance, x =>
+        {
+            x.InstanceId = sourceInstance.Id;
+            x.BuyerCompanyId = buyerCompany.Id;
+            x.SellerCompanyId = sellerCompany.Id;
+            x.UnitsOrdered = 2;
+            x.ExpectedDeliveryDate = DateTime.UtcNow.AddSeconds(-1);
         });
 
         // act
@@ -123,9 +294,9 @@ public class CreateItemOrderedEventTests : TestsBase
             ExpectedDeliveryDate = DateTime.UtcNow.AddDays(1),
             SellerCompanyId = sourceInstance.OwnerCompany!.Id,
             BuyerCompanyId = Guid.Empty,
-            TotalDiscountPercent = 5,
+            TotalDiscountPercent = 0,
             UnitPrice = 1,
-            UnitsOrdered = 10,
+            UnitsOrdered = 1,
         };
 
         modifier?.Invoke(dto);
