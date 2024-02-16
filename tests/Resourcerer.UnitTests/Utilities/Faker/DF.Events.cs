@@ -10,7 +10,8 @@ internal static partial class DF
         Action<InstanceOrderedEvent>? modifier = null)
     {
         var sourceInstance = FakeInstance(context);
-        var derivedInstance = FakeInstance(context);
+        var derivedInstance = FakeInstance(context,
+            x => x.SourceInstanceId = sourceInstance.Id);
         
         var entity = MakeEntity(() => new InstanceOrderedEvent
         {
@@ -39,7 +40,8 @@ internal static partial class DF
         Action<InstanceOrderedEvent>? modifier = null)
     {
         sourceInstance = FakeInstance(context);
-        var derivedInstance = FakeInstance(context);
+        var derivedInstance = FakeInstance(context,
+            x => x.SourceInstanceId = sourceInstance.Id);
 
         var entity = MakeEntity(() => new InstanceOrderedEvent
         {
@@ -74,6 +76,15 @@ internal static partial class DF
         modifier?.Invoke(cancelEv);
 
         return cancelEv;
+    }
+
+    public static InstanceSentEvent FakeSentEvent(
+        Action<InstanceSentEvent>? modifier = null)
+    {
+        var sentEv = MakeEntity(() => new InstanceSentEvent());
+        modifier?.Invoke(sentEv);
+
+        return sentEv;
     }
 
     public static InstanceDeliveredEvent FakeDeliveredEvent(
