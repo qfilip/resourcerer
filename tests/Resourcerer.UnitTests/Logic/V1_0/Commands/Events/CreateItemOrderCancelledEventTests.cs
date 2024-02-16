@@ -37,7 +37,7 @@ public class CreateItemOrderCancelledEventTests : TestsBase
     }
 
     [Fact]
-    public void When_OrderEvent_NotFound_Then_ValidationError()
+    public void When_OrderEvent_NotFound_Then_Rejected()
     {
         var dto = new InstanceCancelRequestDto
         {
@@ -52,7 +52,7 @@ public class CreateItemOrderCancelledEventTests : TestsBase
     }
 
     [Fact]
-    public void When_DeliveredEvent_Exists_Then_ValidationError()
+    public void When_DeliveredEvent_Exists_Then_Rejected()
     {
         var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance(), x =>
         {
@@ -76,13 +76,34 @@ public class CreateItemOrderCancelledEventTests : TestsBase
     }
 
     [Fact]
+    public void When_SentEvent_Exists_Then_Rejected()
+    {
+        var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance(), x =>
+        {
+            x.SentEvent = DF.FakeSentEvent();
+        });
+
+        _testDbContext.SaveChanges();
+
+        var dto = new InstanceCancelRequestDto
+        {
+            OrderEventId = sourceInstance.OrderedEvents[0].Id,
+            InstanceId = sourceInstance.Id,
+            Reason = "test"
+        };
+
+        // act
+        var result = _handler.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
     public void Is_Idempotent()
     {
         // arrange
-        var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance(), x =>
-        {
-            x.DeliveredEvent = DF.FakeDeliveredEvent();
-        });
+        var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance());
         _testDbContext.SaveChanges();
 
         var dto = new InstanceCancelRequestDto
