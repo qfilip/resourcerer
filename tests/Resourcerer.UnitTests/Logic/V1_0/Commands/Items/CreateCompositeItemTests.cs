@@ -29,11 +29,15 @@ public class CreateCompositeItemTests : TestsBase
     }
 
     [Fact]
-    public void When_ElementWithSameName_Exsts_Then_ValidationError()
+    public void When_ElementWithSameNameAndCategory_Exsts_Then_ValidationError()
     {
         // arrange
         var existingElement = DF.FakeItem(_testDbContext);
-        var dto = GetDto(x => x.Name = existingElement.Name);
+        var dto = GetDto(x =>
+        {
+            x.Name = existingElement.Name;
+            x.CategoryId = existingElement.CategoryId;
+        });
         _testDbContext.SaveChanges();
 
         // act

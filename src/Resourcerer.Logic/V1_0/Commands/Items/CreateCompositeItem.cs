@@ -20,21 +20,23 @@ public static class CreateCompositeItem
 
         public async Task<HandlerResult<Unit>> Handle(CreateCompositeItemDto request)
         {
-            var existing = await _appDbContext.Items
-                .FirstOrDefaultAsync(x => x.Name == request.Name);
-
-            if (existing != null)
-            {
-                var error = "Element with the same name already exist";
-                return HandlerResult<Unit>.Rejected(error);
-            }
-
             var category = await _appDbContext.Categories
                 .FirstOrDefaultAsync(x => x.Id == request.CategoryId);
 
             if (category == null)
             {
                 var error = "Requested category doesn't exist";
+                return HandlerResult<Unit>.Rejected(error);
+            }
+
+            var existing = await _appDbContext.Items
+                .FirstOrDefaultAsync(x =>
+                    x.CategoryId == request.CategoryId &&
+                    x.Name == request.Name);
+
+            if (existing != null)
+            {
+                var error = "Element with the same name and category already exist";
                 return HandlerResult<Unit>.Rejected(error);
             }
 
