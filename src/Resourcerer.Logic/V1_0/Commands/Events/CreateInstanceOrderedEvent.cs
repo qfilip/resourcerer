@@ -5,7 +5,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos;
-using Resourcerer.Logic.Functions.V1_0;
+using Resourcerer.Logic.V1_0.Functions;
 
 namespace Resourcerer.Logic.Commands.V1_0;
 

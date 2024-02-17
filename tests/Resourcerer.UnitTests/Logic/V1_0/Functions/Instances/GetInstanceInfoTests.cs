@@ -5,14 +5,14 @@ using Resourcerer.Dtos.Instances;
 using Resourcerer.UnitTests.Utilities.Faker;
 using System.Linq.Expressions;
 
-namespace Resourcerer.UnitTests.Logic.V1_0;
+namespace Resourcerer.UnitTests.Logic.V1_0.Functions.Instances;
 
 public class GetInstanceInfoTests : TestsBase
 {
     private readonly Func<Instance, DateTime, InstanceInfoDto> _sut;
     public GetInstanceInfoTests()
     {
-        _sut = Resourcerer.Logic.Functions.V1_0.Instances.GetInstanceInfo;
+        _sut = Resourcerer.Logic.V1_0.Functions.Instances.GetInstanceInfo;
     }
 
     [Fact]

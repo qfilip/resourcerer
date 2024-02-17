@@ -6,6 +6,7 @@ using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.QueryUtils;
 using Resourcerer.Dtos.Elements;
 using Resourcerer.Dtos.Items;
+using Resourcerer.Logic.V1_0.Functions;
 
 namespace Resourcerer.Logic.Queries.V1_0;
 public static class GetItemStatistics
@@ -42,7 +43,7 @@ public static class GetItemStatistics
             }
 
             var instanceInfos = item.Instances
-                .Select(x => Functions.V1_0.Instances.GetInstanceInfo(x, query.Now))
+                .Select(x => Instances.GetInstanceInfo(x, query.Now))
                 .ToArray();
 
             var isComposite = item.CompositeExcerpts.Any();
