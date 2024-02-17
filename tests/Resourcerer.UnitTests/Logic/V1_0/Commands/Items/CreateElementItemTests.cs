@@ -1,4 +1,5 @@
-﻿using Resourcerer.Dtos;
+﻿using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.UnitTests.Utilities;
@@ -23,6 +24,7 @@ public class CreateElementItemTests : TestsBase
         var dto = new CreateElementItemDto
         {
             Name = "test",
+            CompanyId = category.CompanyId,
             CategoryId = category.Id,
             UnitOfMeasureId = uom.Id,
             UnitPrice = 2
@@ -42,12 +44,13 @@ public class CreateElementItemTests : TestsBase
     public void When_ElementWithSameName_Exsts_Then_ValidationError()
     {
         // arrange
-        var existingElement = DF.FakeItem(_testDbContext);
         var category = DF.FakeCategory(_testDbContext);
+        var existingElement = DF.FakeItem(_testDbContext, x => x.CategoryId = category.Id);
         var uom = DF.FakeUnitOfMeasure(_testDbContext);
         var dto = new CreateElementItemDto
         {
             Name = existingElement.Name,
+            CompanyId = category.CompanyId,
             CategoryId = category.Id,
             UnitOfMeasureId = uom.Id,
             UnitPrice = 2
@@ -65,11 +68,36 @@ public class CreateElementItemTests : TestsBase
     public void When_Category_NotFound_Then_ValidationError()
     {
         // arrange
+        var comp = DF.FakeCompany(_testDbContext);
         var uom = DF.FakeUnitOfMeasure(_testDbContext);
         var dto = new CreateElementItemDto
         {
             Name = "test",
+            CompanyId = comp.Id,
             CategoryId = Guid.NewGuid(),
+            UnitOfMeasureId = uom.Id,
+            UnitPrice = 2
+        };
+        _testDbContext.SaveChanges();
+
+        // act
+        var result = _handler.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
+    public void When_Company_NotFound_Then_ValidationError()
+    {
+        // arrange
+        var catg = DF.FakeCategory(_testDbContext);
+        var uom = DF.FakeUnitOfMeasure(_testDbContext);
+        var dto = new CreateElementItemDto
+        {
+            Name = "test",
+            CompanyId = Guid.NewGuid(),
+            CategoryId = catg.Id,
             UnitOfMeasureId = uom.Id,
             UnitPrice = 2
         };

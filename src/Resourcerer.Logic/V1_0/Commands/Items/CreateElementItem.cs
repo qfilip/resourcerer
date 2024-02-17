@@ -20,21 +20,25 @@ public static class CreateElementItem
 
         public async Task<HandlerResult<Unit>> Handle(CreateElementItemDto request)
         {
-            var existing = await _appDbContext.Items
-                .FirstOrDefaultAsync(x => x.Name == request.Name);
-            
-            if(existing != null)
-            {
-                var error = "Element with the same name already exist";
-                return HandlerResult<Unit>.Rejected(error);
-            }
-
             var category = await _appDbContext.Categories
-                .FirstOrDefaultAsync(x => x.Id == request.CategoryId);
+                .FirstOrDefaultAsync(x =>
+                    x.Id == request.CategoryId &&
+                    x.CompanyId == request.CompanyId);
 
             if (category == null)
             {
-                var error = "Requested category doesn't exist";
+                var error = "Category not found";
+                return HandlerResult<Unit>.Rejected(error);
+            }
+
+            var existing = await _appDbContext.Items
+                .FirstOrDefaultAsync(x =>
+                    x.Name == request.Name &&
+                    x.CategoryId == request.CategoryId);
+            
+            if(existing != null)
+            {
+                var error = "Element with the same name and category already exist";
                 return HandlerResult<Unit>.Rejected(error);
             }
 
@@ -90,6 +94,9 @@ public static class CreateElementItem
                         if (x == null) return true;
                         else return x < 0;
                     }).WithMessage("ExpirationTimeSeconds cannot be negative");
+
+                RuleFor(x => x.CompanyId)
+                    .NotEmpty().WithMessage("Company id cannot be empty");
 
                 RuleFor(x => x.CategoryId)
                     .NotEmpty().WithMessage("Element's category cannot be empty");
