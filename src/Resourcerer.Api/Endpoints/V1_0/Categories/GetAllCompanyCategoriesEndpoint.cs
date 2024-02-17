@@ -6,13 +6,14 @@ using Resourcerer.Logic.Queries.V1_0;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
 
-public class GetAllCategoriesEndpoint
+public class GetAllCompanyCategoriesEndpoint
 {
     public static async Task<IResult> Action(
+        [FromQuery] Guid companyId,
         [FromServices] Pipeline pipeline,
-        [FromServices] GetAllCategories.Handler handler)
+        [FromServices] GetAllCompanyCategories.Handler handler)
     {
-        return await pipeline.Pipe(handler, new Unit());
+        return await pipeline.Pipe(handler, companyId);
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
