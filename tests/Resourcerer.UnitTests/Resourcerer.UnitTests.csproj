@@ -36,4 +36,8 @@
     <ProjectReference Include="..\..\src\Resourcerer.Logic\Resourcerer.Logic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Logic\V1_0\Commands\Events\" />
+  </ItemGroup>
+
 </Project>

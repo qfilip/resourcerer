@@ -6,7 +6,7 @@ public class EndpointMapperV1_0
     public static void Map(WebApplication app)
     {
         MapCategories(app);
-        MapEvents(app);
+        MapInstances(app);
         MapMocks(app);
         MapItems(app);
         MapUnitsOfMeasure(app);
