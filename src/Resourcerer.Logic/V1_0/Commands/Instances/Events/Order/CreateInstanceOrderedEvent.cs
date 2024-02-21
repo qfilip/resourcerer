@@ -38,6 +38,26 @@ public static class CreateInstanceOrderedEvent
                 errors.Add($"Seller with id {request.SellerCompanyId} not found");
             }
 
+            if(request.DerivedInstanceItemId.HasValue)
+            {
+                var derivedInstanceItem = await _appDbContext.Items
+                    .Select(x => new
+                    {
+                        ItemId = x.Id,
+                        CompanyId = x.Category!.CompanyId
+                    })
+                    .FirstOrDefaultAsync(x => x.ItemId == request.DerivedInstanceItemId);
+
+                var itemExists =
+                    derivedInstanceItem != null &&
+                    derivedInstanceItem.CompanyId == request.BuyerCompanyId;
+
+                if (!itemExists)
+                {
+                    return HandlerResult<Unit>.Rejected("Derived instance item not found");
+                }
+            }
+
             if(errors.Count > 0)
             {
                 return HandlerResult<Unit>.Rejected(errors);
@@ -95,7 +115,7 @@ public static class CreateInstanceOrderedEvent
                     DerivedInstanceId = Guid.NewGuid(),
                     BuyerCompanyId = request.BuyerCompanyId,
                     SellerCompanyId = request.SellerCompanyId,
-                    
+                    DerivedInstanceItemId = request.DerivedInstanceItemId,
                     UnitPrice = request.UnitPrice,
                     Quantity = request.UnitsOrdered,
                     TotalDiscountPercent = request.TotalDiscountPercent,

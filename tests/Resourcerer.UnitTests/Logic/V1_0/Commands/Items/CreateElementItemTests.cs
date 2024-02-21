@@ -44,15 +44,13 @@ public class CreateElementItemTests : TestsBase
     public void When_ElementWithSameName_Exsts_Then_ValidationError()
     {
         // arrange
-        var category = DF.FakeCategory(_testDbContext);
-        var existingElement = DF.FakeItem(_testDbContext, x => x.CategoryId = category.Id);
-        var uom = DF.FakeUnitOfMeasure(_testDbContext);
+        var existingElement = DF.FakeItem(_testDbContext);
         var dto = new CreateElementItemDto
         {
             Name = existingElement.Name,
-            CompanyId = category.CompanyId,
-            CategoryId = category.Id,
-            UnitOfMeasureId = uom.Id,
+            CompanyId = existingElement.Category!.CompanyId,
+            CategoryId = existingElement.CategoryId,
+            UnitOfMeasureId = existingElement.UnitOfMeasureId,
             UnitPrice = 2
         };
         _testDbContext.SaveChanges();

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.UnitTests.Utilities;
+using Resourcerer.UnitTests.Utilities.Faker;
 
 namespace Resourcerer.UnitTests.Logic;
 
@@ -12,10 +13,12 @@ public class TestsBase
     public TestsBase()
     {
         _testDbContext = new ContextCreator().GetTestDbContext();
-        //DF.MockDbData(_testDbContext);
+    }
 
-        //_sand = _testDbContext.Items.First(x => x.Name == "sand");
-        //_meat = _testDbContext.Items.First(x => x.Name == "meat");
+    [Fact]
+    public void Scratchpad()
+    {
+        
     }
 
     protected ILogger<T> MockLogger<T>() => A.Fake<ILogger<T>>();

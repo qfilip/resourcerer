@@ -7,6 +7,7 @@ public class InstanceOrderedEvent : JsonEntityBase
     public Guid DerivedInstanceId { get; set; }
     public Guid SellerCompanyId { get; set; }
     public Guid BuyerCompanyId { get; set; }
+    public Guid? DerivedInstanceItemId { get; set; }
     public double Quantity { get; set; }
     public double UnitPrice { get; set; }
     public int TotalDiscountPercent { get; set; }

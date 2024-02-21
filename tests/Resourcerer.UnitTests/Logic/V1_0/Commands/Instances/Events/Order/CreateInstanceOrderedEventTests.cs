@@ -19,19 +19,18 @@ public class CreateInstanceOrderedEventTests : TestsBase
     public void When_AllOk_Then_Ok()
     {
         // arrange
-        var buyerCompany = DF.FakeCompany(_testDbContext);
-        var sellerCompany = DF.FakeCompany(_testDbContext);
+        var derivedInstanceItem = DF.FakeItem(_testDbContext);
         var sourceInstance = DF.FakeInstance(_testDbContext, x =>
         {
-            x.OwnerCompanyId = sellerCompany.Id;
             x.Quantity = 1;
         });
         _testDbContext.SaveChanges();
 
         var dto = GetDto(sourceInstance, x =>
         {
-            x.BuyerCompanyId = buyerCompany.Id;
-            x.SellerCompanyId = sellerCompany.Id;
+            x.BuyerCompanyId = derivedInstanceItem.Category!.CompanyId;
+            x.SellerCompanyId = sourceInstance.OwnerCompanyId;
+            x.DerivedInstanceItemId = derivedInstanceItem.Id;
             x.UnitsOrdered = 1;
         });
 
@@ -71,10 +70,8 @@ public class CreateInstanceOrderedEventTests : TestsBase
     [Fact]
     public void When_BuyerNotFound_Then_Rejected()
     {
-        var sellerCompany = DF.FakeCompany(_testDbContext);
         var sourceInstance = DF.FakeInstance(_testDbContext, x =>
         {
-            x.OwnerCompanyId = sellerCompany.Id;
             x.Quantity = 1;
         });
         _testDbContext.SaveChanges();
@@ -82,7 +79,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
         var dto = GetDto(sourceInstance, x =>
         {
             x.BuyerCompanyId = Guid.NewGuid();
-            x.SellerCompanyId = sellerCompany.Id;
+            x.SellerCompanyId = sourceInstance.OwnerCompanyId;
             x.UnitsOrdered = 1;
         });
 
@@ -99,7 +96,6 @@ public class CreateInstanceOrderedEventTests : TestsBase
         var buyerCompany = DF.FakeCompany(_testDbContext);
         var sourceInstance = DF.FakeInstance(_testDbContext, x =>
         {
-            x.OwnerCompanyId = DF.FakeCompany(_testDbContext).Id;
             x.Quantity = 1;
         });
         _testDbContext.SaveChanges();
@@ -122,10 +118,8 @@ public class CreateInstanceOrderedEventTests : TestsBase
     public void When_InstanceNotFound_Then_Rejected()
     {
         var buyerCompany = DF.FakeCompany(_testDbContext);
-        var sellerCompany = DF.FakeCompany(_testDbContext);
         var sourceInstance = DF.FakeInstance(_testDbContext, x =>
         {
-            x.OwnerCompanyId = DF.FakeCompany(_testDbContext).Id;
             x.Quantity = 1;
         });
         _testDbContext.SaveChanges();
@@ -134,7 +128,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
         {
             x.InstanceId = Guid.NewGuid();
             x.BuyerCompanyId = buyerCompany.Id;
-            x.SellerCompanyId = sellerCompany.Id;
+            x.SellerCompanyId = sourceInstance.OwnerCompanyId;
             x.UnitsOrdered = 1;
         });
 
@@ -149,10 +143,8 @@ public class CreateInstanceOrderedEventTests : TestsBase
     public void When_ExpectedDeliveryDate_NotSet_And_Instance_HasExpiryDate_Then_Rejected()
     {
         var buyerCompany = DF.FakeCompany(_testDbContext);
-        var sellerCompany = DF.FakeCompany(_testDbContext);
         var sourceInstance = DF.FakeInstance(_testDbContext, x =>
         {
-            x.OwnerCompanyId = DF.FakeCompany(_testDbContext).Id;
             x.Quantity = 1;
             x.ExpiryDate = DateTime.UtcNow;
         });
@@ -162,7 +154,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
         {
             x.InstanceId = sourceInstance.Id;
             x.BuyerCompanyId = buyerCompany.Id;
-            x.SellerCompanyId = sellerCompany.Id;
+            x.SellerCompanyId = sourceInstance.OwnerCompanyId;
             x.UnitsOrdered = 1;
             x.ExpectedDeliveryDate = null;
         });
@@ -178,10 +170,8 @@ public class CreateInstanceOrderedEventTests : TestsBase
     public void When_DeliveryDate_LargerOrEqualTo_InstanceExpiryDate_Then_Rejected()
     {
         var buyerCompany = DF.FakeCompany(_testDbContext);
-        var sellerCompany = DF.FakeCompany(_testDbContext);
         var sourceInstance = DF.FakeInstance(_testDbContext, x =>
         {
-            x.OwnerCompanyId = DF.FakeCompany(_testDbContext).Id;
             x.Quantity = 1;
             x.ExpiryDate = DateTime.UtcNow;
         });
@@ -191,7 +181,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
         {
             x.InstanceId = sourceInstance.Id;
             x.BuyerCompanyId = buyerCompany.Id;
-            x.SellerCompanyId = sellerCompany.Id;
+            x.SellerCompanyId = sourceInstance.OwnerCompanyId;
             x.UnitsOrdered = 1;
             x.ExpectedDeliveryDate = sourceInstance.ExpiryDate?.AddSeconds(1);
         });
@@ -209,10 +199,8 @@ public class CreateInstanceOrderedEventTests : TestsBase
     public void When_UnitsOrdered_LargerThan_UnitsInStock_Then_Rejected()
     {
         var buyerCompany = DF.FakeCompany(_testDbContext);
-        var sellerCompany = DF.FakeCompany(_testDbContext);
         var sourceInstance = DF.FakeInstance(_testDbContext, x =>
         {
-            x.OwnerCompanyId = DF.FakeCompany(_testDbContext).Id;
             x.Quantity = 2;
             x.ExpiryDate = DateTime.UtcNow;
             x.OrderedEvents = new List<InstanceOrderedEvent>
@@ -234,7 +222,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
         {
             x.InstanceId = sourceInstance.Id;
             x.BuyerCompanyId = buyerCompany.Id;
-            x.SellerCompanyId = sellerCompany.Id;
+            x.SellerCompanyId = sourceInstance.OwnerCompanyId;
             x.UnitsOrdered = 2;
             x.ExpectedDeliveryDate = sourceInstance.ExpiryDate?.AddSeconds(1);
         });
@@ -250,10 +238,8 @@ public class CreateInstanceOrderedEventTests : TestsBase
     public void When_UnitsOrdered_LessOrEqualTo_UnitsInStock_Then_Ok()
     {
         var buyerCompany = DF.FakeCompany(_testDbContext);
-        var sellerCompany = DF.FakeCompany(_testDbContext);
         var sourceInstance = DF.FakeInstance(_testDbContext, x =>
         {
-            x.OwnerCompanyId = DF.FakeCompany(_testDbContext).Id;
             x.Quantity = 4;
             x.ExpiryDate = DateTime.UtcNow;
             x.OrderedEvents = new List<InstanceOrderedEvent>
@@ -275,7 +261,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
         {
             x.InstanceId = sourceInstance.Id;
             x.BuyerCompanyId = buyerCompany.Id;
-            x.SellerCompanyId = sellerCompany.Id;
+            x.SellerCompanyId = sourceInstance.OwnerCompanyId;
             x.UnitsOrdered = 2;
             x.ExpectedDeliveryDate = DateTime.UtcNow.AddSeconds(-1);
         });

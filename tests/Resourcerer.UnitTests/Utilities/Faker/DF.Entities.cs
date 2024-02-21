@@ -32,11 +32,14 @@ internal static partial class DF
 
     public static AppUser FakeUser(AppDbContext context, string password, Action<AppUser>? modifier = null, bool setAdminPermissions = false)
     {
+        var company = FakeCompany(context);
         var user = MakeEntity(() => new AppUser
         {
             Name = MakeName(),
             PasswordHash = Hasher.GetSha256Hash(password),
-            CompanyId = FakeCompany(context).Id
+            
+            CompanyId = company.Id,
+            Company = company
         });
 
         if(setAdminPermissions)
@@ -55,10 +58,13 @@ internal static partial class DF
     public static Category FakeCategory(AppDbContext context, Action<Category>? modifier = null)
     {
         var id = Guid.NewGuid();
+        var company = FakeCompany(context);
         var category = MakeEntity(() => new Category
         {
             Name = MakeName(),
-            CompanyId = FakeCompany(context).Id
+            
+            CompanyId = company.Id,
+            Company = company
         });
 
         modifier?.Invoke(category);
@@ -70,14 +76,19 @@ internal static partial class DF
 
     public static Item FakeItem(AppDbContext context, Action<Item>? modifier = null, double unitValue = 1, int priceCount = 3, bool pricesCorrupted = false)
     {
+        var category = FakeCategory(context);
+        var uom = FakeUnitOfMeasure(context);
         var entity = MakeEntity(() => new Item
         {
             Name = MakeName(),
             ExpirationTimeSeconds = 1200,
             ProductionTimeSeconds = 10,
             
-            CategoryId = FakeCategory(context).Id,
-            UnitOfMeasureId = FakeUnitOfMeasure(context).Id
+            CategoryId = category.Id,
+            Category = category,
+
+            UnitOfMeasureId = uom.Id,
+            UnitOfMeasure = uom
         });
 
         modifier?.Invoke(entity);
@@ -89,10 +100,13 @@ internal static partial class DF
 
     public static Instance FakeInstance(AppDbContext context, Action<Instance>? modifier = null)
     {
+        var company = FakeCompany(context);
         var entity = MakeEntity(() => new Instance
         {
             ItemId = FakeItem(context).Id,
-            OwnerCompanyId = FakeCompany(context).Id,
+            
+            OwnerCompanyId = company.Id,
+            OwnerCompany = company
         });
 
         modifier?.Invoke(entity);
