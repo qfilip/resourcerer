@@ -7,7 +7,7 @@ using System.Threading.Channels;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
 
-public class CreateItemDeliveredEventEndpoint
+public class CreateInstanceDeliveredEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] InstanceOrderDeliveredRequestDto dto,

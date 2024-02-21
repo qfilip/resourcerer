@@ -22,15 +22,14 @@ public class EndpointMapperV1_0
         RemoveCategoryEndpoint.MapToGroup(g);
     }
 
-    private static void MapEvents(WebApplication app)
+    private static void MapInstances(WebApplication app)
     {
-        var g = EndpointMapper.GetGroup(app, Version, "Events");
+        var g = EndpointMapper.GetGroup(app, Version, "Instances");
         
-        CreateItemOrderCancelledEventEndpoint.MapToGroup(g);
-        CreateItemDeliveredEventEndpoint.MapToGroup(g);
-        CreateItemDiscardedEventEndpoint.MapToGroup(g);
+        CreateInstanceOrderCancelledEventEndpoint.MapToGroup(g);
+        CreateInstanceDeliveredEventEndpoint.MapToGroup(g);
+        CreateInstanceDiscardedEventEndpoint.MapToGroup(g);
         CreateInstanceOrderedEventEndpoint.MapToGroup(g);
-        // CreateItemSellCancelledEventEndpoint.MapToGroup(g);
     }
 
     private static void MapItems(WebApplication app)

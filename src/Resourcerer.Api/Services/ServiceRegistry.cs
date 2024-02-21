@@ -133,8 +133,9 @@ public static partial class ServiceRegistry
     private static void AddChannelService<TMessage, TService>(this IServiceCollection services)
         where TService : EventServiceBase<TMessage>
     {
-        services.AddSingleton(_ => Channel.CreateUnbounded<TMessage>().Writer);
-        services.AddSingleton(_ => Channel.CreateUnbounded<TMessage>().Reader);
+        services.AddSingleton(_ => Channel.CreateUnbounded<TMessage>());
+        services.AddSingleton(sp => sp.GetRequiredService<Channel<TMessage>>().Reader);
+        services.AddSingleton(sp => sp.GetRequiredService<Channel<TMessage>>().Writer);
         services.AddHostedService<TService>();
     }
 }
