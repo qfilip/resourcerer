@@ -27,9 +27,15 @@ public class InstanceOrderEventHandler : EventServiceBase<InstanceOrderEventDtoB
         }
         else if (message is InstanceOrderDeliveredRequestDto deliverEv)
         {
-            var handler = new CreateInstanceDeliveredEvent.Handler(appDbContext);
+            var handler = new CreateInstanceOrderDeliveredEvent.Handler(appDbContext);
             return handler.Handle(deliverEv);
         }
+        else if (message is InstanceOrderSentRequestDto sentEv)
+        {
+            var handler = new CreateInstanceOrderSentEvent.Handler(appDbContext);
+            return handler.Handle(sentEv);
+        }
+        // move to different service
         else if (message is InstanceDiscardedRequestDto discardEv)
         {
             var handler = new CreateInstanceDiscardedEvent.Handler(appDbContext);

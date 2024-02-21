@@ -16,9 +16,9 @@ public class CreateInstanceDeliveredEventEndpoint
     {
         return await pipeline.PipeToChannel(
             dto,
-            CreateInstanceDeliveredEvent.Handler.ValidateRequest,
+            CreateInstanceOrderDeliveredEvent.Handler.ValidateRequest,
             writer,
-            nameof(CreateInstanceDeliveredEvent));
+            nameof(CreateInstanceOrderDeliveredEvent));
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

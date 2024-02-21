@@ -1,5 +1,7 @@
-﻿namespace Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities.JsonEntities;
 
-public class InstanceOrderSentEvent : EntityBase
+namespace Resourcerer.DataAccess.Entities;
+
+public class InstanceOrderSentEvent : JsonEntityBase
 {
 }

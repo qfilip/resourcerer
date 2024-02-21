@@ -9,7 +9,7 @@ namespace Resourcerer.UnitTests.Logic.V1_0;
 
 public class CreateItemDeliveredEventTests : TestsBase
 {
-    public readonly CreateInstanceDeliveredEvent.Handler _handler;
+    public readonly CreateInstanceOrderDeliveredEvent.Handler _handler;
     public CreateItemDeliveredEventTests()
     {
         _handler = new(_testDbContext);
