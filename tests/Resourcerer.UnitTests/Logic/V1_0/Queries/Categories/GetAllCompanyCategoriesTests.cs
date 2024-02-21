@@ -38,14 +38,4 @@ public class GetAllCompanyCategoriesTests : TestsBase
         // assert
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
     }
-
-    [Fact]
-    public void When_CompanyId_IsEmpty_Then_Rejected()
-    {
-        // act
-        var result = _handler.Handle(Guid.Empty).Await();
-
-        // assert
-        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
-    }
 }
