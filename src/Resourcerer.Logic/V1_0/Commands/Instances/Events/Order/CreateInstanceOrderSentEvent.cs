@@ -28,7 +28,7 @@ public static class CreateInstanceOrderSentEvent
             }
 
             var orderEv = instance.OrderedEvents
-                .FirstOrDefault(x => x.Id != request.OrderEventId);
+                .FirstOrDefault(x => x.Id == request.OrderEventId);
 
             if (orderEv == null)
             {
