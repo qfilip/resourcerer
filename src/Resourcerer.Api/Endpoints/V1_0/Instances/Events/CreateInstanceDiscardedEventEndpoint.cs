@@ -12,12 +12,12 @@ public class CreateInstanceDiscardedEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] InstanceDiscardedRequestDto dto,
-        [FromServices] ChannelWriter<InstanceOrderEventDtoBase> writer,
+        [FromServices] ChannelWriter<InstanceDiscardedRequestDto> writer,
         [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeToChannel(
             dto,
-            CreateInstanceDiscardedEvent.Handler.ValidateRequest,
+            () => CreateInstanceDiscardedEvent.Handler.ValidateRequest(dto),
             writer,
             nameof(CreateInstanceDiscardedEvent));
     }

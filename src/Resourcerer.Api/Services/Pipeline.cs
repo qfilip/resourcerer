@@ -40,13 +40,13 @@ public class Pipeline
 
     public async Task<IResult> PipeToChannel<TRequest>(
         TRequest request,
-        Func<TRequest, ValidationResult> validator,
-        ChannelWriter<InstanceOrderEventDtoBase> writer,
-        string actionName) where TRequest : InstanceOrderEventDtoBase
+        Func<ValidationResult> validate,
+        ChannelWriter<TRequest> writer,
+        string actionName)
     {
         _logger.LogInformation("Action {Action} started", actionName);
 
-        var validationResult = validator(request);
+        var validationResult = validate();
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors.Select(x => x.ErrorMessage);

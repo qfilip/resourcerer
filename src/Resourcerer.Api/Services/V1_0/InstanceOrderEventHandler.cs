@@ -35,12 +35,6 @@ public class InstanceOrderEventHandler : EventServiceBase<InstanceOrderEventDtoB
             var handler = new CreateInstanceOrderSentEvent.Handler(appDbContext);
             return handler.Handle(sentEv);
         }
-        // move to different service
-        else if (message is InstanceDiscardedRequestDto discardEv)
-        {
-            var handler = new CreateInstanceDiscardedEvent.Handler(appDbContext);
-            return handler.Handle(discardEv);
-        }
         else
         {
             throw new InvalidOperationException("Unsupported event type");

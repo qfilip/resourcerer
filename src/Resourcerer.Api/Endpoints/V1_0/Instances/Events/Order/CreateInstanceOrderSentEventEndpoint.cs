@@ -5,6 +5,7 @@ using Resourcerer.Dtos;
 using Resourcerer.Logic.Commands.V1_0;
 using System.Threading.Channels;
 using Resourcerer.Logic.V1_0.Commands;
+using Resourcerer.Dtos.Instances.Events;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
 
@@ -17,9 +18,9 @@ public class CreateInstanceOrderSentEventEndpoint
     {
         return await pipeline.PipeToChannel(
             dto,
-            CreateInstanceOrderSentEvent.Handler.ValidateRequest,
+            () => CreateInstanceOrderSentEvent.Handler.ValidateRequest(dto),
             writer,
-            nameof(CreateInstanceOrderDeliveredEvent));
+            nameof(CreateInstanceOrderSentEvent));
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

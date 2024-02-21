@@ -16,7 +16,7 @@ public class CreateInstanceOrderCancelledEventEndpoint
     {
         return await pipeline.PipeToChannel(
             dto,
-            CreateInstanceOrderCancelledEvent.Handler.ValidateRequest,
+            () => CreateInstanceOrderCancelledEvent.Handler.ValidateRequest(dto),
             writer,
             nameof(CreateInstanceOrderCancelledEvent));
     }

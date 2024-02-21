@@ -8,6 +8,7 @@ using Resourcerer.Api.Services.V1_0;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
+using Resourcerer.Dtos.Instances.Events;
 using Resourcerer.Dtos.Instances.Events.Order;
 using Resourcerer.Logic;
 using System.Threading.Channels;
@@ -32,6 +33,7 @@ public static partial class ServiceRegistry
         services.AddScoped<Pipeline>();
 
         services.AddChannelService<InstanceOrderEventDtoBase, InstanceOrderEventHandler>();
+        services.AddChannelService<InstanceDiscardedRequestDto, InstanceDiscardEventHandler>();
     }
 
     public static void AddAspNetServices(this IServiceCollection services)
