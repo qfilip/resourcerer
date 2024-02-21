@@ -36,7 +36,9 @@ public class CreateInstanceDeliveredEventTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
+        var instance = _testDbContext.Instances.First(x => x.Id == sourceInstance.Id);
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
+        Assert.NotNull(instance.OrderedEvents[0].DeliveredEvent);
     }
 
     [Fact]

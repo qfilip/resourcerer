@@ -31,7 +31,9 @@ public class CreateInstanceDiscardedEventTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
+        var instance = _testDbContext.Instances.First(x => x.Id == orderEvent.DerivedInstanceId);
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
+        Assert.True(instance.DiscardedEvents.Any());
     }
 
     [Fact]

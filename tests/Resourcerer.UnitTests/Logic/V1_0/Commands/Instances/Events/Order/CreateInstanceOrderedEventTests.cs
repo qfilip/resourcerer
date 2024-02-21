@@ -39,10 +39,12 @@ public class CreateInstanceOrderedEventTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
+        var instance = _testDbContext.Instances.First(x => x.Id == sourceInstance.Id);
         var entities = _testDbContext.Instances.ToArray();
 
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
         Assert.True(entities.Length == 2);
+        Assert.True(instance.OrderedEvents.Any());
     }
 
     [Fact]
