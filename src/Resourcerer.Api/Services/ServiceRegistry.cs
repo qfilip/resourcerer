@@ -31,10 +31,7 @@ public static partial class ServiceRegistry
 
         services.AddScoped<Pipeline>();
 
-        services.AddSingleton<ChannelWriter<InstanceOrderEventDtoBase>>(_ => Channel.CreateUnbounded<InstanceOrderEventDtoBase>().Writer);
-        services.AddSingleton<ChannelReader<InstanceOrderEventDtoBase>>(_ => Channel.CreateUnbounded<InstanceOrderEventDtoBase>().Reader);
-
-        services.AddHostedService<InstanceEventHandler>();
+        services.AddChannelService<InstanceOrderEventDtoBase, InstanceOrderEventHandler>();
     }
 
     public static void AddAspNetServices(this IServiceCollection services)
@@ -132,6 +129,13 @@ public static partial class ServiceRegistry
                 b.RequireAuthenticatedUser()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme));
         });
+    }
+    private static void AddChannelService<TMessage, TService>(this IServiceCollection services)
+        where TService : EventServiceBase<TMessage>
+    {
+        services.AddSingleton(_ => Channel.CreateUnbounded<TMessage>().Writer);
+        services.AddSingleton(_ => Channel.CreateUnbounded<TMessage>().Reader);
+        services.AddHostedService<TService>();
     }
 }
 
