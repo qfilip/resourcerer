@@ -1,17 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Instances.Events.Order;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
 
-namespace Resourcerer.UnitTests.Logic.V1_0;
+namespace Resourcerer.UnitTests.Logic.V1_0.Commands.Instances;
 
-public class CreateItemOrderedEventTests : TestsBase
+public class CreateInstanceOrderedEventTests : TestsBase
 {
     private readonly CreateInstanceOrderedEvent.Handler _handler;
-    public CreateItemOrderedEventTests()
+    public CreateInstanceOrderedEventTests()
     {
         _handler = new(_testDbContext);
     }

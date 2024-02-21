@@ -4,12 +4,12 @@ using Resourcerer.Logic.V1_0.Commands;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
 
-namespace Resourcerer.UnitTests.Logic.V1_0.Commands.Events;
+namespace Resourcerer.UnitTests.Logic.V1_0.Commands.Instances;
 
-public class CreateItemDiscardedEventTests : TestsBase
+public class CreateInstanceDiscardedEventTests : TestsBase
 {
     public readonly CreateInstanceDiscardedEvent.Handler _handler;
-    public CreateItemDiscardedEventTests()
+    public CreateInstanceDiscardedEventTests()
     {
         _handler = new(_testDbContext);
     }
