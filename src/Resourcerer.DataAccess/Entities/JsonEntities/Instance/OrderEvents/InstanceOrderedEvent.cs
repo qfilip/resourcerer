@@ -13,6 +13,6 @@ public class InstanceOrderedEvent : JsonEntityBase
     public DateTime? ExpectedDeliveryDate { get; set; }
 
     public virtual InstanceOrderCancelledEvent? OrderCancelledEvent { get; set; }
-    public virtual InstanceSentEvent? SentEvent { get; set; }
-    public virtual InstanceDeliveredEvent? DeliveredEvent { get; set; }
+    public virtual InstanceOrderSentEvent? SentEvent { get; set; }
+    public virtual InstanceOrderDeliveredEvent? DeliveredEvent { get; set; }
 }

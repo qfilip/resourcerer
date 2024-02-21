@@ -1,5 +1,5 @@
 ﻿namespace Resourcerer.DataAccess.Entities;
 
-public class InstanceSentEvent : EntityBase
+public class InstanceOrderSentEvent : EntityBase
 {
 }

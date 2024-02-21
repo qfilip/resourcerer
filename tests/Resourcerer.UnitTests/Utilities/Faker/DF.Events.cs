@@ -71,19 +71,19 @@ internal static partial class DF
         return cancelEv;
     }
 
-    public static InstanceSentEvent FakeSentEvent(
-        Action<InstanceSentEvent>? modifier = null)
+    public static InstanceOrderSentEvent FakeSentEvent(
+        Action<InstanceOrderSentEvent>? modifier = null)
     {
-        var sentEv = MakeEntity(() => new InstanceSentEvent());
+        var sentEv = MakeEntity(() => new InstanceOrderSentEvent());
         modifier?.Invoke(sentEv);
 
         return sentEv;
     }
 
-    public static InstanceDeliveredEvent FakeDeliveredEvent(
-        Action<InstanceDeliveredEvent>? modifier = null)
+    public static InstanceOrderDeliveredEvent FakeDeliveredEvent(
+        Action<InstanceOrderDeliveredEvent>? modifier = null)
     {
-        var deliverEv = MakeEntity(() => new InstanceDeliveredEvent());
+        var deliverEv = MakeEntity(() => new InstanceOrderDeliveredEvent());
         modifier?.Invoke(deliverEv);
 
         return deliverEv;

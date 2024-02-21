@@ -55,7 +55,7 @@ public static class CreateInstanceDeliveredEvent
                 return HandlerResult<Unit>.Ok(Unit.New);
             }
 
-            var deliveredEvent = JsonEntityBase.CreateEntity(() => new InstanceDeliveredEvent());
+            var deliveredEvent = JsonEntityBase.CreateEntity(() => new InstanceOrderDeliveredEvent());
             orderEvent.DeliveredEvent = deliveredEvent;
 
             await _appDbContext.SaveChangesAsync();
