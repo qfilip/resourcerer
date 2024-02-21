@@ -115,6 +115,62 @@ public class CreateInstanceOrderedEventTests : TestsBase
     }
 
     [Fact]
+    public void When_DerivedInstanceItem_NotFound_Then_Rejected()
+    {
+        // arrange
+        var derivedInstanceItem = DF.FakeItem(_testDbContext);
+        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        {
+            x.Quantity = 1;
+        });
+        _testDbContext.SaveChanges();
+
+        var dto = GetDto(sourceInstance, x =>
+        {
+            x.BuyerCompanyId = derivedInstanceItem.Category!.CompanyId;
+            x.SellerCompanyId = sourceInstance.OwnerCompanyId;
+            x.DerivedInstanceItemId = Guid.NewGuid();
+            x.UnitsOrdered = 1;
+        });
+
+        // act
+        var result = _handler.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
+    public void When_DerivedInstanceItem_HasDifferentBuyerCompany_Then_Rejected()
+    {
+        // arrange
+        var buyerCompany = DF.FakeCompany(_testDbContext);
+        var derivedInstanceItem = DF.FakeItem(_testDbContext, x =>
+        {
+            x.Category!.CompanyId = DF.FakeCompany(_testDbContext).Id;
+        });
+        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        {
+            x.Quantity = 1;
+        });
+        _testDbContext.SaveChanges();
+
+        var dto = GetDto(sourceInstance, x =>
+        {
+            x.BuyerCompanyId = buyerCompany.Id;
+            x.SellerCompanyId = sourceInstance.OwnerCompanyId;
+            x.DerivedInstanceItemId = derivedInstanceItem.Id;
+            x.UnitsOrdered = 1;
+        });
+
+        // act
+        var result = _handler.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
     public void When_InstanceNotFound_Then_Rejected()
     {
         var buyerCompany = DF.FakeCompany(_testDbContext);
