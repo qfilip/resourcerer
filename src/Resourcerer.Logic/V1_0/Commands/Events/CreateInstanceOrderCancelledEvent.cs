@@ -4,20 +4,20 @@ using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.Instances.Events.Order;
 
 namespace Resourcerer.Logic.Commands.V1_0;
 
 public static class CreateInstanceOrderCancelledEvent
 {
-    public class Handler : IAppHandler<InstanceCancelRequestDto, Unit>
+    public class Handler : IAppHandler<InstanceOrderCancelRequestDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
-        public async Task<HandlerResult<Unit>> Handle(InstanceCancelRequestDto request)
+        public async Task<HandlerResult<Unit>> Handle(InstanceOrderCancelRequestDto request)
         {
             var instance = await _appDbContext.Instances
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
@@ -70,13 +70,13 @@ public static class CreateInstanceOrderCancelledEvent
             return HandlerResult<Unit>.Ok(new Unit());
         }
 
-        public ValidationResult Validate(InstanceCancelRequestDto request) =>
+        public ValidationResult Validate(InstanceOrderCancelRequestDto request) =>
             new Validator().Validate(request);
 
-        public static ValidationResult ValidateRequest(InstanceCancelRequestDto request) =>
+        public static ValidationResult ValidateRequest(InstanceOrderCancelRequestDto request) =>
             new Validator().Validate(request);
 
-        private class Validator : AbstractValidator<InstanceCancelRequestDto>
+        private class Validator : AbstractValidator<InstanceOrderCancelRequestDto>
         {
             public Validator()
             {

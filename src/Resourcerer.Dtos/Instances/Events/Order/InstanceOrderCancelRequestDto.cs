@@ -1,8 +1,6 @@
-﻿using Resourcerer.Dtos.Events;
+﻿namespace Resourcerer.Dtos.Instances.Events.Order;
 
-namespace Resourcerer.Dtos;
-
-public class InstanceCancelRequestDto : EventDtoBase
+public class InstanceOrderCancelRequestDto : InstanceOrderEventDtoBase
 {
     public Guid InstanceId { get; set; }
     public Guid OrderEventId { get; set; }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.Instances.Events.Order;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.UnitTests.Utilities;

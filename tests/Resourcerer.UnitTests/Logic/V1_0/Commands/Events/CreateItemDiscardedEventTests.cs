@@ -1,4 +1,4 @@
-﻿using Resourcerer.Dtos;
+﻿using Resourcerer.Dtos.Instances.Events;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1_0.Commands;
 using Resourcerer.UnitTests.Utilities;

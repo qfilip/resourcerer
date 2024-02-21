@@ -1,5 +1,5 @@
 ﻿using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.Instances.Events.Order;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.UnitTests.Utilities;
@@ -26,7 +26,7 @@ public class CreateItemDeliveredEventTests : TestsBase
         });
         _testDbContext.SaveChanges();
 
-        var dto = new InstanceDeliveredRequestDto
+        var dto = new InstanceOrderDeliveredRequestDto
         {
             InstanceId = sourceInstance.Id,
             OrderEventId = sourceInstance.OrderedEvents[0].Id
@@ -42,7 +42,7 @@ public class CreateItemDeliveredEventTests : TestsBase
     [Fact]
     public void When_OrderEvent_NotFound_Then_Rejected()
     {
-        var dto = new InstanceDeliveredRequestDto
+        var dto = new InstanceOrderDeliveredRequestDto
         {
             InstanceId = Guid.NewGuid()
         };
@@ -59,7 +59,7 @@ public class CreateItemDeliveredEventTests : TestsBase
     {
         var orderedEvent = DF.FakeOrderedEvent(_testDbContext, x => x.OrderCancelledEvent = DF.FakeOrderCancelledEvent());
         
-        var dto = new InstanceDeliveredRequestDto
+        var dto = new InstanceOrderDeliveredRequestDto
         {
             InstanceId = orderedEvent.DerivedInstanceId,
             OrderEventId = orderedEvent.Id
@@ -82,7 +82,7 @@ public class CreateItemDeliveredEventTests : TestsBase
         });
         _testDbContext.SaveChanges();
 
-        var dto = new InstanceDeliveredRequestDto
+        var dto = new InstanceOrderDeliveredRequestDto
         {
             InstanceId = sourceInstance.Id,
             OrderEventId = sourceInstance.OrderedEvents[0].Id
@@ -105,7 +105,7 @@ public class CreateItemDeliveredEventTests : TestsBase
         });
         _testDbContext.SaveChanges();
         
-        var dto = new InstanceDeliveredRequestDto
+        var dto = new InstanceOrderDeliveredRequestDto
         {
             InstanceId = sourceInstance.Id,
             OrderEventId = sourceInstance.OrderedEvents[0].Id

@@ -1,5 +1,5 @@
 ﻿using FluentValidation.Results;
-using Resourcerer.Dtos.Events;
+using Resourcerer.Dtos.Instances.Events.Order;
 using Resourcerer.Logic;
 using System.Threading.Channels;
 
@@ -41,8 +41,8 @@ public class Pipeline
     public async Task<IResult> PipeToChannel<TRequest>(
         TRequest request,
         Func<TRequest, ValidationResult> validator,
-        ChannelWriter<EventDtoBase> writer,
-        string actionName) where TRequest : EventDtoBase
+        ChannelWriter<InstanceOrderEventDtoBase> writer,
+        string actionName) where TRequest : InstanceOrderEventDtoBase
     {
         _logger.LogInformation("Action {Action} started", actionName);
 

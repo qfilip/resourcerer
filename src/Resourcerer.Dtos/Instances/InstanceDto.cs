@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using Resourcerer.Dtos.Instances.Events;
+using Resourcerer.Dtos.Instances.Events.Order;
 
 namespace Resourcerer.Dtos;
 public class InstanceDto : IBaseDto
@@ -10,8 +12,8 @@ public class InstanceDto : IBaseDto
     public virtual ItemDto? Element { get; set; }
 
     public List<InstanceOrderRequestDto>? InstanceOrderedEvents { get; set; }
-    public List<InstanceCancelRequestDto>? InstanceOrderCancelledEvents { get; set; }
-    public List<InstanceDeliveredRequestDto>? InstanceDeliveredEvents { get; set; }
+    public List<InstanceOrderCancelRequestDto>? InstanceOrderCancelledEvents { get; set; }
+    public List<InstanceOrderDeliveredRequestDto>? InstanceDeliveredEvents { get; set; }
     public List<InstanceDiscardedRequestDto>? InstanceDiscardedEvents { get; set; }
 
     public class Validator : AbstractValidator<InstanceDto>

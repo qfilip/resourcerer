@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
-using Resourcerer.Dtos.Events;
+using Resourcerer.Dtos.Instances.Events.Order;
 using Resourcerer.Logic.Commands.V1_0;
 using System.Threading.Channels;
 
@@ -11,7 +11,7 @@ public class CreateInstanceOrderedEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] InstanceOrderRequestDto dto,
-        [FromServices] ChannelWriter<EventDtoBase> writer,
+        [FromServices] ChannelWriter<InstanceOrderEventDtoBase> writer,
         [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeToChannel(

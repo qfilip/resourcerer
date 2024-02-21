@@ -8,7 +8,7 @@ using Resourcerer.Api.Services.V1_0;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
-using Resourcerer.Dtos.Events;
+using Resourcerer.Dtos.Instances.Events.Order;
 using Resourcerer.Logic;
 using System.Threading.Channels;
 
@@ -31,8 +31,8 @@ public static partial class ServiceRegistry
 
         services.AddScoped<Pipeline>();
 
-        services.AddSingleton<ChannelWriter<EventDtoBase>>(_ => Channel.CreateUnbounded<EventDtoBase>().Writer);
-        services.AddSingleton<ChannelReader<EventDtoBase>>(_ => Channel.CreateUnbounded<EventDtoBase>().Reader);
+        services.AddSingleton<ChannelWriter<InstanceOrderEventDtoBase>>(_ => Channel.CreateUnbounded<InstanceOrderEventDtoBase>().Writer);
+        services.AddSingleton<ChannelReader<InstanceOrderEventDtoBase>>(_ => Channel.CreateUnbounded<InstanceOrderEventDtoBase>().Reader);
 
         services.AddHostedService<InstanceEventHandler>();
     }

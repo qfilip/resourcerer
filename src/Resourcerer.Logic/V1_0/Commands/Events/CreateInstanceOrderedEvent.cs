@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.Instances.Events.Order;
 using Resourcerer.Logic.V1_0.Functions;
 
 namespace Resourcerer.Logic.Commands.V1_0;

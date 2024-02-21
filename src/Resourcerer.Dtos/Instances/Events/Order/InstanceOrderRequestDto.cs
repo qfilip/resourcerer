@@ -1,8 +1,6 @@
-﻿using Resourcerer.Dtos.Events;
+﻿namespace Resourcerer.Dtos.Instances.Events.Order;
 
-namespace Resourcerer.Dtos;
-
-public class InstanceOrderRequestDto : EventDtoBase
+public class InstanceOrderRequestDto : InstanceOrderEventDtoBase
 {
     public Guid InstanceId { get; set; }
     public Guid SellerCompanyId { get; set; }

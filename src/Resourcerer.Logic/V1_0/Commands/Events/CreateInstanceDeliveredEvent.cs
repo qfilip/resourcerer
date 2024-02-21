@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.Instances.Events.Order;
 
 namespace Resourcerer.Logic.Commands.V1_0;
 
 public static class CreateInstanceDeliveredEvent
 {
-    public class Handler : IAppHandler<InstanceDeliveredRequestDto, Unit>
+    public class Handler : IAppHandler<InstanceOrderDeliveredRequestDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
@@ -18,7 +18,7 @@ public static class CreateInstanceDeliveredEvent
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(InstanceDeliveredRequestDto request)
+        public async Task<HandlerResult<Unit>> Handle(InstanceOrderDeliveredRequestDto request)
         {
             var instance = await _appDbContext.Instances
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
@@ -63,13 +63,13 @@ public static class CreateInstanceDeliveredEvent
             return HandlerResult<Unit>.Ok(new Unit());
         }
 
-        public ValidationResult Validate(InstanceDeliveredRequestDto request) =>
+        public ValidationResult Validate(InstanceOrderDeliveredRequestDto request) =>
             new Validator().Validate(request);
 
-        public static ValidationResult ValidateRequest(InstanceDeliveredRequestDto request) =>
+        public static ValidationResult ValidateRequest(InstanceOrderDeliveredRequestDto request) =>
             new Validator().Validate(request);
 
-        public class Validator : AbstractValidator<InstanceDeliveredRequestDto>
+        public class Validator : AbstractValidator<InstanceOrderDeliveredRequestDto>
         {
             public Validator()
             {

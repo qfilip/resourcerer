@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
-using Resourcerer.Dtos.Events;
+using Resourcerer.Dtos.Instances.Events;
+using Resourcerer.Dtos.Instances.Events.Order;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.Logic.V1_0.Commands;
 using System.Threading.Channels;
@@ -12,7 +13,7 @@ public class CreateItemDiscardedEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] InstanceDiscardedRequestDto dto,
-        [FromServices] ChannelWriter<EventDtoBase> writer,
+        [FromServices] ChannelWriter<InstanceOrderEventDtoBase> writer,
         [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeToChannel(
