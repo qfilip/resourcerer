@@ -115,9 +115,9 @@ public static partial class ServiceRegistry
         {
             o.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidIssuer = AppStaticData.Jwt.Issuer,
-                ValidAudience = AppStaticData.Jwt.Audience,
-                IssuerSigningKey = AppStaticData.Jwt.Key,
+                ValidIssuer = AppStaticData.Auth.Jwt.Issuer,
+                ValidAudience = AppStaticData.Auth.Jwt.Audience,
+                IssuerSigningKey = AppStaticData.Auth.Jwt.Key,
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,
@@ -127,7 +127,7 @@ public static partial class ServiceRegistry
 
         services.AddAuthorization(cfg =>
         {
-            cfg.AddPolicy(AppStaticData.AuthorizationPolicy.Jwt, b =>
+            cfg.AddPolicy(AppStaticData.Auth.AuthorizationPolicy.Jwt, b =>
                 b.RequireAuthenticatedUser()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme));
         });

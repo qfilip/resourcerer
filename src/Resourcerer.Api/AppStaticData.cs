@@ -5,23 +5,27 @@ namespace Resourcerer.Api;
 
 public static class AppStaticData
 {
-    public static class Jwt
+    public static class Auth
     {
-        public static SymmetricSecurityKey? Key { get; private set; }
-
-        public static void SetJwtSecretKey(string secret)
+        public static bool Enabled { get; set; }
+        public static class Jwt
         {
-            Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+            public static SymmetricSecurityKey? Key { get; private set; }
+
+            public static void SetJwtSecretKey(string secret)
+            {
+                Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+            }
+
+            public static string Issuer { get; } = "Resourcerer.Api";
+            public static string Audience { get; } = "Resourcerer.Api";
         }
 
-        public static string Issuer { get; } = "Resourcerer.Api";
-        public static string Audience { get; } = "Resourcerer.Api";
-    }
-
-    public static class AuthorizationPolicy
-    {
-        public static string Admin { get; } = "admin";
-        public static string Jwt { get; } = "JWT";
+        public static class AuthorizationPolicy
+        {
+            public static string Admin { get; } = "admin";
+            public static string Jwt { get; } = "JWT";
+        }
     }
 }
 

@@ -15,7 +15,7 @@ public static class CreateItemProductionOrderedEvent
             _dbContext = dbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(Unit request)
+        public Task<HandlerResult<Unit>> Handle(Unit request)
         {
             var productionOrder = JsonEntityBase.CreateEntity(() =>
             {
@@ -24,6 +24,8 @@ public static class CreateItemProductionOrderedEvent
                     Quantity = 0
                 };
             });
+
+            throw new NotImplementedException();
         }
 
         public ValidationResult Validate(Unit request)

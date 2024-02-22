@@ -20,12 +20,12 @@ public class JwtService
 
     private static string WriteToken(IEnumerable<Claim> claims)
     {
-        var creadentials = new SigningCredentials(AppStaticData.Jwt.Key, SecurityAlgorithms.HmacSha256);
+        var creadentials = new SigningCredentials(AppStaticData.Auth.Jwt.Key, SecurityAlgorithms.HmacSha256);
         var now = DateTime.UtcNow;
 
         var token = new JwtSecurityToken(
-            AppStaticData.Jwt.Issuer,
-            AppStaticData.Jwt.Audience,
+            AppStaticData.Auth.Jwt.Issuer,
+            AppStaticData.Auth.Jwt.Audience,
             claims,
             now,
             now.AddMinutes(30),

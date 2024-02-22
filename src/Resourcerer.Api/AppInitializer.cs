@@ -10,7 +10,8 @@ public class AppInitializer
     
     public static void LoadConfiguration(IConfiguration configuration)
     {
-        AppStaticData.Jwt.SetJwtSecretKey(Load<string>(configuration, "Auth", "JwtSecret"));
+        AppStaticData.Auth.Jwt.SetJwtSecretKey(Load<string>(configuration, "Auth", "JwtSecret"));
+        AppStaticData.Auth.Enabled = Load<bool>(configuration, "Auth", "Enabled");
     }
 
     private static T Load<T>(IConfiguration configuration, string section, string key)

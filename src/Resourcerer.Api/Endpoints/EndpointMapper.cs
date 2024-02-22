@@ -15,8 +15,7 @@ public static class EndpointMapper
         RouteHandlerBuilder route,
         List<(ePermissionSection claimType, ePermission[] claimValues)>? claims = null)
     {
-        var authDisabled = true;
-        if(authDisabled)
+        if(!AppStaticData.Auth.Enabled) // set in appsetting.json
         {
             return;
         }
