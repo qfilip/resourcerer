@@ -37,17 +37,31 @@ public static partial class Instances
             .ToArray();
 
         var quantityLeft = i.Quantity - sold - discards.Sum(x => x.Quantity);
+        var purchaseCost = ComputePurchaseCost(i);
 
         return new InstanceInfoDto()
         {
             InstanceId = i.Id,
             PendingToArrive = 0,
-            // PurchaseCost = i.UnitPurchaseCost * i.Quantity,
+            PurchaseCost = purchaseCost,
             Discards = discards,
             ExpiryDate = i.ExpiryDate,
             QuantityLeft = quantityLeft,
             SellProfit = sellProfits,
             SellCancellationsPenaltyDifference = (float)sellCancellationsPenaltyDifference
         };
+    }
+
+    private static double ComputePurchaseCost(Instance i)
+    {
+        if(!i.SourceInstanceId.HasValue)
+        {
+            return i.Item!.ProductionPrice;
+        }
+
+        var orderEvent = i.SourceInstance!.OrderedEvents
+            .First(x => x.DerivedInstanceId == i.Id);
+
+        return Maths.Discount(orderEvent.Quantity * orderEvent.UnitPrice, orderEvent.TotalDiscountPercent);
     }
 }
