@@ -129,7 +129,7 @@ public static class CreateInstanceOrderedEvent
             {
                 OwnerCompanyId = orderedEvent.BuyerCompanyId,
                 SourceInstanceId = instance.Id,
-                ItemId = instance.ItemId,
+                ItemId = request.DerivedInstanceItemId ?? instance.ItemId,
                 ExpiryDate = instance.ExpiryDate
             };
 

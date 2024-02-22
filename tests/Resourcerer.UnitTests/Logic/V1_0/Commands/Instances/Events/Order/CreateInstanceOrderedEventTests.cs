@@ -16,7 +16,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
     }
 
     [Fact]
-    public void When_AllOk_Then_Ok()
+    public void When_AllOk_WithDerivedInstanceItemMapping_Then_Ok()
     {
         // arrange
         var derivedInstanceItem = DF.FakeItem(_testDbContext);
@@ -38,12 +38,44 @@ public class CreateInstanceOrderedEventTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
-        var instance = _testDbContext.Instances.First(x => x.Id == sourceInstance.Id);
+        var srcInstance = _testDbContext.Instances.First(x => x.Id == sourceInstance.Id);
+        var dervInstance = _testDbContext.Instances.First(x => x.ItemId == derivedInstanceItem.Id);
         var entities = _testDbContext.Instances.ToArray();
 
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
         Assert.True(entities.Length == 2);
-        Assert.True(instance.OrderedEvents.Any());
+        Assert.True(srcInstance.OrderedEvents.Any());
+        Assert.NotNull(dervInstance);
+    }
+
+    [Fact]
+    public void When_AllOk_WithoutDerivedInstanceItemMapping_Then_Ok()
+    {
+        // arrange
+        var buyerCompany = DF.FakeCompany(_testDbContext);
+        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        {
+            x.Quantity = 1;
+        });
+        _testDbContext.SaveChanges();
+
+        var dto = GetDto(sourceInstance, x =>
+        {
+            x.BuyerCompanyId = buyerCompany.Id;
+            x.SellerCompanyId = sourceInstance.OwnerCompanyId;
+            x.UnitsOrdered = 1;
+        });
+
+        // act
+        var result = _handler.Handle(dto).Await();
+
+        // assert
+        var srcInstance = _testDbContext.Instances.First(x => x.Id == sourceInstance.Id);
+        var entities = _testDbContext.Instances.ToArray();
+
+        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
+        Assert.True(entities.Length == 2);
+        Assert.True(srcInstance.OrderedEvents.Any());
     }
 
     [Fact]
