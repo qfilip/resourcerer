@@ -1,4 +1,7 @@
-﻿namespace Resourcerer.DataAccess.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
+
+namespace Resourcerer.DataAccess.Entities;
 
 public class Item : EntityBase
 {
@@ -25,5 +28,22 @@ public class Item : EntityBase
     public ICollection<Excerpt> CompositeExcerpts { get; set; }
     public ICollection<Price> Prices { get; set; }
     public ICollection<Instance> Instances { get; set; }
+
+    public string ProductionOrderedEventsJson
+    {
+        get => JsonSerializer.Serialize(ProductionOrderedEvents);
+        set
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            ProductionOrderedEvents = JsonSerializer.Deserialize<List<ItemProductionOrderedEvent>>(value)!;
+        }
+    }
+
+    [NotMapped]
+    public List<ItemProductionOrderedEvent> ProductionOrderedEvents { get; set; } = new();
 }
 
