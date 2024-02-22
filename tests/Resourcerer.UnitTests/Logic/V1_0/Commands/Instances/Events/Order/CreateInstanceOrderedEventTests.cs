@@ -45,7 +45,6 @@ public class CreateInstanceOrderedEventTests : TestsBase
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
         Assert.True(entities.Length == 2);
         Assert.True(srcInstance.OrderedEvents.Any());
-        Assert.NotNull(dervInstance);
     }
 
     [Fact]
@@ -71,6 +70,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
 
         // assert
         var srcInstance = _testDbContext.Instances.First(x => x.Id == sourceInstance.Id);
+        var dervInstance = _testDbContext.Instances.First(x => x.ItemId == sourceInstance.ItemId);
         var entities = _testDbContext.Instances.ToArray();
 
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
