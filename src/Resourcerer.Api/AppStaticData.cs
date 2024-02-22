@@ -19,6 +19,7 @@ public static class AppStaticData
 
             public static string Issuer { get; } = "Resourcerer.Api";
             public static string Audience { get; } = "Resourcerer.Api";
+            public static string UserId { get; } = "userid";
         }
 
         public static class AuthorizationPolicy

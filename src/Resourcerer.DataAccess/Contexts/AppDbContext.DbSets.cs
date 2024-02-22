@@ -1,13 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.AuthService;
 using Resourcerer.DataAccess.Entities;
 
 namespace Resourcerer.DataAccess.Contexts;
 
 public partial class AppDbContext : DbContext
 {
-	public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    private readonly AppDbIdentity _appDbIdentity;
+
+    public AppDbContext(DbContextOptions<AppDbContext> options, AppDbIdentity appDbIdentity) : base(options)
 	{
-	}
+        _appDbIdentity = appDbIdentity;
+    }
 
 	public virtual DbSet<AppUser> AppUsers { get; set; }
     public virtual DbSet<Company> Companies { get; set; }
@@ -32,12 +36,16 @@ public partial class AppDbContext : DbContext
                 added.Id = added.Id == Guid.Empty ? Guid.NewGuid() : added.Id;
                 added.CreatedAt = now;
                 added.ModifiedAt = now;
+                added.CreatedBy = _appDbIdentity.User.Id;
+                added.ModifiedBy = _appDbIdentity.User.Id;
+
             }
             else if (entry.State == EntityState.Modified && entry.Entity is EntityBase modded)
             {
                 modded.ModifiedAt = now;
+                modded.CreatedBy = _appDbIdentity.User.Id;
+                modded.ModifiedBy = _appDbIdentity.User.Id;
             }
-
         }
         return await base.SaveChangesAsync(cancellationToken);
     }

@@ -12,6 +12,7 @@ public class JwtService
     {
         var claims = Permissions.GetClaimsFromDictionary(dto.Permissions!);
         claims.Add(new Claim(JwtRegisteredClaimNames.Sub, dto.Name!));
+        claims.Add(new Claim(AppStaticData.Auth.Jwt.UserId, dto.Id.ToString()));
 
         return WriteToken(claims);
     }

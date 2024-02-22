@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.AuthService;
 using Resourcerer.DataAccess.Contexts;
 
 namespace Resourcerer.UnitTests.Utilities;
@@ -17,7 +18,7 @@ public class ContextCreator: IDisposable
             .UseSqlite(_connection)
             .Options;
 
-        var context = new AppDbContext(_options);
+        var context = new AppDbContext(_options, new AppDbIdentity());
         context.Database.EnsureCreated();
     }
     //public ContextCreator(Func<DatabaseData> seeder)
@@ -48,7 +49,7 @@ public class ContextCreator: IDisposable
     //}
     public AppDbContext GetTestDbContext()
     {
-        return new AppDbContext(_options);
+        return new AppDbContext(_options, new AppDbIdentity());
     }
 
     public void Dispose()

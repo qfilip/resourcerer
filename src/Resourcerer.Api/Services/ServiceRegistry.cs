@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Resourcerer.Api.Services.Auth;
 using Resourcerer.Api.Services.V1_0;
+using Resourcerer.DataAccess.AuthService;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
@@ -110,6 +112,8 @@ public static partial class ServiceRegistry
 
     private static void AddAuth(this IServiceCollection services)
     {
+        services.AddScoped<AppJwtBearerEvents>();
+        services.AddScoped<AppDbIdentity>();
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
         {
@@ -121,8 +125,10 @@ public static partial class ServiceRegistry
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,
-                ValidateIssuerSigningKey = true
+                ValidateIssuerSigningKey = true,
             };
+
+            o.EventsType = typeof(AppJwtBearerEvents);
         });
 
         services.AddAuthorization(cfg =>
