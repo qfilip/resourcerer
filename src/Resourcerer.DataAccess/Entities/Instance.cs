@@ -51,9 +51,24 @@ public class Instance : EntityBase
             DiscardedEvents = JsonSerializer.Deserialize<List<InstanceDiscardedEvent>>(value)!;
         }
     }
+    public string ReservedEventsJson
+    {
+        get => JsonSerializer.Serialize(ReservedEvents);
+        set
+        {
+            if (value == null)
+            {
+                return;
+            }
+
+            ReservedEvents = JsonSerializer.Deserialize<List<InstanceReservedEvent>>(value)!;
+        }
+    }
 
     [NotMapped]
     public List<InstanceOrderedEvent> OrderedEvents { get; set; } = new();
     [NotMapped]
     public List<InstanceDiscardedEvent> DiscardedEvents { get; set; } = new();
+    [NotMapped]
+    public List<InstanceReservedEvent> ReservedEvents { get; set; } = new();
 }

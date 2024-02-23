@@ -6,6 +6,7 @@ public static partial class Instances
 {
     public static double GetUnitsInStock(Instance i)
     {
+        // item produced
         if (i.SourceInstanceId == null)
         {
             var sent = i.OrderedEvents
