@@ -47,11 +47,7 @@ public partial class AppDbContext : DbContext
                 modded.ModifiedBy = _appDbIdentity.User.Id;
             }
         }
-        return await base.SaveChangesAsync(cancellationToken);
-    }
 
-    public async Task<int> BaseSaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        return await base.SaveChangesAsync();
+        return await base.SaveChangesAsync(cancellationToken);
     }
 }
