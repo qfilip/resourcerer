@@ -32,8 +32,6 @@ public static class GetItemStatistics
                 .Include(x => x.CompositeExcerpts)
                     .ThenInclude(x => x.Element)
                         .ThenInclude(x => x!.Prices) as IQueryable<Item>;
-
-            itemQuery = ItemQueryUtils.IncludeInstanceEvents(itemQuery);
             
             var item = await itemQuery.FirstOrDefaultAsync(x => x.Id == query.ItemId);
 
