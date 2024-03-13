@@ -4,6 +4,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.V1_0.Functions;
+using System;
 
 namespace Resourcerer.Logic.V1_0.Commands.Items;
 public static class CreateItemProductionOrder
@@ -27,6 +28,33 @@ public static class CreateItemProductionOrder
                 return HandlerResult<Unit>.Rejected("Item not found");
             }
 
+            if(request.InstanceToUseIds.Length > 0)
+            {
+                var excerpts = await _dbContext.Excerpts
+                .Where(x => x.CompositeId == request.ItemId)
+                    .Include(x => x.Element)
+                        .ThenInclude(x => x!.Instances)
+                .ToArrayAsync();
+
+                var instances = excerpts
+                    .SelectMany(x => x.Element!.Instances)
+                    .ToArray();
+
+                var usableInstances = RequestedInstancesExist(excerpts, instances, request.InstanceToUseIds);
+                if (usableInstances.Length == 0)
+                {
+                    return HandlerResult<Unit>.Rejected("Not all requested instances found");
+                }
+
+                PopulateRequiredQuantity(usableInstances, excerpts);
+                // TODO
+
+                // add ReservedEvents to Instance as json property
+                // update ReservedEvents for every usable instance
+
+                // add UsedEvents to Instance.ReservedEvent
+            }
+
             var entity = new ItemProductionOrder
             {
                 ItemId = item.Id,
@@ -39,27 +67,35 @@ public static class CreateItemProductionOrder
             return HandlerResult<Unit>.Ok(Unit.New);
         }
 
-        private static async Task<bool> ValidateRequestedInstancesAsync(Guid itemId, Guid[] requestedInstanceIds, AppDbContext appDbContext)
+        private static RequestedInstance[] RequestedInstancesExist(Excerpt[] excerpts, Instance[] instances, Guid[] requestedInstanceIds)
         {
-            var excerpts = await appDbContext.Excerpts
-                .Where(x => x.CompositeId == itemId)
-                    .Include(x => x.Element)
-                        .ThenInclude(x => x!.Instances)
-                .ToArrayAsync();
-
-            var instances = excerpts
-                .SelectMany(x => x.Element!.Instances)
-                .ToArray();
+            if(!instances.All(x => requestedInstanceIds.Contains(x.Id)))
+            {
+                return Array.Empty<RequestedInstance>();
+            }
 
             var usableInstances = instances
-                .Select(x => new
+                .Select(x => new RequestedInstance
                 {
                     Id = x.Id,
-                    Quantity = Instances.GetAvailableUnitsInStock(x)
+                    ItemId = x.ItemId,
+                    AvailableQuantity = Instances.GetAvailableUnitsInStock(x)
                 })
                 .ToArray();
 
-            throw new NotImplementedException();
+            return usableInstances.All(x => requestedInstanceIds.Contains(x.Id)) ?
+                usableInstances : Array.Empty<RequestedInstance>();
+        }
+
+        private static void PopulateRequiredQuantity(RequestedInstance[] usableInstances, Excerpt[] excerpts)
+        {
+            foreach (var ui in usableInstances)
+            {
+                var usableInstance = usableInstances.First(x => x.Id == ui.Id);
+                var excerpt = excerpts.First(x => x.ElementId == usableInstance.ItemId);
+
+                usableInstance.RequiredQuantity = excerpt.Quantity;
+            }
         }
 
         public ValidationResult Validate(CreateItemProductionOrderRequestDto request)
@@ -67,4 +103,13 @@ public static class CreateItemProductionOrder
             throw new NotImplementedException();
         }
     }
+    
+    private class RequestedInstance
+    {
+        public Guid Id { get; set; }
+        public Guid? ItemId { get; set; }
+        public double AvailableQuantity { get; set; }
+        public double RequiredQuantity { get; set; }
+    }
 }
+
