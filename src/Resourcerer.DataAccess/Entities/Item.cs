@@ -11,6 +11,7 @@ public class Item : EntityBase
         ElementExcerpts = new HashSet<Excerpt>();
         Prices = new HashSet<Price>();
         Instances = new HashSet<Instance>();
+        ProductionOrders = new HashSet<ItemProductionOrder>();
     }
 
     public string? Name { get; set; }
@@ -28,22 +29,6 @@ public class Item : EntityBase
     public ICollection<Excerpt> CompositeExcerpts { get; set; }
     public ICollection<Price> Prices { get; set; }
     public ICollection<Instance> Instances { get; set; }
-
-    public string ProductionOrderedEventsJson
-    {
-        get => JsonSerializer.Serialize(ProductionOrderedEvents);
-        set
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            ProductionOrderedEvents = JsonSerializer.Deserialize<List<ItemProductionOrderedEvent>>(value)!;
-        }
-    }
-
-    [NotMapped]
-    public List<ItemProductionOrderedEvent> ProductionOrderedEvents { get; set; } = new();
+    public ICollection<ItemProductionOrder> ProductionOrders { get; set; }
 }
 

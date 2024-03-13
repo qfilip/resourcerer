@@ -85,6 +85,13 @@ public partial class AppDbContext
                 .HasConstraintName($"FK_{nameof(UnitOfMeasure)}_{nameof(Item)}");
         });
 
+        ConfigureEntity<ItemProductionOrder>(modelBuilder, e =>
+        {
+            e.HasOne(x => x.Item).WithMany(x => x.ProductionOrders)
+                .HasForeignKey(x => x.ItemId).IsRequired()
+                .HasConstraintName($"FK_{nameof(Item)}_{nameof(ItemProductionOrder)}");
+        });
+
         ConfigureEntity<Instance>(modelBuilder, (e) =>
         {
             e.HasOne(x => x.Item).WithMany(x => x.Instances)

@@ -20,6 +20,7 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<UnitOfMeasure> UnitsOfMeasure { get; set; }
     public virtual DbSet<Price> Prices { get; set; }
     public virtual DbSet<Item> Items { get; set; }
+    public virtual DbSet<ItemProductionOrder> ItemProductionOrders { get; set; }
     public virtual DbSet<Instance> Instances { get; set; }
 
 

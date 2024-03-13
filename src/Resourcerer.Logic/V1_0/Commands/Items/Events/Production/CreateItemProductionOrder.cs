@@ -2,12 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.V1_0.Functions;
 
 namespace Resourcerer.Logic.V1_0.Commands.Items;
-public static class CreateItemProductionOrderedEvent
+public static class CreateItemProductionOrder
 {
     public class Handler : IAppHandler<CreateItemProductionOrderRequestDto, Unit>
     {
@@ -28,15 +27,13 @@ public static class CreateItemProductionOrderedEvent
                 return HandlerResult<Unit>.Rejected("Item not found");
             }
 
-            var productionOrder = JsonEntityBase.CreateEntity(() =>
+            var entity = new ItemProductionOrder
             {
-                return new ItemProductionOrderedEvent
-                {
-                    Quantity = request.Quantity
-                };
-            });
+                ItemId = item.Id,
+                Quantity = request.Quantity
+            };
 
-            item.ProductionOrderedEvents.Add(productionOrder);
+            _dbContext.ItemProductionOrders.Add(entity);
             await _dbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(Unit.New);

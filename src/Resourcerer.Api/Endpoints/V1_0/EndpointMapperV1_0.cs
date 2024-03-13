@@ -1,4 +1,6 @@
-﻿namespace Resourcerer.Api.Endpoints.V1_0;
+﻿using Resourcerer.Api.Endpoints.V1_0.Items.Production;
+
+namespace Resourcerer.Api.Endpoints.V1_0;
 
 public class EndpointMapperV1_0
 {
@@ -40,6 +42,9 @@ public class EndpointMapperV1_0
         CreateCompositeItemEndpoint.MapToGroup(g);
         CreateElementItemEndpoint.MapToGroup(g);
         GetItemsStatisticsEndpoint.MapToGroup(g);
+
+        // production
+        CreateItemProductionOrderEndpoint.MapToGroup(g);
     }
 
     private static void MapMocks(WebApplication app)

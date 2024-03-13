@@ -4,4 +4,5 @@ namespace Resourcerer.DataAccess.Entities;
 
 public class ItemProductionOrderCancelledEvent : JsonEntityBase
 {
+    public string? Reason { get; set; }
 }
