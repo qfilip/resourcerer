@@ -8,7 +8,7 @@ namespace Resourcerer.Logic.Commands.V1_0;
 
 public class CreateUnitOfMeasure
 {
-    public class Handler : IAppHandler<UnitOfMeasureDto, Unit>
+    public class Handler : IAppHandler<CreateUnitOfMeasureDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -17,10 +17,20 @@ public class CreateUnitOfMeasure
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(UnitOfMeasureDto request)
+        public async Task<HandlerResult<Unit>> Handle(CreateUnitOfMeasureDto request)
         {
+            var companyExists = _appDbContext.Companies
+                .Where(x => x.Id == request.CompanyId)
+                .Count() > 0;
+
+            if(!companyExists)
+            {
+                return HandlerResult<Unit>.Rejected("Company id not found");
+            }
+
             var entity = new UnitOfMeasure
             {
+                CompanyId = request.CompanyId,
                 Name = request.Name,
                 Symbol = request.Symbol
             };
@@ -31,12 +41,15 @@ public class CreateUnitOfMeasure
             return HandlerResult<Unit>.Ok(new Unit());
         }
 
-        public ValidationResult Validate(UnitOfMeasureDto request) => new Validator().Validate(request);
+        public ValidationResult Validate(CreateUnitOfMeasureDto request) => new Validator().Validate(request);
 
-        private class Validator : AbstractValidator<UnitOfMeasureDto>
+        private class Validator : AbstractValidator<CreateUnitOfMeasureDto>
         {
             public Validator()
             {
+                RuleFor(x => x.CompanyId)
+                    .NotEmpty().WithMessage("Company id cannot be empty");
+
                 RuleFor(x => x.Name)
                     .NotEmpty().WithMessage("Unit of measure name cannot be empty")
                     .Length(min: 2, max: 50).WithMessage("Unit of measure name must be between 2 and 50 characters long");

@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace Resourcerer.Dtos;
+﻿namespace Resourcerer.Dtos;
 
 public class UnitOfMeasureDto : IBaseDto
 {
@@ -9,6 +7,4 @@ public class UnitOfMeasureDto : IBaseDto
 
     public List<ExcerptDto> Excerpts { get; set; } = new();
     public List<ItemDto> Elements { get; set; } = new();
-
-    
 }

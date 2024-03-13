@@ -118,10 +118,14 @@ internal static partial class DF
 
     public static UnitOfMeasure FakeUnitOfMeasure(AppDbContext context, Action<UnitOfMeasure>? modifier = null)
     {
+        var company = FakeCompany(context);
         var uom = MakeEntity(() => new UnitOfMeasure
         {
             Name = MakeName(),
-            Symbol = "test"
+            Symbol = "test",
+
+            CompanyId = company.Id,
+            Company = company
         });
 
         modifier?.Invoke(uom);

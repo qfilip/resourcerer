@@ -57,6 +57,10 @@ public partial class AppDbContext
             e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
             e.Property(x => x.Symbol).IsRequired();
+
+            e.HasOne(x => x.Company).WithMany(x => x.UnitsOfMeasure)
+                .HasForeignKey(x => x.CompanyId)
+                .HasConstraintName($"FK_Element{nameof(Company)}_{nameof(UnitOfMeasure)}");
         });
 
         ConfigureEntity<Price>(modelBuilder, (e) =>

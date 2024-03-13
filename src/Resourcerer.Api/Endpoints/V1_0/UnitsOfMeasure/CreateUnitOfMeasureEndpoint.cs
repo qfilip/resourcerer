@@ -8,7 +8,7 @@ namespace Resourcerer.Api.Endpoints.V1_0;
 public class CreateUnitOfMeasureEndpoint
 {
     public static async Task<IResult> Action(
-       [FromBody] UnitOfMeasureDto dto,
+       [FromBody] CreateUnitOfMeasureDto dto,
        [FromServices] Pipeline pipeline,
        [FromServices] CreateUnitOfMeasure.Handler handler)
     {
