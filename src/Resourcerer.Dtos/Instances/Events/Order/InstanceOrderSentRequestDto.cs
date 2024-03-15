@@ -3,5 +3,5 @@
 public class InstanceOrderSentRequestDto : InstanceOrderEventDtoBase
 {
     public Guid InstanceId { get; set; }
-    public Guid OrderEventId { get; set; }
+    public string? OrderEventId { get; set; }
 }

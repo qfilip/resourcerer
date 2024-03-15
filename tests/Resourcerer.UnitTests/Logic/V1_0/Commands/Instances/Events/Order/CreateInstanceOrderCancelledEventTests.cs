@@ -4,6 +4,7 @@ using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
+using Resourcerer.Utilities;
 
 namespace Resourcerer.UnitTests.Logic.V1_0.Commands.Instances;
 
@@ -43,7 +44,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     {
         var dto = new InstanceOrderCancelRequestDto
         {
-            OrderEventId = Guid.NewGuid()
+            OrderEventId = MiniId.Generate()
         };
 
         // act

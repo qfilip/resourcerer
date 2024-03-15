@@ -5,6 +5,7 @@ using Resourcerer.Logic;
 using Resourcerer.Logic.V1_0.Commands;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
+using Resourcerer.Utilities;
 
 namespace Resourcerer.UnitTests.Logic.V1_0.Commands.Instances;
 
@@ -65,7 +66,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
 
         var dto = new InstanceOrderSentRequestDto
         {
-            OrderEventId = Guid.NewGuid(),
+            OrderEventId = MiniId.Generate(),
             InstanceId = sourceInstance.Id
         };
 
