@@ -1,4 +1,5 @@
-﻿using FluentValidation.Results;
+﻿using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
@@ -44,10 +45,6 @@ public static class CreateItemProductionOrder
                 .AsNoTracking()
                 .ToArrayAsync();
 
-                //var instances = excerpts
-                //    .SelectMany(x => x.Element!.Instances)
-                //    .ToArray();
-
                 var availableInstances = excerpts
                     .SelectMany(x => x.Element!.Instances, (e, x) =>
                     {
@@ -69,9 +66,8 @@ public static class CreateItemProductionOrder
                     .Where(x => x != null)
                     .ToList();
 
-                // all instances exist
                 var availableInstanceIds = availableInstances.Select(x => x!.Id).ToList();
-                if(!request.InstanceToUseIds.All(id => availableInstanceIds.Contains(id)))
+                if (!request.InstanceToUseIds.All(id => availableInstanceIds.Contains(id)))
                 {
                     return HandlerResult<Unit>.Rejected("Not all requested instances found");
                 }
@@ -93,21 +89,34 @@ public static class CreateItemProductionOrder
                             Quantity = requiredQuantity,
                             Reason = $"Production of item: {item.Id}-{item.Name}"
                         });
-                    
+
                     instance.ReservedEvents.Add(reservedEvent);
                 }
             }
 
             _dbContext.ItemProductionOrders.Add(productionOrder);
-            
+
             await _dbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(Unit.New);
         }
 
-        public ValidationResult Validate(CreateItemProductionOrderRequestDto request)
+        public ValidationResult Validate(CreateItemProductionOrderRequestDto request) =>
+            new Validator().Validate(request);
+
+        private class Validator : AbstractValidator<CreateItemProductionOrderRequestDto>
         {
-            throw new NotImplementedException();
+            public Validator()
+            {
+                RuleFor(x => x.ItemId)
+                    .NotEmpty().WithMessage("Item id cannot be empty");
+
+                RuleFor(x => x.Quantity)
+                    .Must(x => x > 0).WithMessage("Item production quantity must be greater than 0");
+
+                RuleFor(x => x.DesiredProductionStartTime)
+                    .Must(x => x >= DateTime.UtcNow).WithMessage("Desired production start time cannot be in the past");
+            }
         }
     }
 }
