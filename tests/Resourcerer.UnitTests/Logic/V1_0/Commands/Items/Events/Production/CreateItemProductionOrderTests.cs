@@ -25,7 +25,7 @@ public class CreateItemProductionOrderTests : TestsBase
         {
             ItemId = fd.CompositeId,
             Quantity = 2,
-            // InstanceToUseIds = fd.Elements.SelectMany(xs => xs.InstanceIds).ToArray()
+            InstancesToUse = MapInstancesToUse(fd)
         };
 
         _testDbContext.SaveChanges();
@@ -34,7 +34,22 @@ public class CreateItemProductionOrderTests : TestsBase
         var result = _sut.Handle(dto).Await();
 
         // assert
-        var x = 0;
+        AssertEventsCreated(dto.InstancesToUse);
+    }
+
+    private void AssertEventsCreated(Dictionary<Guid, double> instancesToUse)
+    {
+        var ids = instancesToUse.Keys.ToArray();
+        
+        var instances = _testDbContext.Instances
+            .Where(x => ids.Contains(x.Id))
+            .ToArray();
+
+        foreach (var i in instances)
+        {
+            var qty = instancesToUse[i.Id];
+            i.ReservedEvents.First(ev => ev.Quantity == qty);
+        }
     }
 
     private static FakedData FakeData(AppDbContext ctx, int elementCount, int instanceCount)
@@ -62,13 +77,24 @@ public class CreateItemProductionOrderTests : TestsBase
                     x.Quantity = 1;
                 });
                 
-                fd.Elements[i].InstanceIds.Add(instance.Id);
+                fd.Elements[i].Instances.Add(instance);
             }
         }
            
         DF.FakeExcerpts(ctx, composite, elements.ToArray());
 
         return fd;
+    }
+
+    private static Dictionary<Guid, double> MapInstancesToUse(FakedData fd)
+    {
+        var dict = new Dictionary<Guid, double>();
+        
+        fd.Elements.ForEach(x =>
+            x.Instances.ForEach(i => 
+                dict.Add(i.Id, i.Quantity)));
+
+        return dict;
     }
 }
 
@@ -81,5 +107,5 @@ internal class FakedData
 internal class FakedItem
 {
     public Guid ItemId { get; set; }
-    public List<Guid> InstanceIds { get; set; } = new();
+    public List<Instance> Instances { get; set; } = new();
 }
