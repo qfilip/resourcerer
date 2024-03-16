@@ -4,7 +4,6 @@ using Resourcerer.Dtos;
 using Resourcerer.Logic.V1_0.Commands.Items;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
-using System.Xml.Linq;
 
 namespace Resourcerer.UnitTests.Logic.V1_0.Commands.Items.Events.Production;
 

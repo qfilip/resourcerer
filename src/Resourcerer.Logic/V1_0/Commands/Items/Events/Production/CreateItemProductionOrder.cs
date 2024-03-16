@@ -132,6 +132,11 @@ public static class CreateItemProductionOrder
 
                 RuleFor(x => x.InstancesToUse)
                     .NotEmpty().WithMessage("Instances to use in production, not specified");
+
+                RuleFor(x => x.InstancesToUse)
+                    .Must(x => x.Values.All(v => v > 0))
+                    .WithMessage("Quantities of all instances to use in production, must be above 0");
+
             }
         }
     }
