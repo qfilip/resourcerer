@@ -29,6 +29,62 @@ public static class CreateItemProductionOrder
                 return HandlerResult<Unit>.Rejected("Item not found");
             }
 
+            var excerpts = await _dbContext.Excerpts
+                .Where(x => x.CompositeId == request.ItemId)
+                    .Include(x => x.Element)
+                        .ThenInclude(x => x!.Instances)
+                .AsNoTracking()
+                .ToArrayAsync();
+
+            var elementQuantityMap = excerpts
+                .Select(x => new
+                {
+                    x.ElementId,
+                    x.Quantity
+                });
+
+            var allInstances = excerpts
+                .SelectMany(x => x.Element!.Instances)
+                .ToArray();
+
+            var elementInstances = allInstances
+                .ToLookup(x => x.ItemId);
+
+            var hasResources = elementQuantityMap.All(qm =>
+            {
+                return elementInstances[qm.ElementId]
+                    .Select(Instances.GetAvailableUnitsInStock)
+                    .Sum() >= qm.Quantity * request.Quantity;
+            });
+
+            if(!hasResources)
+            {
+                return HandlerResult<Unit>.Rejected("Insufficient amount of resources available for item production");
+            }
+
+            var enoughSpecifiedInstancesInStock = request.InstancesToUse.All(x =>
+            {
+                var instance = allInstances.FirstOrDefault(i => i.Id == x.Key);
+                if (instance == null)
+                    return false;
+
+                var availableQuantity = Instances.GetAvailableUnitsInStock(instance);
+                return availableQuantity >= x.Value;
+            });
+
+            if(!enoughSpecifiedInstancesInStock)
+            {
+                return HandlerResult<Unit>.Rejected("Incorecctly specified instances");
+            }
+
+            var instanceToUpdateIds = request.InstancesToUse
+                .Select(x => x.Key)
+                .ToArray();
+
+            var instancesToUpdate = await _dbContext.Instances
+                .Where(x => instanceToUpdateIds.Contains(x.Id))
+                .ToArrayAsync();
+
             var productionOrder = new ItemProductionOrder
             {
                 Id = Guid.NewGuid(),
@@ -36,62 +92,19 @@ public static class CreateItemProductionOrder
                 Quantity = request.Quantity
             };
 
-            if (request.InstanceToUseIds.Length > 0)
+            foreach (var instance in instancesToUpdate)
             {
-                var excerpts = await _dbContext.Excerpts
-                .Where(x => x.CompositeId == request.ItemId)
-                    .Include(x => x.Element)
-                        .ThenInclude(x => x!.Instances)
-                .AsNoTracking()
-                .ToArrayAsync();
+                var reserveQuantity = request.InstancesToUse[instance.Id];
 
-                var availableInstances = excerpts
-                    .SelectMany(x => x.Element!.Instances, (e, x) =>
+                var reservedEvent = JsonEntityBase.CreateEntity(() =>
+                    new InstanceReservedEvent
                     {
-                        var available = Instances.GetAvailableUnitsInStock(x);
-                        if (available < e.Quantity * request.Quantity)
-                        {
-                            return null;
-                        }
-                        else
-                        {
-                            return new
-                            {
-                                x.Id,
-                                AvailableQuantity = Instances.GetAvailableUnitsInStock(x),
-                                RequiredQuantity = e.Quantity * request.Quantity
-                            };
-                        }
-                    })
-                    .Where(x => x != null)
-                    .ToList();
+                        ProductionOrderId = productionOrder.Id,
+                        Quantity = reserveQuantity,
+                        Reason = $"Production of item: {item.Id}-{item.Name}"
+                    });
 
-                var availableInstanceIds = availableInstances.Select(x => x!.Id).ToList();
-                if (!request.InstanceToUseIds.All(id => availableInstanceIds.Contains(id)))
-                {
-                    return HandlerResult<Unit>.Rejected("Not all requested instances found");
-                }
-
-                var instancesToUpdate = await _dbContext.Instances
-                    .Where(x => availableInstanceIds.Contains(x.Id))
-                    .ToArrayAsync();
-
-                foreach (var instance in instancesToUpdate)
-                {
-                    var requiredQuantity = availableInstances
-                        .First(x => x!.Id == instance.Id)!
-                        .RequiredQuantity;
-
-                    var reservedEvent = JsonEntityBase.CreateEntity(() =>
-                        new InstanceReservedEvent
-                        {
-                            ProductionOrderId = productionOrder.Id,
-                            Quantity = requiredQuantity,
-                            Reason = $"Production of item: {item.Id}-{item.Name}"
-                        });
-
-                    instance.ReservedEvents.Add(reservedEvent);
-                }
+                instance.ReservedEvents.Add(reservedEvent);
             }
 
             _dbContext.ItemProductionOrders.Add(productionOrder);
@@ -116,6 +129,9 @@ public static class CreateItemProductionOrder
 
                 RuleFor(x => x.DesiredProductionStartTime)
                     .Must(x => x >= DateTime.UtcNow).WithMessage("Desired production start time cannot be in the past");
+
+                RuleFor(x => x.InstancesToUse)
+                    .NotEmpty().WithMessage("Instances to use in production, not specified");
             }
         }
     }
