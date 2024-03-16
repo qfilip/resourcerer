@@ -6,6 +6,7 @@ using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.V1_0.Functions;
+using System.ComponentModel.Design;
 
 namespace Resourcerer.Logic.V1_0.Commands.Items;
 public static class CreateItemProductionOrder
@@ -26,7 +27,7 @@ public static class CreateItemProductionOrder
 
             if (item == null)
             {
-                return HandlerResult<Unit>.Rejected("Item not found");
+                return HandlerResult<Unit>.NotFound("Item not found");
             }
 
             var excerpts = await _dbContext.Excerpts
@@ -46,6 +47,33 @@ public static class CreateItemProductionOrder
             var allInstances = excerpts
                 .SelectMany(x => x.Element!.Instances)
                 .ToArray();
+
+            var specifiedInstancesExist = allInstances
+                .All(x => request.InstancesToUse.Keys.Contains(x.Id));
+
+            if(!specifiedInstancesExist)
+            {
+                return HandlerResult<Unit>.NotFound("Specified instances to use, not found");
+            }
+
+            var correctlySpecifiedQuantities = elementQuantityMap.All(x =>
+            {
+                var ids = allInstances
+                    .Where(i => i.ItemId == x.ElementId)
+                    .Select(i => i.Id)
+                    .ToArray();
+
+                var kvs = request.InstancesToUse
+                    .Where(kv => ids.Contains(kv.Key))
+                    .ToArray();
+
+                return kvs.Sum(kv => kv.Value) == x.Quantity * request.Quantity;
+            });
+
+            if(!correctlySpecifiedQuantities)
+            {
+                return HandlerResult<Unit>.Rejected("Specified quantities do not add up correctly");
+            }
 
             var elementInstances = allInstances
                 .ToLookup(x => x.ItemId);

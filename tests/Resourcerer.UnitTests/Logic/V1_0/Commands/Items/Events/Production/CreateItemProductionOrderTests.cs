@@ -1,6 +1,7 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
+using Resourcerer.Logic;
 using Resourcerer.Logic.V1_0.Commands.Items;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
@@ -34,10 +35,55 @@ public class CreateItemProductionOrderTests : TestsBase
         var result = _sut.Handle(dto).Await();
 
         // assert
-        AssertEventsCreated(dto.InstancesToUse);
+        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
+        AssertCorrectEventsCreated(dto.InstancesToUse);
     }
 
-    private void AssertEventsCreated(Dictionary<Guid, double> instancesToUse)
+    [Fact]
+    public void When_NotEnoughInstances_Then_Rejected()
+    {
+        // arrange
+        var fd = FakeData(_testDbContext, 2, 1);
+
+        var dto = new CreateItemProductionOrderRequestDto
+        {
+            ItemId = fd.CompositeId,
+            Quantity = 2,
+            InstancesToUse = MapInstancesToUse(fd)
+        };
+
+        _testDbContext.SaveChanges();
+
+        // act
+        var result = _sut.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
+    public void When_IncorrectInstanceQuantitySpecified_Then_Rejected()
+    {
+        // arrange
+        var fd = FakeData(_testDbContext, 2, 2);
+
+        var dto = new CreateItemProductionOrderRequestDto
+        {
+            ItemId = fd.CompositeId,
+            Quantity = 2,
+            InstancesToUse = MapInstancesToUse(fd, () => 0.3)
+        };
+
+        _testDbContext.SaveChanges();
+
+        // act
+        var result = _sut.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    private void AssertCorrectEventsCreated(Dictionary<Guid, double> instancesToUse)
     {
         var ids = instancesToUse.Keys.ToArray();
         
@@ -86,13 +132,16 @@ public class CreateItemProductionOrderTests : TestsBase
         return fd;
     }
 
-    private static Dictionary<Guid, double> MapInstancesToUse(FakedData fd)
+    private static Dictionary<Guid, double> MapInstancesToUse(FakedData fd, Func<double>? valueModifier = null)
     {
         var dict = new Dictionary<Guid, double>();
-        
+
         fd.Elements.ForEach(x =>
-            x.Instances.ForEach(i => 
-                dict.Add(i.Id, i.Quantity)));
+            x.Instances.ForEach(i =>
+            {
+                var val = valueModifier?.Invoke() ?? i.Quantity;
+                dict.Add(i.Id, val);
+            }));
 
         return dict;
     }
