@@ -146,6 +146,9 @@ public static class CreateItemProductionOrder
         public ValidationResult Validate(CreateItemProductionOrderRequestDto request) =>
             new Validator().Validate(request);
 
+        public static ValidationResult ValidateRequest(CreateItemProductionOrderRequestDto request) =>
+            new Validator().Validate(request);
+
         private class Validator : AbstractValidator<CreateItemProductionOrderRequestDto>
         {
             public Validator()

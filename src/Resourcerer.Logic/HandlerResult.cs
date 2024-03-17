@@ -27,12 +27,7 @@ public class HandlerResult<T>
         return new HandlerResult<T>(eHandlerResultStatus.Rejected, new string[] { error });
     }
 
-    public static HandlerResult<T> Rejected(string[] errors)
-    {
-        return new HandlerResult<T>(eHandlerResultStatus.Rejected, errors);
-    }
-
-    public static HandlerResult<T> Rejected(List<string> errors)
+    public static HandlerResult<T> Rejected(IEnumerable<string> errors)
     {
         return new HandlerResult<T>(eHandlerResultStatus.Rejected, errors.ToArray());
     }

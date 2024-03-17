@@ -6,23 +6,23 @@ using System.Threading.Channels;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
 
-public class CreateItemProductionOrderEndpoint
+public static class CancelItemProductionOrderEndpoint
 {
     public static async Task<IResult> Action(
-       [FromBody] CreateItemProductionOrderRequestDto dto,
+       [FromBody] CancelItemProductionOrderRequestDto dto,
        [FromServices] ChannelWriter<ItemProductionEventBaseDto> writer,
        [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeToChannel(
             dto,
-            () => CreateItemProductionOrder.Handler.ValidateRequest(dto),
+            () => CancelItemProductionOrder.Handler.ValidateRequest(dto),
             writer,
-            nameof(CreateItemProductionOrder));
+            nameof(CancelItemProductionOrder));
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/production-order", Action);
+        var endpoint = group.MapPost("/production-order-cancel", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
