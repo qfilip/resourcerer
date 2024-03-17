@@ -36,7 +36,7 @@ public class CreateItemProductionOrderTests : TestsBase
 
         // assert
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-        AssertCorrectEventsCreated(dto.InstancesToUse);
+        AssertCorrectEventsCreated(dto);
     }
 
     [Fact]
@@ -122,17 +122,22 @@ public class CreateItemProductionOrderTests : TestsBase
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
     }
 
-    private void AssertCorrectEventsCreated(Dictionary<Guid, double> instancesToUse)
+    private void AssertCorrectEventsCreated(CreateItemProductionOrderRequestDto dto)
     {
-        var ids = instancesToUse.Keys.ToArray();
+        var ids = dto.InstancesToUse.Keys.ToArray();
         
         var instances = _testDbContext.Instances
             .Where(x => ids.Contains(x.Id))
             .ToArray();
 
+        var orderEvent = _testDbContext.ItemProductionOrders
+            .First(x => x.ItemId == dto.ItemId);
+
+        Assert.True(orderEvent.InstancesUsedIds.All(dto.InstancesToUse.Keys.Contains));
+
         foreach (var i in instances)
         {
-            var qty = instancesToUse[i.Id];
+            var qty = dto.InstancesToUse[i.Id];
             i.ReservedEvents.First(ev => ev.Quantity == qty);
         }
     }

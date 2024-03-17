@@ -6,7 +6,6 @@ using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.V1_0.Functions;
-using System.ComponentModel.Design;
 
 namespace Resourcerer.Logic.V1_0.Commands.Items;
 public static class CreateItemProductionOrder
@@ -117,7 +116,9 @@ public static class CreateItemProductionOrder
             {
                 Id = Guid.NewGuid(),
                 ItemId = item.Id,
-                Quantity = request.Quantity
+                Quantity = request.Quantity,
+                Reason = request.Reason,
+                InstancesUsedIds = instanceToUpdateIds
             };
 
             foreach (var instance in instancesToUpdate)

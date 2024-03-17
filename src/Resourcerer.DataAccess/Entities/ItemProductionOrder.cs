@@ -6,12 +6,15 @@ namespace Resourcerer.DataAccess.Entities;
 public class ItemProductionOrder : EntityBase
 {
     public double Quantity { get; set; }
-
+    public string? Reason { get; set; }
     // relational
     public Guid ItemId { get; set; }
     public virtual Item? Item { get; set; }
 
     // json
+    [NotMapped]
+    public Guid[] InstancesUsedIds { get; set; } = Array.Empty<Guid>();
+    
     [NotMapped]
     public ItemProductionStartedEvent? StartedEvent { get; set; }
     
@@ -25,6 +28,15 @@ public class ItemProductionOrder : EntityBase
     public ItemProductionFinishedEvent? FinishedEvent { get; set; }
 
     // json mapping
+    public string InstancesUsedIdsJson
+    {
+        get => JsonSerializer.Serialize(InstancesUsedIds);
+        set
+        {
+            if (value == null) return;
+            InstancesUsedIds = JsonSerializer.Deserialize<Guid[]>(value)!;
+        }
+    }
     public string StartedEventJson
     {
         get => JsonSerializer.Serialize(StartedEvent);
