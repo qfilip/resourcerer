@@ -40,6 +40,45 @@ public class CreateItemProductionOrderTests : TestsBase
     }
 
     [Fact]
+    public void When_ItemNotFound_Then_NotFound()
+    {
+        // arrange
+        FakeData(_testDbContext, 2, 2);
+        var dto = new CreateItemProductionOrderRequestDto { ItemId = Guid.NewGuid() };
+
+        _testDbContext.SaveChanges();
+
+        // act
+        var result = _sut.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
+    }
+
+    [Fact]
+    public void When_RequestedInstancesNotFound_Then_NotFound()
+    {
+        // arrange
+        var fd = FakeData(_testDbContext, 2, 2);
+        var dto = new CreateItemProductionOrderRequestDto
+        {
+            ItemId = fd.CompositeId,
+            InstancesToUse = new Dictionary<Guid, double>
+            {
+                { Guid.NewGuid(), 2 }
+            }
+        };
+
+        _testDbContext.SaveChanges();
+
+        // act
+        var result = _sut.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
+    }
+
+    [Fact]
     public void When_NotEnoughInstances_Then_Rejected()
     {
         // arrange
