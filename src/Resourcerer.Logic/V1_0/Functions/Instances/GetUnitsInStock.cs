@@ -6,10 +6,6 @@ public static partial class Instances
 {
     public static double GetUnitsInStock(Instance i)
     {
-        var instancesReserved = i.ReservedEvents
-            .Where(x => x.CancelledEvent == null)
-            .Sum(x => x.Quantity);
-
         // item produced
         if (i.SourceInstanceId == null)
         {
@@ -17,7 +13,7 @@ public static partial class Instances
                 .Where(x => x.SentEvent == null)
                 .Sum(x => x.Quantity);
 
-            return i.Quantity - sent - instancesReserved;
+            return i.Quantity - sent;
         }
 
         if (i.SourceInstance == null)
@@ -34,6 +30,6 @@ public static partial class Instances
             .Where(x => x.SentEvent != null)
             .Sum(x => x.Quantity);
 
-        return sourceInstancesDelivered - instancesSent - instancesReserved;
+        return sourceInstancesDelivered - instancesSent;
     }
 }

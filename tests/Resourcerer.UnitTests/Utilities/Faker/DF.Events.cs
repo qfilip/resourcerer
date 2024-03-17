@@ -104,4 +104,13 @@ internal static partial class DF
 
         return discardEv;
     }
+
+    public static InstanceReservedEvent FakeReservedEvent(
+        Action<InstanceReservedEvent>? modifier = null)
+    {
+        var ev = MakeEntity(() => new InstanceReservedEvent());
+        modifier?.Invoke(ev);
+
+        return ev;
+    }
 }
