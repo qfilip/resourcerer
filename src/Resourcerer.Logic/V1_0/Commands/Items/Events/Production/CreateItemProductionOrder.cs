@@ -81,7 +81,7 @@ public static class CreateItemProductionOrder
             var hasResources = elementQuantityMap.All(qm =>
             {
                 return elementInstances[qm.ElementId]
-                    .Select(Instances.GetAvailableUnitsInStock)
+                    .Select(Instances.GetUnitsInStock)
                     .Sum() >= qm.Quantity * request.Quantity;
             });
 
@@ -96,7 +96,7 @@ public static class CreateItemProductionOrder
                 if (instance == null)
                     return false;
 
-                var availableQuantity = Instances.GetAvailableUnitsInStock(instance);
+                var availableQuantity = Instances.GetUnitsInStock(instance);
                 return availableQuantity >= x.Value;
             });
 
