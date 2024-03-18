@@ -66,8 +66,12 @@ public static class CreateInstanceOrderedEvent
             }
 
             var instance = await _appDbContext.Instances
-                .Include(x => QU.Items.DefaultProjection)
                 .Include(x => x.SourceInstance)
+                .Select(QU.Instances.Expand(x => new Instance
+                {
+                    SourceInstance = x.SourceInstance,
+                    OrderedEvents = x.OrderedEvents
+                }))
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
             if (instance == null)
