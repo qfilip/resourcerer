@@ -110,9 +110,13 @@ internal static partial class DF
     public static Instance FakeInstance(AppDbContext context, Action<Instance>? modifier = null)
     {
         var company = FakeCompany(context);
+        var item = FakeItem(context);
         var entity = MakeEntity(() => new Instance
         {
-            ItemId = FakeItem(context).Id,
+            Quantity = 1,
+
+            ItemId = item.Id,
+            Item = item,
             
             OwnerCompanyId = company.Id,
             OwnerCompany = company
@@ -121,6 +125,17 @@ internal static partial class DF
         modifier?.Invoke(entity);
 
         context.Instances.Add(entity);
+
+        return entity;
+    }
+
+    public static ItemProductionOrder FakeItemProductionOrder(AppDbContext context, Action<ItemProductionOrder> modifier)
+    {
+        var entity = MakeEntity(() => new ItemProductionOrder());
+
+        modifier.Invoke(entity);
+
+        context.ItemProductionOrders.Add(entity);
 
         return entity;
     }
