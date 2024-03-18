@@ -1,5 +1,4 @@
 ﻿using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.QueryUtils;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Instances;
 using Resourcerer.UnitTests.Utilities.Faker;

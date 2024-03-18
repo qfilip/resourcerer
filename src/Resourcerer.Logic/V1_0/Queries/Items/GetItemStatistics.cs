@@ -3,7 +3,6 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.QueryUtils;
 using Resourcerer.Dtos.Elements;
 using Resourcerer.Dtos.Items;
 using Resourcerer.Logic.V1_0.Functions;
