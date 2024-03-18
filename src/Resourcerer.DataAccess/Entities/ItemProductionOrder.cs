@@ -22,9 +22,6 @@ public class ItemProductionOrder : EntityBase
     public ItemProductionOrderCancelledEvent? CanceledEvent { get; set; }
     
     [NotMapped]
-    public ItemProductionFailedEvent? FailedEvent { get; set; }
-    
-    [NotMapped]
     public ItemProductionFinishedEvent? FinishedEvent { get; set; }
 
     // json mapping
@@ -54,16 +51,6 @@ public class ItemProductionOrder : EntityBase
         {
             if (value == null) return;
             CanceledEvent = JsonSerializer.Deserialize<ItemProductionOrderCancelledEvent>(value)!;
-        }
-    }
-
-    public string FailedEventJson
-    {
-        get => JsonSerializer.Serialize(FailedEvent);
-        set
-        {
-            if (value == null) return;
-            FailedEvent = JsonSerializer.Deserialize<ItemProductionFailedEvent>(value)!;
         }
     }
 
