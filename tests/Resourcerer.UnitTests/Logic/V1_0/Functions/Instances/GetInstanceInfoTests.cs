@@ -197,7 +197,7 @@ public class GetInstanceInfoTests : TestsBase
             .Items
             .Where(predicate);
 
-        query = ItemQueryUtils.IncludeInstanceEvents(query);
+        // query = ItemQueryUtils.IncludeInstanceEvents(query);
 
         return query.First();
     }
