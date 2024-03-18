@@ -7,6 +7,8 @@ using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.Instances.Events.Order;
 using Resourcerer.Logic.V1_0.Functions;
 
+using QU = Resourcerer.DataAccess.Utilities.Query;
+
 namespace Resourcerer.Logic.Commands.V1_0;
 
 public static class CreateInstanceOrderedEvent
@@ -64,7 +66,7 @@ public static class CreateInstanceOrderedEvent
             }
 
             var instance = await _appDbContext.Instances
-                .Include(x => x.Item)
+                .Include(x => QU.Items.DefaultProjection)
                 .Include(x => x.SourceInstance)
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 

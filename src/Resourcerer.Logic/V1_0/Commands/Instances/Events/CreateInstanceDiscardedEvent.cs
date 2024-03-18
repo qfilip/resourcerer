@@ -7,6 +7,8 @@ using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.Instances.Events;
 using Resourcerer.Logic.Exceptions;
 
+using QU = Resourcerer.DataAccess.Utilities.Query.Instances;
+
 namespace Resourcerer.Logic.V1_0.Commands;
 
 public static class CreateInstanceDiscardedEvent
@@ -22,6 +24,11 @@ public static class CreateInstanceDiscardedEvent
         public async Task<HandlerResult<Unit>> Handle(InstanceDiscardedRequestDto request)
         {
             var instance = await _appDbContext.Instances
+                .Select(QU.Expand(x => new Instance
+                {
+                    OrderedEvents = x.OrderedEvents,
+                    DiscardedEvents = x.DiscardedEvents
+                }))
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
             if (instance == null)

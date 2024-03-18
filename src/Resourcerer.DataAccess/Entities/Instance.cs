@@ -37,7 +37,6 @@ public class Instance : EntityBase
             OrderedEvents = JsonSerializer.Deserialize<List<InstanceOrderedEvent>>(value)!;
         }
     }
-
     public string DiscardedEventsJson
     {
         get => JsonSerializer.Serialize(DiscardedEvents);

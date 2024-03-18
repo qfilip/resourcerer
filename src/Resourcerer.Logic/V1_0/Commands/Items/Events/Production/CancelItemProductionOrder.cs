@@ -7,6 +7,8 @@ using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.Exceptions;
 
+using QU = Resourcerer.DataAccess.Utilities.Query.Instances;
+
 namespace Resourcerer.Logic.V1_0.Commands.Items;
 public static class CancelItemProductionOrder
 {
@@ -42,6 +44,10 @@ public static class CancelItemProductionOrder
 
             var instances = await _dbContext.Instances
                 .Where(x => orderEvent.InstancesUsedIds.Contains(x.Id))
+                .Select(QU.Expand(x => new Instance
+                {
+                    ReservedEvents = x.ReservedEvents
+                }))
                 .ToArrayAsync();
 
             if (orderEvent.InstancesUsedIds.Length != instances.Length)

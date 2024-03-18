@@ -2,8 +2,11 @@
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.Instances.Events.Order;
+
+using QU = Resourcerer.DataAccess.Utilities.Query.Instances;
 
 namespace Resourcerer.Logic.V1_0.Commands;
 
@@ -20,6 +23,10 @@ public static class CreateInstanceOrderSentEvent
         public async Task<HandlerResult<Unit>> Handle(InstanceOrderSentRequestDto request)
         {
             var instance = await _appDbContext.Instances
+                .Select(QU.Expand(x => new Instance
+                {
+                    OrderedEvents = x.OrderedEvents
+                }))
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
             if (instance == null)
