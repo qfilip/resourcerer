@@ -1,15 +1,14 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.Instances.Events;
 using Resourcerer.Logic.V1_0.Commands;
-using System.Threading.Channels;
 
 namespace Resourcerer.Api.Services.V1_0;
 
-public class InstanceDiscardEventService : EventServiceBase<InstanceDiscardedRequestDto>
+public class InstanceDiscardEventService : EventConsumerServiceBase<InstanceDiscardedRequestDto>
 {
-    public InstanceDiscardEventService(ChannelReader<InstanceDiscardedRequestDto> reader, IServiceProvider serviceProvider) : base(reader, serviceProvider)
-    {
-    }
+    public InstanceDiscardEventService(
+        IConsumerAdapter<InstanceDiscardedRequestDto> consumer,
+        IServiceProvider serviceProvider) : base(consumer, serviceProvider) {}
 
     protected override Task HandleEvent(InstanceDiscardedRequestDto message, AppDbContext appDbContext)
     {

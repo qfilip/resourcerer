@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Resourcerer.Api.Services.Auth;
+using Resourcerer.Api.Services.Messaging;
 using Resourcerer.Api.Services.V1_0;
 using Resourcerer.DataAccess.AuthService;
 using Resourcerer.DataAccess.Contexts;
@@ -25,9 +26,9 @@ public static partial class ServiceRegistry
 
         services.AddScoped<Pipeline>();
 
-        services.AddChannelService<InstanceOrderEventDtoBase, InstanceOrderEventService>();
-        services.AddChannelService<InstanceDiscardedRequestDto, InstanceDiscardEventService>();
-        services.AddChannelService<ItemProductionEventBaseDto, ItemProductionOrderEventService>();
+        services.AddMessagingService<InstanceOrderEventDtoBase, InstanceOrderEventService>();
+        services.AddMessagingService<InstanceDiscardedRequestDto, InstanceDiscardEventService>();
+        services.AddMessagingService<ItemProductionEventBaseDto, ItemProductionOrderEventService>();
     }
 
     public static void AddAspNetServices(this IServiceCollection services)
@@ -130,12 +131,27 @@ public static partial class ServiceRegistry
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme));
         });
     }
-    private static void AddChannelService<TMessage, TService>(this IServiceCollection services)
-        where TService : EventServiceBase<TMessage>
+
+    private static void AddMessagingService<TMessage, TService>(this IServiceCollection services)
+        where TService : EventConsumerServiceBase<TMessage>
     {
         services.AddSingleton(_ => Channel.CreateUnbounded<TMessage>());
-        services.AddSingleton(sp => sp.GetRequiredService<Channel<TMessage>>().Reader);
         services.AddSingleton(sp => sp.GetRequiredService<Channel<TMessage>>().Writer);
+        services.AddSingleton(sp => sp.GetRequiredService<Channel<TMessage>>().Reader);
+
+        services.AddSingleton<ISenderAdapter<TMessage>, ChannelSenderService<TMessage>>(sp =>
+        {
+            var sender = sp.GetRequiredService<Channel<TMessage>>().Writer;
+            var consumer = sp.GetRequiredService<Channel<TMessage>>().Reader;
+            return new ChannelSenderService<TMessage>(sender);
+        });
+
+        services.AddSingleton<IConsumerAdapter<TMessage>, ChannelReaderService<TMessage>>(sp =>
+        {
+            var consumer = sp.GetRequiredService<Channel<TMessage>>().Reader;
+            return new ChannelReaderService<TMessage>(consumer);
+        });
+
         services.AddHostedService<TService>();
     }
 

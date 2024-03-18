@@ -2,9 +2,7 @@
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Instances.Events;
-using Resourcerer.Dtos.Instances.Events.Order;
 using Resourcerer.Logic.V1_0.Commands;
-using System.Threading.Channels;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
 
@@ -12,13 +10,13 @@ public class CreateInstanceDiscardedEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] InstanceDiscardedRequestDto dto,
-        [FromServices] ChannelWriter<InstanceDiscardedRequestDto> writer,
+        [FromServices] ISenderAdapter<InstanceDiscardedRequestDto> sender,
         [FromServices] Pipeline pipeline)
     {
-        return await pipeline.PipeToChannel(
+        return await pipeline.PipeMessage(
             dto,
             () => CreateInstanceDiscardedEvent.Handler.Validate(dto),
-            writer,
+            sender,
             nameof(CreateInstanceDiscardedEvent));
     }
 

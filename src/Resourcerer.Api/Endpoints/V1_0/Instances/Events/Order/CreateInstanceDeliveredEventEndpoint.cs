@@ -3,7 +3,6 @@ using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Instances.Events.Order;
 using Resourcerer.Logic.Commands.V1_0;
-using System.Threading.Channels;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
 
@@ -11,13 +10,13 @@ public class CreateInstanceDeliveredEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] InstanceOrderDeliveredRequestDto dto,
-        [FromServices] ChannelWriter<InstanceOrderEventDtoBase> writer,
+        [FromServices] ISenderAdapter<InstanceOrderEventDtoBase> sender,
         [FromServices] Pipeline pipeline)
     {
-        return await pipeline.PipeToChannel(
+        return await pipeline.PipeMessage(
             dto,
             () => CreateInstanceOrderDeliveredEvent.Handler.Validate(dto),
-            writer,
+            sender,
             nameof(CreateInstanceOrderDeliveredEvent));
     }
 

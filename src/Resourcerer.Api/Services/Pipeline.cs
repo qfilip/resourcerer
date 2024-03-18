@@ -1,7 +1,5 @@
 ﻿using FluentValidation.Results;
-using Resourcerer.Dtos.Instances.Events.Order;
 using Resourcerer.Logic;
-using System.Threading.Channels;
 
 namespace Resourcerer.Api.Services;
 
@@ -38,10 +36,10 @@ public class Pipeline
         return MapResult(handlerResult, customOkResultMapper);
     }
 
-    public async Task<IResult> PipeToChannel<TRequest>(
+    public async Task<IResult> PipeMessage<TRequest>(
         TRequest request,
         Func<ValidationResult> validate,
-        ChannelWriter<TRequest> writer,
+        ISenderAdapter<TRequest> sender,
         string actionName)
     {
         _logger.LogInformation("Action {Action} started", actionName);
@@ -55,7 +53,7 @@ public class Pipeline
             return Results.BadRequest(errors);
         }
 
-        await writer.WriteAsync(request);
+        await sender.SendAsync(request);
 
         _logger.LogInformation("Action {Action} finished", actionName);
 

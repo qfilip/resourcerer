@@ -1,15 +1,14 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.V1_0.Commands.Items;
-using System.Threading.Channels;
 
 namespace Resourcerer.Api.Services.V1_0;
 
-public class ItemProductionOrderEventService : EventServiceBase<ItemProductionEventBaseDto>
+public class ItemProductionOrderEventService : EventConsumerServiceBase<ItemProductionEventBaseDto>
 {
     public ItemProductionOrderEventService(
-        ChannelReader<ItemProductionEventBaseDto>
-        reader, IServiceProvider serviceProvider) : base(reader, serviceProvider) {}
+        IConsumerAdapter<ItemProductionEventBaseDto> consumer,
+        IServiceProvider serviceProvider) : base(consumer, serviceProvider) {}
 
     protected override Task HandleEvent(ItemProductionEventBaseDto message, AppDbContext appDbContext)
     {

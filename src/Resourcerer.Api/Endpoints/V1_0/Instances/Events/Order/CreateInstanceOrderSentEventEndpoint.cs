@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
-using Resourcerer.Dtos.Instances.Events.Order;
 using Resourcerer.Dtos;
-using Resourcerer.Logic.Commands.V1_0;
-using System.Threading.Channels;
+using Resourcerer.Dtos.Instances.Events.Order;
 using Resourcerer.Logic.V1_0.Commands;
-using Resourcerer.Dtos.Instances.Events;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
 
@@ -13,13 +10,13 @@ public class CreateInstanceOrderSentEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] InstanceOrderSentRequestDto dto,
-        [FromServices] ChannelWriter<InstanceOrderEventDtoBase> writer,
+        [FromServices] ISenderAdapter<InstanceOrderEventDtoBase> sender,
         [FromServices] Pipeline pipeline)
     {
-        return await pipeline.PipeToChannel(
+        return await pipeline.PipeMessage(
             dto,
             () => CreateInstanceOrderSentEvent.Handler.Validate(dto),
-            writer,
+            sender,
             nameof(CreateInstanceOrderSentEvent));
     }
 

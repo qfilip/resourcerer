@@ -1,22 +1,21 @@
 ﻿using Resourcerer.DataAccess.Contexts;
-using System.Threading.Channels;
 
 namespace Resourcerer.Api.Services;
 
-public abstract class EventServiceBase<TEventBase> : BackgroundService
+public abstract class EventConsumerServiceBase<TEventBase> : BackgroundService
 {
-    private readonly ChannelReader<TEventBase> _reader;
+    private readonly IConsumerAdapter<TEventBase> _consumer;
     private readonly IServiceProvider _serviceProvider;
-    public EventServiceBase(ChannelReader<TEventBase> reader, IServiceProvider serviceProvider)
+    public EventConsumerServiceBase(IConsumerAdapter<TEventBase> consumer, IServiceProvider serviceProvider)
     {
-        _reader = reader;
+        _consumer = consumer;
         _serviceProvider = serviceProvider;
     }
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!_reader.Completion.IsCompleted)
+        while (!_consumer.IsCompleted())
         {
-            var message = await _reader.ReadAsync();
+            var message = await _consumer.ReadAsync();
             using (var scope = _serviceProvider.CreateScope())
             {
                 var database = scope.ServiceProvider.GetRequiredService<AppDbContext>();

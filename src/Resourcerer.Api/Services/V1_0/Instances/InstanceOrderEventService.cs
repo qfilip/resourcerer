@@ -6,11 +6,11 @@ using System.Threading.Channels;
 
 namespace Resourcerer.Api.Services.V1_0;
 
-public class InstanceOrderEventService : EventServiceBase<InstanceOrderEventDtoBase>
+public class InstanceOrderEventService : EventConsumerServiceBase<InstanceOrderEventDtoBase>
 {
     public InstanceOrderEventService(
-        ChannelReader<InstanceOrderEventDtoBase> reader,
-        IServiceProvider serviceProvider) : base(reader, serviceProvider) {}
+        IConsumerAdapter<InstanceOrderEventDtoBase> consumer,
+        IServiceProvider serviceProvider) : base(consumer, serviceProvider) {}
 
     protected override Task HandleEvent(InstanceOrderEventDtoBase message, AppDbContext appDbContext)
     {

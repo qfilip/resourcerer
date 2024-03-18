@@ -2,7 +2,6 @@
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.V1_0.Commands.Items;
-using System.Threading.Channels;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
 
@@ -10,13 +9,13 @@ public static class CancelItemProductionOrderEndpoint
 {
     public static async Task<IResult> Action(
        [FromBody] CancelItemProductionOrderRequestDto dto,
-       [FromServices] ChannelWriter<ItemProductionEventBaseDto> writer,
+       [FromServices] ISenderAdapter<ItemProductionEventBaseDto> sender,
        [FromServices] Pipeline pipeline)
     {
-        return await pipeline.PipeToChannel(
+        return await pipeline.PipeMessage(
             dto,
             () => CancelItemProductionOrder.Handler.Validate(dto),
-            writer,
+            sender,
             nameof(CancelItemProductionOrder));
     }
 
