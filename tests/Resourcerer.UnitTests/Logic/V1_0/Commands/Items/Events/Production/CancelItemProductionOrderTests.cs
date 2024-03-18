@@ -180,7 +180,7 @@ public class CancelItemProductionOrderTests : TestsBase
         {
             x.Id = productionOrderId;
             x.ItemId = composite.Id;
-            x.InstancesUsedIds = instances.Take(2).Select(x => x.Id).ToArray();
+            x.InstancesUsedIds = instances.Select(x => x.Id).ToArray();
             x.Quantity = 1;
             x.Reason = "test";
         });
