@@ -10,7 +10,7 @@ using Resourcerer.Logic.V1_0.Functions;
 namespace Resourcerer.Logic.V1_0.Commands.Items;
 public static class CreateItemProductionOrder
 {
-    public class Handler : IAppHandler<CreateItemProductionOrderRequestDto, Unit>
+    public class Handler : IAppEventHandler<CreateItemProductionOrderRequestDto, Unit>
     {
         private readonly AppDbContext _dbContext;
 
@@ -143,10 +143,7 @@ public static class CreateItemProductionOrder
             return HandlerResult<Unit>.Ok(Unit.New);
         }
 
-        public ValidationResult Validate(CreateItemProductionOrderRequestDto request) =>
-            new Validator().Validate(request);
-
-        public static ValidationResult ValidateRequest(CreateItemProductionOrderRequestDto request) =>
+        public static ValidationResult Validate(CreateItemProductionOrderRequestDto request) =>
             new Validator().Validate(request);
 
         private class Validator : AbstractValidator<CreateItemProductionOrderRequestDto>

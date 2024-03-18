@@ -1,5 +1,4 @@
 ﻿using Resourcerer.DataAccess.Contexts;
-using Resourcerer.Dtos.Instances.Events;
 using Resourcerer.Dtos.Instances.Events.Order;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.Logic.V1_0.Commands;
@@ -7,9 +6,9 @@ using System.Threading.Channels;
 
 namespace Resourcerer.Api.Services.V1_0;
 
-public class InstanceOrderEventHandler : EventServiceBase<InstanceOrderEventDtoBase>
+public class InstanceOrderEventService : EventServiceBase<InstanceOrderEventDtoBase>
 {
-    public InstanceOrderEventHandler(
+    public InstanceOrderEventService(
         ChannelReader<InstanceOrderEventDtoBase> reader,
         IServiceProvider serviceProvider) : base(reader, serviceProvider) {}
 

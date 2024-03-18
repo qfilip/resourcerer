@@ -18,7 +18,7 @@ public class CreateInstanceOrderSentEventEndpoint
     {
         return await pipeline.PipeToChannel(
             dto,
-            () => CreateInstanceOrderSentEvent.Handler.ValidateRequest(dto),
+            () => CreateInstanceOrderSentEvent.Handler.Validate(dto),
             writer,
             nameof(CreateInstanceOrderSentEvent));
     }

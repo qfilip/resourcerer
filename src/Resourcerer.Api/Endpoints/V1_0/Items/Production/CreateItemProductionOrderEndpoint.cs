@@ -15,7 +15,7 @@ public class CreateItemProductionOrderEndpoint
     {
         return await pipeline.PipeToChannel(
             dto,
-            () => CreateItemProductionOrder.Handler.ValidateRequest(dto),
+            () => CreateItemProductionOrder.Handler.Validate(dto),
             writer,
             nameof(CreateItemProductionOrder));
     }

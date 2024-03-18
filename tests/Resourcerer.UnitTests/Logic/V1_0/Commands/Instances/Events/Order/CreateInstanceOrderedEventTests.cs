@@ -93,7 +93,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
         };
 
         // act
-        var result = _handler.Validate(dto);
+        var result = CreateInstanceOrderedEvent.Handler.Validate(dto);
 
         // assert
         Assert.Equal(6, result.Errors.Count);

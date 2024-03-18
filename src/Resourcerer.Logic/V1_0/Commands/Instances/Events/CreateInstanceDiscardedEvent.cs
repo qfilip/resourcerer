@@ -11,7 +11,7 @@ namespace Resourcerer.Logic.V1_0.Commands;
 
 public static class CreateInstanceDiscardedEvent
 {
-    public class Handler : IAppHandler<InstanceDiscardedRequestDto, Unit>
+    public class Handler : IAppEventHandler<InstanceDiscardedRequestDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
@@ -71,10 +71,7 @@ public static class CreateInstanceDiscardedEvent
             }
         }
 
-        public ValidationResult Validate(InstanceDiscardedRequestDto request) =>
-            new Validator().Validate(request);
-
-        public static ValidationResult ValidateRequest(InstanceDiscardedRequestDto request) =>
+        public static ValidationResult Validate(InstanceDiscardedRequestDto request) =>
             new Validator().Validate(request);
 
         private class Validator : AbstractValidator<InstanceDiscardedRequestDto>

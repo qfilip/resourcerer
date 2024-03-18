@@ -17,7 +17,7 @@ public class CreateInstanceDiscardedEventEndpoint
     {
         return await pipeline.PipeToChannel(
             dto,
-            () => CreateInstanceDiscardedEvent.Handler.ValidateRequest(dto),
+            () => CreateInstanceDiscardedEvent.Handler.Validate(dto),
             writer,
             nameof(CreateInstanceDiscardedEvent));
     }

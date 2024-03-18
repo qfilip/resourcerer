@@ -10,7 +10,7 @@ namespace Resourcerer.Logic.Commands.V1_0;
 
 public static class CreateInstanceOrderCancelledEvent
 {
-    public class Handler : IAppHandler<InstanceOrderCancelRequestDto, Unit>
+    public class Handler : IAppEventHandler<InstanceOrderCancelRequestDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
@@ -70,10 +70,7 @@ public static class CreateInstanceOrderCancelledEvent
             return HandlerResult<Unit>.Ok(new Unit());
         }
 
-        public ValidationResult Validate(InstanceOrderCancelRequestDto request) =>
-            new Validator().Validate(request);
-
-        public static ValidationResult ValidateRequest(InstanceOrderCancelRequestDto request) =>
+        public static ValidationResult Validate(InstanceOrderCancelRequestDto request) =>
             new Validator().Validate(request);
 
         private class Validator : AbstractValidator<InstanceOrderCancelRequestDto>

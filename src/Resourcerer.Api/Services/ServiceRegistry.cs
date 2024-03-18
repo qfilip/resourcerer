@@ -20,22 +20,14 @@ public static partial class ServiceRegistry
 {
     public static void AddAppServices(this IServiceCollection services)
     {
-        var assembly = typeof(IAppHandler<,>).Assembly;
-        
-        var handlers = assembly
-        .GetTypes()
-        .Where(x =>
-            x.GetInterface(typeof(IAppHandler<,>).Name) != null &&
-            !x.IsAbstract &&
-            !x.IsInterface)
-        .ToList();
-        
-        handlers.ForEach(x => services.AddTransient(x));
+        RegisterHandlers(typeof(IAppHandler<,>), services);
+        RegisterHandlers(typeof(IAppEventHandler<,>), services);
 
         services.AddScoped<Pipeline>();
 
-        services.AddChannelService<InstanceOrderEventDtoBase, InstanceOrderEventHandler>();
-        services.AddChannelService<InstanceDiscardedRequestDto, InstanceDiscardEventHandler>();
+        services.AddChannelService<InstanceOrderEventDtoBase, InstanceOrderEventService>();
+        services.AddChannelService<InstanceDiscardedRequestDto, InstanceDiscardEventService>();
+        services.AddChannelService<ItemProductionEventBaseDto, ItemProductionOrderEventService>();
     }
 
     public static void AddAspNetServices(this IServiceCollection services)
@@ -145,6 +137,21 @@ public static partial class ServiceRegistry
         services.AddSingleton(sp => sp.GetRequiredService<Channel<TMessage>>().Reader);
         services.AddSingleton(sp => sp.GetRequiredService<Channel<TMessage>>().Writer);
         services.AddHostedService<TService>();
+    }
+
+    private static void RegisterHandlers(Type handlerType, IServiceCollection services)
+    {
+        var assembly = handlerType.Assembly;
+
+        var handlers = assembly
+            .GetTypes()
+            .Where(x =>
+                x.GetInterface(handlerType.Name) != null &&
+                !x.IsAbstract &&
+                !x.IsInterface)
+            .ToList();
+
+        handlers.ForEach(x => services.AddTransient(x));
     }
 }
 

@@ -5,9 +5,9 @@ using System.Threading.Channels;
 
 namespace Resourcerer.Api.Services.V1_0;
 
-public class ItemProductionOrderEventHandler : EventServiceBase<ItemProductionEventBaseDto>
+public class ItemProductionOrderEventService : EventServiceBase<ItemProductionEventBaseDto>
 {
-    public ItemProductionOrderEventHandler(
+    public ItemProductionOrderEventService(
         ChannelReader<ItemProductionEventBaseDto>
         reader, IServiceProvider serviceProvider) : base(reader, serviceProvider) {}
 

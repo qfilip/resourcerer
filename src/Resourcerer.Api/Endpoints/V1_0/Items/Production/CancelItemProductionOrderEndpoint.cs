@@ -15,7 +15,7 @@ public static class CancelItemProductionOrderEndpoint
     {
         return await pipeline.PipeToChannel(
             dto,
-            () => CancelItemProductionOrder.Handler.ValidateRequest(dto),
+            () => CancelItemProductionOrder.Handler.Validate(dto),
             writer,
             nameof(CancelItemProductionOrder));
     }

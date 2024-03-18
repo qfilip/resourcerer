@@ -9,7 +9,7 @@ namespace Resourcerer.Logic.V1_0.Commands;
 
 public static class CreateInstanceOrderSentEvent
 {
-    public class Handler : IAppHandler<InstanceOrderSentRequestDto, Unit>
+    public class Handler : IAppEventHandler<InstanceOrderSentRequestDto, Unit>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -58,10 +58,7 @@ public static class CreateInstanceOrderSentEvent
             return HandlerResult<Unit>.Ok(Unit.New);
         }
 
-        public ValidationResult Validate(InstanceOrderSentRequestDto request) =>
-            new Validator().Validate(request);
-
-        public static ValidationResult ValidateRequest(InstanceOrderSentRequestDto request) =>
+        public static ValidationResult Validate(InstanceOrderSentRequestDto request) =>
            new Validator().Validate(request);
 
         public class Validator : AbstractValidator<InstanceOrderSentRequestDto>

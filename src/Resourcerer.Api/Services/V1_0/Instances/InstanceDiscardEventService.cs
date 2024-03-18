@@ -5,9 +5,9 @@ using System.Threading.Channels;
 
 namespace Resourcerer.Api.Services.V1_0;
 
-public class InstanceDiscardEventHandler : EventServiceBase<InstanceDiscardedRequestDto>
+public class InstanceDiscardEventService : EventServiceBase<InstanceDiscardedRequestDto>
 {
-    public InstanceDiscardEventHandler(ChannelReader<InstanceDiscardedRequestDto> reader, IServiceProvider serviceProvider) : base(reader, serviceProvider)
+    public InstanceDiscardEventService(ChannelReader<InstanceDiscardedRequestDto> reader, IServiceProvider serviceProvider) : base(reader, serviceProvider)
     {
     }
 

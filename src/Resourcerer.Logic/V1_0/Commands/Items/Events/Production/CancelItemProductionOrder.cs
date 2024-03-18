@@ -10,7 +10,7 @@ using Resourcerer.Logic.Exceptions;
 namespace Resourcerer.Logic.V1_0.Commands.Items;
 public static class CancelItemProductionOrder
 {
-    public class Handler : IAppHandler<CancelItemProductionOrderRequestDto, Unit>
+    public class Handler : IAppEventHandler<CancelItemProductionOrderRequestDto, Unit>
     {
         private readonly AppDbContext _dbContext;
 
@@ -76,10 +76,7 @@ public static class CancelItemProductionOrder
             return HandlerResult<Unit>.Ok(Unit.New);
         }
 
-        public ValidationResult Validate(CancelItemProductionOrderRequestDto request) =>
-            new Validator().Validate(request);
-
-        public static ValidationResult ValidateRequest(CancelItemProductionOrderRequestDto request) =>
+        public static ValidationResult Validate(CancelItemProductionOrderRequestDto request) =>
             new Validator().Validate(request);
 
         private class Validator : AbstractValidator<CancelItemProductionOrderRequestDto>

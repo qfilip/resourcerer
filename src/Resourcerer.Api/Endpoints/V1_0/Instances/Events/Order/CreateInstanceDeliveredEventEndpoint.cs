@@ -16,7 +16,7 @@ public class CreateInstanceDeliveredEventEndpoint
     {
         return await pipeline.PipeToChannel(
             dto,
-            () => CreateInstanceOrderDeliveredEvent.Handler.ValidateRequest(dto),
+            () => CreateInstanceOrderDeliveredEvent.Handler.Validate(dto),
             writer,
             nameof(CreateInstanceOrderDeliveredEvent));
     }
