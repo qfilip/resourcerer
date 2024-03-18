@@ -1,7 +1,9 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos;
+using Resourcerer.Utilities;
 using Resourcerer.Utilities.Cryptography;
 using System.Text.Json;
 
@@ -14,7 +16,14 @@ internal static partial class DF
     public static T MakeEntity<T>(Func<T> retn) where T : EntityBase
     {
         var e = retn();
-        e.Id = Guid.NewGuid();
+        if(e is JsonEntityBase jeb)
+        {
+            jeb.Id = jeb.Id ?? MiniId.Generate();
+        }
+        else
+        {
+            e.Id = e.Id != Guid.Empty ? e.Id : Guid.NewGuid();
+        }
         e.CreatedAt = Now;
         e.ModifiedAt = Now;
 
