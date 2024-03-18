@@ -1,5 +1,5 @@
 using Resourcerer.Api;
 
-var app = Webapi.Create(args);
-app.Run();
+var app = Webapi.Build(args);
+Webapi.Run(app);
 

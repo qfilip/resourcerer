@@ -5,7 +5,7 @@ namespace Resourcerer.Api;
 
 public class Webapi
 {
-    public static WebApplication Create(string[] args)
+    public static WebApplication Build(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +21,11 @@ public class Webapi
             options.ValidateScopes = true;
         });
 
-        var app = builder.Build();
+        return builder.Build();
+    }
 
+    public static void Run(WebApplication app)
+    {
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -40,6 +43,6 @@ public class Webapi
 
         app.UseMiddleware<AppHttpMiddleware>();
 
-        return app;
+        app.Run();
     }
 }
