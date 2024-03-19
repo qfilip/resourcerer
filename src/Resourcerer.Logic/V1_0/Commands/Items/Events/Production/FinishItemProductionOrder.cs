@@ -5,6 +5,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos;
+using Resourcerer.Logic.V1_0.Functions;
 
 namespace Resourcerer.Logic.V1_0.Commands.Items;
 public static class FinishItemProductionOrder
@@ -21,6 +22,20 @@ public static class FinishItemProductionOrder
         public async Task<HandlerResult<Unit>> Handle(FinishItemProductionOrderRequest request)
         {
             var order = await _dbContext.ItemProductionOrders
+                .Select(x => new ItemProductionOrder
+                {
+                    Id = x.Id,
+                    Item = new Item
+                    {
+                        Id = x.ItemId,
+                        ExpirationTimeSeconds = x.Item!.ExpirationTimeSeconds
+                    },
+                    CompanyId = x.CompanyId,
+                    CanceledEvent = x.CanceledEvent,
+                    StartedEvent = x.StartedEvent,
+                    FinishedEvent = x.FinishedEvent
+                })
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.ProductionOrderId);
 
             if (order == null)
@@ -38,8 +53,25 @@ public static class FinishItemProductionOrder
                 return HandlerResult<Unit>.Rejected("Production order has not started yet");
             }
 
+            if (order.FinishedEvent != null)
+            {
+                return HandlerResult<Unit>.Ok(Unit.New);
+            }
+
             order.FinishedEvent = JsonEntityBase.CreateEntity(() => new ItemProductionFinishedEvent());
 
+            var expiration = order.Item!.ExpirationTimeSeconds;
+            var newInstance = new Instance
+            {
+                Quantity = order.Quantity,
+                ExpiryDate = Instances.GetExpirationDate(expiration, DateTime.UtcNow),
+
+                ItemId = order.ItemId,
+                OwnerCompanyId = order.CompanyId
+            };
+
+            _dbContext.Update(order);
+            _dbContext.Instances.Add(newInstance);
             await _dbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(Unit.New);

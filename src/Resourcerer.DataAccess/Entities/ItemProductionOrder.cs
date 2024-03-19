@@ -7,6 +7,8 @@ public class ItemProductionOrder : EntityBase
 {
     public double Quantity { get; set; }
     public string? Reason { get; set; }
+    public Guid CompanyId { get; set; }
+    
     // relational
     public Guid ItemId { get; set; }
     public virtual Item? Item { get; set; }
