@@ -1,4 +1,5 @@
-﻿using Resourcerer.DataAccess.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 using Resourcerer.Logic;
@@ -30,7 +31,7 @@ public class CreateItemProductionOrderTests : TestsBase
         };
 
         _testDbContext.SaveChanges();
-
+        
         // act
         var result = _sut.Handle(dto).Await();
 
@@ -157,20 +158,21 @@ public class CreateItemProductionOrderTests : TestsBase
 
         for (int i = 0; i < elements.Count; i++)
         {
-            fd.Elements.Add(new FakedItem { ItemId = elements[i].Item1.Id });
+            fd.Elements.Add(new FakedItem { Item = elements[i].Item1 });
 
-            for(int j = 0; j < instanceCount; j++)
+            for (int j = 0; j < instanceCount; j++)
             {
                 var instance = DF.FakeInstance(ctx, x =>
                 {
                     x.ItemId = elements[i].Item1.Id;
+                    x.Item = elements[i].Item1;
                     x.Quantity = 1;
                 });
-                
+
                 fd.Elements[i].Instances.Add(instance);
             }
         }
-           
+
         DF.FakeExcerpts(ctx, composite, elements.ToArray());
 
         return fd;
@@ -199,6 +201,6 @@ internal class FakedData
 
 internal class FakedItem
 {
-    public Guid ItemId { get; set; }
+    public Item Item { get; set; } = new();
     public List<Instance> Instances { get; set; } = new();
 }
