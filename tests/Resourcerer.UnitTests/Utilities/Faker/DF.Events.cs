@@ -1,5 +1,6 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Entities.JsonEntities;
 
 namespace Resourcerer.UnitTests.Utilities.Faker;
 
@@ -12,7 +13,7 @@ internal static partial class DF
         Action<InstanceOrderedEvent>? modifier = null
     )
     {
-        var entity = MakeEntity(() => new InstanceOrderedEvent
+        var entity = JsonEntityBase.CreateEntity(() => new InstanceOrderedEvent
         {
             ExpectedDeliveryDate = DateTime.UtcNow,
             TotalDiscountPercent = 0,
@@ -60,7 +61,7 @@ internal static partial class DF
     public static InstanceOrderCancelledEvent FakeOrderCancelledEvent(
         Action<InstanceOrderCancelledEvent>? modifier = null)
     {
-        var cancelEv = MakeEntity(() => new InstanceOrderCancelledEvent
+        var cancelEv = JsonEntityBase.CreateEntity(() => new InstanceOrderCancelledEvent
         {
             Reason = "test",
             RefundedAmount = 0
@@ -74,7 +75,7 @@ internal static partial class DF
     public static InstanceOrderSentEvent FakeSentEvent(
         Action<InstanceOrderSentEvent>? modifier = null)
     {
-        var sentEv = MakeEntity(() => new InstanceOrderSentEvent());
+        var sentEv = JsonEntityBase.CreateEntity(() => new InstanceOrderSentEvent());
         modifier?.Invoke(sentEv);
 
         return sentEv;
@@ -83,7 +84,7 @@ internal static partial class DF
     public static InstanceOrderDeliveredEvent FakeDeliveredEvent(
         Action<InstanceOrderDeliveredEvent>? modifier = null)
     {
-        var deliverEv = MakeEntity(() => new InstanceOrderDeliveredEvent());
+        var deliverEv = JsonEntityBase.CreateEntity(() => new InstanceOrderDeliveredEvent());
         modifier?.Invoke(deliverEv);
 
         return deliverEv;
@@ -93,7 +94,7 @@ internal static partial class DF
         Instance instance,
         Action<InstanceDiscardedEvent>? modifier = null)
     {
-        var discardEv = MakeEntity(() => new InstanceDiscardedEvent()
+        var discardEv = JsonEntityBase.CreateEntity(() => new InstanceDiscardedEvent()
         {
             Quantity = instance.Quantity,
             Reason = "test"
@@ -108,7 +109,7 @@ internal static partial class DF
     public static InstanceReservedEvent FakeReservedEvent(
         Action<InstanceReservedEvent>? modifier = null)
     {
-        var ev = MakeEntity(() => new InstanceReservedEvent());
+        var ev = JsonEntityBase.CreateEntity(() => new InstanceReservedEvent());
         modifier?.Invoke(ev);
 
         return ev;

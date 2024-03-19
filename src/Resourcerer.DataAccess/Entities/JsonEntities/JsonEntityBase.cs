@@ -2,9 +2,12 @@
 
 namespace Resourcerer.DataAccess.Entities.JsonEntities;
 
-public class JsonEntityBase : EntityBase
+public class JsonEntityBase
 {
-    public new string? Id { get; set; }
+    public string? Id { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime ModifiedAt { get; set; }
+    
     public static T CreateEntity<T>(Func<T> generator) where T : JsonEntityBase
     {
         var t = generator();
@@ -13,7 +16,6 @@ public class JsonEntityBase : EntityBase
         t.Id = MiniId.Generate();
         t.CreatedAt = now;
         t.ModifiedAt = now;
-        t.EntityStatus = Enums.eEntityStatus.Active;
 
         return t;
     }
