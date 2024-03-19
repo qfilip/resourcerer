@@ -25,15 +25,16 @@ public static class FinishItemProductionOrder
                 .Select(x => new ItemProductionOrder
                 {
                     Id = x.Id,
+                    Quantity = x.Quantity,
                     Item = new Item
                     {
                         Id = x.ItemId,
                         ExpirationTimeSeconds = x.Item!.ExpirationTimeSeconds
                     },
                     CompanyId = x.CompanyId,
-                    CanceledEvent = x.CanceledEvent,
-                    StartedEvent = x.StartedEvent,
-                    FinishedEvent = x.FinishedEvent
+                    CanceledEventJson = x.CanceledEventJson,
+                    StartedEventJson = x.StartedEventJson,
+                    FinishedEventJson = x.FinishedEventJson
                 })
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.ProductionOrderId);
@@ -66,11 +67,20 @@ public static class FinishItemProductionOrder
                 Quantity = order.Quantity,
                 ExpiryDate = Instances.GetExpirationDate(expiration, DateTime.UtcNow),
 
-                ItemId = order.ItemId,
+                ItemId = order.Item.Id,
                 OwnerCompanyId = order.CompanyId
             };
 
-            _dbContext.Update(order);
+            var itemProductionOrderUpdates = new ItemProductionOrder
+            {
+                Id = order.Id,
+                FinishedEvent = JsonEntityBase.CreateEntity(() => new ItemProductionFinishedEvent())
+            };
+
+            _dbContext.ItemProductionOrders.Attach(itemProductionOrderUpdates);
+            _dbContext.ChangeTracker.Clear(); // Attach marks some fields as true (itemId)
+
+            _dbContext.Entry(itemProductionOrderUpdates).Property(x => x.FinishedEventJson).IsModified = true;
             _dbContext.Instances.Add(newInstance);
             await _dbContext.SaveChangesAsync();
 

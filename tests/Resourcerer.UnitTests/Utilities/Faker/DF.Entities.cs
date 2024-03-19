@@ -131,7 +131,12 @@ internal static partial class DF
 
     public static ItemProductionOrder FakeItemProductionOrder(AppDbContext context, Action<ItemProductionOrder> modifier)
     {
-        var entity = MakeEntity(() => new ItemProductionOrder());
+        var item = DF.FakeItem(context);
+        var entity = MakeEntity(() => new ItemProductionOrder
+        {
+            Item = item,
+            ItemId = item.Id
+        });
 
         modifier.Invoke(entity);
 

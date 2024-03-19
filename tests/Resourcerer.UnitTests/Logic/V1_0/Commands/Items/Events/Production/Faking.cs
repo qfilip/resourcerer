@@ -49,16 +49,15 @@ internal class Faking
     }
     internal static ItemProductionOrder FakeOrder(TestDbContext context, FakedData data, Action<ItemProductionOrder>? modifier = null)
     {
-        var order = DF.FakeItemProductionOrder(context, x =>
+        return DF.FakeItemProductionOrder(context, x =>
         {
             x.ItemId = data.CompositeId;
+            x.CompanyId = data.CompanyId;
             x.InstancesUsedIds = MapInstancesToUse(data).Keys.ToArray();
             x.Reason = "test";
-        });
-        
-        modifier?.Invoke(order);
 
-        return order;
+            modifier?.Invoke(x);
+        });
     }
     internal static Dictionary<Guid, double> MapInstancesToUse(FakedData fd, Func<double>? valueModifier = null)
     {

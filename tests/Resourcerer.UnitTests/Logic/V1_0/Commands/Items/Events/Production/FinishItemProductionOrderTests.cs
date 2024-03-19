@@ -1,4 +1,6 @@
-﻿using Resourcerer.Dtos;
+﻿using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Entities.JsonEntities;
+using Resourcerer.Dtos;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1_0.Commands.Items;
 using Resourcerer.UnitTests.Utilities;
@@ -18,7 +20,11 @@ public class FinishItemProductionOrderTests : TestsBase
     {
         // arrange
         var fd = Faking.FakeData(_testDbContext, 2, 2);
-        var order = Faking.FakeOrder(_testDbContext, fd, x => x.Quantity = 2);
+        var order = Faking.FakeOrder(_testDbContext, fd, x =>
+        {
+            x.Quantity = 2;
+            x.StartedEvent = JsonEntityBase.CreateEntity(() => new ItemProductionStartedEvent());
+        });
         var dto = new FinishItemProductionOrderRequest
         {
             ProductionOrderId = order.Id
@@ -31,6 +37,19 @@ public class FinishItemProductionOrderTests : TestsBase
 
         // assert
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-        // AssertCorrectEventsCreated(dto);
+        AssertPersistedData(order.Id);
+    }
+
+    private void AssertPersistedData(Guid itemProductionOrderId)
+    {
+        var order = _testDbContext.ItemProductionOrders
+            .First(x => x.Id == itemProductionOrderId);
+
+        Assert.NotNull(order.FinishedEvent);
+        
+        var newInstance = _testDbContext.Instances
+            .First(x =>
+                x.ItemId == order.ItemId &&
+                x.Quantity == order.Quantity);
     }
 }
