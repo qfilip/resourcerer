@@ -4,6 +4,13 @@ namespace Resourcerer.DataAccess.Utilities;
 internal sealed class ExpressionUtils
 {
     // https://stackoverflow.com/questions/6180704/combine-several-similar-select-expressions-into-a-single-expression
+
+    /*
+        Prevent loading json fields, unless specified. DO NOT specify a field where json is mapped to. Ex:
+        wrong: x => new Instance() { ReservedEvents = x.ReservedEvents }
+        correct: x => new Instance() { ReservedEventsJson = x.ReservedEventsJson }
+     */
+
     public static Expression<Func<T, T>> Combine<T>(params Expression<Func<T, T>>[] selectors)
     {
         var zeroth = ((MemberInitExpression)selectors[0].Body);
@@ -19,6 +26,7 @@ internal sealed class ExpressionUtils
                     replace.VisitAndConvert(binding.Expression, "Combine")));
             }
         }
+
 
         return Expression.Lambda<Func<T, T>>(
             Expression.MemberInit(zeroth.NewExpression, bindings), param);
