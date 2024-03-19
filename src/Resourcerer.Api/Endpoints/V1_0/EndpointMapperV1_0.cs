@@ -1,4 +1,6 @@
-﻿namespace Resourcerer.Api.Endpoints.V1_0;
+﻿using Resourcerer.Api.Endpoints.V1_0.Items.Production;
+
+namespace Resourcerer.Api.Endpoints.V1_0;
 
 public class EndpointMapperV1_0
 {
@@ -44,6 +46,7 @@ public class EndpointMapperV1_0
         // production
         CreateItemProductionOrderEndpoint.MapToGroup(g);
         CancelItemProductionOrderEndpoint.MapToGroup(g);
+        FinishItemProductionOrderEndpoint.MapToGroup(g);
         StartItemProductionEndpoint.MapToGroup(g);
     }
 
