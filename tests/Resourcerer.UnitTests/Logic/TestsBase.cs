@@ -16,7 +16,7 @@ namespace Resourcerer.UnitTests.Logic;
 
 public class TestsBase
 {
-    protected readonly AppDbContext _testDbContext;
+    protected readonly TestDbContext _testDbContext;
 
     public TestsBase()
     {
@@ -102,7 +102,6 @@ public class TestsBase
         // https://learn.microsoft.com/en-us/ef/core/querying/tracking
         DF.FakeInstance(_testDbContext);
         _testDbContext.SaveChanges();
-        _testDbContext.ChangeTracker.Clear();
 
         var i = _testDbContext.Instances
             .Select(x => new Instance
@@ -116,11 +115,10 @@ public class TestsBase
         i.Quantity = 7;
         var arr = _testDbContext.ChangeTracker.Entries().ToArray();
         _testDbContext.SaveChanges();
-        _testDbContext.ChangeTracker.Clear();
 
         var v = _testDbContext.Instances.First();
 
-        var f = 0;
+        _ = 0;
     }
 
     protected ILogger<T> MockLogger<T>() => A.Fake<ILogger<T>>();

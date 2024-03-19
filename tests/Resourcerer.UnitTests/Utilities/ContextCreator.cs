@@ -18,38 +18,13 @@ public class ContextCreator: IDisposable
             .UseSqlite(_connection)
             .Options;
 
-        var context = new AppDbContext(_options, new AppDbIdentity());
+        var context = new TestDbContext(_options, new AppDbIdentity());
         context.Database.EnsureCreated();
     }
-    //public ContextCreator(Func<DatabaseData> seeder)
-    //{
-    //    _connection = new SqliteConnection("Filename=:memory:");
-    //    _connection.Open();
-
-    //    _options = new DbContextOptionsBuilder<AppDbContext>()
-    //        .UseSqlite(_connection)
-    //        .Options;
-
-    //    var context = new AppDbContext(_options);
-    //    if (context.Database.EnsureCreated())
-    //    {
-    //        var dbData = seeder();
-    //        // write to disk if mocks are needed
-    //        // var dbDataJson = JsonSerializer.Serialize(dbData);
-
-    //        context.AppUsers.AddRange(dbData.AppUsers!);
-    //        context.Categories.AddRange(dbData.Categories!);
-    //        context.Excerpts.AddRange(dbData.Excerpts!);
-    //        context.UnitsOfMeasure.AddRange(dbData.UnitsOfMeasure!);
-    //        context.Prices.AddRange(dbData.Prices!);
-    //        context.Items.AddRange(dbData.Items!);
-
-    //        context.SaveChanges();
-    //    }
-    //}
-    public AppDbContext GetTestDbContext()
+    
+    public TestDbContext GetTestDbContext()
     {
-        return new AppDbContext(_options, new AppDbIdentity());
+        return new TestDbContext(_options, new AppDbIdentity());
     }
 
     public void Dispose()
