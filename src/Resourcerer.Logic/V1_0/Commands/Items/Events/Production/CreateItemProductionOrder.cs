@@ -134,6 +134,8 @@ public static class CreateItemProductionOrder
                     });
 
                 instance.ReservedEvents.Add(reservedEvent);
+
+                _dbContext.Update(instance);
             }
 
             _dbContext.ItemProductionOrders.Add(productionOrder);

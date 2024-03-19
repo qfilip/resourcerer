@@ -70,8 +70,9 @@ public static class CreateInstanceOrderedEvent
                 .Select(QU.Instances.Expand(x => new Instance
                 {
                     SourceInstance = x.SourceInstance,
-                    OrderedEvents = x.OrderedEvents
+                    OrderedEventsJson = x.OrderedEventsJson
                 }))
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
             if (instance == null)
@@ -139,6 +140,7 @@ public static class CreateInstanceOrderedEvent
                 ExpiryDate = instance.ExpiryDate
             };
 
+            _appDbContext.Update(instance);
             _appDbContext.Instances.Add(newOwnerInstance);
 
             await _appDbContext.SaveChangesAsync();

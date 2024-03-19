@@ -26,9 +26,10 @@ public static class CreateInstanceDiscardedEvent
             var instance = await _appDbContext.Instances
                 .Select(QU.Expand(x => new Instance
                 {
-                    OrderedEvents = x.OrderedEvents,
-                    DiscardedEvents = x.DiscardedEvents
+                    OrderedEventsJson = x.OrderedEventsJson,
+                    DiscardedEventsJson = x.DiscardedEventsJson
                 }))
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
             if (instance == null)
@@ -72,6 +73,8 @@ public static class CreateInstanceDiscardedEvent
                 });
 
                 instance.DiscardedEvents.Add(discardEvent);
+
+                _appDbContext.Update(instance);
                 await _appDbContext.SaveChangesAsync();
 
                 return HandlerResult<Unit>.Ok(Unit.New);

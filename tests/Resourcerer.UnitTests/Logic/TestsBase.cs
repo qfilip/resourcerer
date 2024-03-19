@@ -104,16 +104,42 @@ public class TestsBase
         _testDbContext.SaveChanges();
 
         var i = _testDbContext.Instances
-            .Select(x => new Instance
+            .Select(QU.Expand(x => new Instance
             {
-                Id = x.Id,
-                Quantity = x.Quantity,
-            })
+                ReservedEventsJson = x.ReservedEventsJson
+            }))
             .First();
 
         _testDbContext.Attach(i);
         i.Quantity = 7;
         var arr = _testDbContext.ChangeTracker.Entries().ToArray();
+        _testDbContext.SaveChanges();
+
+        var v = _testDbContext.Instances.First();
+
+        _ = 0;
+    }
+
+    [Fact]
+    public void ChangeTrackingV2()
+    {
+        // https://learn.microsoft.com/en-us/ef/core/querying/tracking
+        DF.FakeInstance(_testDbContext);
+        _testDbContext.SaveChanges();
+
+        var i = _testDbContext.Instances
+            .Select(QU.Expand(x => new Instance
+            {
+                ReservedEventsJson = x.ReservedEventsJson
+            }))
+            .AsNoTracking() // as no tracking
+            .First();
+
+        
+        i.Quantity = 7;
+        var arr = _testDbContext.ChangeTracker.Entries().ToArray();
+        
+        _testDbContext.Update(i); // with update
         _testDbContext.SaveChanges();
 
         var v = _testDbContext.Instances.First();

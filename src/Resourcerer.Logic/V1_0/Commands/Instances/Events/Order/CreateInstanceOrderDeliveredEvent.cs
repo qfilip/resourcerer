@@ -25,8 +25,9 @@ public static class CreateInstanceOrderDeliveredEvent
             var instance = await _appDbContext.Instances
                 .Select(QU.Expand(x => new Instance
                 {
-                    OrderedEvents = x.OrderedEvents
+                    OrderedEventsJson = x.OrderedEventsJson
                 }))
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
             if (instance == null)
@@ -64,6 +65,7 @@ public static class CreateInstanceOrderDeliveredEvent
             var deliveredEvent = JsonEntityBase.CreateEntity(() => new InstanceOrderDeliveredEvent());
             orderEvent.DeliveredEvent = deliveredEvent;
 
+            _appDbContext.Update(instance);
             await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());

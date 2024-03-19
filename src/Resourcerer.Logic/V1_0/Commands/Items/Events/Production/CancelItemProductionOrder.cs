@@ -46,8 +46,9 @@ public static class CancelItemProductionOrder
                 .Where(x => orderEvent.InstancesUsedIds.Contains(x.Id))
                 .Select(QU.Expand(x => new Instance
                 {
-                    ReservedEvents = x.ReservedEvents
+                    ReservedEventsJson = x.ReservedEventsJson
                 }))
+                .AsNoTracking()
                 .ToArrayAsync();
 
             if (orderEvent.InstancesUsedIds.Length != instances.Length)
@@ -75,6 +76,8 @@ public static class CancelItemProductionOrder
                     {
                         Reason = request.Reason
                     });
+
+                _dbContext.Update(i);
             }
 
             await _dbContext.SaveChangesAsync();

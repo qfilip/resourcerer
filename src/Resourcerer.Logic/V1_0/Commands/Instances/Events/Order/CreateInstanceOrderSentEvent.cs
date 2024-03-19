@@ -25,8 +25,9 @@ public static class CreateInstanceOrderSentEvent
             var instance = await _appDbContext.Instances
                 .Select(QU.Expand(x => new Instance
                 {
-                    OrderedEvents = x.OrderedEvents
+                    OrderedEventsJson = x.OrderedEventsJson
                 }))
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
             if (instance == null)
@@ -57,9 +58,9 @@ public static class CreateInstanceOrderSentEvent
                 return HandlerResult<Unit>.Ok(Unit.New);
             }
 
-            orderEv.SentEvent = JsonEntityBase
-                .CreateEntity(() => new DataAccess.Entities.InstanceOrderSentEvent());
+            orderEv.SentEvent = JsonEntityBase.CreateEntity(() => new InstanceOrderSentEvent());
 
+            _appDbContext.Update(instance);
             await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(Unit.New);

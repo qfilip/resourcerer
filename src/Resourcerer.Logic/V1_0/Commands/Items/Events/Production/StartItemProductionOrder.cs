@@ -47,8 +47,9 @@ public static class StartItemProductionOrder
                 .Where(x => order.InstancesUsedIds.Contains(x.Id))
                 .Select(QU.Expand(x => new Instance
                 {
-                    ReservedEvents = x.ReservedEvents
+                    ReservedEventsJson = x.ReservedEventsJson
                 }))
+                .AsNoTracking()
                 .ToArrayAsync();
 
             if (order.InstancesUsedIds.Length != instances.Length)
@@ -68,6 +69,8 @@ public static class StartItemProductionOrder
                         x.UsedEvent == null);
 
                 reservationEvent.UsedEvent = JsonEntityBase.CreateEntity(() => new InstanceReserveUsedEvent());
+
+                _dbContext.Update(i);
             }
 
             await _dbContext.SaveChangesAsync();
