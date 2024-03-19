@@ -2,6 +2,7 @@
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1_0.Commands.Items;
 using Resourcerer.UnitTests.Utilities;
+using Resourcerer.UnitTests.Utilities.Faker;
 
 namespace Resourcerer.UnitTests.Logic.V1_0.Commands.Items.Events.Production;
 
@@ -22,6 +23,7 @@ public class CreateItemProductionOrderTests : TestsBase
         var dto = new CreateItemProductionOrderRequestDto
         {
             ItemId = fd.CompositeId,
+            CompanyId = fd.CompanyId,
             Quantity = 2,
             InstancesToUse = Faking.MapInstancesToUse(fd)
         };
@@ -60,6 +62,7 @@ public class CreateItemProductionOrderTests : TestsBase
         var dto = new CreateItemProductionOrderRequestDto
         {
             ItemId = fd.CompositeId,
+            CompanyId = fd.CompanyId,
             InstancesToUse = new Dictionary<Guid, double>
             {
                 { Guid.NewGuid(), 2 }
@@ -76,6 +79,35 @@ public class CreateItemProductionOrderTests : TestsBase
     }
 
     [Fact]
+    public void When_RequestedInstancesDontBelongToCompany_Then_Rejected()
+    {
+        // arrange
+        var fd = Faking.FakeData(_testDbContext, 2, 2);
+        var otherCompany = DF.FakeCompany(_testDbContext);
+
+        fd.Elements.ForEach(e => e.Instances.ForEach(i =>
+        {
+            i.OwnerCompany = otherCompany;
+            i.OwnerCompanyId = otherCompany.Id;
+        }));
+        
+        var dto = new CreateItemProductionOrderRequestDto
+        {
+            ItemId = fd.CompositeId,
+            CompanyId = fd.CompanyId,
+            InstancesToUse = Faking.MapInstancesToUse(fd)
+        };
+
+        _testDbContext.SaveChanges();
+
+        // act
+        var result = _sut.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
     public void When_NotEnoughInstances_Then_Rejected()
     {
         // arrange
@@ -84,6 +116,7 @@ public class CreateItemProductionOrderTests : TestsBase
         var dto = new CreateItemProductionOrderRequestDto
         {
             ItemId = fd.CompositeId,
+            CompanyId = fd.CompanyId,
             Quantity = 2,
             InstancesToUse = Faking.MapInstancesToUse(fd)
         };
@@ -106,6 +139,7 @@ public class CreateItemProductionOrderTests : TestsBase
         var dto = new CreateItemProductionOrderRequestDto
         {
             ItemId = fd.CompositeId,
+            CompanyId = fd.CompanyId,
             Quantity = 2,
             InstancesToUse = Faking.MapInstancesToUse(fd, () => 0.3)
         };

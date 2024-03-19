@@ -55,6 +55,14 @@ public static class CreateItemProductionOrder
                 return HandlerResult<Unit>.NotFound("Specified instances to use, not found");
             }
 
+            var specifiedInstancesOwnedByCompany = allInstances
+                .All(x => x.OwnerCompanyId == request.CompanyId);
+
+            if(!specifiedInstancesOwnedByCompany)
+            {
+                return HandlerResult<Unit>.Rejected("Not all specified instances belong to the company");
+            }
+
             var correctlySpecifiedQuantities = elementQuantityMap.All(x =>
             {
                 var ids = allInstances
@@ -116,6 +124,7 @@ public static class CreateItemProductionOrder
             {
                 Id = Guid.NewGuid(),
                 ItemId = item.Id,
+                CompanyId = request.CompanyId,
                 Quantity = request.Quantity,
                 Reason = request.Reason,
                 InstancesUsedIds = instanceToUpdateIds
@@ -154,6 +163,9 @@ public static class CreateItemProductionOrder
             {
                 RuleFor(x => x.ItemId)
                     .NotEmpty().WithMessage("Item id cannot be empty");
+
+                RuleFor(x => x.CompanyId)
+                    .NotEmpty().WithMessage("Company id cannot be empty");
 
                 RuleFor(x => x.Quantity)
                     .Must(x => x > 0).WithMessage("Item production quantity must be greater than 0");

@@ -9,10 +9,12 @@ internal class Faking
 {
     internal static FakedData FakeData(AppDbContext ctx, int elementCount, int instanceCount)
     {
+        var company = DF.FakeCompany(ctx);
         var composite = DF.FakeItem(ctx);
         var fd = new FakedData()
         {
-            CompositeId = composite.Id
+            CompositeId = composite.Id,
+            CompanyId = company.Id
         };
 
         var elements = new List<(Item, double)>();
@@ -28,9 +30,13 @@ internal class Faking
             {
                 var instance = DF.FakeInstance(ctx, x =>
                 {
-                    x.ItemId = elements[i].Item1.Id;
-                    x.Item = elements[i].Item1;
                     x.Quantity = 1;
+
+                    x.Item = elements[i].Item1;
+                    x.ItemId = elements[i].Item1.Id;
+
+                    x.OwnerCompany = company;
+                    x.OwnerCompanyId = company.Id;
                 });
 
                 fd.Elements[i].Instances.Add(instance);
@@ -72,6 +78,7 @@ internal class Faking
 internal class FakedData
 {
     public Guid CompositeId { get; set; }
+    public Guid CompanyId { get; set; }
     public List<FakedItem> Elements { get; set; } = new();
 }
 
