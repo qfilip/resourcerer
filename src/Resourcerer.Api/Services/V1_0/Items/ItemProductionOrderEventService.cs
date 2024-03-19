@@ -22,6 +22,11 @@ public class ItemProductionOrderEventService : EventConsumerServiceBase<ItemProd
             var handler = new CancelItemProductionOrder.Handler(appDbContext);
             return handler.Handle(cancel);
         }
+        else if (message is StartItemProductionOrderRequestDto start)
+        {
+            var handler = new StartItemProductionOrder.Handler(appDbContext);
+            return handler.Handle(start);
+        }
         else
         {
             throw new InvalidOperationException("Unsupported event type");

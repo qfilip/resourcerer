@@ -44,6 +44,7 @@ public class EndpointMapperV1_0
         // production
         CreateItemProductionOrderEndpoint.MapToGroup(g);
         CancelItemProductionOrderEndpoint.MapToGroup(g);
+        StartItemProductionEndpoint.MapToGroup(g);
     }
 
     private static void MapMocks(WebApplication app)
