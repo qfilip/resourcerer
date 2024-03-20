@@ -5,13 +5,13 @@ using Microsoft.Extensions.Logging;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.V1;
 
 namespace Resourcerer.Logic.Commands.V1_0;
 
 public class ChangeItemPrice
 {
-    public class Handler : IAppHandler<ChangePriceDto, Unit>
+    public class Handler : IAppHandler<V1ChangePrice, Unit>
     {
         private readonly AppDbContext _appDbContext;
         private readonly ILogger<Handler> _logger;
@@ -22,7 +22,7 @@ public class ChangeItemPrice
             _logger = logger;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(ChangePriceDto request)
+        public async Task<HandlerResult<Unit>> Handle(V1ChangePrice request)
         {   
             var element = await _appDbContext.Items
                 .Where(x => x.Id == request.ItemId)
@@ -54,9 +54,9 @@ public class ChangeItemPrice
             return HandlerResult<Unit>.Ok(new Unit());
         }
 
-        public ValidationResult Validate(ChangePriceDto request) => new Validator().Validate(request);
+        public ValidationResult Validate(V1ChangePrice request) => new Validator().Validate(request);
 
-        private class Validator : AbstractValidator<ChangePriceDto>
+        private class Validator : AbstractValidator<V1ChangePrice>
         {
             public Validator()
             {

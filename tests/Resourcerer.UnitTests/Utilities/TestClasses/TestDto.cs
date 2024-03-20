@@ -3,7 +3,7 @@ using Resourcerer.Dtos;
 
 namespace Resourcerer.UnitTests.Utilities.TestClasses;
 
-public class TestDto : IBaseDto
+public class TestDto : IDto
 {
     public eHandlerResult Property { get; set; }
     public const string ErrorMessage = "Test property must not be Invalid";

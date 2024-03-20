@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Commands.V1_0;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
@@ -8,7 +9,7 @@ namespace Resourcerer.Api.Endpoints.V1_0;
 public class CreateCategoryEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] CreateCategoryDto categoryDto,
+        [FromBody] V1CreateCategory categoryDto,
         [FromServices] Pipeline pipeline,
         [FromServices] CreateCategory.Handler handler)
     {

@@ -1,4 +1,4 @@
-﻿using Resourcerer.Dtos.Instances.Events;
+﻿using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1_0.Commands;
 using Resourcerer.UnitTests.Utilities;
@@ -19,7 +19,7 @@ public class CreateInstanceDiscardedEventTests : TestsBase
     {
         // arrange
         var orderEvent = DF.FakeOrderedEvent(_testDbContext, x => x.DeliveredEvent = DF.FakeDeliveredEvent());
-        var dto = new InstanceDiscardedRequestDto
+        var dto = new V1InstanceDiscardedRequest
         {
             InstanceId = orderEvent.DerivedInstanceId,
             Quantity = orderEvent.Quantity
@@ -40,7 +40,7 @@ public class CreateInstanceDiscardedEventTests : TestsBase
     public void When_NotOrdered_Then_NotFound()
     {
         // arrange
-        var dto = new InstanceDiscardedRequestDto
+        var dto = new V1InstanceDiscardedRequest
         {
             InstanceId = Guid.NewGuid()
         };

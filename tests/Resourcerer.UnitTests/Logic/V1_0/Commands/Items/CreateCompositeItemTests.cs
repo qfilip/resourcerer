@@ -1,4 +1,4 @@
-﻿using Resourcerer.Dtos;
+﻿using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.UnitTests.Utilities;
@@ -93,9 +93,9 @@ public class CreateCompositeItemTests : TestsBase
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
     }
 
-    private CreateCompositeItemDto GetDto(Action<CreateCompositeItemDto>? modifier = null)
+    private V1CreateCompositeItem GetDto(Action<V1CreateCompositeItem>? modifier = null)
     {
-        var dto = new CreateCompositeItemDto
+        var dto = new V1CreateCompositeItem
         {
             Name = "test",
             CategoryId = DF.FakeCategory(_testDbContext).Id,

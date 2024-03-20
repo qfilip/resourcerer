@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
-using Resourcerer.Dtos.Instances.Events.Order;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Commands.V1_0;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
@@ -9,8 +9,8 @@ namespace Resourcerer.Api.Endpoints.V1_0;
 public class CreateInstanceOrderCancelledEventEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] InstanceOrderCancelRequestDto dto,
-        [FromServices] ISenderAdapter<InstanceOrderEventDtoBase> sender,
+        [FromBody] V1InstanceOrderCancelRequest dto,
+        [FromServices] ISenderAdapter<V1InstanceOrderEvent> sender,
         [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeMessage(

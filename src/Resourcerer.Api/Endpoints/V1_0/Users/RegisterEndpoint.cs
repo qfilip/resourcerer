@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.Entity;
 using Resourcerer.Logic.Commands.V1_0;
 
 namespace Resourcerer.Api.Endpoints.V1_0;

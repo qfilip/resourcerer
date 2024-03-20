@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1_0.Commands.Items;
 
 namespace Resourcerer.Api.Endpoints.V1_0;
@@ -8,8 +9,8 @@ namespace Resourcerer.Api.Endpoints.V1_0;
 public class CreateItemProductionOrderEndpoint
 {
     public static async Task<IResult> Action(
-       [FromBody] CreateItemProductionOrderRequestDto dto,
-       [FromServices] ISenderAdapter<ItemProductionEventBaseDto> sender,
+       [FromBody] V1CreateItemProductionOrderRequest dto,
+       [FromServices] ISenderAdapter<V1ItemProductionEvent> sender,
        [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeMessage(

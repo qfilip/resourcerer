@@ -3,13 +3,13 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.V1;
 
 namespace Resourcerer.Logic.Commands.V1_0;
 
 public static class CreateCompositeItem
 {
-    public class Handler : IAppHandler<CreateCompositeItemDto, Unit>
+    public class Handler : IAppHandler<V1CreateCompositeItem, Unit>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -18,7 +18,7 @@ public static class CreateCompositeItem
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(CreateCompositeItemDto request)
+        public async Task<HandlerResult<Unit>> Handle(V1CreateCompositeItem request)
         {
             var category = await _appDbContext.Categories
                 .FirstOrDefaultAsync(x => x.Id == request.CategoryId);
@@ -96,9 +96,9 @@ public static class CreateCompositeItem
             return HandlerResult<Unit>.Ok(new Unit());
         }
 
-        public ValidationResult Validate(CreateCompositeItemDto request) => new Validator().Validate(request);
+        public ValidationResult Validate(V1CreateCompositeItem request) => new Validator().Validate(request);
 
-        private class Validator : AbstractValidator<CreateCompositeItemDto>
+        private class Validator : AbstractValidator<V1CreateCompositeItem>
         {
             public Validator()
             {

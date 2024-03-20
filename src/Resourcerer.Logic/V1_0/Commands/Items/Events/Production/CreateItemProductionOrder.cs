@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1_0.Functions;
 
 namespace Resourcerer.Logic.V1_0.Commands.Items;
 public static class CreateItemProductionOrder
 {
-    public class Handler : IAppEventHandler<CreateItemProductionOrderRequestDto, Unit>
+    public class Handler : IAppEventHandler<V1CreateItemProductionOrderRequest, Unit>
     {
         private readonly AppDbContext _dbContext;
 
@@ -19,7 +19,7 @@ public static class CreateItemProductionOrder
             _dbContext = dbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(CreateItemProductionOrderRequestDto request)
+        public async Task<HandlerResult<Unit>> Handle(V1CreateItemProductionOrderRequest request)
         {
             var item = _dbContext.Items
                 .FirstOrDefault(x => x.Id == request.ItemId);
@@ -154,10 +154,10 @@ public static class CreateItemProductionOrder
             return HandlerResult<Unit>.Ok(Unit.New);
         }
 
-        public static ValidationResult Validate(CreateItemProductionOrderRequestDto request) =>
+        public static ValidationResult Validate(V1CreateItemProductionOrderRequest request) =>
             new Validator().Validate(request);
 
-        private class Validator : AbstractValidator<CreateItemProductionOrderRequestDto>
+        private class Validator : AbstractValidator<V1CreateItemProductionOrderRequest>
         {
             public Validator()
             {

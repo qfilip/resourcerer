@@ -1,5 +1,4 @@
-﻿using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
+﻿using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.UnitTests.Utilities;
@@ -18,7 +17,7 @@ public class CreateCategoryTests : TestsBase
     [Fact]
     public void When_HappyPath_TopCategory_Then_Ok()
     {
-        var dto = new CreateCategoryDto
+        var dto = new V1CreateCategory
         {
             Name = "name",
             CompanyId = DF.FakeCompany(_testDbContext).Id,
@@ -39,7 +38,7 @@ public class CreateCategoryTests : TestsBase
         {
             x.CompanyId = DF.FakeCompany(_testDbContext).Id;
         });
-        var dto = new CreateCategoryDto
+        var dto = new V1CreateCategory
         {
             Name = "name",
             CompanyId = parentCategory.CompanyId,
@@ -58,7 +57,7 @@ public class CreateCategoryTests : TestsBase
     public void When_Categories_DifferentCompany_And_SameParentCategory_HaveSameNamee_Then_Ok()
     {
         var c = DF.FakeCategory(_testDbContext);
-        var dto = new CreateCategoryDto
+        var dto = new V1CreateCategory
         {
             Name = c.Name,
             CompanyId = DF.FakeCompany(_testDbContext).Id
@@ -76,7 +75,7 @@ public class CreateCategoryTests : TestsBase
     public void When_SameCompany_And_DifferentParentCategory_HaveSameName_Then_Ok()
     {
         var parentCatg = DF.FakeCategory(_testDbContext);
-        var dto = new CreateCategoryDto
+        var dto = new V1CreateCategory
         {
             Name = parentCatg.Name,
             CompanyId = parentCatg.CompanyId,
@@ -100,7 +99,7 @@ public class CreateCategoryTests : TestsBase
             x.CompanyId = parentCatg.CompanyId;
             x.ParentCategoryId = parentCatg.Id;
         });
-        var dto = new CreateCategoryDto
+        var dto = new V1CreateCategory
         {
             Name = existingCatg.Name,
             CompanyId = existingCatg.Id,
@@ -119,7 +118,7 @@ public class CreateCategoryTests : TestsBase
     public void When_ParentCategory_DoesntExist_Then_Rejected()
     {
         // arrange
-        var dto = new CreateCategoryDto
+        var dto = new V1CreateCategory
         {
             Name = "test",
             CompanyId = DF.FakeCompany(_testDbContext).Id,
@@ -138,7 +137,7 @@ public class CreateCategoryTests : TestsBase
     {
         // arrange
         var parentCatg = DF.FakeCategory(_testDbContext);
-        var dto = new CreateCategoryDto
+        var dto = new V1CreateCategory
         {
             Name = "test",
             CompanyId = DF.FakeCompany(_testDbContext).Id,

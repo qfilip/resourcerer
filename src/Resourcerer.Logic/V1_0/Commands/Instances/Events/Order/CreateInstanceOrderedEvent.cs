@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.Dtos.Instances.Events.Order;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1_0.Functions;
 
 using QU = Resourcerer.DataAccess.Utilities.Query;
@@ -13,14 +13,14 @@ namespace Resourcerer.Logic.Commands.V1_0;
 
 public static class CreateInstanceOrderedEvent
 {
-    public class Handler : IAppEventHandler<InstanceOrderRequestDto, Unit>
+    public class Handler : IAppEventHandler<V1InstanceOrderRequest, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
-        public async Task<HandlerResult<Unit>> Handle(InstanceOrderRequestDto request)
+        public async Task<HandlerResult<Unit>> Handle(V1InstanceOrderRequest request)
         {
             var companies = await _appDbContext.Companies
                 .Where(x =>
@@ -149,10 +149,10 @@ public static class CreateInstanceOrderedEvent
             return HandlerResult<Unit>.Ok(new Unit());
         }
 
-        public static ValidationResult Validate(InstanceOrderRequestDto request) =>
+        public static ValidationResult Validate(V1InstanceOrderRequest request) =>
             new Validator().Validate(request);
 
-        private class Validator : AbstractValidator<InstanceOrderRequestDto>
+        private class Validator : AbstractValidator<V1InstanceOrderRequest>
         {
             public Validator()
             {

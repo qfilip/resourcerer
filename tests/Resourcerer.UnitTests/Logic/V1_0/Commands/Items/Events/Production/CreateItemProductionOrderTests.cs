@@ -1,4 +1,4 @@
-﻿using Resourcerer.Dtos;
+﻿using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1_0.Commands.Items;
 using Resourcerer.UnitTests.Utilities;
@@ -20,7 +20,7 @@ public class CreateItemProductionOrderTests : TestsBase
         // arrange
         var fd = Faking.FakeData(_testDbContext, 2, 2);
         
-        var dto = new CreateItemProductionOrderRequestDto
+        var dto = new V1CreateItemProductionOrderRequest
         {
             ItemId = fd.CompositeId,
             CompanyId = fd.CompanyId,
@@ -43,7 +43,7 @@ public class CreateItemProductionOrderTests : TestsBase
     {
         // arrange
         Faking.FakeData(_testDbContext, 2, 2);
-        var dto = new CreateItemProductionOrderRequestDto { ItemId = Guid.NewGuid() };
+        var dto = new V1CreateItemProductionOrderRequest { ItemId = Guid.NewGuid() };
 
         _testDbContext.SaveChanges();
 
@@ -59,7 +59,7 @@ public class CreateItemProductionOrderTests : TestsBase
     {
         // arrange
         var fd = Faking.FakeData(_testDbContext, 2, 2);
-        var dto = new CreateItemProductionOrderRequestDto
+        var dto = new V1CreateItemProductionOrderRequest
         {
             ItemId = fd.CompositeId,
             CompanyId = fd.CompanyId,
@@ -91,7 +91,7 @@ public class CreateItemProductionOrderTests : TestsBase
             i.OwnerCompanyId = otherCompany.Id;
         }));
         
-        var dto = new CreateItemProductionOrderRequestDto
+        var dto = new V1CreateItemProductionOrderRequest
         {
             ItemId = fd.CompositeId,
             CompanyId = fd.CompanyId,
@@ -113,7 +113,7 @@ public class CreateItemProductionOrderTests : TestsBase
         // arrange
         var fd = Faking.FakeData(_testDbContext, 2, 1);
 
-        var dto = new CreateItemProductionOrderRequestDto
+        var dto = new V1CreateItemProductionOrderRequest
         {
             ItemId = fd.CompositeId,
             CompanyId = fd.CompanyId,
@@ -136,7 +136,7 @@ public class CreateItemProductionOrderTests : TestsBase
         // arrange
         var fd = Faking.FakeData(_testDbContext, 2, 2);
 
-        var dto = new CreateItemProductionOrderRequestDto
+        var dto = new V1CreateItemProductionOrderRequest
         {
             ItemId = fd.CompositeId,
             CompanyId = fd.CompanyId,
@@ -153,7 +153,7 @@ public class CreateItemProductionOrderTests : TestsBase
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
     }
 
-    private void AssertCorrectEventsCreated(CreateItemProductionOrderRequestDto dto)
+    private void AssertCorrectEventsCreated(V1CreateItemProductionOrderRequest dto)
     {
         var ids = dto.InstancesToUse.Keys.ToArray();
         

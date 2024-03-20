@@ -1,6 +1,6 @@
 ﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Exceptions;
 using Resourcerer.Logic.V1_0.Commands.Items;
@@ -22,7 +22,7 @@ public class CancelItemProductionOrderTests : TestsBase
     {
         // arrange
         var order = FakeData();
-        var dto = new CancelItemProductionOrderRequestDto
+        var dto = new V1CancelItemProductionOrderRequest
         {
             ProductionOrderEventId = order.Id,
             Reason = "Test"
@@ -51,7 +51,7 @@ public class CancelItemProductionOrderTests : TestsBase
     {
         // arrange
         var order = FakeData();
-        var dto = new CancelItemProductionOrderRequestDto
+        var dto = new V1CancelItemProductionOrderRequest
         {
             ProductionOrderEventId = Guid.NewGuid(),
             Reason = "Test"
@@ -73,7 +73,7 @@ public class CancelItemProductionOrderTests : TestsBase
     {
         // arrange
         var order = FakeData(x => x.InstancesUsedIds = []);
-        var dto = new CancelItemProductionOrderRequestDto
+        var dto = new V1CancelItemProductionOrderRequest
         {
             ProductionOrderEventId = order.Id,
             Reason = "Test"
@@ -100,7 +100,7 @@ public class CancelItemProductionOrderTests : TestsBase
         {
             x.StartedEvent = JsonEntityBase.CreateEntity(() => new ItemProductionStartedEvent());
         });
-        var dto = new CancelItemProductionOrderRequestDto
+        var dto = new V1CancelItemProductionOrderRequest
         {
             ProductionOrderEventId = order.Id,
             Reason = "Test"
@@ -125,7 +125,7 @@ public class CancelItemProductionOrderTests : TestsBase
         {
             x.InstancesUsedIds = [Guid.NewGuid(), Guid.NewGuid()];
         });
-        var dto = new CancelItemProductionOrderRequestDto
+        var dto = new V1CancelItemProductionOrderRequest
         {
             ProductionOrderEventId = order.Id,
             Reason = "Test"

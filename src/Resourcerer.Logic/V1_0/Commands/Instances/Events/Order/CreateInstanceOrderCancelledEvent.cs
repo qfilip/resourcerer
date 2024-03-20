@@ -4,22 +4,21 @@ using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.Dtos.Instances.Events.Order;
-
+using Resourcerer.Dtos.V1;
 using QU = Resourcerer.DataAccess.Utilities.Query.Instances;
 
 namespace Resourcerer.Logic.Commands.V1_0;
 
 public static class CreateInstanceOrderCancelledEvent
 {
-    public class Handler : IAppEventHandler<InstanceOrderCancelRequestDto, Unit>
+    public class Handler : IAppEventHandler<V1InstanceOrderCancelRequest, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
-        public async Task<HandlerResult<Unit>> Handle(InstanceOrderCancelRequestDto request)
+        public async Task<HandlerResult<Unit>> Handle(V1InstanceOrderCancelRequest request)
         {
             var instance = await _appDbContext.Instances
                 .Select(QU.Expand(x => new Instance
@@ -82,10 +81,10 @@ public static class CreateInstanceOrderCancelledEvent
             return HandlerResult<Unit>.Ok(new Unit());
         }
 
-        public static ValidationResult Validate(InstanceOrderCancelRequestDto request) =>
+        public static ValidationResult Validate(V1InstanceOrderCancelRequest request) =>
             new Validator().Validate(request);
 
-        private class Validator : AbstractValidator<InstanceOrderCancelRequestDto>
+        private class Validator : AbstractValidator<V1InstanceOrderCancelRequest>
         {
             public Validator()
             {

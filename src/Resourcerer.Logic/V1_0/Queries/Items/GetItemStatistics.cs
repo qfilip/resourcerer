@@ -3,14 +3,13 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Elements;
-using Resourcerer.Dtos.Items;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1_0.Functions;
 
 namespace Resourcerer.Logic.Queries.V1_0;
 public static class GetItemStatistics
 {
-    public class Handler : IAppHandler<(Guid ItemId, DateTime Now), List<ItemStatisticsDto>>
+    public class Handler : IAppHandler<(Guid ItemId, DateTime Now), List<V1ItemStatistics>>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -19,7 +18,7 @@ public static class GetItemStatistics
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<List<ItemStatisticsDto>>> Handle((Guid ItemId, DateTime Now) query)
+        public async Task<HandlerResult<List<V1ItemStatistics>>> Handle((Guid ItemId, DateTime Now) query)
         {
             var itemQuery = _appDbContext.Items
                 .Include(x => x.Category)
@@ -36,7 +35,7 @@ public static class GetItemStatistics
 
             if (item == null)
             {
-                return HandlerResult<List<ItemStatisticsDto>>.Ok(new List<ItemStatisticsDto>());
+                return HandlerResult<List<V1ItemStatistics>>.Ok(new List<V1ItemStatistics>());
             }
 
             var instanceInfos = item.Instances
@@ -53,7 +52,7 @@ public static class GetItemStatistics
 
             var sellingCost = item.Prices.Single().UnitValue;
 
-            var result = new ItemStockInfoDto
+            var result = new V1ItemStockInfo
             {
                 Id = item.Id,
                 Name = item.Name,
@@ -64,7 +63,7 @@ public static class GetItemStatistics
                 SellingPrice = item.Prices.Single().UnitValue
             };
 
-            return HandlerResult<List<ItemStatisticsDto>>.Ok(new List<ItemStatisticsDto>());
+            return HandlerResult<List<V1ItemStatistics>>.Ok(new List<V1ItemStatistics>());
         }
 
         public ValidationResult Validate((Guid ItemId, DateTime Now) request) => new Validator().Validate(request);

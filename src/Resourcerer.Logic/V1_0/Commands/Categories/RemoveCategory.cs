@@ -2,7 +2,7 @@
 using FluentValidation.Results;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.Entity;
 using Resourcerer.Logic.Functions.V1_0;
 
 namespace Resourcerer.Logic.Commands.V1_0;

@@ -1,6 +1,6 @@
 ﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.Dtos.Instances.Events.Order;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1_0.Commands;
 using Resourcerer.UnitTests.Utilities;
@@ -24,7 +24,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
         var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance());
         _testDbContext.SaveChanges();
 
-        var dto = new InstanceOrderSentRequestDto
+        var dto = new V1InstanceOrderSentRequest
         {
             OrderEventId = sourceInstance.OrderedEvents[0].Id,
             InstanceId = sourceInstance.Id
@@ -45,7 +45,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
         var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance());
         _testDbContext.SaveChanges();
 
-        var dto = new InstanceOrderSentRequestDto
+        var dto = new V1InstanceOrderSentRequest
         {
             OrderEventId = sourceInstance.OrderedEvents[0].Id,
             InstanceId = Guid.NewGuid()
@@ -64,7 +64,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
         var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance());
         _testDbContext.SaveChanges();
 
-        var dto = new InstanceOrderSentRequestDto
+        var dto = new V1InstanceOrderSentRequest
         {
             OrderEventId = MiniId.Generate(),
             InstanceId = sourceInstance.Id
@@ -87,7 +87,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
         });
         _testDbContext.SaveChanges();
 
-        var dto = new InstanceOrderSentRequestDto
+        var dto = new V1InstanceOrderSentRequest
         {
             OrderEventId = sourceInstance.OrderedEvents[0].Id,
             InstanceId = sourceInstance.Id
@@ -110,7 +110,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
         });
         _testDbContext.SaveChanges();
 
-        var dto = new InstanceOrderSentRequestDto
+        var dto = new V1InstanceOrderSentRequest
         {
             OrderEventId = sourceInstance.OrderedEvents[0].Id,
             InstanceId = sourceInstance.Id
@@ -133,7 +133,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
         });
         _testDbContext.SaveChanges();
 
-        var dto = new InstanceOrderSentRequestDto
+        var dto = new V1InstanceOrderSentRequest
         {
             OrderEventId = sourceInstance.OrderedEvents[0].Id,
             InstanceId = sourceInstance.Id

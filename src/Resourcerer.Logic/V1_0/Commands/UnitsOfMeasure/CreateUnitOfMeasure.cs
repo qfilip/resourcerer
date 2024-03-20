@@ -2,13 +2,13 @@
 using FluentValidation.Results;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.V1;
 
 namespace Resourcerer.Logic.Commands.V1_0;
 
 public class CreateUnitOfMeasure
 {
-    public class Handler : IAppHandler<CreateUnitOfMeasureDto, Unit>
+    public class Handler : IAppHandler<V1CreateUnitOfMeasure, Unit>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -17,7 +17,7 @@ public class CreateUnitOfMeasure
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(CreateUnitOfMeasureDto request)
+        public async Task<HandlerResult<Unit>> Handle(V1CreateUnitOfMeasure request)
         {
             var companyExists = _appDbContext.Companies
                 .Where(x => x.Id == request.CompanyId)
@@ -41,9 +41,9 @@ public class CreateUnitOfMeasure
             return HandlerResult<Unit>.Ok(new Unit());
         }
 
-        public ValidationResult Validate(CreateUnitOfMeasureDto request) => new Validator().Validate(request);
+        public ValidationResult Validate(V1CreateUnitOfMeasure request) => new Validator().Validate(request);
 
-        private class Validator : AbstractValidator<CreateUnitOfMeasureDto>
+        private class Validator : AbstractValidator<V1CreateUnitOfMeasure>
         {
             public Validator()
             {

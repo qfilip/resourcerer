@@ -1,5 +1,5 @@
 ﻿using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Instances.Events.Order;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.UnitTests.Utilities;
@@ -82,7 +82,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
     public void When_RequestDto_IsInvalid_Then_ValidationError()
     {
         // arrange
-        var dto = new InstanceOrderRequestDto
+        var dto = new V1InstanceOrderRequest
         {
             InstanceId = Guid.Empty,
             SellerCompanyId = Guid.Empty,
@@ -361,9 +361,9 @@ public class CreateInstanceOrderedEventTests : TestsBase
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
     }
 
-    private InstanceOrderRequestDto GetDto(Instance sourceInstance, Action<InstanceOrderRequestDto>? modifier = null)
+    private V1InstanceOrderRequest GetDto(Instance sourceInstance, Action<V1InstanceOrderRequest>? modifier = null)
     {
-        var dto = new InstanceOrderRequestDto()
+        var dto = new V1InstanceOrderRequest()
         {
             InstanceId = sourceInstance.Id,
             ExpectedDeliveryDate = DateTime.UtcNow.AddDays(1),

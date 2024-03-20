@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Exceptions;
 
 using QU = Resourcerer.DataAccess.Utilities.Query.Instances;
@@ -12,7 +12,7 @@ using QU = Resourcerer.DataAccess.Utilities.Query.Instances;
 namespace Resourcerer.Logic.V1_0.Commands.Items;
 public static class CancelItemProductionOrder
 {
-    public class Handler : IAppEventHandler<CancelItemProductionOrderRequestDto, Unit>
+    public class Handler : IAppEventHandler<V1CancelItemProductionOrderRequest, Unit>
     {
         private readonly AppDbContext _dbContext;
 
@@ -21,7 +21,7 @@ public static class CancelItemProductionOrder
             _dbContext = dbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(CancelItemProductionOrderRequestDto request)
+        public async Task<HandlerResult<Unit>> Handle(V1CancelItemProductionOrderRequest request)
         {
             var orderEvent = await _dbContext.ItemProductionOrders
                 .FirstOrDefaultAsync(x => x.Id == request.ProductionOrderEventId);
@@ -85,10 +85,10 @@ public static class CancelItemProductionOrder
             return HandlerResult<Unit>.Ok(Unit.New);
         }
 
-        public static ValidationResult Validate(CancelItemProductionOrderRequestDto request) =>
+        public static ValidationResult Validate(V1CancelItemProductionOrderRequest request) =>
             new Validator().Validate(request);
 
-        private class Validator : AbstractValidator<CancelItemProductionOrderRequestDto>
+        private class Validator : AbstractValidator<V1CancelItemProductionOrderRequest>
         {
             public Validator()
             {

@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Resourcerer.DataAccess\Resourcerer.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="V1\Excerpts\" />
+  </ItemGroup>
+
 </Project>

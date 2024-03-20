@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos;
+using Resourcerer.Dtos.Entity;
 
 namespace Resourcerer.Logic.Queries.V1_0;
 

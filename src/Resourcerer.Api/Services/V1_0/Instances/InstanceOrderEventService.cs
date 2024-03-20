@@ -1,35 +1,34 @@
 ﻿using Resourcerer.DataAccess.Contexts;
-using Resourcerer.Dtos.Instances.Events.Order;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.Logic.V1_0.Commands;
-using System.Threading.Channels;
 
 namespace Resourcerer.Api.Services.V1_0;
 
-public class InstanceOrderEventService : EventConsumerServiceBase<InstanceOrderEventDtoBase>
+public class InstanceOrderEventService : EventConsumerServiceBase<V1InstanceOrderEvent>
 {
     public InstanceOrderEventService(
-        IConsumerAdapter<InstanceOrderEventDtoBase> consumer,
+        IConsumerAdapter<V1InstanceOrderEvent> consumer,
         IServiceProvider serviceProvider) : base(consumer, serviceProvider) {}
 
-    protected override Task HandleEvent(InstanceOrderEventDtoBase message, AppDbContext appDbContext)
+    protected override Task HandleEvent(V1InstanceOrderEvent message, AppDbContext appDbContext)
     {
-        if (message is InstanceOrderRequestDto orderEv)
+        if (message is V1InstanceOrderRequest orderEv)
         {
             var handler = new CreateInstanceOrderedEvent.Handler(appDbContext);
             return handler.Handle(orderEv);
         }
-        else if (message is InstanceOrderCancelRequestDto cancelEv)
+        else if (message is V1InstanceOrderCancelRequest cancelEv)
         {
             var handler = new CreateInstanceOrderCancelledEvent.Handler(appDbContext);
             return handler.Handle(cancelEv);
         }
-        else if (message is InstanceOrderDeliveredRequestDto deliverEv)
+        else if (message is V1InstanceOrderDeliveredRequest deliverEv)
         {
             var handler = new CreateInstanceOrderDeliveredEvent.Handler(appDbContext);
             return handler.Handle(deliverEv);
         }
-        else if (message is InstanceOrderSentRequestDto sentEv)
+        else if (message is V1InstanceOrderSentRequest sentEv)
         {
             var handler = new CreateInstanceOrderSentEvent.Handler(appDbContext);
             return handler.Handle(sentEv);

@@ -10,9 +10,8 @@ using Resourcerer.Api.Services.V1_0;
 using Resourcerer.DataAccess.AuthService;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
-using Resourcerer.Dtos.Instances.Events;
-using Resourcerer.Dtos.Instances.Events.Order;
+using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using System.Threading.Channels;
 
@@ -26,9 +25,9 @@ public static partial class ServiceRegistry
 
         services.AddScoped<Pipeline>();
 
-        services.AddMessagingService<InstanceOrderEventDtoBase, InstanceOrderEventService>();
-        services.AddMessagingService<InstanceDiscardedRequestDto, InstanceDiscardEventService>();
-        services.AddMessagingService<ItemProductionEventBaseDto, ItemProductionOrderEventService>();
+        services.AddMessagingService<V1InstanceOrderEvent, InstanceOrderEventService>();
+        services.AddMessagingService<V1InstanceDiscardedRequest, InstanceDiscardEventService>();
+        services.AddMessagingService<V1ItemProductionEvent, ItemProductionOrderEventService>();
     }
 
     public static void AddAspNetServices(this IServiceCollection services)

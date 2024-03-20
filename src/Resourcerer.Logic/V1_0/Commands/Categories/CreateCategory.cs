@@ -3,13 +3,13 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.V1;
 
 namespace Resourcerer.Logic.Commands.V1_0;
 
 public class CreateCategory
 {
-    public class Handler : IAppHandler<CreateCategoryDto, Unit>
+    public class Handler : IAppHandler<V1CreateCategory, Unit>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -18,7 +18,7 @@ public class CreateCategory
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(CreateCategoryDto request)
+        public async Task<HandlerResult<Unit>> Handle(V1CreateCategory request)
         {
             var existing = await _appDbContext.Categories
                 .Where(x => x.CompanyId == request.CompanyId)
@@ -52,13 +52,13 @@ public class CreateCategory
             return HandlerResult<Unit>.Ok(new Unit());
         }
 
-        public ValidationResult Validate(CreateCategoryDto request)
+        public ValidationResult Validate(V1CreateCategory request)
         {
             var validator = new Validator();
             return validator.Validate(request);
         }
 
-        private class Validator : AbstractValidator<CreateCategoryDto>
+        private class Validator : AbstractValidator<V1CreateCategory>
         {
             public Validator()
             {

@@ -24,11 +24,11 @@ public static class Exporter
 
     private static Type[] GetDtos<T>()
     {   
-        return typeof(IBaseDto)
+        return typeof(IDto)
             .Assembly
             .GetTypes()
             .Where(x =>
-                x.GetInterface(typeof(IBaseDto).Name) != null &&
+                x.GetInterface(typeof(IDto).Name) != null &&
                 !x.IsInterface)
             .ToArray();
     }
@@ -46,7 +46,7 @@ public static class Exporter
 
     private static void ConfigureTypes(this TsBuilder builder)
     {
-        var dtos = GetDtos<IBaseDto>();
+        var dtos = GetDtos<IDto>();
 
         // Tools > Options > Projects And Solutions > Build And Run
         // Set MSBuild project build output verbosity -> Detailed

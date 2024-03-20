@@ -1,13 +1,12 @@
 ﻿using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
-using Resourcerer.Dtos.Instances;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Utilities;
 
 namespace Resourcerer.Logic.V1_0.Functions;
 
 public static partial class Instances
 {
-    public static InstanceInfoDto GetInstanceInfo(Instance i, DateTime now)
+    public static V1InstanceInfo GetInstanceInfo(Instance i, DateTime now)
     {
         var soldEvents = i.OrderedEvents
             .Where(x => x.OrderCancelledEvent == null)
@@ -29,7 +28,7 @@ public static partial class Instances
             .Sum(x => Maths.Discount(x.Quantity * x.UnitPrice, x.TotalDiscountPercent));
 
         var discards = i.DiscardedEvents
-            .Select(x => new DiscardInfoDto
+            .Select(x => new V1DiscardInfo
             {
                 Quantity = x.Quantity,
                 Reason = x.Reason
@@ -39,7 +38,7 @@ public static partial class Instances
         var quantityLeft = i.Quantity - sold - discards.Sum(x => x.Quantity);
         var purchaseCost = ComputePurchaseCost(i);
 
-        return new InstanceInfoDto()
+        return new V1InstanceInfo()
         {
             InstanceId = i.Id,
             PendingToArrive = 0,

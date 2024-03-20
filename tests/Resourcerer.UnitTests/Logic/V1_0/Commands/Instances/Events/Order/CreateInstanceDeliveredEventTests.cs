@@ -1,5 +1,5 @@
 ﻿using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Instances.Events.Order;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.UnitTests.Utilities;
@@ -26,7 +26,7 @@ public class CreateInstanceDeliveredEventTests : TestsBase
         });
         _testDbContext.SaveChanges();
 
-        var dto = new InstanceOrderDeliveredRequestDto
+        var dto = new V1InstanceOrderDeliveredRequest
         {
             InstanceId = sourceInstance.Id,
             OrderEventId = sourceInstance.OrderedEvents[0].Id
@@ -44,7 +44,7 @@ public class CreateInstanceDeliveredEventTests : TestsBase
     [Fact]
     public void When_OrderEvent_NotFound_Then_Rejected()
     {
-        var dto = new InstanceOrderDeliveredRequestDto
+        var dto = new V1InstanceOrderDeliveredRequest
         {
             InstanceId = Guid.NewGuid()
         };
@@ -61,7 +61,7 @@ public class CreateInstanceDeliveredEventTests : TestsBase
     {
         var orderedEvent = DF.FakeOrderedEvent(_testDbContext, x => x.OrderCancelledEvent = DF.FakeOrderCancelledEvent());
 
-        var dto = new InstanceOrderDeliveredRequestDto
+        var dto = new V1InstanceOrderDeliveredRequest
         {
             InstanceId = orderedEvent.DerivedInstanceId,
             OrderEventId = orderedEvent.Id
@@ -84,7 +84,7 @@ public class CreateInstanceDeliveredEventTests : TestsBase
         });
         _testDbContext.SaveChanges();
 
-        var dto = new InstanceOrderDeliveredRequestDto
+        var dto = new V1InstanceOrderDeliveredRequest
         {
             InstanceId = sourceInstance.Id,
             OrderEventId = sourceInstance.OrderedEvents[0].Id
@@ -107,7 +107,7 @@ public class CreateInstanceDeliveredEventTests : TestsBase
         });
         _testDbContext.SaveChanges();
 
-        var dto = new InstanceOrderDeliveredRequestDto
+        var dto = new V1InstanceOrderDeliveredRequest
         {
             InstanceId = sourceInstance.Id,
             OrderEventId = sourceInstance.OrderedEvents[0].Id

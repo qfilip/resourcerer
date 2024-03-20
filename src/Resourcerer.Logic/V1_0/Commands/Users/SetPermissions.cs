@@ -3,13 +3,15 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos;
+using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.V1;
 using System.Text.Json;
 
 namespace Resourcerer.Logic.Commands.V1_0;
 
 public static class SetPermissions
 {
-    public class Handler : IAppHandler<SetUserPermissionsDto, AppUserDto>
+    public class Handler : IAppHandler<V1SetUserPermissions, AppUserDto>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -18,7 +20,7 @@ public static class SetPermissions
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<AppUserDto>> Handle(SetUserPermissionsDto request)
+        public async Task<HandlerResult<AppUserDto>> Handle(V1SetUserPermissions request)
         {
             var errors = Permissions.Validate(request.Permissions!);
             if(errors.Any())
@@ -48,9 +50,9 @@ public static class SetPermissions
             return HandlerResult<AppUserDto>.Ok(dto);
         }
 
-        public ValidationResult Validate(SetUserPermissionsDto request) => new Validator().Validate(request);
+        public ValidationResult Validate(V1SetUserPermissions request) => new Validator().Validate(request);
 
-        public class Validator : AbstractValidator<SetUserPermissionsDto>
+        public class Validator : AbstractValidator<V1SetUserPermissions>
         {
             public Validator()
             {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.Dtos.Instances.Events;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Exceptions;
 
 using QU = Resourcerer.DataAccess.Utilities.Query.Instances;
@@ -13,7 +13,7 @@ namespace Resourcerer.Logic.V1_0.Commands;
 
 public static class CreateInstanceDiscardedEvent
 {
-    public class Handler : IAppEventHandler<InstanceDiscardedRequestDto, Unit>
+    public class Handler : IAppEventHandler<V1InstanceDiscardedRequest, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
@@ -21,7 +21,7 @@ public static class CreateInstanceDiscardedEvent
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(InstanceDiscardedRequestDto request)
+        public async Task<HandlerResult<Unit>> Handle(V1InstanceDiscardedRequest request)
         {
             var instance = await _appDbContext.Instances
                 .Select(QU.Expand(x => new Instance
@@ -83,10 +83,10 @@ public static class CreateInstanceDiscardedEvent
             }
         }
 
-        public static ValidationResult Validate(InstanceDiscardedRequestDto request) =>
+        public static ValidationResult Validate(V1InstanceDiscardedRequest request) =>
             new Validator().Validate(request);
 
-        private class Validator : AbstractValidator<InstanceDiscardedRequestDto>
+        private class Validator : AbstractValidator<V1InstanceDiscardedRequest>
         {
             public Validator()
             {

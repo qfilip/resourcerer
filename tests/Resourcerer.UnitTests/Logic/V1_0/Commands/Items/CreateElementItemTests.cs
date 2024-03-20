@@ -1,5 +1,4 @@
-﻿using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
+﻿using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.UnitTests.Utilities;
@@ -21,7 +20,7 @@ public class CreateElementItemTests : TestsBase
         // arrange
         var category = DF.FakeCategory(_testDbContext);
         var uom = DF.FakeUnitOfMeasure(_testDbContext);
-        var dto = new CreateElementItemDto
+        var dto = new V1CreateElementItem
         {
             Name = "test",
             CompanyId = category.CompanyId,
@@ -45,7 +44,7 @@ public class CreateElementItemTests : TestsBase
     {
         // arrange
         var existingElement = DF.FakeItem(_testDbContext);
-        var dto = new CreateElementItemDto
+        var dto = new V1CreateElementItem
         {
             Name = existingElement.Name,
             CompanyId = existingElement.Category!.CompanyId,
@@ -68,7 +67,7 @@ public class CreateElementItemTests : TestsBase
         // arrange
         var comp = DF.FakeCompany(_testDbContext);
         var uom = DF.FakeUnitOfMeasure(_testDbContext);
-        var dto = new CreateElementItemDto
+        var dto = new V1CreateElementItem
         {
             Name = "test",
             CompanyId = comp.Id,
@@ -91,7 +90,7 @@ public class CreateElementItemTests : TestsBase
         // arrange
         var catg = DF.FakeCategory(_testDbContext);
         var uom = DF.FakeUnitOfMeasure(_testDbContext);
-        var dto = new CreateElementItemDto
+        var dto = new V1CreateElementItem
         {
             Name = "test",
             CompanyId = Guid.NewGuid(),
@@ -113,7 +112,7 @@ public class CreateElementItemTests : TestsBase
     {
         // arrange
         var category = DF.FakeCategory(_testDbContext);
-        var dto = new CreateElementItemDto
+        var dto = new V1CreateElementItem
         {
             Name = "test",
             CategoryId = category.Id,

@@ -1,16 +1,16 @@
 ﻿using Resourcerer.DataAccess.Contexts;
-using Resourcerer.Dtos.Instances.Events;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1_0.Commands;
 
 namespace Resourcerer.Api.Services.V1_0;
 
-public class InstanceDiscardEventService : EventConsumerServiceBase<InstanceDiscardedRequestDto>
+public class InstanceDiscardEventService : EventConsumerServiceBase<V1InstanceDiscardedRequest>
 {
     public InstanceDiscardEventService(
-        IConsumerAdapter<InstanceDiscardedRequestDto> consumer,
+        IConsumerAdapter<V1InstanceDiscardedRequest> consumer,
         IServiceProvider serviceProvider) : base(consumer, serviceProvider) {}
 
-    protected override Task HandleEvent(InstanceDiscardedRequestDto message, AppDbContext appDbContext)
+    protected override Task HandleEvent(V1InstanceDiscardedRequest message, AppDbContext appDbContext)
     {
         var handler = new CreateInstanceDiscardedEvent.Handler(appDbContext);
         return handler.Handle(message);

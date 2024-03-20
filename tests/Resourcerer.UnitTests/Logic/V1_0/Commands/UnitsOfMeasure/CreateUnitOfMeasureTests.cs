@@ -1,4 +1,4 @@
-﻿using Resourcerer.Dtos;
+﻿using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.UnitTests.Utilities;
@@ -20,7 +20,7 @@ public class CreateUnitOfMeasureTests : TestsBase
     {
         // arrange
         var company = DF.FakeCompany(_testDbContext);
-        var dto = new CreateUnitOfMeasureDto
+        var dto = new V1CreateUnitOfMeasure
         {
             CompanyId = company.Id,
             Name = "tests",
@@ -41,7 +41,7 @@ public class CreateUnitOfMeasureTests : TestsBase
     {
         // arrange
         var company = DF.FakeCompany(_testDbContext);
-        var dto = new CreateUnitOfMeasureDto
+        var dto = new V1CreateUnitOfMeasure
         {
             CompanyId = Guid.NewGuid(),
             Name = "tests",

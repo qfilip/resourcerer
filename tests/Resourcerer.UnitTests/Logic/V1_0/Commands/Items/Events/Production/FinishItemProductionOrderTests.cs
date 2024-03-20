@@ -1,6 +1,6 @@
 ﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1_0.Commands.Items;
 using Resourcerer.UnitTests.Utilities;
@@ -25,7 +25,7 @@ public class FinishItemProductionOrderTests : TestsBase
             x.Quantity = 2;
             x.StartedEvent = JsonEntityBase.CreateEntity(() => new ItemProductionStartedEvent());
         });
-        var dto = new FinishItemProductionOrderRequest
+        var dto = new V1FinishItemProductionOrderRequest
         {
             ProductionOrderId = order.Id
         };

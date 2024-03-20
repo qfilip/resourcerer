@@ -3,13 +3,13 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.V1;
 
 namespace Resourcerer.Logic.Commands.V1_0;
 
 public static class CreateElementItem
 {
-    public class Handler : IAppHandler<CreateElementItemDto, Unit>
+    public class Handler : IAppHandler<V1CreateElementItem, Unit>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -18,7 +18,7 @@ public static class CreateElementItem
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(CreateElementItemDto request)
+        public async Task<HandlerResult<Unit>> Handle(V1CreateElementItem request)
         {
             var category = await _appDbContext.Categories
                 .FirstOrDefaultAsync(x =>
@@ -75,9 +75,9 @@ public static class CreateElementItem
             return HandlerResult<Unit>.Ok(new Unit());
         }
 
-        public ValidationResult Validate(CreateElementItemDto request) => new Validator().Validate(request);
+        public ValidationResult Validate(V1CreateElementItem request) => new Validator().Validate(request);
 
-        private class Validator : AbstractValidator<CreateElementItemDto>
+        private class Validator : AbstractValidator<V1CreateElementItem>
         {
             public Validator()
             {

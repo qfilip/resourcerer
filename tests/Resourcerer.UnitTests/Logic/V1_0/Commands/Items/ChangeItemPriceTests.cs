@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resourcerer.DataAccess.Enums;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Commands.V1_0;
 using Resourcerer.UnitTests.Utilities;
@@ -28,7 +28,7 @@ public class ChangeItemPriceTests : TestsBase
         _testDbContext.SaveChanges();
         
         var oldPrices = item.Prices.Select(x => x).ToList();
-        var dto = new ChangePriceDto
+        var dto = new V1ChangePrice
         {
             ItemId = item.Id,
             UnitPrice = 20
@@ -51,7 +51,7 @@ public class ChangeItemPriceTests : TestsBase
     public void When_Element_NotExist_Then_ValidationError()
     {
         // arrange
-        var dto = new ChangePriceDto
+        var dto = new V1ChangePrice
         {
             ItemId = Guid.NewGuid(),
             UnitPrice = 20
@@ -71,7 +71,7 @@ public class ChangeItemPriceTests : TestsBase
         // arrange
         var item = DF.FakeItem(_testDbContext, null, 1, 3, true);
         var oldPrices = item.Prices.Select(x => x).ToList();
-        var dto = new ChangePriceDto
+        var dto = new V1ChangePrice
         {
             ItemId = item.Id,
             UnitPrice = 20

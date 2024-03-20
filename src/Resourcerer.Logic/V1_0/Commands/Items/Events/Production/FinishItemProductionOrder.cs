@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.Dtos;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1_0.Functions;
 
 namespace Resourcerer.Logic.V1_0.Commands.Items;
 public static class FinishItemProductionOrder
 {
-    public class Handler : IAppEventHandler<FinishItemProductionOrderRequest, Unit>
+    public class Handler : IAppEventHandler<V1FinishItemProductionOrderRequest, Unit>
     {
         private readonly AppDbContext _dbContext;
 
@@ -19,7 +19,7 @@ public static class FinishItemProductionOrder
             _dbContext = dbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(FinishItemProductionOrderRequest request)
+        public async Task<HandlerResult<Unit>> Handle(V1FinishItemProductionOrderRequest request)
         {
             var order = await _dbContext.ItemProductionOrders
                 .Select(x => new ItemProductionOrder
@@ -87,10 +87,10 @@ public static class FinishItemProductionOrder
         }
     }
 
-    public static ValidationResult Validate(FinishItemProductionOrderRequest request) =>
+    public static ValidationResult Validate(V1FinishItemProductionOrderRequest request) =>
         new Validator().Validate(request);
 
-    public class Validator : AbstractValidator<FinishItemProductionOrderRequest>
+    public class Validator : AbstractValidator<V1FinishItemProductionOrderRequest>
     {
         public Validator()
         {
