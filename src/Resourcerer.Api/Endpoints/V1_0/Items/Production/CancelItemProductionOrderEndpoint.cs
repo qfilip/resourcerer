@@ -21,7 +21,7 @@ public static class CancelItemProductionOrderEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/production-order-cancel", Action);
+        var endpoint = group.MapPost("/production_order/cancel", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

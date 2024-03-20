@@ -17,7 +17,7 @@ public class CreateCompositeItemEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/create-composite", Action);
+        var endpoint = group.MapPost("/create/composite", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

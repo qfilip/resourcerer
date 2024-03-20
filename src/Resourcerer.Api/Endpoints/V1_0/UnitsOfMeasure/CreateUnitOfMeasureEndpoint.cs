@@ -17,7 +17,7 @@ public class CreateUnitOfMeasureEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/create", Action);
+        var endpoint = group.MapPost("", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

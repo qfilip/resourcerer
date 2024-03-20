@@ -22,7 +22,7 @@ public class CreateInstanceOrderSentEventEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/order-sent", Action);
+        var endpoint = group.MapPost("/order/send", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

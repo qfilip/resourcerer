@@ -17,7 +17,7 @@ public class RemoveCategoryEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/remove", Action);
+        var endpoint = group.MapDelete("", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

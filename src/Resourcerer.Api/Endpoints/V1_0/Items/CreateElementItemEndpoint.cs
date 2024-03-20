@@ -17,7 +17,7 @@ public class CreateElementItemEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/create-element", Action);
+        var endpoint = group.MapPost("/create/element", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

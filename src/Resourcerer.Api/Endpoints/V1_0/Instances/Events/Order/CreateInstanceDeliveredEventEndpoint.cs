@@ -22,7 +22,7 @@ public class CreateInstanceDeliveredEventEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/order-deliver", Action);
+        var endpoint = group.MapPost("/order/deliver", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

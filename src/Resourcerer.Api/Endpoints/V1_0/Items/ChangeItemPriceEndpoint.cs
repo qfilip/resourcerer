@@ -17,7 +17,7 @@ public class ChangeItemPriceEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/change-price", Action);
+        var endpoint = group.MapPost("/price", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

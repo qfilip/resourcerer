@@ -14,7 +14,7 @@ public static class RefreshSessionEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapGet("/refresh-session", Action);
+        var endpoint = group.MapGet("/refresh_session", Action);
         EndpointMapper.AddAuthorization(endpoint);
     }
 }

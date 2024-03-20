@@ -22,7 +22,7 @@ public class CreateInstanceDiscardedEventEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/discard", Action);
+        var endpoint = group.MapPost("/order/discard", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

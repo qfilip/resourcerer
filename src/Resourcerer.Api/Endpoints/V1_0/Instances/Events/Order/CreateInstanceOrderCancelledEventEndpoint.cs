@@ -22,7 +22,7 @@ public class CreateInstanceOrderCancelledEventEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/order-cancel", Action);
+        var endpoint = group.MapPost("/order/cancel", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

@@ -21,7 +21,7 @@ public class StartItemProductionEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/production-order-start", Action);
+        var endpoint = group.MapPost("/production_order/start", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

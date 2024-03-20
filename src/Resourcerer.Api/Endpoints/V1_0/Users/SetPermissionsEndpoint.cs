@@ -17,7 +17,7 @@ public class SetPermissionsEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/set-permissions", Action);
+        var endpoint = group.MapPost("/permissions", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
