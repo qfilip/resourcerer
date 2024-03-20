@@ -115,7 +115,7 @@ public static class CreateInstanceOrderedEvent
                     .Rejected($"Not enough units left in stock for this instance");
             }
 
-            var orderedEvent = JsonEntityBase.CreateEntity(() =>
+            var orderedEvent = AppDbJsonField.CreateEntity(() =>
             {
                 return new InstanceOrderedEvent
                 {

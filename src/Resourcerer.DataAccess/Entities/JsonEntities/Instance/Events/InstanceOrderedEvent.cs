@@ -2,7 +2,7 @@
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class InstanceOrderedEvent : JsonEntityBase
+public class InstanceOrderedEvent : AppDbJsonField
 {
     public Guid DerivedInstanceId { get; set; }
     public Guid SellerCompanyId { get; set; }

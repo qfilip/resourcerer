@@ -13,7 +13,7 @@ internal static partial class DF
         Action<InstanceOrderedEvent>? modifier = null
     )
     {
-        var entity = JsonEntityBase.CreateEntity(() => new InstanceOrderedEvent
+        var entity = AppDbJsonField.CreateEntity(() => new InstanceOrderedEvent
         {
             ExpectedDeliveryDate = DateTime.UtcNow,
             TotalDiscountPercent = 0,
@@ -61,7 +61,7 @@ internal static partial class DF
     public static InstanceOrderCancelledEvent FakeOrderCancelledEvent(
         Action<InstanceOrderCancelledEvent>? modifier = null)
     {
-        var cancelEv = JsonEntityBase.CreateEntity(() => new InstanceOrderCancelledEvent
+        var cancelEv = AppDbJsonField.CreateEntity(() => new InstanceOrderCancelledEvent
         {
             Reason = "test",
             RefundedAmount = 0
@@ -75,7 +75,7 @@ internal static partial class DF
     public static InstanceOrderSentEvent FakeSentEvent(
         Action<InstanceOrderSentEvent>? modifier = null)
     {
-        var sentEv = JsonEntityBase.CreateEntity(() => new InstanceOrderSentEvent());
+        var sentEv = AppDbJsonField.CreateEntity(() => new InstanceOrderSentEvent());
         modifier?.Invoke(sentEv);
 
         return sentEv;
@@ -84,7 +84,7 @@ internal static partial class DF
     public static InstanceOrderDeliveredEvent FakeDeliveredEvent(
         Action<InstanceOrderDeliveredEvent>? modifier = null)
     {
-        var deliverEv = JsonEntityBase.CreateEntity(() => new InstanceOrderDeliveredEvent());
+        var deliverEv = AppDbJsonField.CreateEntity(() => new InstanceOrderDeliveredEvent());
         modifier?.Invoke(deliverEv);
 
         return deliverEv;
@@ -94,7 +94,7 @@ internal static partial class DF
         Instance instance,
         Action<InstanceDiscardedEvent>? modifier = null)
     {
-        var discardEv = JsonEntityBase.CreateEntity(() => new InstanceDiscardedEvent()
+        var discardEv = AppDbJsonField.CreateEntity(() => new InstanceDiscardedEvent()
         {
             Quantity = instance.Quantity,
             Reason = "test"
@@ -109,7 +109,7 @@ internal static partial class DF
     public static InstanceReservedEvent FakeReservedEvent(
         Action<InstanceReservedEvent>? modifier = null)
     {
-        var ev = JsonEntityBase.CreateEntity(() => new InstanceReservedEvent());
+        var ev = AppDbJsonField.CreateEntity(() => new InstanceReservedEvent());
         modifier?.Invoke(ev);
 
         return ev;

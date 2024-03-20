@@ -23,7 +23,7 @@ public class FinishItemProductionOrderTests : TestsBase
         var order = Faking.FakeOrder(_testDbContext, fd, x =>
         {
             x.Quantity = 2;
-            x.StartedEvent = JsonEntityBase.CreateEntity(() => new ItemProductionStartedEvent());
+            x.StartedEvent = AppDbJsonField.CreateEntity(() => new ItemProductionStartedEvent());
         });
         var dto = new V1FinishItemProductionOrderRequest
         {

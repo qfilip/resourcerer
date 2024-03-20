@@ -2,6 +2,6 @@
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class InstanceOrderSentEvent : JsonEntityBase
+public class InstanceOrderSentEvent : AppDbJsonField
 {
 }

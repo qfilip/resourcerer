@@ -63,7 +63,7 @@ public static class CreateInstanceDiscardedEvent
             }
             else
             {
-                var discardEvent = JsonEntityBase.CreateEntity(() =>
+                var discardEvent = AppDbJsonField.CreateEntity(() =>
                 {
                     return new InstanceDiscardedEvent
                     {

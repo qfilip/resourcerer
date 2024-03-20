@@ -2,7 +2,7 @@
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class InstanceReservedEvent : JsonEntityBase
+public class InstanceReservedEvent : AppDbJsonField
 {
     public Guid ProductionOrderId { get; set; }
     public double Quantity { get; set; }
@@ -12,12 +12,12 @@ public class InstanceReservedEvent : JsonEntityBase
     public InstanceReserveUsedEvent? UsedEvent { get; set; }
 }
 
-public class InstanceReserveCancelledEvent : JsonEntityBase
+public class InstanceReserveCancelledEvent : AppDbJsonField
 {
     public string? Reason { get; set; }
 }
 
-public class InstanceReserveUsedEvent : JsonEntityBase
+public class InstanceReserveUsedEvent : AppDbJsonField
 {
 
 }

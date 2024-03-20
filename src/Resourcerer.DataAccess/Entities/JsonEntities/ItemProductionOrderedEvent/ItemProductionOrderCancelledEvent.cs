@@ -2,7 +2,7 @@
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class ItemProductionOrderCancelledEvent : JsonEntityBase
+public class ItemProductionOrderCancelledEvent : AppDbJsonField
 {
     public string? Reason { get; set; }
 }

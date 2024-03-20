@@ -2,6 +2,6 @@
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class ItemProductionStartedEvent : JsonEntityBase
+public class ItemProductionStartedEvent : AppDbJsonField
 {
 }

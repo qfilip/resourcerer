@@ -61,7 +61,7 @@ public static class CreateInstanceOrderDeliveredEvent
                 return HandlerResult<Unit>.Ok(Unit.New);
             }
 
-            orderEvent.DeliveredEvent = JsonEntityBase
+            orderEvent.DeliveredEvent = AppDbJsonField
                 .CreateEntity(() => new InstanceOrderDeliveredEvent()); ;
 
             _appDbContext.Instances.Attach(instance);

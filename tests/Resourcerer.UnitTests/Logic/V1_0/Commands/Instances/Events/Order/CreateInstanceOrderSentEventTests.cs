@@ -83,7 +83,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
         // arrange
         var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance(), x =>
         {
-            x.OrderCancelledEvent = JsonEntityBase.CreateEntity(() => new InstanceOrderCancelledEvent());
+            x.OrderCancelledEvent = AppDbJsonField.CreateEntity(() => new InstanceOrderCancelledEvent());
         });
         _testDbContext.SaveChanges();
 
@@ -106,7 +106,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
         // arrange
         var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance(), x =>
         {
-            x.SentEvent = JsonEntityBase.CreateEntity(() => new InstanceOrderSentEvent());
+            x.SentEvent = AppDbJsonField.CreateEntity(() => new InstanceOrderSentEvent());
         });
         _testDbContext.SaveChanges();
 
@@ -129,7 +129,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
         // arrange
         var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance(), x =>
         {
-            x.DeliveredEvent = JsonEntityBase.CreateEntity(() => new InstanceOrderDeliveredEvent());
+            x.DeliveredEvent = AppDbJsonField.CreateEntity(() => new InstanceOrderDeliveredEvent());
         });
         _testDbContext.SaveChanges();
 

@@ -2,7 +2,7 @@
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class InstanceDiscardedEvent : JsonEntityBase
+public class InstanceDiscardedEvent : AppDbJsonField
 {
     public double Quantity { get; set; }
     public string? Reason { get; set; }

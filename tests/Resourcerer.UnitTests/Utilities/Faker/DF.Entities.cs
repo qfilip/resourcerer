@@ -16,7 +16,7 @@ internal static partial class DF
     public static T MakeEntity<T>(Func<T> retn) where T : AppDbEntity
     {
         var e = retn();
-        if(e is JsonEntityBase jeb)
+        if(e is AppDbJsonField jeb)
         {
             jeb.Id = jeb.Id ?? MiniId.Generate();
         }
