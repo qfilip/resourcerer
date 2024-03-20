@@ -13,6 +13,6 @@ public class StartItemProductionOrderTests : TestsBase
     [Fact]
     public void Todo()
     {
-        Assert.True(false);
+        Assert.Fail("Implement tests");
     }
 }

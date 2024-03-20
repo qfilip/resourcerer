@@ -61,8 +61,6 @@ internal static partial class DF
         return sourceInstance;
     }
 
-   
-
     public static InstanceDiscardedEvent FakeDiscardedEvent(
         Instance instance,
         Action<InstanceDiscardedEvent>? modifier = null)
@@ -80,10 +78,21 @@ internal static partial class DF
     }
 
     public static InstanceReservedEvent FakeReservedEvent(
+        TestDbContext context,
         Action<InstanceReservedEvent>? modifier = null)
     {
-        var ev = MakeEntity(() => new InstanceReservedEvent());
+        var instance = DF.FakeInstance(context);
+        var ev = MakeEntity(() => new InstanceReservedEvent()
+        {
+            Quantity = 1,
+            Reason = "test",
+
+            Instance = instance,
+            InstanceId = instance.Id
+        });
         modifier?.Invoke(ev);
+
+        context.InstanceReservedEvents.Add(ev);
 
         return ev;
     }

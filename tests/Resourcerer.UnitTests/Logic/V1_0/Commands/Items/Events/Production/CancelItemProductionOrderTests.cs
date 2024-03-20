@@ -18,7 +18,7 @@ public class CancelItemProductionOrderTests : TestsBase
     }
 
     [Fact]
-    public void HappyPath()
+    public void HappyPath__Ok()
     {
         // arrange
         var order = FakeData();
@@ -34,23 +34,28 @@ public class CancelItemProductionOrderTests : TestsBase
         var result = _sut.Handle(dto).Await();
 
         // assert
-        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-        
-        var data = _ctx.ItemProductionOrders.First();
-        Assert.NotNull(data.CanceledEvent);
-        
-        var instanceData = _ctx.Instances
-            .Where(x => order.InstancesUsedIds.Contains(x.Id))
-            .ToArray();
+        Assert.Multiple(
+            () => Assert.Equal(eHandlerResultStatus.Ok, result.Status),
+            () =>
+            {
+                _ctx.Clear();
+                var data = _ctx.ItemProductionOrders.First();
+                Assert.NotNull(data.CanceledEvent);
 
-        Assert.True(instanceData.All(x => x.ReservedEvents[0].CancelledEvent != null));
+                var instanceData = _ctx.Instances
+                    .Where(x => order.InstancesUsedIds.Contains(x.Id))
+                    .ToArray();
+
+                Assert.True(instanceData.All(x => x.ReservedEvents.First().CancelledEvent != null));
+            }
+        );
     }
 
     [Fact]
-    public void When_NotFound_Then_NotFound()
+    public void NotFound__NotFound()
     {
         // arrange
-        var order = FakeData();
+        var _ = FakeData();
         var dto = new V1CancelItemProductionOrderRequest
         {
             ProductionOrderEventId = Guid.NewGuid(),
@@ -63,13 +68,19 @@ public class CancelItemProductionOrderTests : TestsBase
         var result = _sut.Handle(dto).Await();
 
         // assert
-        Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
-        var data = _ctx.ItemProductionOrders.First();
-        Assert.Null(data.CanceledEvent);
+        Assert.Multiple(
+            () => Assert.Equal(eHandlerResultStatus.NotFound, result.Status),
+            () =>
+            {
+                _ctx.Clear();
+                var data = _ctx.ItemProductionOrders.First();
+                Assert.Null(data.CanceledEvent);
+            }
+        );
     }
 
     [Fact]
-    public void When_DataCorrupted_Then_Exception()
+    public void DataCorrupted__Exception()
     {
         // arrange
         var order = FakeData(x => x.InstancesUsedIds = []);
@@ -93,7 +104,7 @@ public class CancelItemProductionOrderTests : TestsBase
     }
 
     [Fact]
-    public void When_StartedEventExists_Then_Rejected()
+    public void StartedEventExists__Rejected()
     {
         // arrange
         var order = FakeData(x =>
@@ -112,13 +123,19 @@ public class CancelItemProductionOrderTests : TestsBase
         var result = _sut.Handle(dto).Await();
 
         // assert
-        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
-        var data = _ctx.ItemProductionOrders.First();
-        Assert.Null(data.CanceledEvent);
+        Assert.Multiple(
+            () => Assert.Equal(eHandlerResultStatus.Rejected, result.Status),
+            () =>
+            {
+                _ctx.Clear();
+                var data = _ctx.ItemProductionOrders.First();
+                Assert.Null(data.CanceledEvent);
+            }
+        );
     }
 
     [Fact]
-    public void When_InvalidDataStored_Then_Exception()
+    public void InvalidDataStored__Exception()
     {
         // arrange
         var order = FakeData(x =>
@@ -162,17 +179,15 @@ public class CancelItemProductionOrderTests : TestsBase
             .Select(x =>
             {
                 var id = x % 2 == 0 ? elementOne.Id : elementTwo.Id;
-                return DF.FakeInstance(_ctx, i =>
+                var instance = DF.FakeInstance(_ctx, i => i.ItemId = id);
+                DF.FakeReservedEvent(_ctx, x =>
                 {
-                    i.ItemId = id;
-                    i.ReservedEvents = new()
-                    {
-                        AppDbJsonField.Create(() => new InstanceReservedEvent
-                        {
-                            ItemProductionOrderId = productionOrderId,
-                        })
-                    };
+                    x.ItemProductionOrderId = productionOrderId;
+                    x.InstanceId = instance.Id;
+                    x.Instance = instance;
                 });
+
+                return instance;
             })
             .ToArray();
 

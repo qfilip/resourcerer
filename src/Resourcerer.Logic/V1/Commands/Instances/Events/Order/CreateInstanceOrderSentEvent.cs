@@ -64,8 +64,7 @@ public static class CreateInstanceOrderSentEvent
                     .NotEmpty()
                     .WithMessage("Instance id cannot be empty");
 
-                RuleFor(x => x.orderEvententId)
-                    .NotNull()
+                RuleFor(x => x.OrderEventId)
                     .NotEmpty()
                     .WithMessage("Order event id cannot be empty");
             }

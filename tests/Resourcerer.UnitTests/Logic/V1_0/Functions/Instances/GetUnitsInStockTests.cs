@@ -74,7 +74,7 @@ public class GetUnitsInStockTests : TestsBase
         var dervInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Id = _staticId;
-            x.Quantity = srcInstance.OrderedEvents[0].Quantity;
+            x.Quantity = srcInstance.OrderedEvents.First().Quantity;
             x.SourceInstanceId = srcInstance.Id;
             x.SourceInstance = srcInstance;
         });
@@ -105,7 +105,7 @@ public class GetUnitsInStockTests : TestsBase
         var dervInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Id = _staticId;
-            x.Quantity = srcInstance.OrderedEvents[0].Quantity;
+            x.Quantity = srcInstance.OrderedEvents.First().Quantity;
             x.SourceInstanceId = srcInstance.Id;
             x.SourceInstance = srcInstance;
         });
@@ -136,7 +136,7 @@ public class GetUnitsInStockTests : TestsBase
         var dervInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Id = _staticId;
-            x.Quantity = srcInstance.OrderedEvents[0].Quantity;
+            x.Quantity = srcInstance.OrderedEvents.First().Quantity;
             x.SourceInstanceId = srcInstance.Id;
             x.SourceInstance = srcInstance;
             x.OrderedEvents.Add(DF.FakeInstanceOrderedEvent(_ctx, ev =>
@@ -171,10 +171,10 @@ public class GetUnitsInStockTests : TestsBase
         var dervInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Id = _staticId;
-            x.Quantity = srcInstance.OrderedEvents[0].Quantity;
+            x.Quantity = srcInstance.OrderedEvents.First().Quantity;
             x.SourceInstanceId = srcInstance.Id;
             x.SourceInstance = srcInstance;
-            x.OrderedEvents.AddRange(new List<InstanceOrderedEvent>
+            x.OrderedEvents = new List<InstanceOrderedEvent>()
             {
                 DF.FakeInstanceOrderedEvent(_ctx, ev =>
                 {
@@ -190,7 +190,7 @@ public class GetUnitsInStockTests : TestsBase
                     ev.Quantity = 1;
                     ev.SentEvent = DF.FakeSentEvent();
                 }),
-            });
+            };
         });
 
         // act
