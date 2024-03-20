@@ -1,4 +1,4 @@
-﻿using Resourcerer.Api.Endpoints.V1_0;
+﻿using Resourcerer.Api.Endpoints.V1;
 using Resourcerer.Dtos;
 using System.Text.RegularExpressions;
 

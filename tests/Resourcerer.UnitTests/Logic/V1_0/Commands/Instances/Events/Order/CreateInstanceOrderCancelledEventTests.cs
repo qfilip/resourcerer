@@ -1,7 +1,7 @@
 ﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
-using Resourcerer.Logic.Commands.V1_0;
+using Resourcerer.Logic.Commands.V1;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
 using Resourcerer.Utilities;

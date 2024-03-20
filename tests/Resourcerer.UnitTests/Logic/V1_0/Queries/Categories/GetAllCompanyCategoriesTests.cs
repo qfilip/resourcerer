@@ -1,5 +1,5 @@
 ﻿using Resourcerer.Logic;
-using Resourcerer.Logic.Queries.V1_0;
+using Resourcerer.Logic.Queries.V1;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
 

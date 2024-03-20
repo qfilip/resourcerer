@@ -1,4 +1,4 @@
-﻿using Resourcerer.Logic.Queries.V1_0;
+﻿using Resourcerer.Logic.Queries.V1;
 
 namespace Resourcerer.UnitTests.Logic.V1_0;
 

@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="V1_0\Commands\Prices\**" />
-    <EmbeddedResource Remove="V1_0\Commands\Prices\**" />
-    <None Remove="V1_0\Commands\Prices\**" />
+    <Compile Remove="V1\Commands\Prices\**" />
+    <EmbeddedResource Remove="V1\Commands\Prices\**" />
+    <None Remove="V1\Commands\Prices\**" />
   </ItemGroup>
 
   <ItemGroup>

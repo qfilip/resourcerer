@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Resourcerer.Api.Services.Auth;
 using Resourcerer.Api.Services.Messaging;
-using Resourcerer.Api.Services.V1_0;
+using Resourcerer.Api.Services.V1;
 using Resourcerer.DataAccess.AuthService;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
