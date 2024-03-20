@@ -16,13 +16,3 @@ public class InstanceReservedEvent : AppDbEntity
     public Guid InstanceId { get; set; }
     public virtual Instance? Instance { get; set; }
 }
-
-public class InstanceReserveCancelledEvent : AppDbJsonField
-{
-    public string? Reason { get; set; }
-}
-
-public class InstanceReserveUsedEvent : AppDbJsonField
-{
-
-}
