@@ -10,27 +10,27 @@ public class GetAllCompanyCategoriesTests : TestsBase
     private readonly GetAllCompanyCategories.Handler _handler;
     public GetAllCompanyCategoriesTests()
     {
-        _handler = new GetAllCompanyCategories.Handler(_testDbContext);
+        _handler = new GetAllCompanyCategories.Handler(_ctx);
     }
 
     [Fact]
     public void When_AllOk_Then_Ok()
     {
         // arrange
-        var company = DF.FakeCompany(_testDbContext);
+        var company = DF.FakeCompany(_ctx);
         Enumerable.Range(0, 2)
-            .Select(x => DF.FakeCategory(_testDbContext, x => x.CompanyId = company.Id))
+            .Select(x => DF.FakeCategory(_ctx, x => x.CompanyId = company.Id))
             .ToList()
             .ForEach(parent =>
             {
-                DF.FakeCategory(_testDbContext, catg =>
+                DF.FakeCategory(_ctx, catg =>
                 {
                     catg.CompanyId = company.Id;
                     catg.ParentCategoryId = parent.Id;
                 });
             });
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(company.Id).Await();

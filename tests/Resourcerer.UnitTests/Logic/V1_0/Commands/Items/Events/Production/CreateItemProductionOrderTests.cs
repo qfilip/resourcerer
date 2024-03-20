@@ -11,14 +11,14 @@ public class CreateItemProductionOrderTests : TestsBase
     private readonly CreateItemProductionOrder.Handler _sut;
     public CreateItemProductionOrderTests()
     {
-        _sut = new CreateItemProductionOrder.Handler(_testDbContext);
+        _sut = new CreateItemProductionOrder.Handler(_ctx);
     }
 
     [Fact]
     public void HappyPath()
     {
         // arrange
-        var fd = Faking.FakeData(_testDbContext, 2, 2);
+        var fd = Faking.FakeData(_ctx, 2, 2);
         
         var dto = new V1CreateItemProductionOrderRequest
         {
@@ -28,7 +28,7 @@ public class CreateItemProductionOrderTests : TestsBase
             InstancesToUse = Faking.MapInstancesToUse(fd)
         };
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
         
         // act
         var result = _sut.Handle(dto).Await();
@@ -42,10 +42,10 @@ public class CreateItemProductionOrderTests : TestsBase
     public void When_ItemNotFound_Then_NotFound()
     {
         // arrange
-        Faking.FakeData(_testDbContext, 2, 2);
+        Faking.FakeData(_ctx, 2, 2);
         var dto = new V1CreateItemProductionOrderRequest { ItemId = Guid.NewGuid() };
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _sut.Handle(dto).Await();
@@ -58,7 +58,7 @@ public class CreateItemProductionOrderTests : TestsBase
     public void When_RequestedInstancesNotFound_Then_NotFound()
     {
         // arrange
-        var fd = Faking.FakeData(_testDbContext, 2, 2);
+        var fd = Faking.FakeData(_ctx, 2, 2);
         var dto = new V1CreateItemProductionOrderRequest
         {
             ItemId = fd.CompositeId,
@@ -69,7 +69,7 @@ public class CreateItemProductionOrderTests : TestsBase
             }
         };
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _sut.Handle(dto).Await();
@@ -82,8 +82,8 @@ public class CreateItemProductionOrderTests : TestsBase
     public void When_RequestedInstancesDontBelongToCompany_Then_Rejected()
     {
         // arrange
-        var fd = Faking.FakeData(_testDbContext, 2, 2);
-        var otherCompany = DF.FakeCompany(_testDbContext);
+        var fd = Faking.FakeData(_ctx, 2, 2);
+        var otherCompany = DF.FakeCompany(_ctx);
 
         fd.Elements.ForEach(e => e.Instances.ForEach(i =>
         {
@@ -98,7 +98,7 @@ public class CreateItemProductionOrderTests : TestsBase
             InstancesToUse = Faking.MapInstancesToUse(fd)
         };
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _sut.Handle(dto).Await();
@@ -111,7 +111,7 @@ public class CreateItemProductionOrderTests : TestsBase
     public void When_NotEnoughInstances_Then_Rejected()
     {
         // arrange
-        var fd = Faking.FakeData(_testDbContext, 2, 1);
+        var fd = Faking.FakeData(_ctx, 2, 1);
 
         var dto = new V1CreateItemProductionOrderRequest
         {
@@ -121,7 +121,7 @@ public class CreateItemProductionOrderTests : TestsBase
             InstancesToUse = Faking.MapInstancesToUse(fd)
         };
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _sut.Handle(dto).Await();
@@ -134,7 +134,7 @@ public class CreateItemProductionOrderTests : TestsBase
     public void When_IncorrectInstanceQuantitySpecified_Then_Rejected()
     {
         // arrange
-        var fd = Faking.FakeData(_testDbContext, 2, 2);
+        var fd = Faking.FakeData(_ctx, 2, 2);
 
         var dto = new V1CreateItemProductionOrderRequest
         {
@@ -144,7 +144,7 @@ public class CreateItemProductionOrderTests : TestsBase
             InstancesToUse = Faking.MapInstancesToUse(fd, () => 0.3)
         };
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _sut.Handle(dto).Await();
@@ -157,11 +157,11 @@ public class CreateItemProductionOrderTests : TestsBase
     {
         var ids = dto.InstancesToUse.Keys.ToArray();
         
-        var instances = _testDbContext.Instances
+        var instances = _ctx.Instances
             .Where(x => ids.Contains(x.Id))
             .ToArray();
 
-        var orderEvent = _testDbContext.ItemProductionOrders
+        var orderEvent = _ctx.ItemProductionOrders
             .First(x => x.ItemId == dto.ItemId);
 
         Assert.True(orderEvent.InstancesUsedIds.All(dto.InstancesToUse.Keys.Contains));

@@ -11,15 +11,15 @@ public class CreateElementItemTests : TestsBase
     private readonly CreateElementItem.Handler _handler;
     public CreateElementItemTests()
     {
-        _handler = new CreateElementItem.Handler(_testDbContext);
+        _handler = new CreateElementItem.Handler(_ctx);
     }
 
     [Fact]
     public void When_AllOk_Then_Ok()
     {
         // arrange
-        var category = DF.FakeCategory(_testDbContext);
-        var uom = DF.FakeUnitOfMeasure(_testDbContext);
+        var category = DF.FakeCategory(_ctx);
+        var uom = DF.FakeUnitOfMeasure(_ctx);
         var dto = new V1CreateElementItem
         {
             Name = "test",
@@ -28,22 +28,22 @@ public class CreateElementItemTests : TestsBase
             UnitOfMeasureId = uom.Id,
             UnitPrice = 2
         };
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
-        var entity = _testDbContext.Items.First();
+        var entity = _ctx.Items.First();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-        Assert.Contains(_testDbContext.Items, x => x.Name == dto.Name);
+        Assert.Contains(_ctx.Items, x => x.Name == dto.Name);
     }
 
     [Fact]
     public void When_ElementWithSameName_Exsts_Then_ValidationError()
     {
         // arrange
-        var existingElement = DF.FakeItem(_testDbContext);
+        var existingElement = DF.FakeItem(_ctx);
         var dto = new V1CreateElementItem
         {
             Name = existingElement.Name,
@@ -52,7 +52,7 @@ public class CreateElementItemTests : TestsBase
             UnitOfMeasureId = existingElement.UnitOfMeasureId,
             UnitPrice = 2
         };
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -65,8 +65,8 @@ public class CreateElementItemTests : TestsBase
     public void When_Category_NotFound_Then_ValidationError()
     {
         // arrange
-        var comp = DF.FakeCompany(_testDbContext);
-        var uom = DF.FakeUnitOfMeasure(_testDbContext);
+        var comp = DF.FakeCompany(_ctx);
+        var uom = DF.FakeUnitOfMeasure(_ctx);
         var dto = new V1CreateElementItem
         {
             Name = "test",
@@ -75,7 +75,7 @@ public class CreateElementItemTests : TestsBase
             UnitOfMeasureId = uom.Id,
             UnitPrice = 2
         };
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -88,8 +88,8 @@ public class CreateElementItemTests : TestsBase
     public void When_Company_NotFound_Then_ValidationError()
     {
         // arrange
-        var catg = DF.FakeCategory(_testDbContext);
-        var uom = DF.FakeUnitOfMeasure(_testDbContext);
+        var catg = DF.FakeCategory(_ctx);
+        var uom = DF.FakeUnitOfMeasure(_ctx);
         var dto = new V1CreateElementItem
         {
             Name = "test",
@@ -98,7 +98,7 @@ public class CreateElementItemTests : TestsBase
             UnitOfMeasureId = uom.Id,
             UnitPrice = 2
         };
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -111,7 +111,7 @@ public class CreateElementItemTests : TestsBase
     public void When_UnitOfMeasure_NotFound_Then_ValidationError()
     {
         // arrange
-        var category = DF.FakeCategory(_testDbContext);
+        var category = DF.FakeCategory(_ctx);
         var dto = new V1CreateElementItem
         {
             Name = "test",
@@ -119,7 +119,7 @@ public class CreateElementItemTests : TestsBase
             UnitOfMeasureId = Guid.NewGuid(),
             UnitPrice = 2
         };
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();

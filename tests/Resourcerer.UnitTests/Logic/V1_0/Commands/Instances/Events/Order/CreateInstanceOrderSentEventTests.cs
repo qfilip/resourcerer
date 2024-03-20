@@ -14,19 +14,19 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     private readonly CreateInstanceOrderSentEvent.Handler _handler;
     public CreateInstanceOrderSentEventTests()
     {
-        _handler = new CreateInstanceOrderSentEvent.Handler(_testDbContext);
+        _handler = new CreateInstanceOrderSentEvent.Handler(_ctx);
     }
 
     [Fact]
-    public void When_AllOk_Then_Ok()
+    public void HappyPath__Ok()
     {
         // arrange
-        var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance());
-        _testDbContext.SaveChanges();
+        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance());
+        _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderSentRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents[0].Id,
+            OrderEventId = sourceInstance.OrderedEvents.First().Id,
             InstanceId = sourceInstance.Id
         };
 
@@ -34,20 +34,25 @@ public class CreateInstanceOrderSentEventTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
-        var instance = _testDbContext.Instances.First(x => x.Id == sourceInstance.Id);
-        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-        Assert.NotNull(instance.OrderedEvents[0].SentEvent);
+        Assert.Multiple(
+            () => Assert.Equal(eHandlerResultStatus.Ok, result.Status),
+            () =>
+            {
+                var instance = _ctx.Instances.First(x => x.Id == sourceInstance.Id);
+                Assert.NotNull(instance.OrderedEvents.First().SentEvent);
+            }
+        );
     }
 
     [Fact]
-    public void When_Instance_NotFound_Then_Rejected()
+    public void Instance_NotFound__Rejected()
     {
-        var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance());
-        _testDbContext.SaveChanges();
+        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance());
+        _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderSentRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents[0].Id,
+            OrderEventId = sourceInstance.OrderedEvents.First().Id,
             InstanceId = Guid.NewGuid()
         };
 
@@ -59,14 +64,14 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     }
 
     [Fact]
-    public void When_InstanceOrderEvent_NotFound_Then_Rejected()
+    public void InstanceOrderEvent_NotFound__Rejected()
     {
-        var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance());
-        _testDbContext.SaveChanges();
+        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance());
+        _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderSentRequest
         {
-            OrderEventId = MiniId.Generate(),
+            OrderEventId = Guid.NewGuid(),
             InstanceId = sourceInstance.Id
         };
 
@@ -78,18 +83,18 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     }
 
     [Fact]
-    public void When_OrderCancelled_Then_Rejected()
+    public void OrderCancelled__Rejected()
     {
         // arrange
-        var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance(), x =>
+        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance(), x =>
         {
             x.CancelledEvent = AppDbJsonField.Create(() => new InstanceOrderCancelledEvent());
         });
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderSentRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents[0].Id,
+            OrderEventId = sourceInstance.OrderedEvents.First().Id,
             InstanceId = sourceInstance.Id
         };
 
@@ -104,15 +109,15 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     public void Is_Idempotent()
     {
         // arrange
-        var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance(), x =>
+        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance(), x =>
         {
             x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
         });
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderSentRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents[0].Id,
+            OrderEventId = sourceInstance.OrderedEvents.First().Id,
             InstanceId = sourceInstance.Id
         };
 
@@ -124,18 +129,18 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     }
 
     [Fact]
-    public void When_OrderDelivered_Then_Rejected()
+    public void OrderDelivered__Rejected()
     {
         // arrange
-        var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance(), x =>
+        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance(), x =>
         {
             x.DeliveredEvent = AppDbJsonField.Create(() => new InstanceOrderDeliveredEvent());
         });
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderSentRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents[0].Id,
+            OrderEventId = sourceInstance.OrderedEvents.First().Id,
             InstanceId = sourceInstance.Id
         };
 

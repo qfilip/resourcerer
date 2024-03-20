@@ -17,11 +17,11 @@ namespace Resourcerer.UnitTests.Logic;
 
 public class TestsBase
 {
-    protected readonly TestDbContext _testDbContext;
+    protected readonly TestDbContext _ctx;
 
     public TestsBase()
     {
-        _testDbContext = new ContextCreator().GetTestDbContext();
+        _ctx = new ContextCreator().GetTestDbContext();
     }
 
     //[Fact]

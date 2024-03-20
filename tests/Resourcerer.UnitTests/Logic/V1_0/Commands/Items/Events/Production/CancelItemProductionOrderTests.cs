@@ -14,7 +14,7 @@ public class CancelItemProductionOrderTests : TestsBase
     private readonly CancelItemProductionOrder.Handler _sut;
     public CancelItemProductionOrderTests()
     {
-        _sut = new CancelItemProductionOrder.Handler(_testDbContext);
+        _sut = new CancelItemProductionOrder.Handler(_ctx);
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class CancelItemProductionOrderTests : TestsBase
             Reason = "Test"
         };
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _sut.Handle(dto).Await();
@@ -36,10 +36,10 @@ public class CancelItemProductionOrderTests : TestsBase
         // assert
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
         
-        var data = _testDbContext.ItemProductionOrders.First();
+        var data = _ctx.ItemProductionOrders.First();
         Assert.NotNull(data.CanceledEvent);
         
-        var instanceData = _testDbContext.Instances
+        var instanceData = _ctx.Instances
             .Where(x => order.InstancesUsedIds.Contains(x.Id))
             .ToArray();
 
@@ -57,14 +57,14 @@ public class CancelItemProductionOrderTests : TestsBase
             Reason = "Test"
         };
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _sut.Handle(dto).Await();
 
         // assert
         Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
-        var data = _testDbContext.ItemProductionOrders.First();
+        var data = _ctx.ItemProductionOrders.First();
         Assert.Null(data.CanceledEvent);
     }
 
@@ -79,7 +79,7 @@ public class CancelItemProductionOrderTests : TestsBase
             Reason = "Test"
         };
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var action = async () =>
@@ -106,14 +106,14 @@ public class CancelItemProductionOrderTests : TestsBase
             Reason = "Test"
         };
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _sut.Handle(dto).Await();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
-        var data = _testDbContext.ItemProductionOrders.First();
+        var data = _ctx.ItemProductionOrders.First();
         Assert.Null(data.CanceledEvent);
     }
 
@@ -131,7 +131,7 @@ public class CancelItemProductionOrderTests : TestsBase
             Reason = "Test"
         };
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var action = async () =>
@@ -148,12 +148,12 @@ public class CancelItemProductionOrderTests : TestsBase
     {
         var productionOrderId = Guid.NewGuid();
 
-        var composite = DF.FakeItem(_testDbContext);
+        var composite = DF.FakeItem(_ctx);
         
-        var elementOne = DF.FakeItem(_testDbContext);
-        var elementTwo = DF.FakeItem(_testDbContext);
+        var elementOne = DF.FakeItem(_ctx);
+        var elementTwo = DF.FakeItem(_ctx);
 
-        DF.FakeExcerpts(_testDbContext, composite, [
+        DF.FakeExcerpts(_ctx, composite, [
             (elementOne, 1),
             (elementTwo, 1),
         ]);
@@ -162,7 +162,7 @@ public class CancelItemProductionOrderTests : TestsBase
             .Select(x =>
             {
                 var id = x % 2 == 0 ? elementOne.Id : elementTwo.Id;
-                return DF.FakeInstance(_testDbContext, i =>
+                return DF.FakeInstance(_ctx, i =>
                 {
                     i.ItemId = id;
                     i.ReservedEvents = new()
@@ -176,7 +176,7 @@ public class CancelItemProductionOrderTests : TestsBase
             })
             .ToArray();
 
-        var order = DF.FakeItemProductionOrder(_testDbContext, x =>
+        var order = DF.FakeItemProductionOrder(_ctx, x =>
         {
             x.Id = productionOrderId;
             x.ItemId = composite.Id;

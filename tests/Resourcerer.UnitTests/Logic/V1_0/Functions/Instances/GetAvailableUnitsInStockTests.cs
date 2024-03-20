@@ -17,11 +17,11 @@ public class GetAvailableUnitsInStockTests : TestsBase
     public void When_SourceInstance_Delivered_And_DerivedInstance_ReservedTwice_Than_ComputedValue()
     {
         // arrange
-        var srcInstance = DF.FakeInstance(_testDbContext, x =>
+        var srcInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 2;
             x.SourceInstanceId = null;
-            x.OrderedEvents.Add(DF.FakeOrderedEvent(_testDbContext, ev =>
+            x.OrderedEvents.Add(DF.FakeInstanceOrderedEvent(_ctx, ev =>
             {
                 ev.DerivedInstanceId = _staticId;
                 ev.Quantity = 2;
@@ -29,7 +29,7 @@ public class GetAvailableUnitsInStockTests : TestsBase
             }));
         });
 
-        var dervInstance = DF.FakeInstance(_testDbContext, x =>
+        var dervInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Id = _staticId;
             x.Quantity = srcInstance.OrderedEvents[0].Quantity;
@@ -53,11 +53,11 @@ public class GetAvailableUnitsInStockTests : TestsBase
     public void When_SourceInstance_Delivered_And_DerivedInstance_ReservedTwice_OneCancelled_Than_ComputedValue()
     {
         // arrange
-        var srcInstance = DF.FakeInstance(_testDbContext, x =>
+        var srcInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 2;
             x.SourceInstanceId = null;
-            x.OrderedEvents.Add(DF.FakeOrderedEvent(_testDbContext, ev =>
+            x.OrderedEvents.Add(DF.FakeInstanceOrderedEvent(_ctx, ev =>
             {
                 ev.DerivedInstanceId = _staticId;
                 ev.Quantity = 2;
@@ -65,7 +65,7 @@ public class GetAvailableUnitsInStockTests : TestsBase
             }));
         });
 
-        var dervInstance = DF.FakeInstance(_testDbContext, x =>
+        var dervInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Id = _staticId;
             x.Quantity = srcInstance.OrderedEvents[0].Quantity;

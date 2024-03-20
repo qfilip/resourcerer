@@ -16,4 +16,12 @@ public static class AssertUtils
         foreach (var h in hResults)
             assert(h);
     }
+
+    public static void DataIntegrity(
+        TestDbContext ctx,
+        Action<TestDbContext> tegridyCheck)
+    {
+        ctx.Clear();
+        tegridyCheck(ctx);
+    }
 }

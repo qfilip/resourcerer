@@ -5,7 +5,7 @@ namespace Resourcerer.UnitTests.Utilities.Faker;
 
 internal static partial class DF
 {
-    private static InstanceOrderedEvent CreateOrder(
+    private static InstanceOrderedEvent CreateInstanceOrderEvent(
         AppDbContext context,
         Instance sourceInstance,
         Instance derivedInstance,
@@ -21,7 +21,11 @@ internal static partial class DF
 
             BuyerCompanyId = derivedInstance.OwnerCompany!.Id,
             SellerCompanyId = sourceInstance.OwnerCompanyId,
-            DerivedInstanceId = derivedInstance.Id
+            DerivedInstanceId = derivedInstance.Id,
+            DerivedInstanceItemId = derivedInstance.ItemId,
+
+            Instance = sourceInstance,
+            InstanceId = sourceInstance.Id,
         });
 
         modifier?.Invoke(entity);
@@ -32,7 +36,7 @@ internal static partial class DF
 
         return entity;
     }
-    public static InstanceOrderedEvent FakeOrderedEvent(
+    public static InstanceOrderedEvent FakeInstanceOrderedEvent(
         AppDbContext context,
         Action<InstanceOrderedEvent>? modifier = null)
     {
@@ -40,10 +44,10 @@ internal static partial class DF
         var derivedInstance = FakeInstance(context,
             x => x.SourceInstanceId = sourceInstance.Id);
         
-        return CreateOrder(context, sourceInstance, derivedInstance, modifier);
+        return CreateInstanceOrderEvent(context, sourceInstance, derivedInstance, modifier);
     }
 
-    public static Instance FakeOrderedEvent(
+    public static Instance FakeInstanceOrderedEvent(
         AppDbContext context,
         Instance sourceInstance,
         Action<InstanceOrderedEvent>? modifier = null)
@@ -52,7 +56,7 @@ internal static partial class DF
         var derivedInstance = FakeInstance(context,
             x => x.SourceInstanceId = sourceInstance.Id);
 
-        CreateOrder(context, sourceInstance, derivedInstance, modifier);
+        CreateInstanceOrderEvent(context, sourceInstance, derivedInstance, modifier);
 
         return sourceInstance;
     }

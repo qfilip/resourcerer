@@ -17,11 +17,11 @@ public class GetUnitsInStockTests : TestsBase
     public void When_SourceInstanceId_IsNull_Then_Computed()
     {
         // arrange
-        var instance = DF.FakeInstance(_testDbContext, x =>
+        var instance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 2;
             x.SourceInstanceId = null;
-            x.OrderedEvents.Add(DF.FakeOrderedEvent(_testDbContext, ev =>
+            x.OrderedEvents.Add(DF.FakeInstanceOrderedEvent(_ctx, ev =>
             {
                 ev.Quantity = 1;
                 ev.SentEvent = DF.FakeSentEvent();
@@ -39,12 +39,12 @@ public class GetUnitsInStockTests : TestsBase
     public void When_SourceInstanceId_IsNotNull_And_SourceInstance_IsNull_Then_Exception()
     {
         // arrange
-        var instance = DF.FakeInstance(_testDbContext, x =>
+        var instance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 2;
             x.SourceInstanceId = _staticId;
             x.SourceInstance = null;
-            x.OrderedEvents.Add(DF.FakeOrderedEvent(_testDbContext, ev =>
+            x.OrderedEvents.Add(DF.FakeInstanceOrderedEvent(_ctx, ev =>
             {
                 ev.Quantity = 1;
                 ev.SentEvent = DF.FakeSentEvent();
@@ -59,11 +59,11 @@ public class GetUnitsInStockTests : TestsBase
     public void When_SourceInstance_NotDelivered_Than_Zero()
     {
         // arrange
-        var srcInstance = DF.FakeInstance(_testDbContext, x =>
+        var srcInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 2;
             x.SourceInstanceId = null;
-            x.OrderedEvents.Add(DF.FakeOrderedEvent(_testDbContext, ev =>
+            x.OrderedEvents.Add(DF.FakeInstanceOrderedEvent(_ctx, ev =>
             {
                 ev.DerivedInstanceId = _staticId;
                 ev.Quantity = 1;
@@ -71,7 +71,7 @@ public class GetUnitsInStockTests : TestsBase
             }));
         });
 
-        var dervInstance = DF.FakeInstance(_testDbContext, x =>
+        var dervInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Id = _staticId;
             x.Quantity = srcInstance.OrderedEvents[0].Quantity;
@@ -90,11 +90,11 @@ public class GetUnitsInStockTests : TestsBase
     public void When_SourceInstance_Delivered_Than_ComputedValue()
     {
         // arrange
-        var srcInstance = DF.FakeInstance(_testDbContext, x =>
+        var srcInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 2;
             x.SourceInstanceId = null;
-            x.OrderedEvents.Add(DF.FakeOrderedEvent(_testDbContext, ev =>
+            x.OrderedEvents.Add(DF.FakeInstanceOrderedEvent(_ctx, ev =>
             {
                 ev.DerivedInstanceId = _staticId;
                 ev.Quantity = 1;
@@ -102,7 +102,7 @@ public class GetUnitsInStockTests : TestsBase
             }));
         });
 
-        var dervInstance = DF.FakeInstance(_testDbContext, x =>
+        var dervInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Id = _staticId;
             x.Quantity = srcInstance.OrderedEvents[0].Quantity;
@@ -121,11 +121,11 @@ public class GetUnitsInStockTests : TestsBase
     public void When_SourceInstance_Delivered_And_DerivedInstanceOrdered_Than_ComputedValue()
     {
         // arrange
-        var srcInstance = DF.FakeInstance(_testDbContext, x =>
+        var srcInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 2;
             x.SourceInstanceId = null;
-            x.OrderedEvents.Add(DF.FakeOrderedEvent(_testDbContext, ev =>
+            x.OrderedEvents.Add(DF.FakeInstanceOrderedEvent(_ctx, ev =>
             {
                 ev.DerivedInstanceId = _staticId;
                 ev.Quantity = 2;
@@ -133,13 +133,13 @@ public class GetUnitsInStockTests : TestsBase
             }));
         });
 
-        var dervInstance = DF.FakeInstance(_testDbContext, x =>
+        var dervInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Id = _staticId;
             x.Quantity = srcInstance.OrderedEvents[0].Quantity;
             x.SourceInstanceId = srcInstance.Id;
             x.SourceInstance = srcInstance;
-            x.OrderedEvents.Add(DF.FakeOrderedEvent(_testDbContext, ev =>
+            x.OrderedEvents.Add(DF.FakeInstanceOrderedEvent(_ctx, ev =>
             {
                 ev.Quantity = 1;
             }));
@@ -156,11 +156,11 @@ public class GetUnitsInStockTests : TestsBase
     public void When_SourceInstance_Delivered_And_DerivedInstanceOrderedThrice_OnceSent_OnceNot__OnceCancelled_Than_ComputedValue()
     {
         // arrange
-        var srcInstance = DF.FakeInstance(_testDbContext, x =>
+        var srcInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 3;
             x.SourceInstanceId = null;
-            x.OrderedEvents.Add(DF.FakeOrderedEvent(_testDbContext, ev =>
+            x.OrderedEvents.Add(DF.FakeInstanceOrderedEvent(_ctx, ev =>
             {
                 ev.DerivedInstanceId = _staticId;
                 ev.Quantity = 3;
@@ -168,7 +168,7 @@ public class GetUnitsInStockTests : TestsBase
             }));
         });
 
-        var dervInstance = DF.FakeInstance(_testDbContext, x =>
+        var dervInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Id = _staticId;
             x.Quantity = srcInstance.OrderedEvents[0].Quantity;
@@ -176,16 +176,16 @@ public class GetUnitsInStockTests : TestsBase
             x.SourceInstance = srcInstance;
             x.OrderedEvents.AddRange(new List<InstanceOrderedEvent>
             {
-                DF.FakeOrderedEvent(_testDbContext, ev =>
+                DF.FakeInstanceOrderedEvent(_ctx, ev =>
                 {
                     ev.Quantity = 1;
                 }),
-                DF.FakeOrderedEvent(_testDbContext, ev =>
+                DF.FakeInstanceOrderedEvent(_ctx, ev =>
                 {
                     ev.Quantity = 1;
                     ev.CancelledEvent = DF.FakeOrderCancelledEvent();
                 }),
-                DF.FakeOrderedEvent(_testDbContext, ev =>
+                DF.FakeInstanceOrderedEvent(_ctx, ev =>
                 {
                     ev.Quantity = 1;
                     ev.SentEvent = DF.FakeSentEvent();

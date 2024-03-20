@@ -10,6 +10,8 @@ public class TestDbContext : AppDbContext
     {
     }
 
+    public void Clear() => ChangeTracker.Clear();
+
     public override int SaveChanges()
     {
         var result = base.SaveChanges();

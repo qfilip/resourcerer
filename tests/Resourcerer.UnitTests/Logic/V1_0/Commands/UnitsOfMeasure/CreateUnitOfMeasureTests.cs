@@ -12,14 +12,14 @@ public class CreateUnitOfMeasureTests : TestsBase
 
     public CreateUnitOfMeasureTests()
     {
-        _handler = new(_testDbContext);
+        _handler = new(_ctx);
     }
 
     [Fact]
     public void When_AllOk_Ok()
     {
         // arrange
-        var company = DF.FakeCompany(_testDbContext);
+        var company = DF.FakeCompany(_ctx);
         var dto = new V1CreateUnitOfMeasure
         {
             CompanyId = company.Id,
@@ -27,7 +27,7 @@ public class CreateUnitOfMeasureTests : TestsBase
             Symbol = "ts"
         };
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -40,7 +40,7 @@ public class CreateUnitOfMeasureTests : TestsBase
     public void When_CompanyNotFound_Then_Rejected()
     {
         // arrange
-        var company = DF.FakeCompany(_testDbContext);
+        var company = DF.FakeCompany(_ctx);
         var dto = new V1CreateUnitOfMeasure
         {
             CompanyId = Guid.NewGuid(),
@@ -48,7 +48,7 @@ public class CreateUnitOfMeasureTests : TestsBase
             Symbol = "ts"
         };
         
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();

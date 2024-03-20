@@ -12,15 +12,15 @@ public class FinishItemProductionOrderTests : TestsBase
     private readonly FinishItemProductionOrder.Handler _sut;
     public FinishItemProductionOrderTests()
     {
-        _sut = new(_testDbContext);
+        _sut = new(_ctx);
     }
 
     [Fact]
     public void HappyPath()
     {
         // arrange
-        var fd = Faking.FakeData(_testDbContext, 2, 2);
-        var order = Faking.FakeOrder(_testDbContext, fd, x =>
+        var fd = Faking.FakeData(_ctx, 2, 2);
+        var order = Faking.FakeOrder(_ctx, fd, x =>
         {
             x.Quantity = 2;
             x.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
@@ -30,25 +30,25 @@ public class FinishItemProductionOrderTests : TestsBase
             ProductionOrderId = order.Id
         };
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _sut.Handle(dto).Await();
         
         // assert
-        _testDbContext.ChangeTracker.Clear();
+        _ctx.ChangeTracker.Clear();
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
         AssertPersistedData(order.Id);
     }
 
     private void AssertPersistedData(Guid itemProductionOrderId)
     {
-        var order = _testDbContext.ItemProductionOrders
+        var order = _ctx.ItemProductionOrders
             .First(x => x.Id == itemProductionOrderId);
 
         Assert.NotNull(order.FinishedEvent);
         
-        var newInstance = _testDbContext.Instances
+        var newInstance = _ctx.Instances
             .First(x =>
                 x.ItemId == order.ItemId &&
                 x.Quantity == order.Quantity);

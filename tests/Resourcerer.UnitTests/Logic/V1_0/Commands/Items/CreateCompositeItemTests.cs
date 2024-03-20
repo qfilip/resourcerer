@@ -11,7 +11,7 @@ public class CreateCompositeItemTests : TestsBase
     private readonly CreateCompositeItem.Handler _handler;
     public CreateCompositeItemTests()
     {
-        _handler = new(_testDbContext);
+        _handler = new(_ctx);
     }
 
     [Fact]
@@ -19,7 +19,7 @@ public class CreateCompositeItemTests : TestsBase
     {
         // arrange
         var dto = GetDto();
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -32,13 +32,13 @@ public class CreateCompositeItemTests : TestsBase
     public void When_ElementWithSameNameAndCategory_Exsts_Then_ValidationError()
     {
         // arrange
-        var existingElement = DF.FakeItem(_testDbContext);
+        var existingElement = DF.FakeItem(_ctx);
         var dto = GetDto(x =>
         {
             x.Name = existingElement.Name;
             x.CategoryId = existingElement.CategoryId;
         });
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -52,7 +52,7 @@ public class CreateCompositeItemTests : TestsBase
     {
         // arrange
         var dto = GetDto(x => x.CategoryId = Guid.NewGuid());
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -66,7 +66,7 @@ public class CreateCompositeItemTests : TestsBase
     {
         // arrange
         var dto = GetDto(x => x.UnitOfMeasureId = Guid.NewGuid());
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -84,7 +84,7 @@ public class CreateCompositeItemTests : TestsBase
             { Guid.NewGuid(), 1 },
             { Guid.NewGuid(), 2 }
         });
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -98,15 +98,15 @@ public class CreateCompositeItemTests : TestsBase
         var dto = new V1CreateCompositeItem
         {
             Name = "test",
-            CategoryId = DF.FakeCategory(_testDbContext).Id,
-            UnitOfMeasureId = DF.FakeUnitOfMeasure(_testDbContext).Id,
+            CategoryId = DF.FakeCategory(_ctx).Id,
+            UnitOfMeasureId = DF.FakeUnitOfMeasure(_ctx).Id,
             UnitPrice = 2,
             PreparationTimeSeconds = 2,
             ExpirationTimeSeconds = 2,
             ExcerptMap = new Dictionary<Guid, double>
             {
-                { DF.FakeItem(_testDbContext).Id, 1 },
-                { DF.FakeItem(_testDbContext).Id, 2 }
+                { DF.FakeItem(_ctx).Id, 1 },
+                { DF.FakeItem(_ctx).Id, 2 }
             }
         };
 

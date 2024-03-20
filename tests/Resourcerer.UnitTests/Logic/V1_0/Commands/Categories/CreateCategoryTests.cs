@@ -11,7 +11,7 @@ public class CreateCategoryTests : TestsBase
     private readonly CreateCategory.Handler _handler;
     public CreateCategoryTests()
     {
-        _handler = new CreateCategory.Handler(_testDbContext);
+        _handler = new CreateCategory.Handler(_ctx);
     }
 
     [Fact]
@@ -20,9 +20,9 @@ public class CreateCategoryTests : TestsBase
         var dto = new V1CreateCategory
         {
             Name = "name",
-            CompanyId = DF.FakeCompany(_testDbContext).Id,
+            CompanyId = DF.FakeCompany(_ctx).Id,
         };
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -34,9 +34,9 @@ public class CreateCategoryTests : TestsBase
     [Fact]
     public void When_HappyPath_ChildCategory_Then_Ok()
     {
-        var parentCategory = DF.FakeCategory(_testDbContext, x =>
+        var parentCategory = DF.FakeCategory(_ctx, x =>
         {
-            x.CompanyId = DF.FakeCompany(_testDbContext).Id;
+            x.CompanyId = DF.FakeCompany(_ctx).Id;
         });
         var dto = new V1CreateCategory
         {
@@ -44,7 +44,7 @@ public class CreateCategoryTests : TestsBase
             CompanyId = parentCategory.CompanyId,
             ParentCategoryId = parentCategory.Id
         };
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -56,13 +56,13 @@ public class CreateCategoryTests : TestsBase
     [Fact]
     public void When_Categories_DifferentCompany_And_SameParentCategory_HaveSameNamee_Then_Ok()
     {
-        var c = DF.FakeCategory(_testDbContext);
+        var c = DF.FakeCategory(_ctx);
         var dto = new V1CreateCategory
         {
             Name = c.Name,
-            CompanyId = DF.FakeCompany(_testDbContext).Id
+            CompanyId = DF.FakeCompany(_ctx).Id
         };
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -74,14 +74,14 @@ public class CreateCategoryTests : TestsBase
     [Fact]
     public void When_SameCompany_And_DifferentParentCategory_HaveSameName_Then_Ok()
     {
-        var parentCatg = DF.FakeCategory(_testDbContext);
+        var parentCatg = DF.FakeCategory(_ctx);
         var dto = new V1CreateCategory
         {
             Name = parentCatg.Name,
             CompanyId = parentCatg.CompanyId,
             ParentCategoryId = parentCatg.Id
         };
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -93,8 +93,8 @@ public class CreateCategoryTests : TestsBase
     [Fact]
     public void When_SameCompany_And_SameParentCategory_HaveSameName_Then_Rejected()
     {
-        var parentCatg = DF.FakeCategory(_testDbContext);
-        var existingCatg = DF.FakeCategory(_testDbContext, x =>
+        var parentCatg = DF.FakeCategory(_ctx);
+        var existingCatg = DF.FakeCategory(_ctx, x =>
         {
             x.CompanyId = parentCatg.CompanyId;
             x.ParentCategoryId = parentCatg.Id;
@@ -105,7 +105,7 @@ public class CreateCategoryTests : TestsBase
             CompanyId = existingCatg.Id,
             ParentCategoryId = parentCatg.Id
         };
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -121,7 +121,7 @@ public class CreateCategoryTests : TestsBase
         var dto = new V1CreateCategory
         {
             Name = "test",
-            CompanyId = DF.FakeCompany(_testDbContext).Id,
+            CompanyId = DF.FakeCompany(_ctx).Id,
             ParentCategoryId = Guid.NewGuid()
         };
 
@@ -136,11 +136,11 @@ public class CreateCategoryTests : TestsBase
     public void When_ParentCategory_WithDifferentCompany_Exist_Then_Rejected()
     {
         // arrange
-        var parentCatg = DF.FakeCategory(_testDbContext);
+        var parentCatg = DF.FakeCategory(_ctx);
         var dto = new V1CreateCategory
         {
             Name = "test",
-            CompanyId = DF.FakeCompany(_testDbContext).Id,
+            CompanyId = DF.FakeCompany(_ctx).Id,
             ParentCategoryId = parentCatg.Id
         };
 

@@ -17,15 +17,15 @@ public class ChangeItemPriceTests : TestsBase
     public ChangeItemPriceTests()
     {
         _fakeLogger = A.Fake<ILogger<ChangeItemPrice.Handler>>();
-        _handler = new ChangeItemPrice.Handler(_testDbContext, _fakeLogger);
+        _handler = new ChangeItemPrice.Handler(_ctx, _fakeLogger);
     }
 
     [Fact]
     public void When_AllOk_Then_NewPriceAdded_Ok()
     {
         // arrange
-        var item = DF.FakeItem(_testDbContext);
-        _testDbContext.SaveChanges();
+        var item = DF.FakeItem(_ctx);
+        _ctx.SaveChanges();
         
         var oldPrices = item.Prices.Select(x => x).ToList();
         var dto = new V1ChangePrice
@@ -36,7 +36,7 @@ public class ChangeItemPriceTests : TestsBase
 
         // act
         var result = _handler.Handle(dto).Await();
-        var newPrices = _testDbContext.Prices
+        var newPrices = _ctx.Prices
             .Where(x => x.ItemId == item.Id)
             .IgnoreQueryFilters()
             .ToList();
@@ -56,7 +56,7 @@ public class ChangeItemPriceTests : TestsBase
             ItemId = Guid.NewGuid(),
             UnitPrice = 20
         };
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
@@ -69,18 +69,18 @@ public class ChangeItemPriceTests : TestsBase
     public void When_Element_HasCorruptedPrices_Then_PricesAreFixed_Ok()
     {
         // arrange
-        var item = DF.FakeItem(_testDbContext, null, 1, 3, true);
+        var item = DF.FakeItem(_ctx, null, 1, 3, true);
         var oldPrices = item.Prices.Select(x => x).ToList();
         var dto = new V1ChangePrice
         {
             ItemId = item.Id,
             UnitPrice = 20
         };
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
-        var newPrices = _testDbContext.Prices
+        var newPrices = _ctx.Prices
             .Where(x => x.ItemId == item.Id)
             .IgnoreQueryFilters()
             .ToList();

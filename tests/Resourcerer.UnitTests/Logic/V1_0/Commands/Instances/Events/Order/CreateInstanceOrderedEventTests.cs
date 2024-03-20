@@ -12,19 +12,19 @@ public class CreateInstanceOrderedEventTests : TestsBase
     private readonly CreateInstanceOrderedEvent.Handler _handler;
     public CreateInstanceOrderedEventTests()
     {
-        _handler = new(_testDbContext);
+        _handler = new(_ctx);
     }
 
     [Fact]
-    public void When_AllOk_WithDerivedInstanceItemMapping_Then_Ok()
+    public void AllOk_WithDerivedInstanceItemMapping__Ok()
     {
         // arrange
-        var derivedInstanceItem = DF.FakeItem(_testDbContext);
-        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        var derivedInstanceItem = DF.FakeItem(_ctx);
+        var sourceInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 1;
         });
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         var dto = GetDto(sourceInstance, x =>
         {
@@ -38,25 +38,30 @@ public class CreateInstanceOrderedEventTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
-        var srcInstance = _testDbContext.Instances.First(x => x.Id == sourceInstance.Id);
-        var dervInstance = _testDbContext.Instances.First(x => x.ItemId == derivedInstanceItem.Id);
-        var entities = _testDbContext.Instances.ToArray();
-
-        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-        Assert.True(entities.Length == 2);
-        Assert.True(srcInstance.OrderedEvents.Any());
+        Assert.Multiple(
+            () => Assert.Equal(eHandlerResultStatus.Ok, result.Status),
+            () =>
+            {
+                _ctx.Clear();
+                var srcInstance = _ctx.Instances.First(x => x.Id == sourceInstance.Id);
+                var dervInstance = _ctx.Instances.First(x => x.ItemId == derivedInstanceItem.Id);
+                var entities = _ctx.Instances.ToArray();
+                Assert.True(entities.Length == 2);
+                Assert.True(srcInstance.OrderedEvents.Any());
+            }
+        );
     }
 
     [Fact]
-    public void When_AllOk_WithoutDerivedInstanceItemMapping_Then_Ok()
+    public void AllOk_WithoutDerivedInstanceItemMapping__Ok()
     {
         // arrange
-        var buyerCompany = DF.FakeCompany(_testDbContext);
-        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        var buyerCompany = DF.FakeCompany(_ctx);
+        var sourceInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 1;
         });
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         var dto = GetDto(sourceInstance, x =>
         {
@@ -69,17 +74,22 @@ public class CreateInstanceOrderedEventTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
-        var srcInstance = _testDbContext.Instances.First(x => x.Id == sourceInstance.Id);
-        var dervInstance = _testDbContext.Instances.First(x => x.ItemId == sourceInstance.ItemId);
-        var entities = _testDbContext.Instances.ToArray();
-
-        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-        Assert.True(entities.Length == 2);
-        Assert.True(srcInstance.OrderedEvents.Any());
+        Assert.Multiple(
+            () => Assert.Equal(eHandlerResultStatus.Ok, result.Status),
+            () =>
+            {
+                var srcInstance = _ctx.Instances.First(x => x.Id == sourceInstance.Id);
+                var dervInstance = _ctx.Instances.First(x => x.ItemId == sourceInstance.ItemId);
+                var entities = _ctx.Instances.ToArray();
+                Assert.True(entities.Length == 2);
+                Assert.True(srcInstance.OrderedEvents.Any());
+            }
+        );
+        
     }
 
     [Fact]
-    public void When_RequestDto_IsInvalid_Then_ValidationError()
+    public void RequestDto_IsInvalid__ValidationError()
     {
         // arrange
         var dto = new V1InstanceOrderRequest
@@ -100,13 +110,13 @@ public class CreateInstanceOrderedEventTests : TestsBase
     }
 
     [Fact]
-    public void When_BuyerNotFound_Then_Rejected()
+    public void BuyerNotFound__Rejected()
     {
-        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        var sourceInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 1;
         });
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         var dto = GetDto(sourceInstance, x =>
         {
@@ -123,14 +133,14 @@ public class CreateInstanceOrderedEventTests : TestsBase
     }
 
     [Fact]
-    public void When_SellerNotFound_Then_Rejected()
+    public void SellerNotFound__Rejected()
     {
-        var buyerCompany = DF.FakeCompany(_testDbContext);
-        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        var buyerCompany = DF.FakeCompany(_ctx);
+        var sourceInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 1;
         });
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         var dto = GetDto(sourceInstance, x =>
         {
@@ -147,15 +157,15 @@ public class CreateInstanceOrderedEventTests : TestsBase
     }
 
     [Fact]
-    public void When_DerivedInstanceItem_NotFound_Then_Rejected()
+    public void DerivedInstanceItem_NotFound__Rejected()
     {
         // arrange
-        var derivedInstanceItem = DF.FakeItem(_testDbContext);
-        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        var derivedInstanceItem = DF.FakeItem(_ctx);
+        var sourceInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 1;
         });
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         var dto = GetDto(sourceInstance, x =>
         {
@@ -173,19 +183,19 @@ public class CreateInstanceOrderedEventTests : TestsBase
     }
 
     [Fact]
-    public void When_DerivedInstanceItem_HasDifferentBuyerCompany_Then_Rejected()
+    public void DerivedInstanceItem_HasDifferentBuyerCompany__Rejected()
     {
         // arrange
-        var buyerCompany = DF.FakeCompany(_testDbContext);
-        var derivedInstanceItem = DF.FakeItem(_testDbContext, x =>
+        var buyerCompany = DF.FakeCompany(_ctx);
+        var derivedInstanceItem = DF.FakeItem(_ctx, x =>
         {
-            x.Category!.CompanyId = DF.FakeCompany(_testDbContext).Id;
+            x.Category!.CompanyId = DF.FakeCompany(_ctx).Id;
         });
-        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        var sourceInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 1;
         });
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         var dto = GetDto(sourceInstance, x =>
         {
@@ -203,14 +213,14 @@ public class CreateInstanceOrderedEventTests : TestsBase
     }
 
     [Fact]
-    public void When_InstanceNotFound_Then_Rejected()
+    public void InstanceNotFound__Rejected()
     {
-        var buyerCompany = DF.FakeCompany(_testDbContext);
-        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        var buyerCompany = DF.FakeCompany(_ctx);
+        var sourceInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 1;
         });
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         var dto = GetDto(sourceInstance, x =>
         {
@@ -228,15 +238,15 @@ public class CreateInstanceOrderedEventTests : TestsBase
     }
 
     [Fact]
-    public void When_ExpectedDeliveryDate_NotSet_And_Instance_HasExpiryDate_Then_Rejected()
+    public void ExpectedDeliveryDate_NotSet_And_Instance_HasExpiryDate__Rejected()
     {
-        var buyerCompany = DF.FakeCompany(_testDbContext);
-        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        var buyerCompany = DF.FakeCompany(_ctx);
+        var sourceInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 1;
             x.ExpiryDate = DateTime.UtcNow;
         });
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         var dto = GetDto(sourceInstance, x =>
         {
@@ -255,15 +265,15 @@ public class CreateInstanceOrderedEventTests : TestsBase
     }
 
     [Fact]
-    public void When_DeliveryDate_LargerOrEqualTo_InstanceExpiryDate_Then_Rejected()
+    public void DeliveryDate_LargerOrEqualTo_InstanceExpiryDate__Rejected()
     {
-        var buyerCompany = DF.FakeCompany(_testDbContext);
-        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        var buyerCompany = DF.FakeCompany(_ctx);
+        var sourceInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 1;
             x.ExpiryDate = DateTime.UtcNow;
         });
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         var dto = GetDto(sourceInstance, x =>
         {
@@ -278,22 +288,22 @@ public class CreateInstanceOrderedEventTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
-        var entities = _testDbContext.Instances.ToArray();
+        var entities = _ctx.Instances.ToArray();
 
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
     }
 
     [Fact]
-    public void When_UnitsOrdered_LargerThan_UnitsInStock_Then_Rejected()
+    public void UnitsOrdered_LargerThan_UnitsInStock__Rejected()
     {
-        var buyerCompany = DF.FakeCompany(_testDbContext);
-        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        var buyerCompany = DF.FakeCompany(_ctx);
+        var sourceInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 2;
             x.ExpiryDate = DateTime.UtcNow;
             x.OrderedEvents = new List<InstanceOrderedEvent>
             {
-                DF.FakeOrderedEvent(_testDbContext, ev =>
+                DF.FakeInstanceOrderedEvent(_ctx, ev =>
                 {
                     ev.Quantity = 1;
                     ev.SentEvent = DF.FakeSentEvent();
@@ -304,7 +314,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
                 DF.FakeDiscardedEvent(x, x => x.Quantity = 1)
             };
         });
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         var dto = GetDto(sourceInstance, x =>
         {
@@ -323,16 +333,16 @@ public class CreateInstanceOrderedEventTests : TestsBase
     }
 
     [Fact]
-    public void When_UnitsOrdered_LessOrEqualTo_UnitsInStock_Then_Ok()
+    public void UnitsOrdered_LessOrEqualTo_UnitsInStock__Ok()
     {
-        var buyerCompany = DF.FakeCompany(_testDbContext);
-        var sourceInstance = DF.FakeInstance(_testDbContext, x =>
+        var buyerCompany = DF.FakeCompany(_ctx);
+        var sourceInstance = DF.FakeInstance(_ctx, x =>
         {
             x.Quantity = 4;
             x.ExpiryDate = DateTime.UtcNow;
             x.OrderedEvents = new List<InstanceOrderedEvent>
             {
-                DF.FakeOrderedEvent(_testDbContext, ev =>
+                DF.FakeInstanceOrderedEvent(_ctx, ev =>
                 {
                     ev.Quantity = 1;
                     ev.SentEvent = DF.FakeSentEvent();
@@ -343,7 +353,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
                 DF.FakeDiscardedEvent(x, x => x.Quantity = 1)
             };
         });
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         var dto = GetDto(sourceInstance, x =>
         {

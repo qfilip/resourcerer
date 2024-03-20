@@ -11,27 +11,27 @@ public class CreateInstanceDiscardedEventTests : TestsBase
     public readonly CreateInstanceDiscardedEvent.Handler _handler;
     public CreateInstanceDiscardedEventTests()
     {
-        _handler = new(_testDbContext);
+        _handler = new(_ctx);
     }
 
     [Fact]
     public void When_AllOk_Then_Ok()
     {
         // arrange
-        var orderEvent = DF.FakeOrderedEvent(_testDbContext, x => x.DeliveredEvent = DF.FakeDeliveredEvent());
+        var orderEvent = DF.FakeInstanceOrderedEvent(_ctx, x => x.DeliveredEvent = DF.FakeDeliveredEvent());
         var dto = new V1InstanceDiscardedRequest
         {
             InstanceId = orderEvent.DerivedInstanceId,
             Quantity = orderEvent.Quantity
         };
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();
 
         // assert
-        var instance = _testDbContext.Instances.First(x => x.Id == orderEvent.DerivedInstanceId);
+        var instance = _ctx.Instances.First(x => x.Id == orderEvent.DerivedInstanceId);
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
         Assert.True(instance.DiscardedEvents.Any());
     }
@@ -55,7 +55,7 @@ public class CreateInstanceDiscardedEventTests : TestsBase
     [Fact]
     public void When_QuantityLeft_SmallerThan_Zero_Then_Exception()
     {
-
+        Assert.Fail("Not implemented");
     }
 
     [Fact]

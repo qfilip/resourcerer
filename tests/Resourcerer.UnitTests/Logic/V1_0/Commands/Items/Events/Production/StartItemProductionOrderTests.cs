@@ -7,7 +7,7 @@ public class StartItemProductionOrderTests : TestsBase
     private readonly StartItemProductionOrder.Handler _sut;
     public StartItemProductionOrderTests()
     {
-        _sut = new(_testDbContext);
+        _sut = new(_ctx);
     }
 
     [Fact]

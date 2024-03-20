@@ -1,4 +1,5 @@
-﻿using Resourcerer.DataAccess.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Commands;
@@ -13,19 +14,19 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     private readonly CreateInstanceOrderCancelledEvent.Handler _handler;
     public CreateInstanceOrderCancelledEventTests()
     {
-        _handler = new(_testDbContext);
+        _handler = new(_ctx);
     }
 
     [Fact]
-    public void When_AllOk_Then_Ok()
+    public void HappyPath__Ok()
     {
         // arrange
-        var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance());
-        _testDbContext.SaveChanges();
+        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance());
+        _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderCancelRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents[0].Id,
+            OrderEventId = sourceInstance.OrderedEvents.First().Id,
             InstanceId = sourceInstance.Id,
             Reason = "test"
         };
@@ -34,17 +35,26 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
-        var instance = _testDbContext.Instances.First(x => x.Id == sourceInstance.Id);
-        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-        Assert.NotNull(instance.OrderedEvents[0].OrderCancelledEvent);
+        Assert.Multiple(
+            () => Assert.Equal(eHandlerResultStatus.Ok, result.Status),
+            () =>
+            {
+                _ctx.Clear();
+                var instance = _ctx.Instances
+                    .Include(x => x.OrderedEvents)
+                    .First(x => x.Id == sourceInstance.Id)!;
+
+                Assert.NotNull(instance.OrderedEvents.First().CancelledEvent);
+            }
+        );
     }
 
     [Fact]
-    public void When_OrderEvent_NotFound_Then_Rejected()
+    public void OrderEvent_NotFound__Rejected()
     {
         var dto = new V1InstanceOrderCancelRequest
         {
-            OrderEventId = MiniId.Generate()
+            OrderEventId = Guid.NewGuid()
         };
 
         // act
@@ -55,18 +65,18 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     }
 
     [Fact]
-    public void When_DeliveredEvent_Exists_Then_Rejected()
+    public void DeliveredEvent_Exists__Rejected()
     {
-        var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance(), x =>
+        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance(), x =>
         {
             x.DeliveredEvent = DF.FakeDeliveredEvent();
         });
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderCancelRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents[0].Id,
+            OrderEventId = sourceInstance.OrderedEvents.First().Id,
             InstanceId = sourceInstance.Id,
             Reason = "test"
         };
@@ -79,18 +89,18 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     }
 
     [Fact]
-    public void When_SentEvent_Exists_Then_Rejected()
+    public void SentEvent_Exists__Rejected()
     {
-        var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance(), x =>
+        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance(), x =>
         {
             x.SentEvent = DF.FakeSentEvent();
         });
 
-        _testDbContext.SaveChanges();
+        _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderCancelRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents[0].Id,
+            OrderEventId = sourceInstance.OrderedEvents.First().Id,
             InstanceId = sourceInstance.Id,
             Reason = "test"
         };
@@ -106,12 +116,12 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     public void Is_Idempotent()
     {
         // arrange
-        var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance());
-        _testDbContext.SaveChanges();
+        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance());
+        _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderCancelRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents[0].Id,
+            OrderEventId = sourceInstance.OrderedEvents.First().Id,
             InstanceId = sourceInstance.Id,
             Reason = "test"
         };
