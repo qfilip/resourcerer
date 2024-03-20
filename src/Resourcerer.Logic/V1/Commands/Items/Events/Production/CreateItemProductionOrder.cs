@@ -134,7 +134,7 @@ public static class CreateItemProductionOrder
             {
                 var reserveQuantity = request.InstancesToUse[instance.Id];
 
-                var reservedEvent = AppDbJsonField.CreateEntity(() =>
+                var reservedEvent = AppDbJsonField.Create(() =>
                     new InstanceReservedEvent
                     {
                         ProductionOrderId = productionOrder.Id,

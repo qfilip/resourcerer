@@ -8,7 +8,7 @@ public class AppDbJsonField
     public DateTime CreatedAt { get; set; }
     public DateTime ModifiedAt { get; set; }
     
-    public static T CreateEntity<T>(Func<T> generator) where T : AppDbJsonField
+    public static T Create<T>(Func<T> generator) where T : AppDbJsonField
     {
         var t = generator();
         var now = DateTime.UtcNow;

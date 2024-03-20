@@ -57,7 +57,7 @@ public static class CancelItemProductionOrder
                 throw new DataCorruptionException(message);
             }
 
-            orderEvent.CanceledEvent = AppDbJsonField.CreateEntity(() =>
+            orderEvent.CanceledEvent = AppDbJsonField.Create(() =>
                 new ItemProductionOrderCancelledEvent
                 {
                     Reason = request.Reason
@@ -71,7 +71,7 @@ public static class CancelItemProductionOrder
                         x.CancelledEvent == null &&
                         x.UsedEvent == null);
 
-                reservationEvent.CancelledEvent = AppDbJsonField.CreateEntity(() =>
+                reservationEvent.CancelledEvent = AppDbJsonField.Create(() =>
                     new InstanceReserveCancelledEvent
                     {
                         Reason = request.Reason

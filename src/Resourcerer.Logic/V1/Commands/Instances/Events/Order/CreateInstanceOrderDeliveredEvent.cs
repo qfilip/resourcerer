@@ -62,7 +62,7 @@ public static class CreateInstanceOrderDeliveredEvent
             }
 
             orderEvent.DeliveredEvent = AppDbJsonField
-                .CreateEntity(() => new InstanceOrderDeliveredEvent()); ;
+                .Create(() => new InstanceOrderDeliveredEvent()); ;
 
             _appDbContext.Instances.Attach(instance);
             _appDbContext.Instances.Entry(instance).Property(x => x.OrderedEventsJson).IsModified = true;

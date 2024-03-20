@@ -59,7 +59,7 @@ public static class FinishItemProductionOrder
                 return HandlerResult<Unit>.Ok(Unit.New);
             }
 
-            order.FinishedEvent = AppDbJsonField.CreateEntity(() => new ItemProductionFinishedEvent());
+            order.FinishedEvent = AppDbJsonField.Create(() => new ItemProductionFinishedEvent());
 
             var expiration = order.Item!.ExpirationTimeSeconds;
             var newInstance = new Instance
@@ -74,7 +74,7 @@ public static class FinishItemProductionOrder
             var itemProductionOrderUpdates = new ItemProductionOrder
             {
                 Id = order.Id,
-                FinishedEvent = AppDbJsonField.CreateEntity(() => new ItemProductionFinishedEvent())
+                FinishedEvent = AppDbJsonField.Create(() => new ItemProductionFinishedEvent())
             };
 
             _dbContext.ItemProductionOrders.Attach(order);

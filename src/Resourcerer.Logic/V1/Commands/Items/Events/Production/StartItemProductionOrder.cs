@@ -58,7 +58,7 @@ public static class StartItemProductionOrder
                 throw new DataCorruptionException(message);
             }
 
-            order.StartedEvent = AppDbJsonField.CreateEntity(() => new ItemProductionStartedEvent());
+            order.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
 
             foreach (var i in instances)
             {
@@ -68,7 +68,7 @@ public static class StartItemProductionOrder
                         x.CancelledEvent == null &&
                         x.UsedEvent == null);
 
-                reservationEvent.UsedEvent = AppDbJsonField.CreateEntity(() => new InstanceReserveUsedEvent());
+                reservationEvent.UsedEvent = AppDbJsonField.Create(() => new InstanceReserveUsedEvent());
 
                 _dbContext.Update(i);
             }

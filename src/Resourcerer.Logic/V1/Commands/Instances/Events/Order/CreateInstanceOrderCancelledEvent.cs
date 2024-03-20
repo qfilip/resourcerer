@@ -61,7 +61,7 @@ public static class CreateInstanceOrderCancelledEvent
                 return HandlerResult<Unit>.Ok(new Unit());
             }
 
-            var cancelEvent = AppDbJsonField.CreateEntity(() =>
+            var cancelEvent = AppDbJsonField.Create(() =>
             {
                 return new InstanceOrderCancelledEvent
                 {

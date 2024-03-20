@@ -98,7 +98,7 @@ public class CancelItemProductionOrderTests : TestsBase
         // arrange
         var order = FakeData(x =>
         {
-            x.StartedEvent = AppDbJsonField.CreateEntity(() => new ItemProductionStartedEvent());
+            x.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
         });
         var dto = new V1CancelItemProductionOrderRequest
         {
@@ -167,7 +167,7 @@ public class CancelItemProductionOrderTests : TestsBase
                     i.ItemId = id;
                     i.ReservedEvents = new()
                     {
-                        AppDbJsonField.CreateEntity(() => new InstanceReservedEvent
+                        AppDbJsonField.Create(() => new InstanceReservedEvent
                         {
                             ProductionOrderId = productionOrderId,
                         })
