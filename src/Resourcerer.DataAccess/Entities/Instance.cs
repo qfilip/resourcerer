@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class Instance : EntityBase
+public class Instance : AppDbEntity
 {
     public Instance()
     {

@@ -7,10 +7,10 @@ namespace Resourcerer.Logic.Functions.V1;
 
 internal partial class EntityAction
 {
-    public static async Task<HandlerResult<Guid>> Remove<T>(AppDbContext context, Guid id, string notFoundMessage) where T : EntityBase
+    public static async Task<HandlerResult<Guid>> Remove<T>(AppDbContext context, Guid id, string notFoundMessage) where T : AppDbEntity
     {
         var dbSet = context.Set<T>();
-        var entity = (await dbSet.FirstOrDefaultAsync(x => x.Id == id)) as EntityBase;
+        var entity = (await dbSet.FirstOrDefaultAsync(x => x.Id == id)) as AppDbEntity;
 
         if (entity == null)
         {

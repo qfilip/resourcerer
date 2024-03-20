@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.DataAccess.Entities;
 
-public class UnitOfMeasure : EntityBase
+public class UnitOfMeasure : AppDbEntity
 {
     public UnitOfMeasure()
     {

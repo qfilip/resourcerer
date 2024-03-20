@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.DataAccess.Entities;
 
-public class Company : EntityBase
+public class Company : AppDbEntity
 {
     public Company()
     {

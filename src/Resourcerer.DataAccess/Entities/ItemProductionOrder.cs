@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class ItemProductionOrder : EntityBase
+public class ItemProductionOrder : AppDbEntity
 {
     public double Quantity { get; set; }
     public string? Reason { get; set; }

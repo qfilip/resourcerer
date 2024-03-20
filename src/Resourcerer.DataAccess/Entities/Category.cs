@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.DataAccess.Entities;
 
-public class Category : EntityBase
+public class Category : AppDbEntity
 {
     public Category()
     {

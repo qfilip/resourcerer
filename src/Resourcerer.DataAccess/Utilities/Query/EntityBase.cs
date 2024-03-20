@@ -5,7 +5,7 @@ namespace Resourcerer.DataAccess.Utilities.Query;
 
 internal static class EntityBases
 {
-    public static Expression<Func<T, T>> GetDefaultProjection<T>() where T : EntityBase, new()
+    public static Expression<Func<T, T>> GetDefaultProjection<T>() where T : AppDbEntity, new()
     {
         Expression<Func<T, T>> exp = (x) => new T
         {
@@ -20,7 +20,7 @@ internal static class EntityBases
         return exp;
     }
 
-    public static Expression<Func<T, T>> Expand<T>(Expression<Func<T, T>> selector) where T : EntityBase, new()
+    public static Expression<Func<T, T>> Expand<T>(Expression<Func<T, T>> selector) where T : AppDbEntity, new()
     {
         return ExpressionUtils.Combine(GetDefaultProjection<T>(), selector);
     }

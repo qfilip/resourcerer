@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.DataAccess.Entities;
 
-public class Excerpt : EntityBase
+public class Excerpt : AppDbEntity
 {
     public Guid CompositeId { get; set; }
     public Item? Composite { get; set; }

@@ -1,5 +1,5 @@
 ﻿namespace Resourcerer.DataAccess.Entities;
-public class AppUser : EntityBase
+public class AppUser : AppDbEntity
 {
     public string? Name { get; set; }
     public string? PasswordHash { get; set; }

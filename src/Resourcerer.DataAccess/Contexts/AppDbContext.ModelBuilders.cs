@@ -109,10 +109,10 @@ public partial class AppDbContext
 
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
-            if(typeof(EntityBase).IsAssignableFrom(entityType.ClrType))
+            if(typeof(AppDbEntity).IsAssignableFrom(entityType.ClrType))
             {
                 var param = Expression.Parameter(entityType.ClrType, "i");
-                var prop = Expression.PropertyOrField(param, nameof(EntityBase.EntityStatus));
+                var prop = Expression.PropertyOrField(param, nameof(AppDbEntity.EntityStatus));
                 var expression = Expression.NotEqual(prop, Expression.Constant(eEntityStatus.Deleted));
 
                 entityType.SetQueryFilter(Expression.Lambda(expression, param));
@@ -122,7 +122,7 @@ public partial class AppDbContext
         base.OnModelCreating(modelBuilder);
     }
 
-    private void ConfigureEntity<T>(ModelBuilder mb, Action<EntityTypeBuilder<T>>? customConfiguration = null, bool customKey = false) where T : EntityBase
+    private void ConfigureEntity<T>(ModelBuilder mb, Action<EntityTypeBuilder<T>>? customConfiguration = null, bool customKey = false) where T : AppDbEntity
     {
         var name = typeof(T).Name;
         mb.Entity<T>(e =>

@@ -32,7 +32,7 @@ public partial class AppDbContext : DbContext
 
         foreach (var entry in entries)
         {
-            if (entry.State == EntityState.Added && entry.Entity is EntityBase added)
+            if (entry.State == EntityState.Added && entry.Entity is AppDbEntity added)
             {
                 added.Id = added.Id == Guid.Empty ? Guid.NewGuid() : added.Id;
                 added.CreatedAt = now;
@@ -41,7 +41,7 @@ public partial class AppDbContext : DbContext
                 added.ModifiedBy = _appDbIdentity.User.Id;
 
             }
-            else if (entry.State == EntityState.Modified && entry.Entity is EntityBase modded)
+            else if (entry.State == EntityState.Modified && entry.Entity is AppDbEntity modded)
             {
                 modded.ModifiedAt = now;
                 modded.CreatedBy = _appDbIdentity.User.Id;

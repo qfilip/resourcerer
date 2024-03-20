@@ -1,7 +1,7 @@
 ﻿using Resourcerer.DataAccess.Enums;
 
 namespace Resourcerer.DataAccess.Entities;
-public class EntityBase
+public class AppDbEntity
 {
     public Guid Id { get; set; }
     public eEntityStatus EntityStatus { get; set; }
