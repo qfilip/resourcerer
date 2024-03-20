@@ -1,6 +1,6 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.V1;
-using Resourcerer.Logic.V1_0.Commands;
+using Resourcerer.Logic.V1.Commands;
 
 namespace Resourcerer.Api.Services.V1;
 

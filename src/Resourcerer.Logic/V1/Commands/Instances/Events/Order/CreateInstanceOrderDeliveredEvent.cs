@@ -5,9 +5,8 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
-using QU = Resourcerer.DataAccess.Utilities.Query.Instances;
 
-namespace Resourcerer.Logic.Commands.V1;
+namespace Resourcerer.Logic.V1.Commands;
 
 public static class CreateInstanceOrderDeliveredEvent
 {
@@ -22,10 +21,13 @@ public static class CreateInstanceOrderDeliveredEvent
         public async Task<HandlerResult<Unit>> Handle(V1InstanceOrderDeliveredRequest request)
         {
             var instance = await _appDbContext.Instances
-                .Select(QU.Expand(x => new Instance
+                .Select(x => new Instance
                 {
-                    OrderedEventsJson = x.OrderedEventsJson
-                }))
+                    Id = x.Id,
+                    OrderedEvents = x.OrderedEvents
+                        .Where(x => x.Id == request.OrderEventId)
+                        .ToArray()
+                })
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
@@ -50,7 +52,7 @@ public static class CreateInstanceOrderDeliveredEvent
                 return HandlerResult<Unit>.Rejected(error);
             }
 
-            if (orderEvent.OrderCancelledEvent != null)
+            if (orderEvent.CancelledEvent != null)
             {
                 var error = "Order was cancelled, so it cannot be delivered";
                 return HandlerResult<Unit>.Rejected(error);
@@ -61,11 +63,9 @@ public static class CreateInstanceOrderDeliveredEvent
                 return HandlerResult<Unit>.Ok(Unit.New);
             }
 
-            orderEvent.DeliveredEvent = AppDbJsonField
-                .Create(() => new InstanceOrderDeliveredEvent()); ;
-
-            _appDbContext.Instances.Attach(instance);
-            _appDbContext.Instances.Entry(instance).Property(x => x.OrderedEventsJson).IsModified = true;
+            _appDbContext.InstanceOrderedEvents.Attach(orderEvent);
+            orderEvent.DeliveredEvent = AppDbJsonField.Create(() => new InstanceOrderDeliveredEvent()); ;
+            
             await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());

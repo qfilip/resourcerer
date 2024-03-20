@@ -2,10 +2,10 @@
 using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
-using Resourcerer.Logic.V1_0.Commands.Items;
+using Resourcerer.Logic.V1.Commands.Items;
 using Resourcerer.UnitTests.Utilities;
 
-namespace Resourcerer.UnitTests.Logic.V1_0.Commands.Items.Events.Production;
+namespace Resourcerer.UnitTests.Logic.V1.Commands.Items.Events.Production;
 
 public class FinishItemProductionOrderTests : TestsBase
 {

@@ -1,10 +1,10 @@
 ﻿using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
-using Resourcerer.Logic.Commands.V1;
+using Resourcerer.Logic.V1.Commands;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
 
-namespace Resourcerer.UnitTests.Logic.V1_0.Commands.UnitsOfMeasure;
+namespace Resourcerer.UnitTests.Logic.V1.Commands.UnitsOfMeasure;
 
 public class CreateUnitOfMeasureTests : TestsBase
 {

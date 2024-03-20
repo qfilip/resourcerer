@@ -3,11 +3,11 @@ using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.Exceptions;
-using Resourcerer.Logic.V1_0.Commands.Items;
+using Resourcerer.Logic.V1.Commands.Items;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
 
-namespace Resourcerer.UnitTests.Logic.V1_0.Commands.Items.Events.Production;
+namespace Resourcerer.UnitTests.Logic.V1.Commands.Items.Events.Production;
 
 public class CancelItemProductionOrderTests : TestsBase
 {

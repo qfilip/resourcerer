@@ -5,7 +5,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.V1;
 
-namespace Resourcerer.Logic.Commands.V1;
+namespace Resourcerer.Logic.V1.Commands;
 
 public class CreateCategory
 {

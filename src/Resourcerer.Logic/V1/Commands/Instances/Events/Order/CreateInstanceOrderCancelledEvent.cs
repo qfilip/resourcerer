@@ -5,9 +5,8 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
-using QU = Resourcerer.DataAccess.Utilities.Query.Instances;
 
-namespace Resourcerer.Logic.Commands.V1;
+namespace Resourcerer.Logic.V1.Commands;
 
 public static class CreateInstanceOrderCancelledEvent
 {
@@ -21,17 +20,20 @@ public static class CreateInstanceOrderCancelledEvent
         public async Task<HandlerResult<Unit>> Handle(V1InstanceOrderCancelRequest request)
         {
             var instance = await _appDbContext.Instances
-                .Select(QU.Expand(x => new Instance
+                .Select(x => new Instance
                 {
-                    OrderedEventsJson = x.OrderedEventsJson
-                }))
+                    Id = x.Id,
+                    OrderedEvents = x.OrderedEvents
+                        .Where(x => x.Id == request.OrderEventId)
+                        .ToArray()
+                })
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
 
             if (instance == null)
             {
-                var error = $"Instance with id {request.OrderEventId} not found";
+                var error = $"Instance with id {request.InstanceId} not found";
                 return HandlerResult<Unit>.Rejected(error);
             }
 
@@ -56,7 +58,7 @@ public static class CreateInstanceOrderCancelledEvent
                 return HandlerResult<Unit>.Rejected(error);
             }
 
-            if (orderEvent.OrderCancelledEvent != null)
+            if (orderEvent.CancelledEvent != null)
             {
                 return HandlerResult<Unit>.Ok(new Unit());
             }
@@ -69,12 +71,9 @@ public static class CreateInstanceOrderCancelledEvent
                     RefundedAmount = request.RefundedAmount
                 };
             });
-
             
-            orderEvent.OrderCancelledEvent = cancelEvent;
-
-            _appDbContext.Instances.Attach(instance);
-            _appDbContext.Instances.Entry(instance).Property(x => x.OrderedEventsJson).IsModified = true;
+            _appDbContext.InstanceOrderedEvents.Attach(orderEvent);
+            orderEvent.CancelledEvent = cancelEvent;
             
             await _appDbContext.SaveChangesAsync();
 
@@ -93,7 +92,6 @@ public static class CreateInstanceOrderCancelledEvent
                     .WithMessage("Instance id cannot be empty");
 
                 RuleFor(x => x.OrderEventId)
-                    .NotNull()
                     .NotEmpty()
                     .WithMessage("Order event id cannot be empty");
 

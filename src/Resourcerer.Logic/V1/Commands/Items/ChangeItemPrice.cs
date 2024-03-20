@@ -7,7 +7,7 @@ using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos.V1;
 
-namespace Resourcerer.Logic.Commands.V1;
+namespace Resourcerer.Logic.V1.Commands;
 
 public class ChangeItemPrice
 {

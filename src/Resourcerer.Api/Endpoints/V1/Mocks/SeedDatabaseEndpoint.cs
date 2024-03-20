@@ -1,6 +1,6 @@
 ﻿using Resourcerer.Api.Services;
 using Resourcerer.Logic;
-using Resourcerer.Logic.Commands.V1;
+using Resourcerer.Logic.V1.Commands;
 
 namespace Resourcerer.Api.Endpoints.V1;
 

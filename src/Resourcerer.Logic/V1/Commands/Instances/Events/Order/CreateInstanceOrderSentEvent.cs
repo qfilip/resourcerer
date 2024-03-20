@@ -5,9 +5,8 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
-using QU = Resourcerer.DataAccess.Utilities.Query.Instances;
 
-namespace Resourcerer.Logic.V1_0.Commands;
+namespace Resourcerer.Logic.V1.Commands;
 
 public static class CreateInstanceOrderSentEvent
 {
@@ -22,10 +21,13 @@ public static class CreateInstanceOrderSentEvent
         public async Task<HandlerResult<Unit>> Handle(V1InstanceOrderSentRequest request)
         {
             var instance = await _appDbContext.Instances
-                .Select(QU.Expand(x => new Instance
+                .Select(x => new Instance
                 {
-                    OrderedEventsJson = x.OrderedEventsJson
-                }))
+                    Id = x.Id,
+                    OrderedEvents = x.OrderedEvents
+                        .Where(e => e.Id == request.OrderEventId)
+                        .ToArray()
+                })
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
@@ -42,7 +44,7 @@ public static class CreateInstanceOrderSentEvent
                 return HandlerResult<Unit>.Rejected("Order not found");
             }
 
-            if(orderEv.OrderCancelledEvent != null)
+            if(orderEv.CancelledEvent != null)
             {
                 return HandlerResult<Unit>.Rejected("Order was cancelled");
             }
@@ -57,10 +59,8 @@ public static class CreateInstanceOrderSentEvent
                 return HandlerResult<Unit>.Ok(Unit.New);
             }
 
+            _appDbContext.InstanceOrderedEvents.Attach(orderEv);
             orderEv.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
-
-            _appDbContext.Instances.Attach(instance);
-            _appDbContext.Instances.Entry(instance).Property(x => x.OrderedEventsJson).IsModified = true;
 
             await _appDbContext.SaveChangesAsync();
 

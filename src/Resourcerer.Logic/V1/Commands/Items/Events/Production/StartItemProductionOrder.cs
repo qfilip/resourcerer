@@ -9,7 +9,7 @@ using Resourcerer.Logic.Exceptions;
 
 using QU = Resourcerer.DataAccess.Utilities.Query.Instances;
 
-namespace Resourcerer.Logic.V1_0.Commands.Items;
+namespace Resourcerer.Logic.V1.Commands.Items;
 
 public static class StartItemProductionOrder
 {

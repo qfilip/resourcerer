@@ -3,5 +3,5 @@
 public class V1InstanceOrderSentRequest : V1InstanceOrderEvent
 {
     public Guid InstanceId { get; set; }
-    public string? OrderEventId { get; set; }
+    public Guid OrderEventId { get; set; }
 }

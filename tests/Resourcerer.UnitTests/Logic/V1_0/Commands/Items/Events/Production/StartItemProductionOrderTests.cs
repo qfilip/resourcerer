@@ -1,6 +1,6 @@
-﻿using Resourcerer.Logic.V1_0.Commands.Items;
+﻿using Resourcerer.Logic.V1.Commands.Items;
 
-namespace Resourcerer.UnitTests.Logic.V1_0.Commands.Items;
+namespace Resourcerer.UnitTests.Logic.V1.Commands.Items;
 
 public class StartItemProductionOrderTests : TestsBase
 {

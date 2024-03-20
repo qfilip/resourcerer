@@ -1,6 +1,5 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Entities.JsonEntities;
 
 namespace Resourcerer.UnitTests.Utilities.Faker;
 
@@ -13,7 +12,7 @@ internal static partial class DF
         Action<InstanceOrderedEvent>? modifier = null
     )
     {
-        var entity = AppDbJsonField.Create(() => new InstanceOrderedEvent
+        var entity = MakeEntity(() => new InstanceOrderedEvent
         {
             ExpectedDeliveryDate = DateTime.UtcNow,
             TotalDiscountPercent = 0,
@@ -58,43 +57,13 @@ internal static partial class DF
         return sourceInstance;
     }
 
-    public static InstanceOrderCancelledEvent FakeOrderCancelledEvent(
-        Action<InstanceOrderCancelledEvent>? modifier = null)
-    {
-        var cancelEv = AppDbJsonField.Create(() => new InstanceOrderCancelledEvent
-        {
-            Reason = "test",
-            RefundedAmount = 0
-        });
-
-        modifier?.Invoke(cancelEv);
-
-        return cancelEv;
-    }
-
-    public static InstanceOrderSentEvent FakeSentEvent(
-        Action<InstanceOrderSentEvent>? modifier = null)
-    {
-        var sentEv = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
-        modifier?.Invoke(sentEv);
-
-        return sentEv;
-    }
-
-    public static InstanceOrderDeliveredEvent FakeDeliveredEvent(
-        Action<InstanceOrderDeliveredEvent>? modifier = null)
-    {
-        var deliverEv = AppDbJsonField.Create(() => new InstanceOrderDeliveredEvent());
-        modifier?.Invoke(deliverEv);
-
-        return deliverEv;
-    }
+   
 
     public static InstanceDiscardedEvent FakeDiscardedEvent(
         Instance instance,
         Action<InstanceDiscardedEvent>? modifier = null)
     {
-        var discardEv = AppDbJsonField.Create(() => new InstanceDiscardedEvent()
+        var discardEv = MakeEntity(() => new InstanceDiscardedEvent()
         {
             Quantity = instance.Quantity,
             Reason = "test"
@@ -109,7 +78,7 @@ internal static partial class DF
     public static InstanceReservedEvent FakeReservedEvent(
         Action<InstanceReservedEvent>? modifier = null)
     {
-        var ev = AppDbJsonField.Create(() => new InstanceReservedEvent());
+        var ev = MakeEntity(() => new InstanceReservedEvent());
         modifier?.Invoke(ev);
 
         return ev;

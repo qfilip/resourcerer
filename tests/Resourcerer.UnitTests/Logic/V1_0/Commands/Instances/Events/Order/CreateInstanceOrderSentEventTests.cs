@@ -2,12 +2,12 @@
 using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
-using Resourcerer.Logic.V1_0.Commands;
+using Resourcerer.Logic.V1.Commands;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
 using Resourcerer.Utilities;
 
-namespace Resourcerer.UnitTests.Logic.V1_0.Commands.Instances;
+namespace Resourcerer.UnitTests.Logic.V1.Commands.Instances;
 
 public class CreateInstanceOrderSentEventTests : TestsBase
 {
@@ -83,7 +83,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
         // arrange
         var sourceInstance = DF.FakeOrderedEvent(_testDbContext, new Instance(), x =>
         {
-            x.OrderCancelledEvent = AppDbJsonField.Create(() => new InstanceOrderCancelledEvent());
+            x.CancelledEvent = AppDbJsonField.Create(() => new InstanceOrderCancelledEvent());
         });
         _testDbContext.SaveChanges();
 

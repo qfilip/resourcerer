@@ -3,13 +3,10 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1_0.Functions;
 
-using QU = Resourcerer.DataAccess.Utilities.Query;
-
-namespace Resourcerer.Logic.Commands.V1;
+namespace Resourcerer.Logic.V1.Commands;
 
 public static class CreateInstanceOrderedEvent
 {
@@ -46,7 +43,7 @@ public static class CreateInstanceOrderedEvent
                     .Select(x => new
                     {
                         ItemId = x.Id,
-                        CompanyId = x.Category!.CompanyId
+                        x.Category!.CompanyId
                     })
                     .FirstOrDefaultAsync(x => x.ItemId == request.DerivedInstanceItemId);
 
@@ -67,11 +64,13 @@ public static class CreateInstanceOrderedEvent
 
             var instance = await _appDbContext.Instances
                 .Include(x => x.SourceInstance)
-                .Select(QU.Instances.Expand(x => new Instance
+                .Select(x => new Instance
                 {
+                    Id = x.Id,
+                    ExpiryDate = x.ExpiryDate,
                     SourceInstance = x.SourceInstance,
-                    OrderedEventsJson = x.OrderedEventsJson
-                }))
+                    OrderedEvents =x.OrderedEvents
+                })
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
@@ -103,7 +102,7 @@ public static class CreateInstanceOrderedEvent
 
             var unitsSent = instance.OrderedEvents
                 .Where(x =>
-                    x.OrderCancelledEvent == null &&
+                    x.CancelledEvent == null &&
                     x.SentEvent != null)
                 .Sum(x => x.Quantity);
 
@@ -115,22 +114,18 @@ public static class CreateInstanceOrderedEvent
                     .Rejected($"Not enough units left in stock for this instance");
             }
 
-            var orderedEvent = AppDbJsonField.Create(() =>
+            var orderedEvent = new InstanceOrderedEvent
             {
-                return new InstanceOrderedEvent
-                {
-                    DerivedInstanceId = Guid.NewGuid(),
-                    BuyerCompanyId = request.BuyerCompanyId,
-                    SellerCompanyId = request.SellerCompanyId,
-                    DerivedInstanceItemId = request.DerivedInstanceItemId,
-                    UnitPrice = request.UnitPrice,
-                    Quantity = request.UnitsOrdered,
-                    TotalDiscountPercent = request.TotalDiscountPercent,
-                    ExpectedDeliveryDate = request.ExpectedDeliveryDate
-                };
-            });
-
-            instance.OrderedEvents.Add(orderedEvent);
+                InstanceId = instance.Id,
+                DerivedInstanceId = Guid.NewGuid(),
+                BuyerCompanyId = request.BuyerCompanyId,
+                SellerCompanyId = request.SellerCompanyId,
+                DerivedInstanceItemId = request.DerivedInstanceItemId,
+                UnitPrice = request.UnitPrice,
+                Quantity = request.UnitsOrdered,
+                TotalDiscountPercent = request.TotalDiscountPercent,
+                ExpectedDeliveryDate = request.ExpectedDeliveryDate
+            };
             
             var newOwnerInstance = new Instance
             {
@@ -139,9 +134,8 @@ public static class CreateInstanceOrderedEvent
                 ItemId = request.DerivedInstanceItemId ?? instance.ItemId,
                 ExpiryDate = instance.ExpiryDate
             };
-
-            _appDbContext.Instances.Attach(instance);
-            _appDbContext.Instances.Entry(instance).Property(x => x.OrderedEventsJson).IsModified = true;
+            
+            _appDbContext.InstanceOrderedEvents.Add(orderedEvent);
             _appDbContext.Instances.Add(newOwnerInstance);
 
             await _appDbContext.SaveChangesAsync();

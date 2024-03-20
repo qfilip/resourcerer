@@ -5,7 +5,7 @@ using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Logic.Functions.V1;
 
-namespace Resourcerer.Logic.Commands.V1;
+namespace Resourcerer.Logic.V1.Commands;
 
 public static class RemoveCategory
 {

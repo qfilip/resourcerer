@@ -12,7 +12,7 @@ public class InstanceOrderedEvent : AppDbEntity
     public DateTime? ExpectedDeliveryDate { get; set; }
 
     // json
-    public InstanceOrderCancelledEvent? OrderCancelledEvent { get; set; }
+    public InstanceOrderCancelledEvent? CancelledEvent { get; set; }
     public InstanceOrderSentEvent? SentEvent { get; set; }
     public InstanceOrderDeliveredEvent? DeliveredEvent { get; set; }
 

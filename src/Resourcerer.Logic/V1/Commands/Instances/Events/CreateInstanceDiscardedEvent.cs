@@ -3,13 +3,10 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Exceptions;
 
-using QU = Resourcerer.DataAccess.Utilities.Query.Instances;
-
-namespace Resourcerer.Logic.V1_0.Commands;
+namespace Resourcerer.Logic.V1.Commands;
 
 public static class CreateInstanceDiscardedEvent
 {
@@ -24,11 +21,13 @@ public static class CreateInstanceDiscardedEvent
         public async Task<HandlerResult<Unit>> Handle(V1InstanceDiscardedRequest request)
         {
             var instance = await _appDbContext.Instances
-                .Select(QU.Expand(x => new Instance
+                .Select(x => new
                 {
-                    OrderedEventsJson = x.OrderedEventsJson,
-                    DiscardedEventsJson = x.DiscardedEventsJson
-                }))
+                    x.Id,
+                    x.Quantity,
+                    x.OrderedEvents,
+                    x.DiscardedEvents
+                })
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
@@ -39,7 +38,7 @@ public static class CreateInstanceDiscardedEvent
 
             var sent = instance.OrderedEvents
                 .Where(x =>
-                    x.OrderCancelledEvent == null &&
+                    x.CancelledEvent == null &&
                     x.SentEvent != null)
                 .Sum(x => x.Quantity);
 
@@ -63,20 +62,14 @@ public static class CreateInstanceDiscardedEvent
             }
             else
             {
-                var discardEvent = AppDbJsonField.Create(() =>
+                var discardEvent = new InstanceDiscardedEvent
                 {
-                    return new InstanceDiscardedEvent
-                    {
-                        Quantity = request.Quantity,
-                        Reason = request.Reason
-                    };
-                });
+                    InstanceId = instance.Id,
+                    Quantity = request.Quantity,
+                    Reason = request.Reason
+                };
 
-                instance.DiscardedEvents.Add(discardEvent);
-
-                _appDbContext.Instances.Attach(instance);
-                _appDbContext.Instances.Entry(instance).Property(x => x.DiscardedEventsJson).IsModified = true;
-
+                _appDbContext.InstanceDiscardedEvents.Add(discardEvent);
                 await _appDbContext.SaveChangesAsync();
 
                 return HandlerResult<Unit>.Ok(Unit.New);

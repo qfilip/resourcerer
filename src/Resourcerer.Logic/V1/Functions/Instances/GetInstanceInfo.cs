@@ -9,16 +9,16 @@ public static partial class Instances
     public static V1InstanceInfo GetInstanceInfo(Instance i, DateTime now)
     {
         var soldEvents = i.OrderedEvents
-            .Where(x => x.OrderCancelledEvent == null)
+            .Where(x => x.CancelledEvent == null)
             .ToArray();
 
         var sold = soldEvents.Sum(x => x.Quantity);
 
         var sellCancellationsPenaltyDifference = i.OrderedEvents
-            .Where(x => x.OrderCancelledEvent != null)
+            .Where(x => x.CancelledEvent != null)
             .Select(x => new
             {
-                RefundedAmount = x.OrderCancelledEvent!.RefundedAmount,
+                RefundedAmount = x.CancelledEvent!.RefundedAmount,
                 UnitPrice = x.UnitPrice,
                 Quantity = x.Quantity
             })

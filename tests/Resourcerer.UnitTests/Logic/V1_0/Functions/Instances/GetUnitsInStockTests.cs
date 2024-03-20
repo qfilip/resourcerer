@@ -183,7 +183,7 @@ public class GetUnitsInStockTests : TestsBase
                 DF.FakeOrderedEvent(_testDbContext, ev =>
                 {
                     ev.Quantity = 1;
-                    ev.OrderCancelledEvent = DF.FakeOrderCancelledEvent();
+                    ev.CancelledEvent = DF.FakeOrderCancelledEvent();
                 }),
                 DF.FakeOrderedEvent(_testDbContext, ev =>
                 {

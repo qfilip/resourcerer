@@ -7,7 +7,7 @@ using Resourcerer.Dtos.Entity;
 using Resourcerer.Utilities.Cryptography;
 using System.Text.Json;
 
-namespace Resourcerer.Logic.Commands.V1;
+namespace Resourcerer.Logic.V1.Commands;
 public static class Register
 {
     public class Handler : IAppHandler<AppUserDto, AppUserDto>
