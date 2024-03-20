@@ -33,6 +33,13 @@ public static class CreateItemProductionOrder
                 .Where(x => x.CompositeId == request.ItemId)
                     .Include(x => x.Element)
                         .ThenInclude(x => x!.Instances)
+                            .ThenInclude(x => x.OrderedEvents)
+                     .Include(x => x.Element)
+                        .ThenInclude(x => x!.Instances)
+                            .ThenInclude(x => x.ReservedEvents)
+                    .Include(x => x.Element)
+                        .ThenInclude(x => x!.Instances)
+                            .ThenInclude(x => x.DiscardedEvents)
                 .AsNoTracking()
                 .ToArrayAsync();
 
@@ -134,17 +141,15 @@ public static class CreateItemProductionOrder
             {
                 var reserveQuantity = request.InstancesToUse[instance.Id];
 
-                var reservedEvent = AppDbJsonField.Create(() =>
-                    new InstanceReservedEvent
-                    {
-                        ItemProductionOrderId = productionOrder.Id,
-                        Quantity = reserveQuantity,
-                        Reason = $"Production of item: {item.Id}-{item.Name}"
-                    });
+                var reservedEvent = new InstanceReservedEvent
+                {
+                    ItemProductionOrderId = productionOrder.Id,
+                    InstanceId = instance.Id,
+                    Quantity = reserveQuantity,
+                    Reason = $"Production of item: {item.Id}-{item.Name}"
+                };
 
-                instance.ReservedEvents.Add(reservedEvent);
-
-                _dbContext.Update(instance);
+                _dbContext.InstanceReservedEvents.Add(reservedEvent);
             }
 
             _dbContext.ItemProductionOrders.Add(productionOrder);

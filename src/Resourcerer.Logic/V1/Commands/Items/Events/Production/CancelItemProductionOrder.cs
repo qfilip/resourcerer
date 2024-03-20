@@ -7,8 +7,6 @@ using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Exceptions;
 
-using QU = Resourcerer.DataAccess.Utilities.Query.Instances;
-
 namespace Resourcerer.Logic.V1.Commands.Items;
 public static class CancelItemProductionOrder
 {
@@ -42,42 +40,14 @@ public static class CancelItemProductionOrder
                 return HandlerResult<Unit>.Rejected("Production already started");
             }
 
-            var instances = await _dbContext.Instances
-                .Where(x => orderEvent.InstancesUsedIds.Contains(x.Id))
-                .Select(QU.Expand(x => new Instance
-                {
-                    ReservedEventsJson = x.ReservedEventsJson
-                }))
-                .AsNoTracking()
+            var reservedEvents = await _dbContext.InstanceReservedEvents
+                .Where(x => orderEvent.InstancesUsedIds.Contains(x.InstanceId))
                 .ToArrayAsync();
 
-            if (orderEvent.InstancesUsedIds.Length != instances.Length)
+            foreach(var ev in reservedEvents)
             {
-                var message = $"Not all used instances found for cancelling {nameof(ItemProductionOrder)} {orderEvent.Id}";
-                throw new DataCorruptionException(message);
-            }
-
-            orderEvent.CanceledEvent = AppDbJsonField.Create(() =>
-                new ItemProductionOrderCancelledEvent
-                {
-                    Reason = request.Reason
-                });
-
-            foreach(var i in instances)
-            {
-                var reservationEvent = i.ReservedEvents
-                    .First(x =>
-                        x.ItemProductionOrderId == orderEvent.Id &&
-                        x.CancelledEvent == null &&
-                        x.UsedEvent == null);
-
-                reservationEvent.CancelledEvent = AppDbJsonField.Create(() =>
-                    new InstanceReserveCancelledEvent
-                    {
-                        Reason = request.Reason
-                    });
-
-                _dbContext.Update(i);
+                ev.CancelledEvent = AppDbJsonField.Create(() =>
+                    new InstanceReserveCancelledEvent() { Reason = request.Reason });
             }
 
             await _dbContext.SaveChangesAsync();

@@ -7,8 +7,6 @@ using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Exceptions;
 
-using QU = Resourcerer.DataAccess.Utilities.Query.Instances;
-
 namespace Resourcerer.Logic.V1.Commands.Items;
 
 public static class StartItemProductionOrder
@@ -43,16 +41,16 @@ public static class StartItemProductionOrder
                 return HandlerResult<Unit>.Ok(Unit.New);
             }
 
-            var instances = await _dbContext.Instances
-                .Where(x => order.InstancesUsedIds.Contains(x.Id))
-                .Select(QU.Expand(x => new Instance
-                {
-                    ReservedEventsJson = x.ReservedEventsJson
-                }))
-                .AsNoTracking()
+            var reservedEvents = await _dbContext.InstanceReservedEvents
+                .Where(x => order.InstancesUsedIds.Contains(x.InstanceId))
                 .ToArrayAsync();
 
-            if (order.InstancesUsedIds.Length != instances.Length)
+            var instanceIds = reservedEvents
+                .Select(x => x.InstanceId)
+                .Distinct()
+                .ToArray();
+
+            if (order.InstancesUsedIds.Length != instanceIds.Length)
             {
                 var message = $"Not all used instances found for consumption {nameof(ItemProductionOrder)} {order.Id}";
                 throw new DataCorruptionException(message);
@@ -60,17 +58,9 @@ public static class StartItemProductionOrder
 
             order.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
 
-            foreach (var i in instances)
+            foreach (var ev in reservedEvents)
             {
-                var reservationEvent = i.ReservedEvents
-                    .First(x =>
-                        x.ItemProductionOrderId == order.Id &&
-                        x.CancelledEvent == null &&
-                        x.UsedEvent == null);
-
-                reservationEvent.UsedEvent = AppDbJsonField.Create(() => new InstanceReserveUsedEvent());
-
-                _dbContext.Update(i);
+                ev.UsedEvent = AppDbJsonField.Create(() => new InstanceReserveUsedEvent());
             }
 
             await _dbContext.SaveChangesAsync();
