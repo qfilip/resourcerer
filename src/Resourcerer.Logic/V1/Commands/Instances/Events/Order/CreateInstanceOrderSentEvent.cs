@@ -20,47 +20,33 @@ public static class CreateInstanceOrderSentEvent
         }
         public async Task<HandlerResult<Unit>> Handle(V1InstanceOrderSentRequest request)
         {
-            var instance = await _appDbContext.Instances
-                .Select(x => new Instance
-                {
-                    Id = x.Id,
-                    OrderedEvents = x.OrderedEvents
-                        .Where(e => e.Id == request.OrderEventId)
-                        .ToArray()
-                })
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
+            var orderEvent = await _appDbContext.InstanceOrderedEvents
+                .FirstOrDefaultAsync(x =>
+                    x.Id == request.OrderEventId &&
+                    x.InstanceId == request.InstanceId);
 
-            if (instance == null)
-            {
-                return HandlerResult<Unit>.Rejected("Instance not found");
-            }
-
-            var orderEv = instance.OrderedEvents
-                .FirstOrDefault(x => x.Id == request.OrderEventId);
-
-            if (orderEv == null)
+            if (orderEvent == null)
             {
                 return HandlerResult<Unit>.Rejected("Order not found");
             }
 
-            if(orderEv.CancelledEvent != null)
+            if(orderEvent.CancelledEvent != null)
             {
                 return HandlerResult<Unit>.Rejected("Order was cancelled");
             }
 
-            if (orderEv.DeliveredEvent != null)
+            if (orderEvent.DeliveredEvent != null)
             {
                 return HandlerResult<Unit>.Rejected("Order was delivered");
             }
 
-            if (orderEv.SentEvent != null)
+            if (orderEvent.SentEvent != null)
             {
                 return HandlerResult<Unit>.Ok(Unit.New);
             }
 
-            _appDbContext.InstanceOrderedEvents.Attach(orderEv);
-            orderEv.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
+            orderEvent.SentEvent = AppDbJsonField
+                .Create(() => new InstanceOrderSentEvent());
 
             await _appDbContext.SaveChangesAsync();
 
@@ -78,7 +64,7 @@ public static class CreateInstanceOrderSentEvent
                     .NotEmpty()
                     .WithMessage("Instance id cannot be empty");
 
-                RuleFor(x => x.OrderEventId)
+                RuleFor(x => x.orderEvententId)
                     .NotNull()
                     .NotEmpty()
                     .WithMessage("Order event id cannot be empty");

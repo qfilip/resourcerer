@@ -19,26 +19,10 @@ public static class CreateInstanceOrderCancelledEvent
         }
         public async Task<HandlerResult<Unit>> Handle(V1InstanceOrderCancelRequest request)
         {
-            var instance = await _appDbContext.Instances
-                .Select(x => new Instance
-                {
-                    Id = x.Id,
-                    OrderedEvents = x.OrderedEvents
-                        .Where(x => x.Id == request.OrderEventId)
-                        .ToArray()
-                })
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
-
-
-            if (instance == null)
-            {
-                var error = $"Instance with id {request.InstanceId} not found";
-                return HandlerResult<Unit>.Rejected(error);
-            }
-
-            var orderEvent = instance.OrderedEvents
-                .FirstOrDefault(x => x.Id == request.OrderEventId);
+            var orderEvent = await _appDbContext.InstanceOrderedEvents
+                .FirstOrDefaultAsync(x =>
+                    x.Id == request.OrderEventId &&
+                    x.InstanceId == request.InstanceId);
 
             if (orderEvent == null)
             {
@@ -72,7 +56,6 @@ public static class CreateInstanceOrderCancelledEvent
                 };
             });
             
-            _appDbContext.InstanceOrderedEvents.Attach(orderEvent);
             orderEvent.CancelledEvent = cancelEvent;
             
             await _appDbContext.SaveChangesAsync();

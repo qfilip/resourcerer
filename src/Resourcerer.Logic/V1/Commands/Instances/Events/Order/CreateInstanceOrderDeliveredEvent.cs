@@ -20,25 +20,10 @@ public static class CreateInstanceOrderDeliveredEvent
 
         public async Task<HandlerResult<Unit>> Handle(V1InstanceOrderDeliveredRequest request)
         {
-            var instance = await _appDbContext.Instances
-                .Select(x => new Instance
-                {
-                    Id = x.Id,
-                    OrderedEvents = x.OrderedEvents
-                        .Where(x => x.Id == request.OrderEventId)
-                        .ToArray()
-                })
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
-
-            if (instance == null)
-            {
-                var message = $"Instance with id {request.InstanceId} not found";
-                return HandlerResult<Unit>.Rejected(message);
-            }
-
-            var orderEvent = instance.OrderedEvents
-                .FirstOrDefault(x => x.Id == request.OrderEventId);
+            var orderEvent = await _appDbContext.InstanceOrderedEvents
+                .FirstOrDefaultAsync(x =>
+                    x.Id == request.OrderEventId &&
+                    x.InstanceId == request.InstanceId);
 
             if (orderEvent == null)
             {
@@ -63,8 +48,8 @@ public static class CreateInstanceOrderDeliveredEvent
                 return HandlerResult<Unit>.Ok(Unit.New);
             }
 
-            _appDbContext.InstanceOrderedEvents.Attach(orderEvent);
-            orderEvent.DeliveredEvent = AppDbJsonField.Create(() => new InstanceOrderDeliveredEvent()); ;
+            orderEvent.DeliveredEvent = AppDbJsonField
+                .Create(() => new InstanceOrderDeliveredEvent()); ;
             
             await _appDbContext.SaveChangesAsync();
 

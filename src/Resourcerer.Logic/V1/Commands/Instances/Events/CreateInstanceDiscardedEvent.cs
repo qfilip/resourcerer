@@ -26,6 +26,7 @@ public static class CreateInstanceDiscardedEvent
                     x.Id,
                     x.Quantity,
                     x.OrderedEvents,
+                    x.ReservedEvents,
                     x.DiscardedEvents
                 })
                 .AsNoTracking()
@@ -42,10 +43,14 @@ public static class CreateInstanceDiscardedEvent
                     x.SentEvent != null)
                 .Sum(x => x.Quantity);
 
+            var reserved = instance.ReservedEvents
+                .Where(x => x.CancelledEvent != null)
+                .Sum(x => x.Quantity);
+
             var discarded = instance.DiscardedEvents
                 .Sum(x => x.Quantity);
 
-            var quantityLeft = instance.Quantity - sent - discarded;
+            var quantityLeft = instance.Quantity - sent - reserved - discarded;
 
             if (quantityLeft < 0)
             {

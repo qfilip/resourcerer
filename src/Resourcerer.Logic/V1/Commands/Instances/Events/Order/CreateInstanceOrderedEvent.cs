@@ -69,7 +69,7 @@ public static class CreateInstanceOrderedEvent
                     Id = x.Id,
                     ExpiryDate = x.ExpiryDate,
                     SourceInstance = x.SourceInstance,
-                    OrderedEvents =x.OrderedEvents
+                    OrderedEvents = x.OrderedEvents
                 })
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
