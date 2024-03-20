@@ -140,7 +140,8 @@ public static class CreateInstanceOrderedEvent
                 ExpiryDate = instance.ExpiryDate
             };
 
-            _appDbContext.Update(instance);
+            _appDbContext.Instances.Attach(instance);
+            _appDbContext.Instances.Entry(instance).Property(x => x.OrderedEventsJson).IsModified = true;
             _appDbContext.Instances.Add(newOwnerInstance);
 
             await _appDbContext.SaveChangesAsync();

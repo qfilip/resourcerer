@@ -74,7 +74,9 @@ public static class CreateInstanceDiscardedEvent
 
                 instance.DiscardedEvents.Add(discardEvent);
 
-                _appDbContext.Update(instance);
+                _appDbContext.Instances.Attach(instance);
+                _appDbContext.Instances.Entry(instance).Property(x => x.DiscardedEventsJson).IsModified = true;
+
                 await _appDbContext.SaveChangesAsync();
 
                 return HandlerResult<Unit>.Ok(Unit.New);

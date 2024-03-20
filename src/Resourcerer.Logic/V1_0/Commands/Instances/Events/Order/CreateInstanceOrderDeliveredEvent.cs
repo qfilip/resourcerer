@@ -62,10 +62,11 @@ public static class CreateInstanceOrderDeliveredEvent
                 return HandlerResult<Unit>.Ok(Unit.New);
             }
 
-            var deliveredEvent = JsonEntityBase.CreateEntity(() => new InstanceOrderDeliveredEvent());
-            orderEvent.DeliveredEvent = deliveredEvent;
+            orderEvent.DeliveredEvent = JsonEntityBase
+                .CreateEntity(() => new InstanceOrderDeliveredEvent()); ;
 
-            _appDbContext.Update(instance);
+            _appDbContext.Instances.Attach(instance);
+            _appDbContext.Instances.Entry(instance).Property(x => x.OrderedEventsJson).IsModified = true;
             await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());

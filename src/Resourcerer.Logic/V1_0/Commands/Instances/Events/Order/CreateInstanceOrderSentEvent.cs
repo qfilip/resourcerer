@@ -60,7 +60,9 @@ public static class CreateInstanceOrderSentEvent
 
             orderEv.SentEvent = JsonEntityBase.CreateEntity(() => new InstanceOrderSentEvent());
 
-            _appDbContext.Update(instance);
+            _appDbContext.Instances.Attach(instance);
+            _appDbContext.Instances.Entry(instance).Property(x => x.OrderedEventsJson).IsModified = true;
+
             await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(Unit.New);

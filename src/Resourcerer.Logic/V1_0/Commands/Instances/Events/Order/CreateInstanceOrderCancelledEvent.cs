@@ -71,9 +71,12 @@ public static class CreateInstanceOrderCancelledEvent
                 };
             });
 
+            
             orderEvent.OrderCancelledEvent = cancelEvent;
 
-            _appDbContext.Update(instance);
+            _appDbContext.Instances.Attach(instance);
+            _appDbContext.Instances.Entry(instance).Property(x => x.OrderedEventsJson).IsModified = true;
+            
             await _appDbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(new Unit());
