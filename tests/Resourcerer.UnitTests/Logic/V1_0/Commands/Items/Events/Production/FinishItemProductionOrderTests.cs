@@ -34,8 +34,9 @@ public class FinishItemProductionOrderTests : TestsBase
 
         // act
         var result = _sut.Handle(dto).Await();
-
+        
         // assert
+        _testDbContext.ChangeTracker.Clear();
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
         AssertPersistedData(order.Id);
     }

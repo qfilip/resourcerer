@@ -77,11 +77,10 @@ public static class FinishItemProductionOrder
                 FinishedEvent = JsonEntityBase.CreateEntity(() => new ItemProductionFinishedEvent())
             };
 
-            _dbContext.ItemProductionOrders.Attach(itemProductionOrderUpdates);
-            _dbContext.ChangeTracker.Clear(); // Attach marks some fields as true (itemId)
-
-            _dbContext.Entry(itemProductionOrderUpdates).Property(x => x.FinishedEventJson).IsModified = true;
+            _dbContext.ItemProductionOrders.Attach(order);
+            _dbContext.ItemProductionOrders.Entry(order).Property(x => x.FinishedEventJson).IsModified = true;
             _dbContext.Instances.Add(newInstance);
+            
             await _dbContext.SaveChangesAsync();
 
             return HandlerResult<Unit>.Ok(Unit.New);

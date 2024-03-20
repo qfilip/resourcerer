@@ -121,44 +121,44 @@ public class TestsBase
     //    _ = 0;
     //}
 
-    [Fact]
-    public void ChangeTrackingV2()
-    {
-        // https://learn.microsoft.com/en-us/ef/core/querying/tracking
-        var o = DF.FakeItemProductionOrder(_testDbContext, x =>
-        {
-            x.Quantity = 1;
-            x.StartedEvent = JsonEntityBase.CreateEntity(() => new ItemProductionStartedEvent());
-        });
-        _testDbContext.SaveChanges();
+    //[Fact]
+    //public void ChangeTrackingV2()
+    //{
+    //    // https://learn.microsoft.com/en-us/ef/core/querying/tracking
+    //    var o = DF.FakeItemProductionOrder(_testDbContext, x =>
+    //    {
+    //        x.Quantity = 1;
+    //        x.StartedEvent = JsonEntityBase.CreateEntity(() => new ItemProductionStartedEvent());
+    //    });
+    //    _testDbContext.SaveChanges();
 
-        var o2 = _testDbContext.ItemProductionOrders
-            .Select(x => new ItemProductionOrder
-            {
-                Id = x.Id,
-                ItemId = x.ItemId,
-                Item = new Item { CategoryId = x.Item!.CategoryId },
-                StartedEventJson = x.StartedEventJson,
-                FinishedEventJson = x.FinishedEventJson
-            })
-            .AsNoTracking()
-            .First(x => x.Id == o.Id);
+    //    var o2 = _testDbContext.ItemProductionOrders
+    //        .Select(x => new ItemProductionOrder
+    //        {
+    //            Id = x.Id,
+    //            ItemId = x.ItemId,
+    //            Item = new Item { CategoryId = x.Item!.CategoryId },
+    //            StartedEventJson = x.StartedEventJson,
+    //            FinishedEventJson = x.FinishedEventJson
+    //        })
+    //        .AsNoTracking()
+    //        .First(x => x.Id == o.Id);
 
-        o2.FinishedEvent = JsonEntityBase.CreateEntity(() => new ItemProductionFinishedEvent());
+    //    o2.FinishedEvent = JsonEntityBase.CreateEntity(() => new ItemProductionFinishedEvent());
 
-        _testDbContext.ItemProductionOrders.Attach(o2); // with update
-        _testDbContext.ChangeTracker.Clear();
-        _testDbContext.Entry(o2).Property(x => x.FinishedEventJson).IsModified = true;
-        var r = _testDbContext.Entry(o2).Property(x => x.ItemId).IsModified;
-        var r2 = _testDbContext.Entry(o2).Property(x => x.CanceledEventJson).IsModified;
-        _testDbContext.SaveChanges();
+    //    _testDbContext.ItemProductionOrders.Attach(o2);
+        
+    //    _testDbContext.Entry(o2).Property(x => x.FinishedEventJson).IsModified = true;
+    //    var r = _testDbContext.ItemProductionOrders.Entry(o2).Property(x => x.ItemId).IsModified; // bugged
+    //    var r2 = _testDbContext.Entry(o2).Property(x => x.CanceledEventJson).IsModified;
+    //    _testDbContext.SaveChanges();
 
-        var o3 = _testDbContext.ItemProductionOrders
-            .AsNoTracking()
-            .First(x => x.Id == o.Id);
+    //    var o3 = _testDbContext.ItemProductionOrders
+    //        .AsNoTracking()
+    //        .First(x => x.Id == o.Id && x.Quantity == 1);
 
-        _ = 0;
-    }
+    //    _ = 0;
+    //}
 
     protected ILogger<T> MockLogger<T>() => A.Fake<ILogger<T>>();
 }
