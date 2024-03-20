@@ -1,4 +1,5 @@
-﻿using Resourcerer.DataAccess.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Commands;
@@ -16,7 +17,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
     }
 
     [Fact]
-    public void AllOk_WithDerivedInstanceItemMapping__Ok()
+    public void WithDerivedInstanceItemMapping__Ok()
     {
         // arrange
         var derivedInstanceItem = DF.FakeItem(_ctx);
@@ -43,7 +44,9 @@ public class CreateInstanceOrderedEventTests : TestsBase
             () =>
             {
                 _ctx.Clear();
-                var srcInstance = _ctx.Instances.First(x => x.Id == sourceInstance.Id);
+                var srcInstance = _ctx.Instances
+                    .Include(x => x.OrderedEvents)
+                    .First(x => x.Id == sourceInstance.Id);
                 var dervInstance = _ctx.Instances.First(x => x.ItemId == derivedInstanceItem.Id);
                 var entities = _ctx.Instances.ToArray();
                 Assert.True(entities.Length == 2);
@@ -53,7 +56,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
     }
 
     [Fact]
-    public void AllOk_WithoutDerivedInstanceItemMapping__Ok()
+    public void WithoutDerivedInstanceItemMapping__Ok()
     {
         // arrange
         var buyerCompany = DF.FakeCompany(_ctx);
@@ -78,7 +81,10 @@ public class CreateInstanceOrderedEventTests : TestsBase
             () => Assert.Equal(eHandlerResultStatus.Ok, result.Status),
             () =>
             {
-                var srcInstance = _ctx.Instances.First(x => x.Id == sourceInstance.Id);
+                _ctx.Clear();
+                var srcInstance = _ctx.Instances
+                    .Include(x => x.OrderedEvents)
+                    .First(x => x.Id == sourceInstance.Id);
                 var dervInstance = _ctx.Instances.First(x => x.ItemId == sourceInstance.ItemId);
                 var entities = _ctx.Instances.ToArray();
                 Assert.True(entities.Length == 2);

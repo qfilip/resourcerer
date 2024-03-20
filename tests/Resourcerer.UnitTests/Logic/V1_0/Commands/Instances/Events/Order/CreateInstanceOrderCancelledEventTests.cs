@@ -5,7 +5,6 @@ using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Commands;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
-using Resourcerer.Utilities;
 
 namespace Resourcerer.UnitTests.Logic.V1.Commands.Instances;
 

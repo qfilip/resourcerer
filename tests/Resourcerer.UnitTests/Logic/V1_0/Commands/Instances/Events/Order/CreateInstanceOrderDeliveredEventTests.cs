@@ -1,4 +1,5 @@
-﻿using Resourcerer.DataAccess.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Commands;
@@ -21,7 +22,6 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
         // arrange
         var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance(), x =>
         {
-            x.DeliveredEvent = DF.FakeDeliveredEvent();
             x.SentEvent = DF.FakeSentEvent();
         });
         _ctx.SaveChanges();
@@ -41,7 +41,9 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
             () =>
             {
                 _ctx.Clear();
-                var instance = _ctx.Instances.First(x => x.Id == sourceInstance.Id);
+                var instance = _ctx.Instances
+                    .Include(x => x.OrderedEvents)
+                    .First(x => x.Id == sourceInstance.Id);
                 Assert.NotNull(instance.OrderedEvents.First().DeliveredEvent);
             }
         );

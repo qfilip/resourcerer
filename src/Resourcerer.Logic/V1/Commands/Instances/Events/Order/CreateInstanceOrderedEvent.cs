@@ -67,6 +67,7 @@ public static class CreateInstanceOrderedEvent
                 .Select(x => new Instance
                 {
                     Id = x.Id,
+                    Quantity = x.Quantity,
                     ExpiryDate = x.ExpiryDate,
                     SourceInstance = x.SourceInstance,
                     OrderedEvents = x.OrderedEvents
