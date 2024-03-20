@@ -169,7 +169,7 @@ public class CancelItemProductionOrderTests : TestsBase
                     {
                         AppDbJsonField.Create(() => new InstanceReservedEvent
                         {
-                            ProductionOrderId = productionOrderId,
+                            ItemProductionOrderId = productionOrderId,
                         })
                     };
                 });

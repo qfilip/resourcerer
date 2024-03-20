@@ -8,6 +8,9 @@ public class Instance : AppDbEntity
     public Instance()
     {
         DerivedInstances = new HashSet<Instance>();
+        OrderedEvents = new HashSet<InstanceOrderedEvent>();
+        ReservedEvents = new HashSet<InstanceReservedEvent>();
+        DiscardedEvents = new HashSet<InstanceDiscardedEvent>();
     }
 
     public double Quantity { get; set; }
@@ -24,50 +27,21 @@ public class Instance : AppDbEntity
 
     public ICollection<Instance> DerivedInstances { get; set; }
 
-    public string OrderedEventsJson
-    {
-        get => JsonSerializer.Serialize(OrderedEvents);
-        set
-        {
-            if(value == null)
-            {
-                return;
-            }
+    public ICollection<InstanceOrderedEvent> OrderedEvents { get; set; }
+    public ICollection<InstanceReservedEvent> ReservedEvents { get; set; }
+    public ICollection<InstanceDiscardedEvent> DiscardedEvents { get; set; }
 
-            OrderedEvents = JsonSerializer.Deserialize<List<InstanceOrderedEvent>>(value)!;
-        }
-    }
-    public string DiscardedEventsJson
-    {
-        get => JsonSerializer.Serialize(DiscardedEvents);
-        set
-        {
-            if (value == null)
-            {
-                return;
-            }
+    //public string OrderedEventsJson
+    //{
+    //    get => JsonSerializer.Serialize(OrderedEvents);
+    //    set
+    //    {
+    //        if(value == null)
+    //        {
+    //            return;
+    //        }
 
-            DiscardedEvents = JsonSerializer.Deserialize<List<InstanceDiscardedEvent>>(value)!;
-        }
-    }
-    public string ReservedEventsJson
-    {
-        get => JsonSerializer.Serialize(ReservedEvents);
-        set
-        {
-            if (value == null)
-            {
-                return;
-            }
-
-            ReservedEvents = JsonSerializer.Deserialize<List<InstanceReservedEvent>>(value)!;
-        }
-    }
-
-    [NotMapped]
-    public List<InstanceOrderedEvent> OrderedEvents { get; set; } = new();
-    [NotMapped]
-    public List<InstanceDiscardedEvent> DiscardedEvents { get; set; } = new();
-    [NotMapped]
-    public List<InstanceReservedEvent> ReservedEvents { get; set; } = new();
+    //        OrderedEvents = JsonSerializer.Deserialize<List<InstanceOrderedEvent>>(value)!;
+    //    }
+    //}
 }

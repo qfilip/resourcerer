@@ -67,7 +67,7 @@ public static class CancelItemProductionOrder
             {
                 var reservationEvent = i.ReservedEvents
                     .First(x =>
-                        x.ProductionOrderId == orderEvent.Id &&
+                        x.ItemProductionOrderId == orderEvent.Id &&
                         x.CancelledEvent == null &&
                         x.UsedEvent == null);
 

@@ -19,9 +19,14 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<Excerpt> Excerpts { get; set; }
     public virtual DbSet<UnitOfMeasure> UnitsOfMeasure { get; set; }
     public virtual DbSet<Price> Prices { get; set; }
+    // items
     public virtual DbSet<Item> Items { get; set; }
     public virtual DbSet<ItemProductionOrder> ItemProductionOrders { get; set; }
+    // instances
     public virtual DbSet<Instance> Instances { get; set; }
+    public virtual DbSet<InstanceOrderedEvent> InstanceOrderedEvents { get; set; }
+    public virtual DbSet<InstanceReservedEvent> InstanceReservedEvents { get; set; }
+    public virtual DbSet<InstanceDiscardedEvent> InstanceDiscardedEvents { get; set; }
 
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

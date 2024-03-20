@@ -107,6 +107,28 @@ public partial class AppDbContext
                 .HasConstraintName($"FK_{nameof(Instance)}_{nameof(Instance)}");
         });
 
+        ConfigureEntity<InstanceOrderedEvent>(modelBuilder, (e) =>
+        {
+            e.HasOne(x => x.Instance).WithMany(x => x.OrderedEvents)
+                .HasForeignKey(x => x.InstanceId)
+                .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceOrderedEvent)}");
+        });
+
+
+        ConfigureEntity<InstanceReservedEvent>(modelBuilder, (e) =>
+        {
+            e.HasOne(x => x.Instance).WithMany(x => x.ReservedEvents)
+                .HasForeignKey(x => x.InstanceId)
+                .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceReservedEvent)}");
+        });
+        
+        ConfigureEntity<InstanceDiscardedEvent>(modelBuilder, (e) =>
+        {
+            e.HasOne(x => x.Instance).WithMany(x => x.DiscardedEvents)
+                .HasForeignKey(x => x.InstanceId)
+                .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceDiscardedEvent)}");
+        });
+
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
             if(typeof(AppDbEntity).IsAssignableFrom(entityType.ClrType))
