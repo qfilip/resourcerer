@@ -17,7 +17,7 @@ public static class GetUserEndpoint
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapGet("", Action);
+        var endpoint = group.MapGet("/id", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
