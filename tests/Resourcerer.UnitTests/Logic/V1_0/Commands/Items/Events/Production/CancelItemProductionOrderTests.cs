@@ -39,14 +39,17 @@ public class CancelItemProductionOrderTests : TestsBase
             () =>
             {
                 _ctx.Clear();
-                var data = _ctx.ItemProductionOrders.First();
+                var data = _ctx.ItemProductionOrders
+                    .Where(x => x.Id == dto.ProductionOrderEventId)
+                    .First();
+
                 Assert.NotNull(data.CanceledEvent);
 
-                var instanceData = _ctx.Instances
-                    .Where(x => order.InstancesUsedIds.Contains(x.Id))
+                var reservedEvents = _ctx.InstanceReservedEvents
+                    .Where(x => order.InstancesUsedIds.Contains(x.InstanceId))
                     .ToArray();
 
-                Assert.True(instanceData.All(x => x.ReservedEvents.First().CancelledEvent != null));
+                Assert.True(reservedEvents.All(x => x.CancelledEvent != null));
             }
         );
     }
