@@ -24,6 +24,20 @@ public class TestsBase
         _ = 0;
     }
 
+    [Fact(Skip = "demonstration")]
+    public void FakingData()
+    {
+        var company = DF.Fake<Company>(_ctx, x => x.Name = "acme inc");
+        var instance = DF.Fake<Instance>(_ctx, x => x.OwnerCompany = company);
+
+        _ctx.SaveChanges();
+
+        var instanceCompanyName = _ctx.Instances
+            .Select(x => new { x.Id, x.OwnerCompany!.Name })
+            .First(x => x.Id == instance.Id)
+            .Name;
+    }
+
     //[Fact]
     //public async void Scratchpad()
     //{
