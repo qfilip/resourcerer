@@ -36,6 +36,7 @@ public static class FinishItemProductionOrder
                     StartedEventJson = x.StartedEventJson,
                     FinishedEventJson = x.FinishedEventJson
                 })
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.ProductionOrderId);
 
             if (order == null)
@@ -76,6 +77,8 @@ public static class FinishItemProductionOrder
                 FinishedEvent = AppDbJsonField.Create(() => new ItemProductionFinishedEvent())
             };
 
+            _dbContext.ItemProductionOrders.Attach(order);
+            _dbContext.ItemProductionOrders.Entry(order).Property(x => x.FinishedEventJson).IsModified = true;
             _dbContext.Instances.Add(newInstance);
             
             await _dbContext.SaveChangesAsync();
