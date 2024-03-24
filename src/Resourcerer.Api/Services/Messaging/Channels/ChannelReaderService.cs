@@ -1,6 +1,6 @@
 ﻿using System.Threading.Channels;
 
-namespace Resourcerer.Api.Services.Messaging;
+namespace Resourcerer.Api.Services.Messaging.Channels;
 
 public class ChannelReaderService<TMessage> : IConsumerAdapter<TMessage>
 {

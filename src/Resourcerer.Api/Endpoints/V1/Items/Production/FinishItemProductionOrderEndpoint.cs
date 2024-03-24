@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
+using Resourcerer.Api.Services.Messaging;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Commands.Items;

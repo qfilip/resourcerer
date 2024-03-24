@@ -1,4 +1,5 @@
-﻿using Resourcerer.DataAccess.Contexts;
+﻿using Resourcerer.Api.Services.Messaging;
+using Resourcerer.DataAccess.Contexts;
 
 namespace Resourcerer.Api.Services;
 

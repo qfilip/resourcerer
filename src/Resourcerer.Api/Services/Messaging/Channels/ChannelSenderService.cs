@@ -1,7 +1,7 @@
 ﻿
 using System.Threading.Channels;
 
-namespace Resourcerer.Api.Services.Messaging;
+namespace Resourcerer.Api.Services.Messaging.Channels;
 
 public class ChannelSenderService<TMessage> : ISenderAdapter<TMessage>
 {

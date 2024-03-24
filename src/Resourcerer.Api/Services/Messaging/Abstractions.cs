@@ -1,4 +1,4 @@
-﻿namespace Resourcerer.Api.Services;
+﻿namespace Resourcerer.Api.Services.Messaging;
 
 public interface ISenderAdapter<TMessage>
 {
