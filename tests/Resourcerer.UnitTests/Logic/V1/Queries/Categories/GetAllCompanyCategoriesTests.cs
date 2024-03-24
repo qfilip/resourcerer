@@ -1,4 +1,5 @@
-﻿using Resourcerer.Logic;
+﻿using Resourcerer.DataAccess.Entities;
+using Resourcerer.Logic;
 using Resourcerer.Logic.Queries.V1;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
@@ -14,12 +15,12 @@ public class GetAllCompanyCategoriesTests : TestsBase
     }
 
     [Fact]
-    public void When_AllOk_Then_Ok()
+    public void HappyPath__Ok()
     {
         // arrange
-        var company = DF.FakeCompany(_ctx);
+        var company = DF.Fake<Company>(_ctx);
         Enumerable.Range(0, 2)
-            .Select(x => DF.FakeCategory(_ctx, x => x.CompanyId = company.Id))
+            .Select(x => DF.Fake<Category>(_ctx, x => x.Company = company))
             .ToList()
             .ForEach(parent =>
             {

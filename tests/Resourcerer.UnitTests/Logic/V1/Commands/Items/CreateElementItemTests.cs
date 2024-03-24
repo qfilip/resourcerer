@@ -1,4 +1,5 @@
-﻿using Resourcerer.Dtos.V1;
+﻿using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Commands;
 using Resourcerer.UnitTests.Utilities;
@@ -15,11 +16,11 @@ public class CreateElementItemTests : TestsBase
     }
 
     [Fact]
-    public void When_AllOk_Then_Ok()
+    public void HappyPath__Ok()
     {
         // arrange
-        var category = DF.FakeCategory(_ctx);
-        var uom = DF.FakeUnitOfMeasure(_ctx);
+        var category = DF.Fake<Category>(_ctx);
+        var uom = DF.Fake<UnitOfMeasure>(_ctx);
         var dto = new V1CreateElementItem
         {
             Name = "test",
@@ -32,24 +33,31 @@ public class CreateElementItemTests : TestsBase
 
         // act
         var result = _handler.Handle(dto).Await();
-        var entity = _ctx.Items.First();
 
         // assert
-        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-        Assert.Contains(_ctx.Items, x => x.Name == dto.Name);
+        Assert.Multiple(
+            () => Assert.Equal(eHandlerResultStatus.Ok, result.Status),
+            () =>
+            {
+                _ctx.Clear();
+                var entity = _ctx.Items.First();
+                Assert.Contains(_ctx.Items, x => x.Name == dto.Name);
+
+            }
+        );
     }
 
     [Fact]
-    public void When_ElementWithSameName_Exsts_Then_ValidationError()
+    public void ElementWithSameName_Exsts__Rejected()
     {
         // arrange
-        var existingElement = DF.FakeItem(_ctx);
+        var existingElement = DF.Fake<Item>(_ctx);
         var dto = new V1CreateElementItem
         {
             Name = existingElement.Name,
             CompanyId = existingElement.Category!.CompanyId,
             CategoryId = existingElement.CategoryId,
-            UnitOfMeasureId = existingElement.UnitOfMeasureId,
+            UnitOfMeasureId = existingElement.UnitOfMeasure!.Id,
             UnitPrice = 2
         };
         _ctx.SaveChanges();
@@ -62,11 +70,11 @@ public class CreateElementItemTests : TestsBase
     }
 
     [Fact]
-    public void When_Category_NotFound_Then_ValidationError()
+    public void Category_NotFound__NotFound()
     {
         // arrange
-        var comp = DF.FakeCompany(_ctx);
-        var uom = DF.FakeUnitOfMeasure(_ctx);
+        var comp = DF.Fake<Company>(_ctx);
+        var uom = DF.Fake<UnitOfMeasure>(_ctx);
         var dto = new V1CreateElementItem
         {
             Name = "test",
@@ -81,15 +89,15 @@ public class CreateElementItemTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
-        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+        Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
     }
 
     [Fact]
-    public void When_Company_NotFound_Then_ValidationError()
+    public void Company_NotFound__Rejected()
     {
         // arrange
-        var catg = DF.FakeCategory(_ctx);
-        var uom = DF.FakeUnitOfMeasure(_ctx);
+        var catg = DF.Fake<Category>(_ctx);
+        var uom = DF.Fake<UnitOfMeasure>(_ctx);
         var dto = new V1CreateElementItem
         {
             Name = "test",
@@ -108,10 +116,10 @@ public class CreateElementItemTests : TestsBase
     }
 
     [Fact]
-    public void When_UnitOfMeasure_NotFound_Then_ValidationError()
+    public void UnitOfMeasure_NotFound__Rejected()
     {
         // arrange
-        var category = DF.FakeCategory(_ctx);
+        var category = DF.Fake<Category>(_ctx);
         var dto = new V1CreateElementItem
         {
             Name = "test",

@@ -1,4 +1,5 @@
-﻿using Resourcerer.Dtos.V1;
+﻿using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Commands;
 using Resourcerer.UnitTests.Utilities;
@@ -15,7 +16,7 @@ public class CreateCompositeItemTests : TestsBase
     }
 
     [Fact]
-    public void When_AllOk_Then_Ok()
+    public void HappyPath__Ok()
     {
         // arrange
         var dto = GetDto();
@@ -29,10 +30,10 @@ public class CreateCompositeItemTests : TestsBase
     }
 
     [Fact]
-    public void When_ElementWithSameNameAndCategory_Exsts_Then_ValidationError()
+    public void ElementWithSameNameAndCategory_Exsts__Rejected()
     {
         // arrange
-        var existingElement = DF.FakeItem(_ctx);
+        var existingElement = DF.Fake<Item>(_ctx);
         var dto = GetDto(x =>
         {
             x.Name = existingElement.Name;
@@ -48,7 +49,7 @@ public class CreateCompositeItemTests : TestsBase
     }
 
     [Fact]
-    public void When_Category_NotFound_Then_ValidationError()
+    public void Category_NotFound__NotFound()
     {
         // arrange
         var dto = GetDto(x => x.CategoryId = Guid.NewGuid());
@@ -58,11 +59,11 @@ public class CreateCompositeItemTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
-        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+        Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
     }
 
     [Fact]
-    public void When_UnitOfMeasure_NotFound_Then_ValidationError()
+    public void UnitOfMeasure_NotFound_Then__Rejected()
     {
         // arrange
         var dto = GetDto(x => x.UnitOfMeasureId = Guid.NewGuid());
@@ -76,7 +77,7 @@ public class CreateCompositeItemTests : TestsBase
     }
 
     [Fact]
-    public void When_RequiredElements_NotFound_Then_ValidationError()
+    public void RequiredElements_NotFound_Then__Rejected()
     {
         // arrange
         var dto = GetDto(x => x.ExcerptMap = new Dictionary<Guid, double>
@@ -98,15 +99,15 @@ public class CreateCompositeItemTests : TestsBase
         var dto = new V1CreateCompositeItem
         {
             Name = "test",
-            CategoryId = DF.FakeCategory(_ctx).Id,
-            UnitOfMeasureId = DF.FakeUnitOfMeasure(_ctx).Id,
+            CategoryId = DF.Fake<Category>(_ctx).Id,
+            UnitOfMeasureId = DF.Fake<UnitOfMeasure>(_ctx).Id,
             UnitPrice = 2,
             PreparationTimeSeconds = 2,
             ExpirationTimeSeconds = 2,
             ExcerptMap = new Dictionary<Guid, double>
             {
-                { DF.FakeItem(_ctx).Id, 1 },
-                { DF.FakeItem(_ctx).Id, 2 }
+                { DF.Fake<Item>(_ctx).Id, 1 },
+                { DF.Fake<Item>(_ctx).Id, 2 }
             }
         };
 

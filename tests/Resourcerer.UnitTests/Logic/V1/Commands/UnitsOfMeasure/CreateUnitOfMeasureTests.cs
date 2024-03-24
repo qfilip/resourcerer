@@ -1,4 +1,5 @@
-﻿using Resourcerer.Dtos.V1;
+﻿using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Commands;
 using Resourcerer.UnitTests.Utilities;
@@ -16,10 +17,10 @@ public class CreateUnitOfMeasureTests : TestsBase
     }
 
     [Fact]
-    public void When_AllOk_Ok()
+    public void HappyPath__Ok()
     {
         // arrange
-        var company = DF.FakeCompany(_ctx);
+        var company = DF.Fake<Company>(_ctx);
         var dto = new V1CreateUnitOfMeasure
         {
             CompanyId = company.Id,
@@ -37,10 +38,10 @@ public class CreateUnitOfMeasureTests : TestsBase
     }
 
     [Fact]
-    public void When_CompanyNotFound_Then_Rejected()
+    public void CompanyNotFound__Rejected()
     {
         // arrange
-        var company = DF.FakeCompany(_ctx);
+        var company = DF.Fake<Company>(_ctx);
         var dto = new V1CreateUnitOfMeasure
         {
             CompanyId = Guid.NewGuid(),
