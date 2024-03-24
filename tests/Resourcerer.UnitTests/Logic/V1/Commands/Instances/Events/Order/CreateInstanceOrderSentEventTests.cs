@@ -21,12 +21,14 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance());
+        var sourceInstance = DF.Fake<Instance>(_ctx);
+        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x => x.Instance = sourceInstance);
+        
         _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderSentRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents.First().Id,
+            OrderEventId = orderEvent.Id,
             InstanceId = sourceInstance.Id
         };
 
@@ -47,12 +49,14 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     [Fact]
     public void Instance_NotFound__Rejected()
     {
-        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance());
+        var sourceInstance = DF.Fake<Instance>(_ctx);
+        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x => x.Instance = sourceInstance);
+        
         _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderSentRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents.First().Id,
+            OrderEventId = orderEvent.Id,
             InstanceId = Guid.NewGuid()
         };
 
@@ -66,7 +70,9 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     [Fact]
     public void InstanceOrderEvent_NotFound__Rejected()
     {
-        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance());
+        var sourceInstance = DF.Fake<Instance>(_ctx);
+        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x => x.Instance = sourceInstance);
+
         _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderSentRequest
@@ -86,15 +92,18 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     public void OrderCancelled__Rejected()
     {
         // arrange
-        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance(), x =>
+        var sourceInstance = DF.Fake<Instance>(_ctx);
+        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
         {
+            x.Instance = sourceInstance;
             x.CancelledEvent = AppDbJsonField.Create(() => new InstanceOrderCancelledEvent());
         });
+        
         _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderSentRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents.First().Id,
+            OrderEventId = orderEvent.Id,
             InstanceId = sourceInstance.Id
         };
 
@@ -109,15 +118,18 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     public void Is_Idempotent()
     {
         // arrange
-        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance(), x =>
+        var sourceInstance = DF.Fake<Instance>(_ctx);
+        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
         {
+            x.Instance = sourceInstance;
             x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
         });
+
         _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderSentRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents.First().Id,
+            OrderEventId = orderEvent.Id,
             InstanceId = sourceInstance.Id
         };
 
@@ -132,15 +144,18 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     public void OrderDelivered__Rejected()
     {
         // arrange
-        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance(), x =>
+        var sourceInstance = DF.Fake<Instance>(_ctx);
+        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
         {
+            x.Instance = sourceInstance;
             x.DeliveredEvent = AppDbJsonField.Create(() => new InstanceOrderDeliveredEvent());
         });
+        
         _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderSentRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents.First().Id,
+            OrderEventId = orderEvent.Id,
             InstanceId = sourceInstance.Id
         };
 

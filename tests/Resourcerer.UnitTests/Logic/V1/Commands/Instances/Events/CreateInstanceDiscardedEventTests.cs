@@ -1,4 +1,6 @@
-﻿using Resourcerer.Dtos.V1;
+﻿using Resourcerer.DataAccess.Entities.JsonEntities;
+using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Commands;
 using Resourcerer.UnitTests.Utilities;
@@ -18,10 +20,17 @@ public class CreateInstanceDiscardedEventTests : TestsBase
     public void When_AllOk_Then_Ok()
     {
         // arrange
-        var orderEvent = DF.FakeInstanceOrderedEvent(_ctx, x => x.DeliveredEvent = DF.FakeDeliveredEvent());
+        var sourceInstance = DF.Fake<Instance>(_ctx);
+        var derivedInstance = DF.Fake<Instance>(_ctx, x => x.SourceInstance = sourceInstance);
+        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
+        {
+            x.Instance = sourceInstance;
+            x.DerivedInstanceId = derivedInstance.Id;
+        });
+        
         var dto = new V1InstanceDiscardedRequest
         {
-            InstanceId = orderEvent.DerivedInstanceId,
+            InstanceId = derivedInstance.Id,
             Quantity = orderEvent.Quantity
         };
 

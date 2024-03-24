@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Commands;
@@ -20,16 +21,18 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance(), x =>
+        var sourceInstance = DF.Fake<Instance>(_ctx);
+        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
         {
-            x.SentEvent = DF.FakeSentEvent();
+            x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
         });
+        
         _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderDeliveredRequest
         {
             InstanceId = sourceInstance.Id,
-            OrderEventId = sourceInstance.OrderedEvents.First().Id
+            OrderEventId = orderEvent.Id
         };
 
         // act
@@ -67,12 +70,15 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
     [Fact]
     public void CancelledEvent_Exists__Rejected()
     {
-        var orderedEvent = DF.FakeInstanceOrderedEvent(_ctx, x => x.CancelledEvent = DF.FakeOrderCancelledEvent());
-
+        var sourceInstance = DF.Fake<Instance>(_ctx);
+        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
+        {
+            x.CancelledEvent = AppDbJsonField.Create(() => new InstanceOrderCancelledEvent());
+        });
         var dto = new V1InstanceOrderDeliveredRequest
         {
-            InstanceId = orderedEvent.DerivedInstanceId,
-            OrderEventId = orderedEvent.Id
+            InstanceId = sourceInstance.Id,
+            OrderEventId = orderEvent.Id
         };
         _ctx.SaveChanges();
 
@@ -86,16 +92,17 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
     [Fact]
     public void SentEvent_NotExists__Rejected()
     {
-        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance(), x =>
+        var sourceInstance = DF.Fake<Instance>(_ctx);
+        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
         {
-            x.DeliveredEvent = DF.FakeDeliveredEvent();
+            x.DeliveredEvent = AppDbJsonField.Create(() => new InstanceOrderDeliveredEvent());
         });
         _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderDeliveredRequest
         {
             InstanceId = sourceInstance.Id,
-            OrderEventId = sourceInstance.OrderedEvents.First().Id
+            OrderEventId = orderEvent.Id
         };
 
         // act
@@ -108,17 +115,18 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
     [Fact]
     public void Is_Idempotent()
     {
-        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance(), x =>
+        var sourceInstance = DF.Fake<Instance>(_ctx);
+        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
         {
-            x.DeliveredEvent = DF.FakeDeliveredEvent();
-            x.SentEvent = DF.FakeSentEvent();
+            x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
+            x.DeliveredEvent = AppDbJsonField.Create(() => new InstanceOrderDeliveredEvent());
         });
         _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderDeliveredRequest
         {
             InstanceId = sourceInstance.Id,
-            OrderEventId = sourceInstance.OrderedEvents.First().Id
+            OrderEventId = orderEvent.Id
         };
 
         // act

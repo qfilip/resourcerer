@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Commands;
@@ -20,12 +21,14 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance());
+        var sourceInstance = DF.Fake<Instance>(_ctx);
+        var derivedInstance = DF.Fake<Instance>(_ctx, x => x.SourceInstance = sourceInstance);
+        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x => x.Instance = sourceInstance);
         _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderCancelRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents.First().Id,
+            OrderEventId = orderEvent.Id,
             InstanceId = sourceInstance.Id,
             Reason = "test"
         };
@@ -66,16 +69,19 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     [Fact]
     public void DeliveredEvent_Exists__Rejected()
     {
-        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance(), x =>
+        var sourceInstance = DF.Fake<Instance>(_ctx);
+        var derivedInstance = DF.Fake<Instance>(_ctx, x => x.SourceInstance = sourceInstance);
+        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
         {
-            x.DeliveredEvent = DF.FakeDeliveredEvent();
+            x.Instance = sourceInstance;
+            x.DeliveredEvent = AppDbJsonField.Create(() => new InstanceOrderDeliveredEvent());
         });
 
         _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderCancelRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents.First().Id,
+            OrderEventId = orderEvent.Id,
             InstanceId = sourceInstance.Id,
             Reason = "test"
         };
@@ -90,16 +96,19 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     [Fact]
     public void SentEvent_Exists__Rejected()
     {
-        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance(), x =>
+        var sourceInstance = DF.Fake<Instance>(_ctx);
+        var derivedInstance = DF.Fake<Instance>(_ctx, x => x.SourceInstance = sourceInstance);
+        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
         {
-            x.SentEvent = DF.FakeSentEvent();
+            x.Instance = sourceInstance;
+            x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
         });
 
         _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderCancelRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents.First().Id,
+            OrderEventId = orderEvent.Id,
             InstanceId = sourceInstance.Id,
             Reason = "test"
         };
@@ -115,12 +124,15 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     public void Is_Idempotent()
     {
         // arrange
-        var sourceInstance = DF.FakeInstanceOrderedEvent(_ctx, new Instance());
+        var sourceInstance = DF.Fake<Instance>(_ctx);
+        var derivedInstance = DF.Fake<Instance>(_ctx, x => x.SourceInstance = sourceInstance);
+        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx);
+        
         _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderCancelRequest
         {
-            OrderEventId = sourceInstance.OrderedEvents.First().Id,
+            OrderEventId = orderEvent.Id,
             InstanceId = sourceInstance.Id,
             Reason = "test"
         };
