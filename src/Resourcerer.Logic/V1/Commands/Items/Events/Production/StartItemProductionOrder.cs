@@ -23,6 +23,15 @@ public static class StartItemProductionOrder
         public async Task<HandlerResult<Unit>> Handle(V1StartItemProductionOrderRequest request)
         {
             var order = await _dbContext.ItemProductionOrders
+                .Select(x => new ItemProductionOrder
+                {
+                    Id = x.Id,
+                    InstancesUsedIds = x.InstancesUsedIds,
+                    StartedEvent = x.StartedEvent,
+                    CanceledEvent = x.CanceledEvent,
+                    FinishedEvent = x.FinishedEvent,
+                })
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.ProductionOrderId);
 
             if(order == null)
@@ -30,10 +39,14 @@ public static class StartItemProductionOrder
                 return HandlerResult<Unit>.NotFound($"Production order {request.ProductionOrderId} not found");
             }
 
-            if (order.InstancesUsedIds.Length == 0)
+            if(order.CanceledEvent != null)
             {
-                var message = $"{nameof(order.InstancesUsedIds)} is empty for {nameof(ItemProductionOrder)} {order.Id}";
-                throw new DataCorruptionException(message);
+                return HandlerResult<Unit>.Rejected($"Production order {request.ProductionOrderId} was cancelled and cannot be started");
+            }
+
+            if (order.FinishedEvent != null)
+            {
+                return HandlerResult<Unit>.Rejected($"Production order {request.ProductionOrderId} was finished and cannot be started");
             }
 
             if (order.StartedEvent != null)
@@ -56,6 +69,8 @@ public static class StartItemProductionOrder
                 throw new DataCorruptionException(message);
             }
 
+            _dbContext.ItemProductionOrders.Attach(order);
+            
             order.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
 
             foreach (var ev in reservedEvents)

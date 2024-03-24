@@ -70,7 +70,7 @@ public class CreateElementItemTests : TestsBase
     }
 
     [Fact]
-    public void Category_NotFound__NotFound()
+    public void Category_NotFound__Rejected()
     {
         // arrange
         var comp = DF.Fake<Company>(_ctx);
@@ -89,7 +89,7 @@ public class CreateElementItemTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
-        Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
     }
 
     [Fact]
