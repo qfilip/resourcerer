@@ -22,7 +22,15 @@ public static class CreateItemProductionOrder
         public async Task<HandlerResult<Unit>> Handle(V1CreateItemProductionOrderRequest request)
         {
             var item = _dbContext.Items
-                .FirstOrDefault(x => x.Id == request.ItemId);
+                .Select(x => new
+                {
+                    x.Id,
+                    x.Name,
+                    x.Category!.CompanyId
+                })
+                .FirstOrDefault(x =>
+                    x.Id == request.ItemId &&
+                    x.CompanyId == request.CompanyId);
 
             if (item == null)
             {

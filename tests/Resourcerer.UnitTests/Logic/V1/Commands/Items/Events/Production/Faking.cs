@@ -10,7 +10,10 @@ internal class Faking
     internal static FakedData FakeData(TestDbContext ctx, int elementCount, int instanceCount)
     {
         var company = DF.Fake<Company>(ctx);
-        var composite = DF.Fake<Item>(ctx);
+        var composite = DF.Fake<Item>(ctx, x =>
+        {
+            x.Category = DF.Fake<Category>(ctx, x => x.Company = company);
+        });
         var fd = new FakedData()
         {
             Composite = composite,
@@ -20,7 +23,10 @@ internal class Faking
         var elements = new List<(Item, double)>();
 
         for (int i = 0; i < elementCount; i++)
-            elements.Add((DF.Fake<Item>(ctx), 1));
+            elements.Add((DF.Fake<Item>(ctx, x =>
+            {
+                x.Category = DF.Fake<Category>(ctx, x => x.Company = company);
+            }), 1));
 
         for (int i = 0; i < elements.Count; i++)
         {

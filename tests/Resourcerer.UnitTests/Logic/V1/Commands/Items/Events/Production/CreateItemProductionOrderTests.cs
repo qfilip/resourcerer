@@ -23,7 +23,7 @@ public class CreateItemProductionOrderTests : TestsBase
         var dto = new V1CreateItemProductionOrderRequest
         {
             ItemId = fd.Composite!.Id,
-            CompanyId = fd.CompanyId,
+            CompanyId = fd.Composite!.Category!.Company!.Id,
             Quantity = 2,
             InstancesToUse = Faking.MapInstancesToUse(fd)
         };
