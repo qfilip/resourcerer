@@ -16,6 +16,7 @@ public class Instance : AppDbEntity
     public double Quantity { get; set; }
     public DateTime? ExpiryDate { get; set; }
     
+    // relational
     public Guid? ItemId { get; set; }
     public virtual Item? Item { get; set; }
 
@@ -30,18 +31,4 @@ public class Instance : AppDbEntity
     public ICollection<InstanceOrderedEvent> OrderedEvents { get; set; }
     public ICollection<InstanceReservedEvent> ReservedEvents { get; set; }
     public ICollection<InstanceDiscardedEvent> DiscardedEvents { get; set; }
-
-    //public string OrderedEventsJson
-    //{
-    //    get => JsonSerializer.Serialize(OrderedEvents);
-    //    set
-    //    {
-    //        if(value == null)
-    //        {
-    //            return;
-    //        }
-
-    //        OrderedEvents = JsonSerializer.Deserialize<List<InstanceOrderedEvent>>(value)!;
-    //    }
-    //}
 }

@@ -19,6 +19,8 @@ public class Item : AppDbEntity
     public double ProductionTimeSeconds { get; set; }
     public double? ExpirationTimeSeconds { get; set; }
 
+    // relational
+
     public Guid CategoryId { get; set; }
     public virtual Category? Category { get; set; }
     
