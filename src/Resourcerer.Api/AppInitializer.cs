@@ -10,8 +10,13 @@ public class AppInitializer
     
     public static void LoadConfiguration(IConfiguration configuration)
     {
-        AppStaticData.Auth.Jwt.SetJwtSecretKey(Load<string>(configuration, "Auth", "JwtSecret"));
-        AppStaticData.Auth.Enabled = Load<bool>(configuration, "Auth", "Enabled");
+        AppStaticData.Auth.Load(Load<bool>(configuration, "Auth", "Enabled"));
+        
+        var secretKey = Load<string>(configuration, "Auth", "JwtSecret");
+        var issuer = Load<string>(configuration, "Auth", "Issuer");
+        var audience = Load<string>(configuration, "Auth", "Audience");
+
+        AppStaticData.Auth.Jwt.Configure(secretKey, issuer, audience); 
     }
 
     private static T Load<T>(IConfiguration configuration, string section, string key)
