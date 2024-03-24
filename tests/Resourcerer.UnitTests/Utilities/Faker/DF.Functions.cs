@@ -58,6 +58,21 @@ internal static partial class DF
                 typeof(Instance),
                 (() => MakeEntity(() => new Instance { Quantity = 1 }),
                 [typeof(Company), typeof(Item)])
+            },
+            {
+                typeof(InstanceOrderedEvent),
+                (() => MakeEntity(()=> new InstanceOrderedEvent { Quantity = 1 }),
+                [typeof(Instance)])
+            },
+            {
+                typeof(InstanceReservedEvent),
+                (() => MakeEntity(()=> new InstanceReservedEvent { Quantity = 1 }),
+                [typeof(Instance)])
+            },
+            {
+                typeof(InstanceDiscardedEvent),
+                (() => MakeEntity(()=> new InstanceDiscardedEvent { Quantity = 1 }),
+                [typeof(Instance)])
             }
         };
     }

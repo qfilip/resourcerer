@@ -44,7 +44,7 @@ public static class CreateInstanceDiscardedEvent
                 .Sum(x => x.Quantity);
 
             var reserved = instance.ReservedEvents
-                .Where(x => x.CancelledEvent != null)
+                .Where(x => x.CancelledEvent == null)
                 .Sum(x => x.Quantity);
 
             var discarded = instance.DiscardedEvents
