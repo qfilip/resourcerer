@@ -40,6 +40,11 @@ internal static partial class DF
                 [typeof(Item)])
             },
             {
+                typeof(Excerpt),
+                (() => MakeEntity(() => new Excerpt { Quantity = 1 }),
+                [typeof(Item)])
+            },
+            {
                 typeof(Item),
                 (() => MakeEntity(() => new Item
                 {
@@ -114,18 +119,22 @@ internal static partial class DF
 
         foreach (var relationalType in relationalTypes)
         {
-            var relationalProperty = t.GetProperties()
-                .FirstOrDefault(x => x.PropertyType == relationalType);
+            var relationalProperties = t.GetProperties()
+                .Where(x => x.PropertyType == relationalType)
+                .ToArray();
 
-            if(relationalProperty == null)
+            if(relationalProperties.Length == 0)
             {
                 throw new Exception($"Invalid mapping of relational property array. Relational type {relationalType} doesn't exist on entity type {t}");
             }
 
-            var relationPropertyValue = relationalProperty.GetValue(entity);
-            if(relationPropertyValue == null)
+            foreach(var relationalProperty in relationalProperties)
             {
-                relationalProperty.SetValue(entity, Fake(relationalProperty.PropertyType));
+                var relationPropertyValue = relationalProperty.GetValue(entity);
+                if(relationPropertyValue == null)
+                {
+                    relationalProperty.SetValue(entity, Fake(relationalProperty.PropertyType));
+                }
             }
         }
 
