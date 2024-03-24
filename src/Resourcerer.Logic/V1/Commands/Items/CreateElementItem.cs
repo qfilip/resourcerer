@@ -28,7 +28,7 @@ public static class CreateElementItem
             if (category == null)
             {
                 var error = "Category not found";
-                return HandlerResult<Unit>.Rejected(error);
+                return HandlerResult<Unit>.NotFound(error);
             }
 
             var existing = await _appDbContext.Items

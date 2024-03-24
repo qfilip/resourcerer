@@ -90,10 +90,7 @@ public class FinishItemProductionOrderTests : TestsBase
     {
         // arrange
         var fd = Faking.FakeData(_ctx, 2, 2);
-        var order = Faking.FakeOrder(_ctx, fd, x =>
-        {
-            x.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
-        });
+        var order = Faking.FakeOrder(_ctx, fd);
         var dto = new V1FinishItemProductionOrderRequest
         {
             ProductionOrderId = order.Id
@@ -115,6 +112,7 @@ public class FinishItemProductionOrderTests : TestsBase
         var fd = Faking.FakeData(_ctx, 2, 2);
         var order = Faking.FakeOrder(_ctx, fd, x =>
         {
+            x.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
             x.FinishedEvent = AppDbJsonField.Create(() => new ItemProductionFinishedEvent());
         });
         var dto = new V1FinishItemProductionOrderRequest

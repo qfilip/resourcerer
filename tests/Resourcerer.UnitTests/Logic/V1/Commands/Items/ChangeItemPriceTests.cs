@@ -76,7 +76,6 @@ public class ChangeItemPriceTests : TestsBase
             ItemId = Guid.NewGuid(),
             UnitPrice = 20
         };
-        _ctx.SaveChanges();
 
         // act
         var result = _handler.Handle(dto).Await();

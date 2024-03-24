@@ -7,20 +7,20 @@ namespace Resourcerer.UnitTests.Logic.V1.Commands.Items;
 
 internal class Faking
 {
-    internal static FakedData FakeData(AppDbContext ctx, int elementCount, int instanceCount)
+    internal static FakedData FakeData(TestDbContext ctx, int elementCount, int instanceCount)
     {
-        var company = DF.FakeCompany(ctx);
-        var composite = DF.FakeItem(ctx);
+        var company = DF.Fake<Company>(ctx);
+        var composite = DF.Fake<Item>(ctx);
         var fd = new FakedData()
         {
-            CompositeId = composite.Id,
+            Composite = composite,
             CompanyId = company.Id
         };
 
         var elements = new List<(Item, double)>();
 
         for (int i = 0; i < elementCount; i++)
-            elements.Add((DF.FakeItem(ctx), 1));
+            elements.Add((DF.Fake<Item>(ctx), 1));
 
         for (int i = 0; i < elements.Count; i++)
         {
@@ -28,30 +28,36 @@ internal class Faking
 
             for (int j = 0; j < instanceCount; j++)
             {
-                var instance = DF.FakeInstance(ctx, x =>
+                var instance = DF.Fake<Instance>(ctx, x =>
                 {
                     x.Quantity = 1;
 
                     x.Item = elements[i].Item1;
-                    x.ItemId = elements[i].Item1.Id;
-
                     x.OwnerCompany = company;
-                    x.OwnerCompanyId = company.Id;
                 });
 
                 fd.Elements[i].Instances.Add(instance);
             }
         }
 
-        DF.FakeExcerpts(ctx, composite, elements.ToArray());
+        foreach (var element in elements)
+        {
+            DF.Fake<Excerpt>(ctx, x =>
+            {
+                x.Composite = composite;
+                x.Element = element.Item1;
+                
+                x.Quantity = element.Item2;
+            });
+        }
 
         return fd;
     }
     internal static ItemProductionOrder FakeOrder(TestDbContext context, FakedData data, Action<ItemProductionOrder>? modifier = null)
     {
-        return DF.FakeItemProductionOrder(context, x =>
+        return DF.Fake<ItemProductionOrder>(context, x =>
         {
-            x.ItemId = data.CompositeId;
+            x.Item = data.Composite;
             x.CompanyId = data.CompanyId;
             x.InstancesUsedIds = MapInstancesToUse(data).Keys.ToArray();
             x.Reason = "test";
@@ -76,7 +82,7 @@ internal class Faking
 
 internal class FakedData
 {
-    public Guid CompositeId { get; set; }
+    public Item? Composite { get; set; }
     public Guid CompanyId { get; set; }
     public List<FakedItem> Elements { get; set; } = new();
 }

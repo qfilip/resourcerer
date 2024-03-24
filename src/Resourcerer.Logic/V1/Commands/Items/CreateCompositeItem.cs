@@ -26,7 +26,7 @@ public static class CreateCompositeItem
             if (category == null)
             {
                 var error = "Requested category doesn't exist";
-                return HandlerResult<Unit>.Rejected(error);
+                return HandlerResult<Unit>.NotFound(error);
             }
 
             var existing = await _appDbContext.Items

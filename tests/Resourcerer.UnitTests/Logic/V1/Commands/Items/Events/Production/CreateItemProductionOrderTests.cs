@@ -22,7 +22,7 @@ public class CreateItemProductionOrderTests : TestsBase
         
         var dto = new V1CreateItemProductionOrderRequest
         {
-            ItemId = fd.CompositeId,
+            ItemId = fd.Composite!.Id,
             CompanyId = fd.CompanyId,
             Quantity = 2,
             InstancesToUse = Faking.MapInstancesToUse(fd)
@@ -61,7 +61,7 @@ public class CreateItemProductionOrderTests : TestsBase
         var fd = Faking.FakeData(_ctx, 2, 2);
         var dto = new V1CreateItemProductionOrderRequest
         {
-            ItemId = fd.CompositeId,
+            ItemId = fd.Composite!.Id,
             CompanyId = fd.CompanyId,
             InstancesToUse = new Dictionary<Guid, double>
             {
@@ -93,7 +93,7 @@ public class CreateItemProductionOrderTests : TestsBase
         
         var dto = new V1CreateItemProductionOrderRequest
         {
-            ItemId = fd.CompositeId,
+            ItemId = fd.Composite!.Id,
             CompanyId = fd.CompanyId,
             InstancesToUse = Faking.MapInstancesToUse(fd)
         };
@@ -115,7 +115,7 @@ public class CreateItemProductionOrderTests : TestsBase
 
         var dto = new V1CreateItemProductionOrderRequest
         {
-            ItemId = fd.CompositeId,
+            ItemId = fd.Composite!.Id,
             CompanyId = fd.CompanyId,
             Quantity = 2,
             InstancesToUse = Faking.MapInstancesToUse(fd)
@@ -138,7 +138,7 @@ public class CreateItemProductionOrderTests : TestsBase
 
         var dto = new V1CreateItemProductionOrderRequest
         {
-            ItemId = fd.CompositeId,
+            ItemId = fd.Composite!.Id,
             CompanyId = fd.CompanyId,
             Quantity = 2,
             InstancesToUse = Faking.MapInstancesToUse(fd, () => 0.3)
