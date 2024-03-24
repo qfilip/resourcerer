@@ -1,4 +1,5 @@
-﻿using Resourcerer.Dtos.V1;
+﻿using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Commands.Items;
 using Resourcerer.UnitTests.Utilities;
@@ -83,12 +84,11 @@ public class CreateItemProductionOrderTests : TestsBase
     {
         // arrange
         var fd = Faking.FakeData(_ctx, 2, 2);
-        var otherCompany = DF.FakeCompany(_ctx);
+        var otherCompany = DF.Fake<Company>(_ctx);
 
         fd.Elements.ForEach(e => e.Instances.ForEach(i =>
         {
             i.OwnerCompany = otherCompany;
-            i.OwnerCompanyId = otherCompany.Id;
         }));
         
         var dto = new V1CreateItemProductionOrderRequest

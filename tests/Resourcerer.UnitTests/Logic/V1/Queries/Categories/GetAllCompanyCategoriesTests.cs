@@ -24,10 +24,10 @@ public class GetAllCompanyCategoriesTests : TestsBase
             .ToList()
             .ForEach(parent =>
             {
-                DF.FakeCategory(_ctx, catg =>
+                DF.Fake<Category>(_ctx, catg =>
                 {
-                    catg.CompanyId = company.Id;
-                    catg.ParentCategoryId = parent.Id;
+                    catg.Company = company;
+                    catg.ParentCategory = parent;
                 });
             });
 

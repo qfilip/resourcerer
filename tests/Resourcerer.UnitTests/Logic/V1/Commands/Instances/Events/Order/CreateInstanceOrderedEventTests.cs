@@ -198,7 +198,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
         {
             x.Category!.Company = DF.Fake<Company>(_ctx);
         });
-        var sourceInstance = DF.FakeInstance(_ctx, x =>
+        var sourceInstance = DF.Fake<Instance>(_ctx, x =>
         {
             x.Quantity = 1;
         });
@@ -222,8 +222,8 @@ public class CreateInstanceOrderedEventTests : TestsBase
     [Fact]
     public void InstanceNotFound__Rejected()
     {
-        var buyerCompany = DF.FakeCompany(_ctx);
-        var sourceInstance = DF.FakeInstance(_ctx, x =>
+        var buyerCompany = DF.Fake<Company>(_ctx);
+        var sourceInstance = DF.Fake<Instance>(_ctx, x =>
         {
             x.Quantity = 1;
         });
