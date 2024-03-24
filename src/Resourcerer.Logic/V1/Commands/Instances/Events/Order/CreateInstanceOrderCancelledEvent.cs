@@ -27,7 +27,7 @@ public static class CreateInstanceOrderCancelledEvent
             if (orderEvent == null)
             {
                 var error = "Order event not found";
-                return HandlerResult<Unit>.Rejected(error);
+                return HandlerResult<Unit>.NotFound(error);
             }
 
             if (orderEvent.SentEvent != null)

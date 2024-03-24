@@ -22,7 +22,6 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     {
         // arrange
         var sourceInstance = DF.Fake<Instance>(_ctx);
-        var derivedInstance = DF.Fake<Instance>(_ctx, x => x.SourceInstance = sourceInstance);
         var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x => x.Instance = sourceInstance);
         _ctx.SaveChanges();
 
@@ -52,7 +51,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     }
 
     [Fact]
-    public void OrderEvent_NotFound__Rejected()
+    public void OrderEvent_NotFound__NotFound()
     {
         var dto = new V1InstanceOrderCancelRequest
         {
@@ -63,14 +62,13 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
-        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+        Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
     }
 
     [Fact]
     public void DeliveredEvent_Exists__Rejected()
     {
         var sourceInstance = DF.Fake<Instance>(_ctx);
-        var derivedInstance = DF.Fake<Instance>(_ctx, x => x.SourceInstance = sourceInstance);
         var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
         {
             x.Instance = sourceInstance;
@@ -97,7 +95,6 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     public void SentEvent_Exists__Rejected()
     {
         var sourceInstance = DF.Fake<Instance>(_ctx);
-        var derivedInstance = DF.Fake<Instance>(_ctx, x => x.SourceInstance = sourceInstance);
         var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
         {
             x.Instance = sourceInstance;
@@ -121,12 +118,11 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     }
 
     [Fact]
-    public void Is_Idempotent()
+    public void Idempotent_CancelEventExists__Ok()
     {
         // arrange
         var sourceInstance = DF.Fake<Instance>(_ctx);
-        var derivedInstance = DF.Fake<Instance>(_ctx, x => x.SourceInstance = sourceInstance);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx);
+        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x => x.Instance = sourceInstance);
         
         _ctx.SaveChanges();
 
