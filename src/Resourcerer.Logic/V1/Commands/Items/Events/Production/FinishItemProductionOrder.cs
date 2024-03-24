@@ -59,6 +59,8 @@ public static class FinishItemProductionOrder
                 return HandlerResult<Unit>.Ok(Unit.New);
             }
 
+            _dbContext.ItemProductionOrders.Attach(order);
+
             order.FinishedEvent = AppDbJsonField.Create(() => new ItemProductionFinishedEvent());
 
             var expiration = order.Item!.ExpirationTimeSeconds;
@@ -77,8 +79,6 @@ public static class FinishItemProductionOrder
                 FinishedEvent = AppDbJsonField.Create(() => new ItemProductionFinishedEvent())
             };
 
-            _dbContext.ItemProductionOrders.Attach(order);
-            _dbContext.ItemProductionOrders.Entry(order).Property(x => x.FinishedEventJson).IsModified = true;
             _dbContext.Instances.Add(newInstance);
             
             await _dbContext.SaveChangesAsync();

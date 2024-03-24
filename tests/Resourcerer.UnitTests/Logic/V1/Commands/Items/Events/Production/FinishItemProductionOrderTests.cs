@@ -34,14 +34,104 @@ public class FinishItemProductionOrderTests : TestsBase
 
         // act
         var result = _sut.Handle(dto).Await();
-        
+
         // assert
-        _ctx.ChangeTracker.Clear();
-        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-        AssertPersistedData(order.Id);
+        Assert.Multiple(
+            () => Assert.Equal(eHandlerResultStatus.Ok, result.Status),
+            () =>
+            {
+                _ctx.Clear();
+                AssertDataIntegrity(order.Id);
+            }
+        );
     }
 
-    private void AssertPersistedData(Guid itemProductionOrderId)
+    [Fact]
+    public void Order_NotFound__NotFound()
+    {
+        // arrange
+        var dto = new V1FinishItemProductionOrderRequest
+        {
+            ProductionOrderId = Guid.NewGuid()
+        };
+
+        // act
+        var result = _sut.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
+    }
+
+    [Fact]
+    public void OrderCancelled__Rejected()
+    {
+        // arrange
+        var fd = Faking.FakeData(_ctx, 2, 2);
+        var order = Faking.FakeOrder(_ctx, fd, x =>
+        {
+            x.CanceledEvent = AppDbJsonField.Create(() => new ItemProductionOrderCancelledEvent());
+        });
+        var dto = new V1FinishItemProductionOrderRequest
+        {
+            ProductionOrderId = order.Id
+        };
+
+        _ctx.SaveChanges();
+
+        // act
+        var result = _sut.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
+    public void OrderNotStarted__Rejected()
+    {
+        // arrange
+        var fd = Faking.FakeData(_ctx, 2, 2);
+        var order = Faking.FakeOrder(_ctx, fd, x =>
+        {
+            x.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
+        });
+        var dto = new V1FinishItemProductionOrderRequest
+        {
+            ProductionOrderId = order.Id
+        };
+
+        _ctx.SaveChanges();
+
+        // act
+        var result = _sut.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
+    public void Idempotency_OrderFinished__Ok()
+    {
+        // arrange
+        var fd = Faking.FakeData(_ctx, 2, 2);
+        var order = Faking.FakeOrder(_ctx, fd, x =>
+        {
+            x.FinishedEvent = AppDbJsonField.Create(() => new ItemProductionFinishedEvent());
+        });
+        var dto = new V1FinishItemProductionOrderRequest
+        {
+            ProductionOrderId = order.Id
+        };
+
+        _ctx.SaveChanges();
+
+        // act
+        var result = _sut.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
+    }
+
+    private void AssertDataIntegrity(Guid itemProductionOrderId)
     {
         var order = _ctx.ItemProductionOrders
             .First(x => x.Id == itemProductionOrderId);
