@@ -8,7 +8,7 @@ using Resourcerer.Logic.V1.Commands;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
 
-namespace Resourcerer.UnitTests.Logic.V1_0;
+namespace Resourcerer.UnitTests.Logic.V1.Commands.Items;
 
 public class ChangeItemPriceTests : TestsBase
 {

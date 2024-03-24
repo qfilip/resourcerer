@@ -3,7 +3,7 @@ using Resourcerer.Logic.Queries.V1;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
 
-namespace Resourcerer.UnitTests.Logic.V1_0.Queries.Categories;
+namespace Resourcerer.UnitTests.Logic.V1.Queries.Categories;
 
 public class GetAllCompanyCategoriesTests : TestsBase
 {

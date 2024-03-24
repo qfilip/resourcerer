@@ -1,10 +1,11 @@
-﻿using Resourcerer.Dtos.V1;
+﻿using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Commands;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
 
-namespace Resourcerer.UnitTests.Logic.V1_0;
+namespace Resourcerer.UnitTests.Logic.V1.Commands.Categories;
 
 public class CreateCategoryTests : TestsBase
 {
@@ -15,12 +16,12 @@ public class CreateCategoryTests : TestsBase
     }
 
     [Fact]
-    public void When_HappyPath_TopCategory_Then_Ok()
+    public void HappyPath_TopCategory___Ok()
     {
         var dto = new V1CreateCategory
         {
             Name = "name",
-            CompanyId = DF.FakeCompany(_ctx).Id,
+            CompanyId = DF.Fake<Company>(_ctx).Id,
         };
         _ctx.SaveChanges();
 
@@ -32,16 +33,16 @@ public class CreateCategoryTests : TestsBase
     }
 
     [Fact]
-    public void When_HappyPath_ChildCategory_Then_Ok()
+    public void HappyPath_ChildCategory___Ok()
     {
-        var parentCategory = DF.FakeCategory(_ctx, x =>
+        var parentCategory = DF.Fake<Category>(_ctx, x =>
         {
-            x.CompanyId = DF.FakeCompany(_ctx).Id;
+            x.Company = DF.Fake<Company>(_ctx);
         });
         var dto = new V1CreateCategory
         {
             Name = "name",
-            CompanyId = parentCategory.CompanyId,
+            CompanyId = parentCategory.Company!.Id,
             ParentCategoryId = parentCategory.Id
         };
         _ctx.SaveChanges();
@@ -54,13 +55,13 @@ public class CreateCategoryTests : TestsBase
     }
 
     [Fact]
-    public void When_Categories_DifferentCompany_And_SameParentCategory_HaveSameNamee_Then_Ok()
+    public void Categories_DifferentCompany_And_SameParentCategory_HaveSameNamee___Ok()
     {
-        var c = DF.FakeCategory(_ctx);
+        var c = DF.Fake<Category>(_ctx);
         var dto = new V1CreateCategory
         {
             Name = c.Name,
-            CompanyId = DF.FakeCompany(_ctx).Id
+            CompanyId = DF.Fake<Company>(_ctx).Id
         };
         _ctx.SaveChanges();
 
@@ -72,13 +73,13 @@ public class CreateCategoryTests : TestsBase
     }
 
     [Fact]
-    public void When_SameCompany_And_DifferentParentCategory_HaveSameName_Then_Ok()
+    public void SameCompany_And_DifferentParentCategory_HaveSameName___Ok()
     {
-        var parentCatg = DF.FakeCategory(_ctx);
+        var parentCatg = DF.Fake<Category>(_ctx);
         var dto = new V1CreateCategory
         {
             Name = parentCatg.Name,
-            CompanyId = parentCatg.CompanyId,
+            CompanyId = parentCatg.Company!.Id,
             ParentCategoryId = parentCatg.Id
         };
         _ctx.SaveChanges();
@@ -91,12 +92,12 @@ public class CreateCategoryTests : TestsBase
     }
 
     [Fact]
-    public void When_SameCompany_And_SameParentCategory_HaveSameName_Then_Rejected()
+    public void SameCompany_And_SameParentCategory_HaveSameName___Rejected()
     {
-        var parentCatg = DF.FakeCategory(_ctx);
-        var existingCatg = DF.FakeCategory(_ctx, x =>
+        var parentCatg = DF.Fake<Category>(_ctx);
+        var existingCatg = DF.Fake<Category>(_ctx, x =>
         {
-            x.CompanyId = parentCatg.CompanyId;
+            x.CompanyId = parentCatg.Company!.Id;
             x.ParentCategoryId = parentCatg.Id;
         });
         var dto = new V1CreateCategory
@@ -115,13 +116,13 @@ public class CreateCategoryTests : TestsBase
     }
 
     [Fact]
-    public void When_ParentCategory_DoesntExist_Then_Rejected()
+    public void ParentCategory_DoesntExist___Rejected()
     {
         // arrange
         var dto = new V1CreateCategory
         {
             Name = "test",
-            CompanyId = DF.FakeCompany(_ctx).Id,
+            CompanyId = DF.Fake<Company>(_ctx).Id,
             ParentCategoryId = Guid.NewGuid()
         };
 
@@ -133,14 +134,14 @@ public class CreateCategoryTests : TestsBase
     }
 
     [Fact]
-    public void When_ParentCategory_WithDifferentCompany_Exist_Then_Rejected()
+    public void ParentCategory_WithDifferentCompany_Exist___Rejected()
     {
         // arrange
-        var parentCatg = DF.FakeCategory(_ctx);
+        var parentCatg = DF.Fake<Category>(_ctx);
         var dto = new V1CreateCategory
         {
             Name = "test",
-            CompanyId = DF.FakeCompany(_ctx).Id,
+            CompanyId = DF.Fake<Company>(_ctx).Id,
             ParentCategoryId = parentCatg.Id
         };
 

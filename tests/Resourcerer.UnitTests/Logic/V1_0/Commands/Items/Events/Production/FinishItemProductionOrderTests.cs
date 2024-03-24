@@ -1,12 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Commands.Items;
 using Resourcerer.UnitTests.Utilities;
 
-namespace Resourcerer.UnitTests.Logic.V1.Commands.Items.Events.Production;
+namespace Resourcerer.UnitTests.Logic.V1.Commands.Items;
 
 public class FinishItemProductionOrderTests : TestsBase
 {

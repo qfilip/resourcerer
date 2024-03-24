@@ -13,7 +13,7 @@ internal static partial class DF
             {
                 typeof(Company),
                 (() => MakeEntity(() => new Company { Name = MakeName() }),
-                new Type[0])
+                Array.Empty<Type>())
             },
             {
                 typeof(AppUser),

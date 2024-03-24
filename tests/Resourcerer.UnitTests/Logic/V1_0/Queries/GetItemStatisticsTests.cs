@@ -1,6 +1,6 @@
 ﻿using Resourcerer.Logic.Queries.V1;
 
-namespace Resourcerer.UnitTests.Logic.V1_0;
+namespace Resourcerer.UnitTests.Logic.V1.Queries.Categories;
 
 public class GetItemStatisticsTests : TestsBase
 {

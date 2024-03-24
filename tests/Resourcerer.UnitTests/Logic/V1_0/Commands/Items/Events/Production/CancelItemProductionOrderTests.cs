@@ -7,7 +7,7 @@ using Resourcerer.Logic.V1.Commands.Items;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.Faker;
 
-namespace Resourcerer.UnitTests.Logic.V1.Commands.Items.Events.Production;
+namespace Resourcerer.UnitTests.Logic.V1.Commands.Items;
 
 public class CancelItemProductionOrderTests : TestsBase
 {

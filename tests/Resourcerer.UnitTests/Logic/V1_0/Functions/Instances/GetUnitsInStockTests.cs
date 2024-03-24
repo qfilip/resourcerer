@@ -1,7 +1,7 @@
 ﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.UnitTests.Utilities.Faker;
 
-namespace Resourcerer.UnitTests.Logic.V1_0.Functions.Instances;
+namespace Resourcerer.UnitTests.Logic.V1.Functions.Instances;
 
 public class GetUnitsInStockTests : TestsBase
 {
