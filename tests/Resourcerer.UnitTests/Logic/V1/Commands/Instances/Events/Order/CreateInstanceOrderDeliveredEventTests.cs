@@ -24,6 +24,7 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
         var sourceInstance = DF.Fake<Instance>(_ctx);
         var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
         {
+            x.Instance = sourceInstance;
             x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
         });
         
@@ -73,6 +74,7 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
         var sourceInstance = DF.Fake<Instance>(_ctx);
         var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
         {
+            x.Instance = sourceInstance;
             x.CancelledEvent = AppDbJsonField.Create(() => new InstanceOrderCancelledEvent());
         });
         var dto = new V1InstanceOrderDeliveredRequest
@@ -95,6 +97,7 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
         var sourceInstance = DF.Fake<Instance>(_ctx);
         var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
         {
+            x.Instance = sourceInstance;
             x.DeliveredEvent = AppDbJsonField.Create(() => new InstanceOrderDeliveredEvent());
         });
         _ctx.SaveChanges();
@@ -113,11 +116,12 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
     }
 
     [Fact]
-    public void Is_Idempotent()
+    public void Idempotent_DeliveredEventExist__Ok()
     {
         var sourceInstance = DF.Fake<Instance>(_ctx);
         var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
         {
+            x.Instance = sourceInstance;
             x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
             x.DeliveredEvent = AppDbJsonField.Create(() => new InstanceOrderDeliveredEvent());
         });
