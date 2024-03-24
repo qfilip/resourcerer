@@ -40,9 +40,15 @@ public class CreateInstanceDiscardedEventTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
-        var instance = _ctx.Instances.First(x => x.Id == orderEvent.DerivedInstanceId);
-        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
-        Assert.True(instance.DiscardedEvents.Any());
+        Assert.Multiple(
+            () => Assert.Equal(eHandlerResultStatus.Ok, result.Status),
+            () =>
+            {
+                _ctx.Clear();
+                var instance = _ctx.Instances.First(x => x.Id == orderEvent.DerivedInstanceId);
+                Assert.True(instance.DiscardedEvents.Any());
+            }
+        );
     }
 
     [Fact]

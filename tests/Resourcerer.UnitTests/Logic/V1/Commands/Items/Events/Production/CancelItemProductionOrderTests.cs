@@ -168,22 +168,26 @@ public class CancelItemProductionOrderTests : TestsBase
     {
         var productionOrderId = Guid.NewGuid();
 
-        var composite = DF.FakeItem(_ctx);
-        
-        var elementOne = DF.FakeItem(_ctx);
-        var elementTwo = DF.FakeItem(_ctx);
+        var composite = DF.Fake<Item>(_ctx);
 
-        DF.FakeExcerpts(_ctx, composite, [
-            (elementOne, 1),
-            (elementTwo, 1),
-        ]);
+        var items = new List<Item>()
+        {
+            DF.Fake<Item>(_ctx),
+            DF.Fake<Item>(_ctx)
+        };
 
-        var instances = Enumerable.Range(0, 2)
+        items.ForEach(i => DF.Fake<Excerpt>(_ctx, x =>
+        {
+            x.Composite = composite;
+            x.Element = i;
+            x.Quantity = 1;
+        }));
+
+        var instances = items
             .Select(x =>
             {
-                var id = x % 2 == 0 ? elementOne.Id : elementTwo.Id;
-                var instance = DF.FakeInstance(_ctx, i => i.ItemId = id);
-                DF.FakeReservedEvent(_ctx, x =>
+                var instance = DF.Fake<Instance>(_ctx, i => i.Item = x);
+                DF.Fake<InstanceReservedEvent>(_ctx, x =>
                 {
                     x.ItemProductionOrderId = productionOrderId;
                     x.InstanceId = instance.Id;
@@ -194,16 +198,16 @@ public class CancelItemProductionOrderTests : TestsBase
             })
             .ToArray();
 
-        var order = DF.FakeItemProductionOrder(_ctx, x =>
+        var order = DF.Fake<ItemProductionOrder>(_ctx, x =>
         {
             x.Id = productionOrderId;
             x.ItemId = composite.Id;
             x.InstancesUsedIds = instances.Select(x => x.Id).ToArray();
             x.Quantity = 1;
             x.Reason = "test";
+            
+            modifier?.Invoke(x);
         });
-
-        modifier?.Invoke(order);
 
         return order;
     }
