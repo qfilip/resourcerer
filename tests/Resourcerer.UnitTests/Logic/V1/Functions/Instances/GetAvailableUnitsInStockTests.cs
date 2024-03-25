@@ -18,7 +18,7 @@ public class GetAvailableUnitsInStockTests : TestsBase
     {
         // arrange
         var instance = DF.Fake<Instance>(_ctx, x => x.Quantity = 11);
-        var xs = FakeEvents(2, instance);
+        var instanceEvents = FakeEvents(2, instance);
 
         _ctx.SaveChanges();
 
@@ -33,8 +33,9 @@ public class GetAvailableUnitsInStockTests : TestsBase
         var actual = _sut(dbInstance);
 
         // assert
-        var unavailable = xs.Orders - xs.SentOrders - xs.DeliveredOrders - xs.Reserves - xs.Discards;
+        var unavailable = instanceEvents.SumAll();
         var expected = instance.Quantity - unavailable;
+        
         Assert.Equal(expected, actual);
     }
 
@@ -57,6 +58,7 @@ public class GetAvailableUnitsInStockTests : TestsBase
         // act
         var dbInstance = _ctx.Instances
             .Include(x => x.SourceInstance)
+                .ThenInclude(x => x!.OrderedEvents)
             .Include(x => x.OrderedEvents)
             .Include(x => x.ReservedEvents)
             .Include(x => x.DiscardedEvents)
@@ -67,8 +69,8 @@ public class GetAvailableUnitsInStockTests : TestsBase
         // assert
         var deliveredQty = sourceInstanceEvents.DeliveredOrders;
         var unavailableQty = derivedInstanceEvents.SumAll();
-
         var expected = deliveredQty - unavailableQty;
+        
         Assert.Equal(expected, actual);
     }
 
@@ -89,7 +91,7 @@ public class GetAvailableUnitsInStockTests : TestsBase
 
         var ordersDelivered = FakeEvent<InstanceOrderedEvent>(eventCount, x =>
         {
-            x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
+            x.DeliveredEvent = AppDbJsonField.Create(() => new InstanceOrderDeliveredEvent());
             x.Instance = instance;
             orderModifier?.Invoke(x);
         });

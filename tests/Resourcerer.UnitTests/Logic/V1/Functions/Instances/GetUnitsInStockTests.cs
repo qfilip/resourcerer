@@ -1,5 +1,4 @@
 ﻿using Resourcerer.DataAccess.Entities;
-using Resourcerer.UnitTests.Utilities.Faker;
 
 namespace Resourcerer.UnitTests.Logic.V1.Functions.Instances;
 
@@ -9,7 +8,7 @@ public class GetUnitsInStockTests : TestsBase
     private readonly Guid _staticId;
     public GetUnitsInStockTests()
     {
-        _sut = Resourcerer.Logic.V1_0.Functions.Instances.GetUnitsInStock;
+        _sut = Resourcerer.Logic.V1.Functions.Instances.GetUnitsInStock;
         _staticId = Guid.NewGuid();
     }
 
