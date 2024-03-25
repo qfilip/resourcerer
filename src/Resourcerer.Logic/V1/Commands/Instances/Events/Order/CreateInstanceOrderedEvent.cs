@@ -62,7 +62,7 @@ public static class CreateInstanceOrderedEvent
                 return HandlerResult<Unit>.Rejected(errors);
             }
 
-            var instanceQuery = Instances.GetUnitsInStockDbQuery(_appDbContext.Instances);
+            var instanceQuery = Instances.GetAvailableUnitsInStockDbQuery(_appDbContext.Instances);
 
             var instance = await instanceQuery
                 .AsNoTracking()

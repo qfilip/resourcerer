@@ -5,7 +5,7 @@ namespace Resourcerer.Logic.V1.Functions;
 
 public static partial class Instances
 {
-    public static IQueryable<Instance> GetUnitsInStockDbQuery(DbSet<Instance> dbSet) =>
+    public static IQueryable<Instance> GetAvailableUnitsInStockDbQuery(DbSet<Instance> dbSet) =>
         dbSet
             .Include(x => x.SourceInstance)
                 .ThenInclude(x => x!.OrderedEvents)

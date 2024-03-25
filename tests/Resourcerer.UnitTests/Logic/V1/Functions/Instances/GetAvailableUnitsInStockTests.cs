@@ -12,7 +12,7 @@ public class GetAvailableUnitsInStockTests : TestsBase
     public GetAvailableUnitsInStockTests()
     {
         _sut = Resourcerer.Logic.V1.Functions.Instances.GetAvailableUnitsInStock;
-        _query = Resourcerer.Logic.V1.Functions.Instances.GetUnitsInStockDbQuery(_ctx.Instances);
+        _query = Resourcerer.Logic.V1.Functions.Instances.GetAvailableUnitsInStockDbQuery(_ctx.Instances);
     }
 
     [Fact]
