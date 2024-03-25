@@ -62,16 +62,9 @@ public static class CreateInstanceOrderedEvent
                 return HandlerResult<Unit>.Rejected(errors);
             }
 
-            var instance = await _appDbContext.Instances
-                .Include(x => x.SourceInstance)
-                .Select(x => new Instance
-                {
-                    Id = x.Id,
-                    Quantity = x.Quantity,
-                    ExpiryDate = x.ExpiryDate,
-                    SourceInstance = x.SourceInstance,
-                    OrderedEvents = x.OrderedEvents
-                })
+            var instanceQuery = Instances.GetUnitsInStockDbQuery(_appDbContext.Instances);
+
+            var instance = await instanceQuery
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.InstanceId);
 
@@ -101,15 +94,9 @@ public static class CreateInstanceOrderedEvent
                 }
             }
 
-            var unitsSent = instance.OrderedEvents
-                .Where(x =>
-                    x.CancelledEvent == null &&
-                    x.SentEvent != null)
-                .Sum(x => x.Quantity);
+            var availableUnitsInStock = Instances.GetAvailableUnitsInStock(instance);
 
-            var unitsInStock = Instances.GetUnitsInStock(instance) - unitsSent;
-
-            if(unitsInStock - request.UnitsOrdered < 0)
+            if(availableUnitsInStock - request.UnitsOrdered < 0)
             {
                 return HandlerResult<Unit>
                     .Rejected($"Not enough units left in stock for this instance");
