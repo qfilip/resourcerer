@@ -21,6 +21,10 @@ public static class CreateCompositeItem
         public async Task<HandlerResult<Unit>> Handle(V1CreateCompositeItem request)
         {
             var category = await _appDbContext.Categories
+                .Select(x => new
+                {
+                    x.Id
+                })
                 .FirstOrDefaultAsync(x => x.Id == request.CategoryId);
 
             if (category == null)

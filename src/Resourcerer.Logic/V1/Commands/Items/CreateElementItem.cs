@@ -21,9 +21,11 @@ public static class CreateElementItem
         public async Task<HandlerResult<Unit>> Handle(V1CreateElementItem request)
         {
             var category = await _appDbContext.Categories
-                .FirstOrDefaultAsync(x =>
-                    x.Id == request.CategoryId &&
-                    x.CompanyId == request.CompanyId);
+                .Select(x => new
+                {
+                    x.Id
+                })
+                .FirstOrDefaultAsync(x => x.Id == request.CategoryId);
 
             if (category == null)
             {
