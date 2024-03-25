@@ -8,9 +8,11 @@ namespace Resourcerer.UnitTests.Logic.V1.Functions.Instances;
 public class GetAvailableUnitsInStockTests : TestsBase
 {
     private readonly Func<Instance, double> _sut;
+    private readonly IQueryable<Instance> _query;
     public GetAvailableUnitsInStockTests()
     {
         _sut = Resourcerer.Logic.V1.Functions.Instances.GetAvailableUnitsInStock;
+        _query = Resourcerer.Logic.V1.Functions.Instances.GetUnitsInStockDbQuery(_ctx.Instances);
     }
 
     [Fact]
@@ -23,12 +25,7 @@ public class GetAvailableUnitsInStockTests : TestsBase
         _ctx.SaveChanges();
 
         // act
-        var dbInstance = _ctx.Instances
-            .Include(x => x.SourceInstance)
-            .Include(x => x.OrderedEvents)
-            .Include(x => x.ReservedEvents)
-            .Include(x => x.DiscardedEvents)
-            .First(x => x.Id == instance.Id);
+        var dbInstance = _query.First(x => x.Id == instance.Id);
         
         var actual = _sut(dbInstance);
 
@@ -56,14 +53,8 @@ public class GetAvailableUnitsInStockTests : TestsBase
         _ctx.SaveChanges();
 
         // act
-        var dbInstance = _ctx.Instances
-            .Include(x => x.SourceInstance)
-                .ThenInclude(x => x!.OrderedEvents)
-            .Include(x => x.OrderedEvents)
-            .Include(x => x.ReservedEvents)
-            .Include(x => x.DiscardedEvents)
-            .First(x => x.Id == instance.Id);
-        
+        var dbInstance = _query.First(x => x.Id == instance.Id);
+
         var actual = _sut(dbInstance);
 
         // assert
