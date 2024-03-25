@@ -24,7 +24,6 @@ public class CreateElementItemTests : TestsBase
         var dto = new V1CreateElementItem
         {
             Name = "test",
-            CompanyId = category.CompanyId,
             CategoryId = category.Id,
             UnitOfMeasureId = uom.Id,
             UnitPrice = 2
@@ -55,7 +54,6 @@ public class CreateElementItemTests : TestsBase
         var dto = new V1CreateElementItem
         {
             Name = existingElement.Name,
-            CompanyId = existingElement.Category!.CompanyId,
             CategoryId = existingElement.CategoryId,
             UnitOfMeasureId = existingElement.UnitOfMeasure!.Id,
             UnitPrice = 2
@@ -78,31 +76,7 @@ public class CreateElementItemTests : TestsBase
         var dto = new V1CreateElementItem
         {
             Name = "test",
-            CompanyId = comp.Id,
             CategoryId = Guid.NewGuid(),
-            UnitOfMeasureId = uom.Id,
-            UnitPrice = 2
-        };
-        _ctx.SaveChanges();
-
-        // act
-        var result = _handler.Handle(dto).Await();
-
-        // assert
-        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
-    }
-
-    [Fact]
-    public void Company_NotFound__Rejected()
-    {
-        // arrange
-        var catg = DF.Fake<Category>(_ctx);
-        var uom = DF.Fake<UnitOfMeasure>(_ctx);
-        var dto = new V1CreateElementItem
-        {
-            Name = "test",
-            CompanyId = Guid.NewGuid(),
-            CategoryId = catg.Id,
             UnitOfMeasureId = uom.Id,
             UnitPrice = 2
         };
