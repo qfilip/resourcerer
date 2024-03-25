@@ -1,6 +1,6 @@
 ﻿using Resourcerer.DataAccess.Entities;
 
-namespace Resourcerer.Logic.V1_0.Functions;
+namespace Resourcerer.Logic.V1.Functions;
 
 public static partial class Instances
 {
@@ -16,6 +16,7 @@ public static partial class Instances
             return i.Quantity - sent;
         }
 
+        // source instance exists, but not included
         if (i.SourceInstance == null)
         {
             throw new InvalidOperationException($"Source instance for instance {i.Id} is null");

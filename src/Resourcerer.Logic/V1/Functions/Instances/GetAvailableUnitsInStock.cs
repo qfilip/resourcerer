@@ -1,6 +1,6 @@
 ﻿using Resourcerer.DataAccess.Entities;
 
-namespace Resourcerer.Logic.V1_0.Functions;
+namespace Resourcerer.Logic.V1.Functions;
 
 public static partial class Instances
 {
@@ -12,6 +12,8 @@ public static partial class Instances
             .Where(x => x.CancelledEvent == null)
             .Sum(x => x.Quantity);
 
-        return inStock - reserved;
+        var discarded = i.DiscardedEvents.Sum(x => x.Quantity);
+
+        return inStock - (reserved + discarded);
     }
 }

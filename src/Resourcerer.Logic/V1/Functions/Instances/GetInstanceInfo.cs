@@ -2,7 +2,7 @@
 using Resourcerer.Dtos.V1;
 using Resourcerer.Utilities;
 
-namespace Resourcerer.Logic.V1_0.Functions;
+namespace Resourcerer.Logic.V1.Functions;
 
 public static partial class Instances
 {

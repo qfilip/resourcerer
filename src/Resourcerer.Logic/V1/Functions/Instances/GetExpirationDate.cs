@@ -1,6 +1,4 @@
-﻿using Resourcerer.DataAccess.Entities;
-
-namespace Resourcerer.Logic.V1_0.Functions;
+﻿namespace Resourcerer.Logic.V1.Functions;
 
 public static partial class Instances
 {
