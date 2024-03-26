@@ -11,12 +11,13 @@ public class CreateInstanceDiscardedEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] V1InstanceDiscardedRequest dto,
+        [FromServices] CreateInstanceDiscardedEvent.Validator validator,
         [FromServices] ISenderAdapter<V1InstanceDiscardedRequest> sender,
         [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeMessage(
             dto,
-            () => CreateInstanceDiscardedEvent.Handler.Validate(dto),
+            validator,
             sender,
             nameof(CreateInstanceDiscardedEvent));
     }

@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
@@ -55,22 +54,18 @@ public static class CreateInstanceOrderDeliveredEvent
 
             return HandlerResult<Unit>.Ok(new Unit());
         }
-
-        public static ValidationResult Validate(V1InstanceOrderDeliveredRequest request) =>
-            new Validator().Validate(request);
-
-        public class Validator : AbstractValidator<V1InstanceOrderDeliveredRequest>
+    }
+    public class Validator : AbstractValidator<V1InstanceOrderDeliveredRequest>
+    {
+        public Validator()
         {
-            public Validator()
-            {
-                RuleFor(x => x.InstanceId)
-                    .NotEmpty()
-                    .WithMessage("Instance id cannot be empty");
+            RuleFor(x => x.InstanceId)
+                .NotEmpty()
+                .WithMessage("Instance id cannot be empty");
 
-                RuleFor(x => x.OrderEventId)
-                    .NotEmpty()
-                    .WithMessage("Order event id cannot be empty");
-            }
+            RuleFor(x => x.OrderEventId)
+                .NotEmpty()
+                .WithMessage("Order event id cannot be empty");
         }
     }
 }

@@ -86,10 +86,6 @@ public static class FinishItemProductionOrder
             return HandlerResult<Unit>.Ok(Unit.New);
         }
     }
-
-    public static ValidationResult Validate(V1FinishItemProductionOrderRequest request) =>
-        new Validator().Validate(request);
-
     public class Validator : AbstractValidator<V1FinishItemProductionOrderRequest>
     {
         public Validator()

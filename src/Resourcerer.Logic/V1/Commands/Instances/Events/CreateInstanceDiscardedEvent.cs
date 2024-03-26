@@ -80,27 +80,23 @@ public static class CreateInstanceDiscardedEvent
                 return HandlerResult<Unit>.Ok(Unit.New);
             }
         }
-
-        public static ValidationResult Validate(V1InstanceDiscardedRequest request) =>
-            new Validator().Validate(request);
-
-        private class Validator : AbstractValidator<V1InstanceDiscardedRequest>
+    }
+    public class Validator : AbstractValidator<V1InstanceDiscardedRequest>
+    {
+        public Validator()
         {
-            public Validator()
-            {
-                RuleFor(x => x.InstanceId)
-                    .NotEmpty()
-                    .WithMessage("Instance id cannot be empty");
+            RuleFor(x => x.InstanceId)
+                .NotEmpty()
+                .WithMessage("Instance id cannot be empty");
 
-                RuleFor(x => x.Quantity)
-                    .GreaterThan(0)
-                    .WithMessage("Quantity must be larger than 0");
+            RuleFor(x => x.Quantity)
+                .GreaterThan(0)
+                .WithMessage("Quantity must be larger than 0");
 
-                RuleFor(x => x.Reason)
-                    .NotEmpty()
-                    .WithMessage("Reason cannot be empty");
+            RuleFor(x => x.Reason)
+                .NotEmpty()
+                .WithMessage("Reason cannot be empty");
 
-            }
         }
     }
 }

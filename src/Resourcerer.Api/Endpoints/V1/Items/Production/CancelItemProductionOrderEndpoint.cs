@@ -11,12 +11,13 @@ public static class CancelItemProductionOrderEndpoint
 {
     public static async Task<IResult> Action(
        [FromBody] V1CancelItemProductionOrderRequest dto,
+       [FromServices] CancelItemProductionOrder.Validator validator,
        [FromServices] ISenderAdapter<V1ItemProductionEvent> sender,
        [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeMessage(
             dto,
-            () => CancelItemProductionOrder.Handler.Validate(dto),
+            validator,
             sender,
             nameof(CancelItemProductionOrder));
     }

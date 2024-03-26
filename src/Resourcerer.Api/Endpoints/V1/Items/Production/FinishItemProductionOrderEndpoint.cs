@@ -11,12 +11,13 @@ public class FinishItemProductionOrderEndpoint
 {
     public static async Task<IResult> Action(
        [FromBody] V1FinishItemProductionOrderRequest dto,
+       [FromServices] FinishItemProductionOrder.Validator validator,
        [FromServices] ISenderAdapter<V1ItemProductionEvent> sender,
        [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeMessage(
             dto,
-            () => FinishItemProductionOrder.Validate(dto),
+            validator,
             sender,
             nameof(FinishItemProductionOrder));
     }

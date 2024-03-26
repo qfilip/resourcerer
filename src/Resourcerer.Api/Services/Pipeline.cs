@@ -1,4 +1,5 @@
-﻿using FluentValidation.Results;
+﻿using FluentValidation;
+using FluentValidation.Results;
 using Resourcerer.Api.Services.Messaging;
 using Resourcerer.Logic;
 
@@ -37,15 +38,15 @@ public class Pipeline
         return MapResult(handlerResult, customOkResultMapper);
     }
 
-    public async Task<IResult> PipeMessage<TRequest>(
+    public async Task<IResult> PipeMessage<TRequest, TRequestBase>(
         TRequest request,
-        Func<ValidationResult> validate,
-        ISenderAdapter<TRequest> sender,
-        string actionName)
+        IValidator<TRequest> validator,
+        ISenderAdapter<TRequestBase> sender,
+        string actionName) where TRequest : TRequestBase
     {
         _logger.LogInformation("Action {Action} started", actionName);
 
-        var validationResult = validate();
+        var validationResult = validator.Validate(request);
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors.Select(x => x.ErrorMessage);

@@ -165,34 +165,30 @@ public static class CreateItemProductionOrder
 
             return HandlerResult<Unit>.Ok(Unit.New);
         }
-
-        public static ValidationResult Validate(V1CreateItemProductionOrderRequest request) =>
-            new Validator().Validate(request);
-
-        private class Validator : AbstractValidator<V1CreateItemProductionOrderRequest>
+    }
+    public class Validator : AbstractValidator<V1CreateItemProductionOrderRequest>
+    {
+        public Validator()
         {
-            public Validator()
-            {
-                RuleFor(x => x.ItemId)
-                    .NotEmpty().WithMessage("Item id cannot be empty");
+            RuleFor(x => x.ItemId)
+                .NotEmpty().WithMessage("Item id cannot be empty");
 
-                RuleFor(x => x.CompanyId)
-                    .NotEmpty().WithMessage("Company id cannot be empty");
+            RuleFor(x => x.CompanyId)
+                .NotEmpty().WithMessage("Company id cannot be empty");
 
-                RuleFor(x => x.Quantity)
-                    .Must(x => x > 0).WithMessage("Item production quantity must be greater than 0");
+            RuleFor(x => x.Quantity)
+                .Must(x => x > 0).WithMessage("Item production quantity must be greater than 0");
 
-                RuleFor(x => x.DesiredProductionStartTime)
-                    .Must(x => x >= DateTime.UtcNow).WithMessage("Desired production start time cannot be in the past");
+            RuleFor(x => x.DesiredProductionStartTime)
+                .Must(x => x >= DateTime.UtcNow).WithMessage("Desired production start time cannot be in the past");
 
-                RuleFor(x => x.InstancesToUse)
-                    .NotEmpty().WithMessage("Instances to use in production, not specified");
+            RuleFor(x => x.InstancesToUse)
+                .NotEmpty().WithMessage("Instances to use in production, not specified");
 
-                RuleFor(x => x.InstancesToUse)
-                    .Must(x => x.Values.All(v => v > 0))
-                    .WithMessage("Quantities of all instances to use in production, must be above 0");
+            RuleFor(x => x.InstancesToUse)
+                .Must(x => x.Values.All(v => v > 0))
+                .WithMessage("Quantities of all instances to use in production, must be above 0");
 
-            }
         }
     }
 }

@@ -11,12 +11,13 @@ public class CreateItemProductionOrderEndpoint
 {
     public static async Task<IResult> Action(
        [FromBody] V1CreateItemProductionOrderRequest dto,
+       [FromServices] CreateItemProductionOrder.Validator validator,
        [FromServices] ISenderAdapter<V1ItemProductionEvent> sender,
        [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeMessage(
             dto,
-            () => CreateItemProductionOrder.Handler.Validate(dto),
+            validator,
             sender,
             nameof(CreateItemProductionOrder));
     }

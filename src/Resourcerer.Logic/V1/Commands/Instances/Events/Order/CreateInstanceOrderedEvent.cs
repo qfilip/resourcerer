@@ -130,40 +130,36 @@ public static class CreateInstanceOrderedEvent
 
             return HandlerResult<Unit>.Ok(new Unit());
         }
-
-        public static ValidationResult Validate(V1InstanceOrderRequest request) =>
-            new Validator().Validate(request);
-
-        private class Validator : AbstractValidator<V1InstanceOrderRequest>
+    }
+    public class Validator : AbstractValidator<V1InstanceOrderRequest>
+    {
+        public Validator()
         {
-            public Validator()
-            {
-                RuleFor(x => x.InstanceId)
-                    .NotEmpty()
-                    .WithMessage("instance id cannot be empty");
+            RuleFor(x => x.InstanceId)
+                .NotEmpty()
+                .WithMessage("instance id cannot be empty");
 
-                RuleFor(x => x.SellerCompanyId)
-                    .NotNull()
-                    .NotEmpty()
-                    .WithMessage("Seller cannot be empty");
+            RuleFor(x => x.SellerCompanyId)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("Seller cannot be empty");
 
-                RuleFor(x => x.BuyerCompanyId)
-                    .NotNull()
-                    .NotEmpty()
-                    .WithMessage("Buyer cannot be empty");
+            RuleFor(x => x.BuyerCompanyId)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("Buyer cannot be empty");
 
-                RuleFor(x => x.UnitsOrdered)
-                    .GreaterThan(0)
-                    .WithMessage("Number of ordered units must be greater than 0");
+            RuleFor(x => x.UnitsOrdered)
+                .GreaterThan(0)
+                .WithMessage("Number of ordered units must be greater than 0");
 
-                RuleFor(x => x.UnitPrice)
-                    .GreaterThan(0)
-                    .WithMessage("Unit price must be greater than 0");
+            RuleFor(x => x.UnitPrice)
+                .GreaterThan(0)
+                .WithMessage("Unit price must be greater than 0");
 
-                RuleFor(x => x.TotalDiscountPercent)
-                    .InclusiveBetween(0, 100)
-                    .WithMessage("Total discount must be greater between in 0 and 100");
-            }
+            RuleFor(x => x.TotalDiscountPercent)
+                .InclusiveBetween(0, 100)
+                .WithMessage("Total discount must be greater between in 0 and 100");
         }
     }
 }

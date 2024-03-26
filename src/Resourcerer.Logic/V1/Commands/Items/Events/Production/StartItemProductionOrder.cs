@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
@@ -83,10 +82,6 @@ public static class StartItemProductionOrder
             return HandlerResult<Unit>.Ok(Unit.New);
         }
     }
-
-    public static ValidationResult Validate(V1StartItemProductionOrderRequest request) =>
-        new Validator().Validate(request);
-
     public class Validator : AbstractValidator<V1StartItemProductionOrderRequest>
     {
         public Validator()

@@ -62,11 +62,8 @@ public static class CreateInstanceOrderCancelledEvent
 
             return HandlerResult<Unit>.Ok(new Unit());
         }
-
-        public static ValidationResult Validate(V1InstanceOrderCancelRequest request) =>
-            new Validator().Validate(request);
-
     }
+
     public class Validator : AbstractValidator<V1InstanceOrderCancelRequest>
     {
         public Validator()

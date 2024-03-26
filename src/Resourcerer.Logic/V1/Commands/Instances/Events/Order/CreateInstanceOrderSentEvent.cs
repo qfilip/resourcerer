@@ -52,22 +52,18 @@ public static class CreateInstanceOrderSentEvent
 
             return HandlerResult<Unit>.Ok(Unit.New);
         }
-
-        public static ValidationResult Validate(V1InstanceOrderSentRequest request) =>
-           new Validator().Validate(request);
-
-        public class Validator : AbstractValidator<V1InstanceOrderSentRequest>
+    }
+    public class Validator : AbstractValidator<V1InstanceOrderSentRequest>
+    {
+        public Validator()
         {
-            public Validator()
-            {
-                RuleFor(x => x.InstanceId)
-                    .NotEmpty()
-                    .WithMessage("Instance id cannot be empty");
+            RuleFor(x => x.InstanceId)
+                .NotEmpty()
+                .WithMessage("Instance id cannot be empty");
 
-                RuleFor(x => x.OrderEventId)
-                    .NotEmpty()
-                    .WithMessage("Order event id cannot be empty");
-            }
+            RuleFor(x => x.OrderEventId)
+                .NotEmpty()
+                .WithMessage("Order event id cannot be empty");
         }
     }
 }

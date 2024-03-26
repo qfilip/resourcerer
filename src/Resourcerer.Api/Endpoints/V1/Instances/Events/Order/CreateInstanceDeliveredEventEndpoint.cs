@@ -11,12 +11,13 @@ public class CreateInstanceDeliveredEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] V1InstanceOrderDeliveredRequest dto,
+        [FromServices] CreateInstanceOrderDeliveredEvent.Validator validator,
         [FromServices] ISenderAdapter<V1InstanceOrderEvent> sender,
         [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeMessage(
             dto,
-            () => CreateInstanceOrderDeliveredEvent.Handler.Validate(dto),
+            validator,
             sender,
             nameof(CreateInstanceOrderDeliveredEvent));
     }

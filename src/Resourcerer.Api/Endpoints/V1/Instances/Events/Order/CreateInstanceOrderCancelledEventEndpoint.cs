@@ -11,12 +11,13 @@ public class CreateInstanceOrderCancelledEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] V1InstanceOrderCancelRequest dto,
+        [FromServices] CreateInstanceOrderCancelledEvent.Validator validator,
         [FromServices] ISenderAdapter<V1InstanceOrderEvent> sender,
         [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeMessage(
             dto,
-            () => CreateInstanceOrderCancelledEvent.Handler.Validate(dto),
+            validator,
             sender,
             nameof(CreateInstanceOrderCancelledEvent));
     }

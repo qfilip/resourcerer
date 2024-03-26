@@ -57,17 +57,13 @@ public static class CancelItemProductionOrder
 
             return HandlerResult<Unit>.Ok(Unit.New);
         }
-
-        public static ValidationResult Validate(V1CancelItemProductionOrderRequest request) =>
-            new Validator().Validate(request);
-
-        private class Validator : AbstractValidator<V1CancelItemProductionOrderRequest>
+    }
+    public class Validator : AbstractValidator<V1CancelItemProductionOrderRequest>
+    {
+        public Validator()
         {
-            public Validator()
-            {
-                RuleFor(x => x.ProductionOrderEventId)
-                    .NotEmpty().WithMessage("Order event id cannot be empty");
-            }
+            RuleFor(x => x.ProductionOrderEventId)
+                .NotEmpty().WithMessage("Order event id cannot be empty");
         }
     }
 }
