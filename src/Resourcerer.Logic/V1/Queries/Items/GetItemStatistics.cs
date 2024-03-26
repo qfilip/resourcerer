@@ -12,10 +12,12 @@ public static class GetItemStatistics
     public class Handler : IAppHandler<(Guid ItemId, DateTime Now), List<V1ItemStatistics>>
     {
         private readonly AppDbContext _appDbContext;
+        private readonly Validator _validator;
 
-        public Handler(AppDbContext appDbContext)
+        public Handler(AppDbContext appDbContext, Validator validator)
         {
             _appDbContext = appDbContext;
+            _validator = validator;
         }
 
         public async Task<HandlerResult<List<V1ItemStatistics>>> Handle((Guid ItemId, DateTime Now) query)
@@ -66,14 +68,13 @@ public static class GetItemStatistics
             return HandlerResult<List<V1ItemStatistics>>.Ok(new List<V1ItemStatistics>());
         }
 
-        public ValidationResult Validate((Guid ItemId, DateTime Now) request) => new Validator().Validate(request);
-
-        private class Validator : AbstractValidator<(Guid ItemId, DateTime Now)>
+        public ValidationResult Validate((Guid ItemId, DateTime Now) request) => _validator.Validate(request);
+    }
+    public class Validator : AbstractValidator<(Guid ItemId, DateTime Now)>
+    {
+        public Validator()
         {
-            public Validator()
-            {
-                RuleFor(x => x.ItemId).NotEmpty();
-            }
+            RuleFor(x => x.ItemId).NotEmpty();
         }
     }
 }

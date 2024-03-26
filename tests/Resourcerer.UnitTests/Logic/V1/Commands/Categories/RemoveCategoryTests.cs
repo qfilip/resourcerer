@@ -12,7 +12,7 @@ public class RemoveCategoryTests : TestsBase
     private readonly RemoveCategory.Handler _sut;
     public RemoveCategoryTests()
     {
-        _sut = new RemoveCategory.Handler(base._ctx);
+        _sut = new RemoveCategory.Handler(base._ctx, new());
     }
 
     [Fact]

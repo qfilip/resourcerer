@@ -14,11 +14,13 @@ public class ChangeItemPrice
     public class Handler : IAppHandler<V1ChangePrice, Unit>
     {
         private readonly AppDbContext _appDbContext;
+        private readonly Validator _validator;
         private readonly ILogger<Handler> _logger;
 
-        public Handler(AppDbContext appDbContext, ILogger<Handler> logger)
+        public Handler(AppDbContext appDbContext, Validator validator, ILogger<Handler> logger)
         {
             _appDbContext = appDbContext;
+            _validator = validator;
             _logger = logger;
         }
 
@@ -54,18 +56,18 @@ public class ChangeItemPrice
             return HandlerResult<Unit>.Ok(new Unit());
         }
 
-        public ValidationResult Validate(V1ChangePrice request) => new Validator().Validate(request);
+        public ValidationResult Validate(V1ChangePrice request) => _validator.Validate(request);
 
-        private class Validator : AbstractValidator<V1ChangePrice>
+    }
+    public class Validator : AbstractValidator<V1ChangePrice>
+    {
+        public Validator()
         {
-            public Validator()
-            {
-                RuleFor(x => x.ItemId)
-                    .NotEmpty().WithMessage("Item id cannot be default value");
+            RuleFor(x => x.ItemId)
+                .NotEmpty().WithMessage("Item id cannot be default value");
 
-                RuleFor(x => x.UnitPrice)
-                    .GreaterThan(0).WithMessage("Item price must be greater than 0");
-            }
+            RuleFor(x => x.UnitPrice)
+                .GreaterThan(0).WithMessage("Item price must be greater than 0");
         }
     }
 }

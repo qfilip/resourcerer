@@ -11,7 +11,7 @@ public class GetAllCompanyCategoriesTests : TestsBase
     private readonly GetAllCompanyCategories.Handler _handler;
     public GetAllCompanyCategoriesTests()
     {
-        _handler = new GetAllCompanyCategories.Handler(_ctx);
+        _handler = new GetAllCompanyCategories.Handler(_ctx, new());
     }
 
     [Fact]

@@ -66,27 +66,27 @@ public static class CreateInstanceOrderCancelledEvent
         public static ValidationResult Validate(V1InstanceOrderCancelRequest request) =>
             new Validator().Validate(request);
 
-        private class Validator : AbstractValidator<V1InstanceOrderCancelRequest>
+    }
+    public class Validator : AbstractValidator<V1InstanceOrderCancelRequest>
+    {
+        public Validator()
         {
-            public Validator()
-            {
-                RuleFor(x => x.InstanceId)
-                    .NotEmpty()
-                    .WithMessage("Instance id cannot be empty");
+            RuleFor(x => x.InstanceId)
+                .NotEmpty()
+                .WithMessage("Instance id cannot be empty");
 
-                RuleFor(x => x.OrderEventId)
-                    .NotEmpty()
-                    .WithMessage("Order event id cannot be empty");
+            RuleFor(x => x.OrderEventId)
+                .NotEmpty()
+                .WithMessage("Order event id cannot be empty");
 
-                RuleFor(x => x.Reason)
-                    .NotNull()
-                    .NotEmpty()
-                    .WithMessage("Reason cannot be empty");
+            RuleFor(x => x.Reason)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("Reason cannot be empty");
 
-                RuleFor(x => x.RefundedAmount)
-                    .GreaterThanOrEqualTo(0)
-                    .WithMessage("Refunded Amount must be equal or greater than 0");
-            }
+            RuleFor(x => x.RefundedAmount)
+                .GreaterThanOrEqualTo(0)
+                .WithMessage("Refunded Amount must be equal or greater than 0");
         }
     }
 }

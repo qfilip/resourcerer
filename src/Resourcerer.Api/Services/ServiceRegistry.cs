@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using FluentValidation;
+using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -21,8 +22,12 @@ public static partial class ServiceRegistry
 {
     public static void AddAppServices(this IServiceCollection services)
     {
-        RegisterHandlers(typeof(IAppHandler<,>), services);
-        RegisterHandlers(typeof(IAppEventHandler<,>), services);
+        var handlerTypes = new Type[] { typeof(IAppHandler<,>), typeof(IAppEventHandler<,>) };
+        foreach (var handlerType in handlerTypes)
+        {
+            RegisterHandlers(handlerType, services);
+            RegisterValidators(handlerType, services);
+        }
 
         services.AddScoped<Pipeline>();
 
@@ -168,6 +173,21 @@ public static partial class ServiceRegistry
             .ToList();
 
         handlers.ForEach(x => services.AddTransient(x));
+    }
+
+    public static void RegisterValidators(Type handlerType, IServiceCollection services)
+    {
+        var assembly = handlerType.Assembly;
+        
+        var validators = assembly
+        .GetTypes()
+        .Where(x =>
+            x.GetInterface(typeof(IValidator).Name) != null &&
+            !x.IsAbstract &&
+            !x.IsInterface)
+        .ToList();
+
+        validators.ForEach(x => services.AddSingleton(x));
     }
 }
 

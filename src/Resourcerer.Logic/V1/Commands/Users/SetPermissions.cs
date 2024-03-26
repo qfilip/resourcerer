@@ -14,10 +14,12 @@ public static class SetPermissions
     public class Handler : IAppHandler<V1SetUserPermissions, AppUserDto>
     {
         private readonly AppDbContext _appDbContext;
+        private readonly Validator _validator;
 
-        public Handler(AppDbContext appDbContext)
+        public Handler(AppDbContext appDbContext, Validator validator)
         {
             _appDbContext = appDbContext;
+            _validator = validator;
         }
 
         public async Task<HandlerResult<AppUserDto>> Handle(V1SetUserPermissions request)
@@ -50,20 +52,19 @@ public static class SetPermissions
             return HandlerResult<AppUserDto>.Ok(dto);
         }
 
-        public ValidationResult Validate(V1SetUserPermissions request) => new Validator().Validate(request);
-
-        public class Validator : AbstractValidator<V1SetUserPermissions>
+        public ValidationResult Validate(V1SetUserPermissions request) => _validator.Validate(request);
+    }
+    public class Validator : AbstractValidator<V1SetUserPermissions>
+    {
+        public Validator()
         {
-            public Validator()
-            {
-                RuleFor(x => x.Permissions)
-                    .NotEmpty()
-                    .WithMessage("User id cannot be empty");
+            RuleFor(x => x.Permissions)
+                .NotEmpty()
+                .WithMessage("User id cannot be empty");
 
-                RuleFor(x => x.Permissions)
-                    .NotNull()
-                    .WithMessage("Permissions cannot be null");
-            }
+            RuleFor(x => x.Permissions)
+                .NotNull()
+                .WithMessage("Permissions cannot be null");
         }
     }
 }

@@ -19,7 +19,7 @@ public class ChangeItemPriceTests : TestsBase
     public ChangeItemPriceTests()
     {
         _fakeLogger = A.Fake<ILogger<ChangeItemPrice.Handler>>();
-        _handler = new ChangeItemPrice.Handler(_ctx, _fakeLogger);
+        _handler = new ChangeItemPrice.Handler(_ctx, new(), _fakeLogger);
     }
 
     [Fact]

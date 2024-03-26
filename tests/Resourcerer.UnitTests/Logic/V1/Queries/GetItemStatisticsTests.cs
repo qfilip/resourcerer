@@ -7,7 +7,7 @@ public class GetItemStatisticsTests : TestsBase
     private readonly GetItemStatistics.Handler _handler;
     public GetItemStatisticsTests()
     {
-        _handler = new(_ctx);
+        _handler = new(_ctx, new());
     }
 
     [Fact]

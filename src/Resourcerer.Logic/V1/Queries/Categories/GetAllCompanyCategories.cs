@@ -12,10 +12,12 @@ public static class GetAllCompanyCategories
     public class Handler : IAppHandler<Guid, List<CategoryDto>>
     {
         private readonly AppDbContext _appDbContext;
+        private readonly Validator _validator;
 
-        public Handler(AppDbContext appDbContext)
+        public Handler(AppDbContext appDbContext, Validator validator)
         {
             _appDbContext = appDbContext;
+            _validator = validator;
         }
 
         public async Task<HandlerResult<List<CategoryDto>>> Handle(Guid companyId)
@@ -49,15 +51,14 @@ public static class GetAllCompanyCategories
             };
         }
 
-        public ValidationResult Validate(Guid _) => new ValidationResult();
-
-        private class Validator : AbstractValidator<Guid>
+        public ValidationResult Validate(Guid request) => _validator.Validate(request);
+    }
+    public class Validator : AbstractValidator<Guid>
+    {
+        public Validator()
         {
-            public Validator()
-            {
-                RuleFor(x => x)
-                    .NotEmpty().WithMessage("Company Id cannot be empty");
-            }
+            RuleFor(x => x)
+                .NotEmpty().WithMessage("Company Id cannot be empty");
         }
     }
 }

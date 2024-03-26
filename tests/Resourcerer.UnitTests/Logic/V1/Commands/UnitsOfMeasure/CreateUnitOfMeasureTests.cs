@@ -13,7 +13,7 @@ public class CreateUnitOfMeasureTests : TestsBase
 
     public CreateUnitOfMeasureTests()
     {
-        _handler = new(_ctx);
+        _handler = new(_ctx, new());
     }
 
     [Fact]

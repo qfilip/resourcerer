@@ -12,10 +12,12 @@ public class CreateCategory
     public class Handler : IAppHandler<V1CreateCategory, Unit>
     {
         private readonly AppDbContext _appDbContext;
+        private readonly Validator _validator;
 
-        public Handler(AppDbContext appDbContext)
+        public Handler(AppDbContext appDbContext, Validator validator)
         {
             _appDbContext = appDbContext;
+            _validator = validator;
         }
 
         public async Task<HandlerResult<Unit>> Handle(V1CreateCategory request)
@@ -52,23 +54,19 @@ public class CreateCategory
             return HandlerResult<Unit>.Ok(new Unit());
         }
 
-        public ValidationResult Validate(V1CreateCategory request)
-        {
-            var validator = new Validator();
-            return validator.Validate(request);
-        }
+        public ValidationResult Validate(V1CreateCategory request) => _validator.Validate(request);
+    }
 
-        private class Validator : AbstractValidator<V1CreateCategory>
+    public class Validator : AbstractValidator<V1CreateCategory>
+    {
+        public Validator()
         {
-            public Validator()
-            {
-                RuleFor(x => x.Name)
-                    .NotEmpty().WithMessage("Category name cannot be empty")
-                    .Length(min: 3, max: 50).WithMessage("Category name must be between 3 and 50 characters long");
+            RuleFor(x => x.Name)
+                .NotEmpty().WithMessage("Category name cannot be empty")
+                .Length(min: 3, max: 50).WithMessage("Category name must be between 3 and 50 characters long");
 
-                RuleFor(x => x.CompanyId)
-                    .NotEmpty().WithMessage("Company Id name cannot be empty");
-            }
+            RuleFor(x => x.CompanyId)
+                .NotEmpty().WithMessage("Company Id name cannot be empty");
         }
     }
 }

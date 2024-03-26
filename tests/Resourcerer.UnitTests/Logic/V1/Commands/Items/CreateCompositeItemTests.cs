@@ -12,7 +12,7 @@ public class CreateCompositeItemTests : TestsBase
     private readonly CreateCompositeItem.Handler _handler;
     public CreateCompositeItemTests()
     {
-        _handler = new(_ctx);
+        _handler = new(_ctx, new());
     }
 
     [Fact]
