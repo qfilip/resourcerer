@@ -1,10 +1,6 @@
-import App from './App.svelte';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig } from './app/app.config';
+import { AppComponent } from './app/app.component';
 
-const app = new App({
-	target: document.body,
-	props: {
-		// name: 'world'
-	}
-});
-
-export default app;
+bootstrapApplication(AppComponent, appConfig)
+  .catch((err) => console.error(err));

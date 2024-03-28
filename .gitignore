@@ -6,6 +6,7 @@ obj/
 /obj/
 build/
 node_modules/
+.angular/
 
 # compiled output
 .gitignore.bak
