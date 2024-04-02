@@ -12,5 +12,5 @@ import { SpinnerComponent } from "./components/spinner/spinner.component";
     imports: [RouterOutlet, DialogComponent, ScratchpadComponent, SpinnerComponent]
 })
 export class AppComponent {
-  
+
 }
