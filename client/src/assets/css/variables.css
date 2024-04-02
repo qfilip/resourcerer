@@ -1,0 +1,31 @@
+:root {
+    /* colors */
+    --c-black: hsl(0, 0%, 7%);
+    --c-black-t1: hsla(0, 0%, 7%, 90%);
+    --c-white: hsl(0, 0%, 100%);
+    --c-white-d1: hsl(0, 0%, 90%);
+    --c-white-d2: hsl(0, 0%, 80%);
+    --c-white-d3: hsl(0, 0%, 70%);
+    --c-grey: hsl(0, 0%, 40%);
+    --c-grey-d1: hsl(0, 0%, 20%);
+    
+    --c-blue: hsl(207, 90%, 54%);
+    --c-blue-d1: hsl(207, 90%, 44%);
+    
+    --c-green-l1:hsl(122, 39%, 59%);
+    --c-green:hsl(122, 39%, 49%);
+    --c-green-d1:hsl(122, 39%, 39%);
+    --c-green-d2:hsl(122, 39%, 29%);
+    
+    --c-orange:hsl(39, 100%, 50%);
+    --c-orange-d1:hsl(39, 100%, 40%);
+    
+    --c-red: hsl(4, 90%, 58%);
+    --c-red-d1: hsl(4, 90%, 38%);
+
+    /* layout */
+    --pad-sm: .6rem;
+
+    /* movement */
+    --transition: .3s;
+}

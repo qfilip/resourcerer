@@ -1,0 +1,17 @@
+@if(options) {
+<article>
+    <div>
+        <header>
+            {{ options.header }}
+        </header>
+        <section>
+            {{ options.message }}
+        </section>
+        <footer>
+            @for(btn of options.buttons; track $index) {
+                <button (click)="onButtonClicked(btn.action)">{{ btn.label }}</button>
+            }
+        </footer>
+    </div>
+</article>
+}

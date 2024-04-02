@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+@import "./assets/css/variables.css";
+@import "./assets/css/scrollbar.css";
+@import "./assets/css/buttons.css";
+
+* {
+    transition: var(--transition);
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
