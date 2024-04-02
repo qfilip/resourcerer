@@ -1,8 +1,4 @@
-﻿using Resourcerer.Api.Services;
-using Resourcerer.Logic;
-using Resourcerer.Logic.V1.Commands;
-
-namespace Resourcerer.Api.Endpoints.V1;
+﻿namespace Resourcerer.Api.Endpoints.V1;
 
 public class SeedDatabaseEndpoint
 {
