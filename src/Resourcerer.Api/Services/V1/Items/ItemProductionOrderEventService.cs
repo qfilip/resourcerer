@@ -1,7 +1,7 @@
 ﻿using Resourcerer.Api.Services.Messaging;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.V1;
-using Resourcerer.Logic.V1.Commands.Items;
+using Resourcerer.Logic.V1.Items.Events.Production;
 
 namespace Resourcerer.Api.Services.V1;
 

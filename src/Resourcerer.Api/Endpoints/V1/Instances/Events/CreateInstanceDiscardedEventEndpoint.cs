@@ -3,7 +3,7 @@ using Resourcerer.Api.Services;
 using Resourcerer.Api.Services.Messaging;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
-using Resourcerer.Logic.V1.Commands;
+using Resourcerer.Logic.V1.Instances.Events;
 
 namespace Resourcerer.Api.Endpoints.V1;
 

@@ -10,12 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Logic\V1\Queries\Items\**" />
-    <EmbeddedResource Remove="Logic\V1\Queries\Items\**" />
-    <None Remove="Logic\V1\Queries\Items\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FakeItEasy" Version="8.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="MockQueryable.FakeItEasy" Version="7.0.0" />

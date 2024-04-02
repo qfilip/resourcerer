@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="V1\Commands\Prices\**" />
-    <EmbeddedResource Remove="V1\Commands\Prices\**" />
-    <None Remove="V1\Commands\Prices\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Resourcerer.DataAccess\Resourcerer.DataAccess.csproj" />
     <ProjectReference Include="..\Resourcerer.Dtos\Resourcerer.Dtos.csproj" />
     <ProjectReference Include="..\Resourcerer.Utilities\Resourcerer.Utilities.csproj" />
