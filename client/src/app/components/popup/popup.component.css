@@ -1,0 +1,40 @@
+section {
+    position: absolute;
+    left: 0;
+    right: 0;
+    
+    max-height: 12rem;
+    overflow-y: auto;
+}
+
+.info {
+    color: var(--c-white);
+    background-color: var(--c-blue-d1);
+}
+
+.success {
+    color: var(--c-white);
+    background-color: var(--c-green-d1);
+}
+
+.warning {
+    color: var(--c-white);
+    background-color: var(--c-orange-d1);
+}
+
+.error {
+    color: var(--c-white);
+    background-color: var(--c-red-d1);
+}
+
+.expanded {
+    height: 12rem;
+}
+
+.visible {
+    height: 1.2rem;
+}
+
+.hidden {
+    height: 0rem;
+}

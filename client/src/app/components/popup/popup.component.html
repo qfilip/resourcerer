@@ -1,0 +1,29 @@
+<section [ngClass]="{
+    'expanded' : state === 'expanded',
+    'visible' : state === 'visible',
+    'hidden' : state === 'hidden',
+}"
+(mouseleave)="collapse()">
+    @if(popups.x) {
+        <div [ngClass]="{
+            'info' : popups.x.type === 'info',
+            'success' : popups.x.type === 'success',
+            'warning' : popups.x.type === 'warning',
+            'error' : popups.x.type === 'error' }"
+        (mouseenter)="expand()">
+            {{ popups.x.message }}
+        </div>
+    }
+
+    @if(state === 'expanded') {
+        @for (x of popups.xs; track $index) {
+            <div  [ngClass]="{
+                'info' : x.type === 'info',
+                'success' : x.type === 'success',
+                'warning' : x.type === 'warning',
+                'error' : x.type === 'error' }">
+                {{ x.message }} {{ $index }}
+            </div>
+        }
+    }
+</section>

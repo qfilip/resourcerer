@@ -10,6 +10,7 @@ button, input[type=submit] {
 }
 
 button:hover,
+button:focus,
 input[type=submit]:hover,
 input[type=submit]:focus {
     color: var(--color, var(--c-white));
