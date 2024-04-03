@@ -22,14 +22,14 @@ export class PopupComponent {
 
       if(!this.popups.x) {
         this.popups.x = newPopup;
-        this.setVisibility();
+        this.setVisibility(newPopup.duration);
 
         return;
       }
 
       this.popups.xs.unshift(this.popups.x);
       this.popups.x = newPopup;
-      this.setVisibility();
+      this.setVisibility(newPopup.duration);
     })
   }
 
@@ -38,15 +38,33 @@ export class PopupComponent {
   }
 
   collapse() {
-    this.state = 'visible';
-  }
-
-  private setVisibility() {
-    if(this.state === 'hidden') {
+    if(this.state === 'expanded') {
       this.state = 'visible';
+      this.hideAfter(3000);
     }
   }
 
+  hide() {
+    if(this.state !== 'expanded') {
+      console.log('hiding')
+      this.state = 'hidden';
+    }
+  }
+
+  private setVisibility(hideAfter: number) {
+    if(this.state === 'hidden') {
+      this.state = 'visible';
+    }
+
+    this.hideAfter(hideAfter);
+  }
+
+  hideAfter(time: number) {
+    const t = setTimeout(() => {
+      this.hide();
+      clearTimeout(t);
+    }, time);
+  }
 
   state: 'expanded' | 'visible' | 'hidden' = 'hidden';
 }

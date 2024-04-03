@@ -7,6 +7,11 @@ section {
     overflow-y: auto;
 }
 
+.last-message {
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .info {
     color: var(--c-white);
     background-color: var(--c-blue-d1);

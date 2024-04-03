@@ -1,16 +1,19 @@
-<section [ngClass]="{
-    'expanded' : state === 'expanded',
-    'visible' : state === 'visible',
-    'hidden' : state === 'hidden',
-}"
-(mouseleave)="collapse()">
-    @if(popups.x) {
-        <div [ngClass]="{
-            'info' : popups.x.type === 'info',
-            'success' : popups.x.type === 'success',
-            'warning' : popups.x.type === 'warning',
-            'error' : popups.x.type === 'error' }"
-        (mouseenter)="expand()">
+<button (click)="hide()">Hide</button>
+<section
+    [ngClass]="{
+        'expanded' : state === 'expanded',
+        'visible' : state === 'visible',
+        'hidden' : state === 'hidden'}"
+    (mouseleave)="collapse()">
+    
+    @if(popups.x && state !== 'hidden') {
+        <div
+            [ngClass]="{
+                'info' : popups.x.type === 'info',
+                'success' : popups.x.type === 'success',
+                'warning' : popups.x.type === 'warning',
+                'error' : popups.x.type === 'error' }"
+            (mouseenter)="expand()">
             {{ popups.x.message }}
         </div>
     }
