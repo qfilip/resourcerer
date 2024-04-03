@@ -27,6 +27,13 @@ export class PopupService {
         this.notify(message, 'error', duration);
     }
 
+    many(popups: IPopup[]) {
+        popups.forEach(x => {
+            x.duration = x.duration ? x.duration : 3000; 
+            this.popup$.set(x);
+        })
+    }
+
     private notify(message: string, type: PopupType, duration: number) {
         this.popup$.set({
             message: message,

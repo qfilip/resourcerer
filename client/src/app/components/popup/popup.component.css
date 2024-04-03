@@ -7,9 +7,43 @@ section {
     overflow-y: auto;
 }
 
-.last-message {
+button {
+    width: fit-content;
+    border: none;
+}
+
+button:focus {
+    color: unset;
+}
+
+i, .message {
+    font-size: 1.2rem;
+}
+
+.message {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    align-items: center;
+
+    padding: var(--pad-xxs) 0rem;
+}
+
+.message-text {
+    width: 30%;
+    background-color: var(--c-white);
+    color: var(--c-black);
+}
+
+.message-after {
+    width: 30%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.message-count {
+    width: 3rem;
+    text-align: center;
 }
 
 .info {
@@ -33,11 +67,12 @@ section {
 }
 
 .expanded {
-    height: 12rem;
+    height: fit-content;
+    max-height: 12rem;
 }
 
 .visible {
-    height: 1.2rem;
+    height: fit-content;
 }
 
 .hidden {

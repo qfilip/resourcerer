@@ -1,5 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { UserController } from '../../../controllers/user.controller';
+import { PopupService } from '../../../services/popup.service';
+import { IPopup } from '../../../models/components/IPopup';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +12,7 @@ import { UserController } from '../../../controllers/user.controller';
 })
 export class LoginComponent {
   controller = inject(UserController);
+  popup = inject(PopupService);
   
   submit(ev: Event, name: string, password: string) {
     ev.preventDefault();
@@ -24,9 +27,10 @@ export class LoginComponent {
       errors.push('Password cannot be empty');
     }
 
-    console.log(errors);
-
     if(errors.length > 0) {
+      const popups = errors.map(x => ({ message: x, type: 'warning' } as IPopup))
+      this.popup.many(popups);
+      
       return;
     }
   }

@@ -22,48 +22,42 @@ export class PopupComponent {
 
       if(!this.popups.x) {
         this.popups.x = newPopup;
-        this.setVisibility(newPopup.duration);
+        this.setVisibility();
 
         return;
       }
 
       this.popups.xs.unshift(this.popups.x);
       this.popups.x = newPopup;
-      this.setVisibility(newPopup.duration);
+      this.setVisibility();
     })
   }
 
-  expand() {
-    this.state = 'expanded';
-  }
-
-  collapse() {
-    if(this.state === 'expanded') {
-      this.state = 'visible';
-      this.hideAfter(3000);
+  toggleExpanded() {
+    switch (this.state) {
+      case 'expanded':
+        this.state = 'visible';
+        break;
+      case 'visible':
+        this.state = 'expanded';
+        break;
     }
   }
 
   hide() {
-    if(this.state !== 'expanded') {
-      console.log('hiding')
-      this.state = 'hidden';
-    }
+    this.state = 'hidden';
   }
 
-  private setVisibility(hideAfter: number) {
+  clear() {
+    this.state = 'hidden';
+    this.popups.x = null;
+    this.popups.xs = [];
+  }
+
+  private setVisibility() {
     if(this.state === 'hidden') {
       this.state = 'visible';
     }
-
-    this.hideAfter(hideAfter);
-  }
-
-  hideAfter(time: number) {
-    const t = setTimeout(() => {
-      this.hide();
-      clearTimeout(t);
-    }, time);
   }
 
   state: 'expanded' | 'visible' | 'hidden' = 'hidden';

@@ -1,31 +1,50 @@
-<button (click)="hide()">Hide</button>
 <section
     [ngClass]="{
         'expanded' : state === 'expanded',
         'visible' : state === 'visible',
-        'hidden' : state === 'hidden'}"
-    (mouseleave)="collapse()">
+        'hidden' : state === 'hidden'}">
     
     @if(popups.x && state !== 'hidden') {
         <div
+            class="message"
             [ngClass]="{
                 'info' : popups.x.type === 'info',
                 'success' : popups.x.type === 'success',
                 'warning' : popups.x.type === 'warning',
-                'error' : popups.x.type === 'error' }"
-            (mouseenter)="expand()">
-            {{ popups.x.message }}
+                'error' : popups.x.type === 'error' }">
+            <span class="message-text">
+                {{ popups.x.message }}
+            </span>
+            <span class="message-after">
+                <button (click)="toggleExpanded()">
+                    <i class="ra ra-telescope"></i>
+                </button>
+                <button (click)="hide()">
+                    <i class="ra ra-bleeding-eye"></i>
+                </button>
+                <button (click)="clear()">
+                    <i class="ra ra-cancel"></i>
+                </button>
+                <span class="message-count">
+                    {{ popups.xs.length + 1 }}
+                </span>
+            </span>
         </div>
     }
 
     @if(state === 'expanded') {
         @for (x of popups.xs; track $index) {
-            <div  [ngClass]="{
+            <div
+                class="message" 
+                [ngClass]="{
                 'info' : x.type === 'info',
                 'success' : x.type === 'success',
                 'warning' : x.type === 'warning',
                 'error' : x.type === 'error' }">
-                {{ x.message }} {{ $index }}
+                <span class="message-text">
+                    {{ x.message }}
+                </span>
+                <span class="message-after">&nbsp;</span>
             </div>
         }
     }
