@@ -5,6 +5,6 @@ import { Injectable, inject } from "@angular/core";
     providedIn: 'root'
 })
 export class BaseController {
-    protected apiUrl = 'http://localhost:24822';
+    protected apiUrl = 'http://localhost:24822/api/1.0';
     protected http = inject(HttpClient);
 }

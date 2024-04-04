@@ -8,20 +8,20 @@ import { Observable, tap } from "rxjs";
 export class LocalstorageCacheService {
     private _cache = new Map<string, ICache>();
 
-    register(key: string, expiresAfter: number): CacheFunctions {
+    register<T>(key: string, expiresAfter: number): CacheFunctions {
         if(this._cache.has(key)) {
             throw `Localstorage cache key ${key} already exists`;
         }
 
         const now = new Date();
-        this._cache.set(key, { storedAt: now.getTime(), expiresAfter: 0 } as ICache);
+        this._cache.set(key, { data: {} as T, storedAt: now.getTime(), expiresAfter: 0 } as ICache);
 
         return {
             store: <T>(x: T) => {
-                this.store(key, x, expiresAfter)
+                this.store(key, x, expiresAfter);
             },
             retrieve: <T>() => {
-                return this.retrieve(key);
+                return this.retrieve<T>(key);
             }
         }
     }

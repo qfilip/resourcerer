@@ -32,14 +32,15 @@ public class Webapi
             app.UseSwaggerUI();
         }
 
-        EndpointMapper.Map(app);
 
         app.UseHttpsRedirection();
-        app.UseCors();
 
-        app.UseAuthentication();
         app.UseRouting();
+        app.UseCors();
+        app.UseAuthentication();
         app.UseAuthorization();
+
+        EndpointMapper.Map(app);
 
         app.UseMiddleware<AppHttpMiddleware>();
 

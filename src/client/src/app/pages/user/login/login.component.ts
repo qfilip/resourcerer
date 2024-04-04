@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { UserController } from '../../../controllers/user.controller';
 import { PopupService } from '../../../services/popup.service';
+import { IAppUserDto } from '../../../models/dtos/interfaces';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -10,8 +12,9 @@ import { PopupService } from '../../../services/popup.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  controller = inject(UserController);
   popup = inject(PopupService);
+  userService = inject(UserService);
+  userController = inject(UserController);
   
   submit(ev: Event, name: string, password: string) {
     ev.preventDefault();
@@ -31,5 +34,15 @@ export class LoginComponent {
       
       return;
     }
+
+    const dto = { name: name, password: password } as IAppUserDto;
+    this.userController.login(dto)
+      .subscribe({
+        next: x => {
+          console.log(x);
+          this.userService.setUser(x);
+        },
+        error: e => console.log(e)
+      })
   }
 }
