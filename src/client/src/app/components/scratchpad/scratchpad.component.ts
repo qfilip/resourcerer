@@ -33,9 +33,9 @@ export class ScratchpadComponent {
   }
 
   sendPopup(t: PopupType) {
-    if(t === 'info') this.popupService.info('message', 3000);
-    if(t === 'success') this.popupService.success('message', 3000);
-    if(t === 'warning') this.popupService.warning('message', 3000);
-    if(t === 'error') this.popupService.error('message', 3000);
+    if(t === 'info') this.popupService.info('info');
+    if(t === 'success') this.popupService.success('success');
+    if(t === 'warning') this.popupService.warning('warning');
+    if(t === 'error') this.popupService.error('error');
   }
 }

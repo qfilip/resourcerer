@@ -1,7 +1,8 @@
-import { Component, effect } from '@angular/core';
+import { Component, OnInit, effect, inject } from '@angular/core';
 import { PopupService } from '../../services/popup.service';
-import { IPopup } from '../../models/components/IPopup';
+import { IPopup, PopupSnake } from '../../models/components/IPopup';
 import { CommonModule } from '@angular/common';
+import { Observable, Subject, map, tap } from 'rxjs';
 
 @Component({
   selector: 'app-popup',
@@ -10,27 +11,17 @@ import { CommonModule } from '@angular/common';
   templateUrl: './popup.component.html',
   styleUrl: './popup.component.css'
 })
-export class PopupComponent {
-  popups: { x: IPopup | null, xs: IPopup[] } = { x: null, xs: [] }
+export class PopupComponent implements OnInit {
+  private service = inject(PopupService);
+  popupSnake$: Observable<PopupSnake> = new Observable<PopupSnake>(obs => obs.next({ head: null, tail: []}));
 
-  constructor(private service: PopupService) {
-    effect(() => {
-      const newPopup = this.service.popup();
-      if(!newPopup) {
-        return;
-      }
-
-      if(!this.popups.x) {
-        this.popups.x = newPopup;
-        this.setVisibility();
-
-        return;
-      }
-
-      this.popups.xs.unshift(this.popups.x);
-      this.popups.x = newPopup;
-      this.setVisibility();
-    })
+  ngOnInit(): void {
+    this.popupSnake$ = this.service.popupSnake
+      .pipe(tap(x => {
+        if(x.head) {
+          this.visible();
+        }
+      }));
   }
 
   toggleExpanded() {
@@ -50,11 +41,11 @@ export class PopupComponent {
 
   clear() {
     this.state = 'hidden';
-    this.popups.x = null;
-    this.popups.xs = [];
+    // this.popups.x = null;
+    // this.popups.xs = [];
   }
 
-  private setVisibility() {
+  private visible() {
     if(this.state === 'hidden') {
       this.state = 'visible';
     }

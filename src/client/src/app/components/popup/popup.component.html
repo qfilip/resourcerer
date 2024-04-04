@@ -4,48 +4,50 @@
         'visible' : state === 'visible',
         'hidden' : state === 'hidden'}">
     
-    @if(popups.x && state !== 'hidden') {
-        <div
-            class="message"
-            [ngClass]="{
-                'info' : popups.x.type === 'info',
-                'success' : popups.x.type === 'success',
-                'warning' : popups.x.type === 'warning',
-                'error' : popups.x.type === 'error' }">
-            <span class="message-text">
-                {{ popups.x.message }}
-            </span>
-            <span class="message-after">
-                <button (click)="toggleExpanded()">
-                    <i class="ra ra-telescope"></i>
-                </button>
-                <button (click)="hide()">
-                    <i class="ra ra-bleeding-eye"></i>
-                </button>
-                <button (click)="clear()">
-                    <i class="ra ra-cancel"></i>
-                </button>
-                <span class="message-count">
-                    {{ popups.xs.length + 1 }}
-                </span>
-            </span>
-        </div>
-    }
-
-    @if(state === 'expanded') {
-        @for (x of popups.xs; track $index) {
+    @if(popupSnake$ | async; as p) {
+        @if(p.head && state !== 'hidden') {
             <div
-                class="message" 
+                class="message"
                 [ngClass]="{
-                'info' : x.type === 'info',
-                'success' : x.type === 'success',
-                'warning' : x.type === 'warning',
-                'error' : x.type === 'error' }">
+                    'info' : p.head.type === 'info',
+                    'success' : p.head.type === 'success',
+                    'warning' : p.head.type === 'warning',
+                    'error' : p.head.type === 'error' }">
                 <span class="message-text">
-                    {{ x.message }}
+                    {{ p.head.message }}
                 </span>
-                <span class="message-after">&nbsp;</span>
+                <span class="message-after">
+                    <button (click)="toggleExpanded()">
+                        <i class="ra ra-telescope"></i>
+                    </button>
+                    <button (click)="hide()">
+                        <i class="ra ra-bleeding-eye"></i>
+                    </button>
+                    <button (click)="clear()">
+                        <i class="ra ra-cancel"></i>
+                    </button>
+                    <span class="message-count">
+                        {{ p.tail.length + 1 }}
+                    </span>
+                </span>
             </div>
+        }
+    
+        @if(state === 'expanded') {
+            @for (x of p.tail; track $index) {
+                <div
+                    class="message" 
+                    [ngClass]="{
+                    'info' : x.type === 'info',
+                    'success' : x.type === 'success',
+                    'warning' : x.type === 'warning',
+                    'error' : x.type === 'error' }">
+                    <span class="message-text">
+                        {{ x.message }}
+                    </span>
+                    <span class="message-after">&nbsp;</span>
+                </div>
+            }
         }
     }
 </section>

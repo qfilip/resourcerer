@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { UserController } from '../../../controllers/user.controller';
 import { PopupService } from '../../../services/popup.service';
-import { IPopup } from '../../../models/components/IPopup';
 
 @Component({
   selector: 'app-login',
@@ -28,8 +27,7 @@ export class LoginComponent {
     }
 
     if(errors.length > 0) {
-      const popups = errors.map(x => ({ message: x, type: 'warning' } as IPopup))
-      this.popup.many(popups);
+      errors.forEach(x => this.popup.warning(x));
       
       return;
     }

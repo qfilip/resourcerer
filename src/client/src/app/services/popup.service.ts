@@ -1,6 +1,6 @@
-import { Injectable, signal } from "@angular/core";
-import { IPopup, PopupType } from "../models/components/IPopup";
-import { Subject, BehaviorSubject } from "rxjs";
+import { Injectable } from "@angular/core";
+import { IPopup, PopupSnake, PopupType } from "../models/components/IPopup";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -8,37 +8,54 @@ import { Subject, BehaviorSubject } from "rxjs";
 export class PopupService {
     constructor() { }
     
-    private popup$ = signal<IPopup | null>(null);
-    popup = this.popup$.asReadonly();
+    private popupSnake$ = new BehaviorSubject<PopupSnake>({ head: null, tail: [] });
+    popupSnake = this.popupSnake$.asObservable();
     
-    info(message: string, duration = 3000) {
-        this.notify(message, 'info', duration);
+    info(message: string) {
+        this.notify(message, 'info');
     }
 
-    success(message: string, duration = 3000) {
-        this.notify(message, 'success', duration);
+    success(message: string) {
+        this.notify(message, 'success');
     }
 
-    warning(message: string, duration = 3000) {
-        this.notify(message, 'warning', duration);
+    warning(message: string) {
+        this.notify(message, 'warning');
     }
 
-    error(message: string, duration = 3000) {
-        this.notify(message, 'error', duration);
+    error(message: string) {
+        this.notify(message, 'error');
     }
 
     many(popups: IPopup[]) {
-        popups.forEach(x => {
-            x.duration = x.duration ? x.duration : 3000; 
-            this.popup$.set(x);
-        })
+        const [x, xs] = popups;
+        const snake = this.popupSnake$.getValue();
+        
+        snake.head = x;
+        
+        if(!snake.head) {
+            snake.tail.unshift(xs);
+        }
+        else {
+            const tail = [...snake.tail, snake.head ].concat(xs);
+            tail.forEach(x => snake.tail.unshift(x));
+        }
+
+        this.popupSnake$.next(snake);
     }
 
-    private notify(message: string, type: PopupType, duration: number) {
-        this.popup$.set({
-            message: message,
-            type: type,
-            duration: duration
-        } as IPopup);
+    private notify(message: string, type: PopupType) {
+        const popup: IPopup = { message: message, type: type }; 
+        const snake = this.popupSnake$.getValue();
+        
+        if(!snake.head) {
+            snake.head = popup;
+        }
+        else {
+            snake.tail.unshift(snake.head);
+            snake.head = popup;
+        }
+
+        this.popupSnake$.next(snake);
     }
 }
