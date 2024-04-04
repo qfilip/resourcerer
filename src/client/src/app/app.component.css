@@ -1,5 +1,6 @@
 header {
-    padding: var(--pad-sm);
+    padding: var(--rem-xs);
+    margin-bottom: var(--rem);
     
     color: var(--c-white);
     background-color: var(--c-black);

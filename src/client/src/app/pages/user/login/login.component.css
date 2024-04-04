@@ -14,7 +14,7 @@ form button {
 }
 
 fieldset div {
-    margin: var(--pad-sm) 0;
+    margin: var(--rem-xs) 0;
 }
 
 label {

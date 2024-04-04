@@ -14,18 +14,6 @@ button:focus,
 input[type=submit]:hover,
 input[type=submit]:focus {
     color: var(--color, var(--c-white));
-    background-color: var(--color, var(--c-white));
+    background-color: var(--color, var(--c-black));
     border: 2px solid var(--borderColor, var(--c-black));
-}
-
-button.icon {
-    color: var(--color, var(--c-white));
-    border: none;
-    background-color: transparent;
-    width: fit-content;
-}
-
-button.icon:hover,
-button.icon:focus {
-    color: var(--color, var(--c-white));
 }

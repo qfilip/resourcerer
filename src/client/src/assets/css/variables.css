@@ -26,8 +26,12 @@
     --c-red-d1: hsl(4, 90%, 38%);
 
     /* layout */
-    --pad-xxs: .1rem;
-    --pad-sm: .6rem;
+    --rem-xxs: .1rem;
+    --rem-xs: .6rem;
+    --rem-s: .8rem;
+    --rem: 1rem;
+
+    
 
     /* movement */
     --transition: .3s;

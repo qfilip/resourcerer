@@ -14,7 +14,7 @@ article {
 }
 
 article > div {
-    padding: var(--pad-sm);
+    padding: var(--rem-xs);
     border: 2px solid var(--c-black);
     background: var(--c-white);
     width: 50%;

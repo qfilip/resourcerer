@@ -17,15 +17,10 @@
                     {{ p.head.message }}
                 </span>
                 <span class="message-after">
-                    <button (click)="toggleExpanded()">
-                        <i class="ra ra-telescope"></i>
-                    </button>
-                    <button (click)="hide()">
-                        <i class="ra ra-bleeding-eye"></i>
-                    </button>
-                    <button (click)="clear()">
-                        <i class="ra ra-cancel"></i>
-                    </button>
+                    <i (click)="toggleExpanded()" class="ra ra-telescope"></i>
+                    <i (click)="hide()" class="ra ra-bleeding-eye"></i>
+                    <i (click)="clear()" class="ra ra-cancel"></i>
+                    
                     <span class="message-count">
                         {{ p.tail.length + 1 }}
                     </span>
