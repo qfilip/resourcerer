@@ -49,7 +49,7 @@ export class LocalstorageCacheService {
         const cacheString = localStorage.getItem(key) as string;
         const cache = JSON.parse(cacheString) as ICache;
         const expired = (cache.expiresAt) <= now;
-        console.log(expired)
+        
         return expired ? null : (cache.data as T);
     }
 
