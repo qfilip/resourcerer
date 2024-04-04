@@ -69,4 +69,4 @@ Migrations
 /Resourcerer_Sol/src/Resourcerer.Api/wwwroot/resourcerer.db3-wal
 /Resourcerer_Sol/src/Resourcerer.Api/wwwroot/*.db3-shm
 /Resourcerer_Sol/src/Resourcerer.Api/wwwroot/*.db3-wal
-/client/src/app/models/dtos/
+/src/client/src/app/models/dtos/
