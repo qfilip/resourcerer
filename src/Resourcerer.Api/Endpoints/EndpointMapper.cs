@@ -9,6 +9,9 @@ public static class EndpointMapper
     public static void Map(WebApplication app)
     {
         EndpointMapperV1_0.Map(app);
+        
+        var group = GetGroup(app, "1.0", "seed");
+        SeedDatabaseEndpoint.MapToGroup(group);
     }
 
     public static void AddAuthorization(
