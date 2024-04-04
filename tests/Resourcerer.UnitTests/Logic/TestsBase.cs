@@ -16,4 +16,16 @@ public class TestsBase
     }
 
     protected ILogger<T> MockLogger<T>() => A.Fake<ILogger<T>>();
+
+    [Fact]
+    public void Crap()
+    {
+        var fKeys = _ctx.Categories.EntityType.GetDeclaredForeignKeys();
+        foreach(var fKey in fKeys)
+        {
+            var rq = fKey.IsRequired;
+            var t = fKey.PrincipalEntityType.ClrType;
+            _ctx.Set()
+        }
+    }
 }
