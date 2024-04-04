@@ -4,7 +4,7 @@ namespace Resourcerer.UnitTests.Utilities.Faker;
 
 internal static partial class DF
 {
-    internal static void FakeDatabase(TestDbContext ctx, Action<TestDbContext>? exporter = null)
+    internal static void FakeDatabase(TestDbContext ctx)
     {
         var company = Fake<Company>(ctx, x =>
         {
@@ -73,8 +73,6 @@ internal static partial class DF
         Fake<Price>(ctx, x => { x.Item = cIron; x.UnitValue = 1d; });
 
         ctx.SaveChanges();
-
-        exporter?.Invoke(ctx);
     }
 
     private static void FakeExcerpts(TestDbContext ctx, Item composite, (Item element, double qty)[] elements)
