@@ -1,8 +1,6 @@
 ﻿using FakeItEasy;
 using Microsoft.Extensions.Logging;
-using Resourcerer.DataAccess.Entities;
 using Resourcerer.UnitTests.Utilities;
-using Resourcerer.UnitTests.Utilities.Faker;
 
 namespace Resourcerer.UnitTests.Logic;
 

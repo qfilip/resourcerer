@@ -1,11 +1,6 @@
-﻿using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.DataAccess.Enums;
-using Resourcerer.Dtos;
 using Resourcerer.Utilities;
-using Resourcerer.Utilities.Cryptography;
-using System.Text.Json;
 
 namespace Resourcerer.UnitTests.Utilities.Faker;
 
