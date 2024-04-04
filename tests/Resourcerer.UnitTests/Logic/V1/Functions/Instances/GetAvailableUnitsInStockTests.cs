@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.UnitTests.Utilities.Faker;
+using Resourcerer.DataAccess.Utilities.Faking;
 
 namespace Resourcerer.UnitTests.Logic.V1.Functions.Instances;
 

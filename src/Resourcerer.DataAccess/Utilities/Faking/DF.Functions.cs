@@ -1,12 +1,13 @@
-﻿using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Contexts;
+using Resourcerer.DataAccess.Entities;
 
-namespace Resourcerer.UnitTests.Utilities.Faker;
+namespace Resourcerer.DataAccess.Utilities.Faking;
 
-internal static partial class DF
+public static partial class DF
 {
-    internal static IDictionary<Type, (Delegate, Type[])> FakingFunctions = LoadFakingFunctions();
+    public static IDictionary<Type, (Delegate, Type[])> FakingFunctions = LoadFakingFunctions();
 
-    internal static IDictionary<Type, (Delegate, Type[])> LoadFakingFunctions()
+    public static IDictionary<Type, (Delegate, Type[])> LoadFakingFunctions()
     {
         return new Dictionary<Type, (Delegate, Type[])>()
         {
@@ -82,7 +83,7 @@ internal static partial class DF
         };
     }
 
-    internal static T Fake<T>(TestDbContext ctx, Action<T>? modifier = null) where T : AppDbEntity
+    public static T Fake<T>(AppDbContext ctx, Action<T>? modifier = null) where T : AppDbEntity
     {
         var entity = Fake(typeof(T)) as T;
         modifier?.Invoke(entity!);
@@ -105,14 +106,14 @@ internal static partial class DF
         var relationalTypes = tuple.Item2;
 
         var entity = fakingFunction.DynamicInvoke();
-        
-        if(entity == null)
+
+        if (entity == null)
         {
             throw new Exception($"Faking function for type {t} returns null");
         }
 
         var entityType = entity.GetType();
-        if(entityType != t)
+        if (entityType != t)
         {
             throw new Exception($"Faking function for type {t} returns {entityType}");
         }
@@ -123,15 +124,15 @@ internal static partial class DF
                 .Where(x => x.PropertyType == relationalType)
                 .ToArray();
 
-            if(relationalProperties.Length == 0)
+            if (relationalProperties.Length == 0)
             {
                 throw new Exception($"Invalid mapping of relational property array. Relational type {relationalType} doesn't exist on entity type {t}");
             }
 
-            foreach(var relationalProperty in relationalProperties)
+            foreach (var relationalProperty in relationalProperties)
             {
                 var relationPropertyValue = relationalProperty.GetValue(entity);
-                if(relationPropertyValue == null)
+                if (relationPropertyValue == null)
                 {
                     relationalProperty.SetValue(entity, Fake(relationalProperty.PropertyType));
                 }

@@ -9,7 +9,6 @@ public class EndpointMapperV1_0
     {
         MapCategories(app);
         MapInstances(app);
-        MapMocks(app);
         MapItems(app);
         MapUnitsOfMeasure(app);
         MapUsers(app);
@@ -48,12 +47,6 @@ public class EndpointMapperV1_0
         CancelItemProductionOrderEndpoint.MapToGroup(g);
         FinishItemProductionOrderEndpoint.MapToGroup(g);
         StartItemProductionEndpoint.MapToGroup(g);
-    }
-
-    private static void MapMocks(WebApplication app)
-    {
-        var g = EndpointMapper.GetGroup(app, Version, "Mocks");
-        SeedDatabaseEndpoint.MapToGroup(g);
     }
 
     private static void MapUnitsOfMeasure(WebApplication app)

@@ -1,10 +1,11 @@
-﻿using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Contexts;
+using Resourcerer.DataAccess.Entities;
 
-namespace Resourcerer.UnitTests.Utilities.Faker;
+namespace Resourcerer.DataAccess.Utilities.Faking;
 
-internal static partial class DF
+public static partial class DF
 {
-    internal static void FakeDatabase(TestDbContext ctx)
+    public static void FakeDatabase(AppDbContext ctx)
     {
         var company = Fake<Company>(ctx, x =>
         {
@@ -75,7 +76,7 @@ internal static partial class DF
         ctx.SaveChanges();
     }
 
-    private static void FakeExcerpts(TestDbContext ctx, Item composite, (Item element, double qty)[] elements)
+    private static void FakeExcerpts(AppDbContext ctx, Item composite, (Item element, double qty)[] elements)
     {
         foreach (var item in elements)
         {

@@ -18,14 +18,20 @@ public static class Seed
         public async Task<HandlerResult<Unit>> Handle(DataSeedDto request)
         {
             _dbContext.Companies.AddRange(request.Companies);
+            _dbContext.SaveChanges();
+            
             _dbContext.AppUsers.AddRange(request.AppUsers);
             _dbContext.Categories.AddRange(request.Categories);
             _dbContext.UnitsOfMeasure.AddRange(request.UnitsOfMeasure);
+            _dbContext.SaveChanges();
+            
             _dbContext.Excerpts.AddRange(request.Excerpts);
             _dbContext.Prices.AddRange(request.Prices);
             _dbContext.Items.AddRange(request.Items);
-            _dbContext.ItemProductionOrders.AddRange(request.ItemProductionOrders);
+            _dbContext.SaveChanges();
+
             _dbContext.Instances.AddRange(request.Instances);
+            _dbContext.ItemProductionOrders.AddRange(request.ItemProductionOrders);
             _dbContext.InstanceOrderedEvents.AddRange(request.InstanceOrderedEvents);
             _dbContext.InstanceReservedEvents.AddRange(request.InstanceReservedEvents);
             _dbContext.InstanceDiscardedEvents.AddRange(request.InstanceDiscardedEvents);

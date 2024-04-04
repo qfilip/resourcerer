@@ -1,17 +1,17 @@
-﻿using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Entities.JsonEntities;
+﻿using Resourcerer.DataAccess.Entities.JsonEntities;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.Utilities;
 
-namespace Resourcerer.UnitTests.Utilities.Faker;
+namespace Resourcerer.DataAccess.Utilities.Faking;
 
-internal static partial class DF
+public static partial class DF
 {
     public static DateTime Now = new DateTime(2000, 1, 1);
     public static string MakeName() => $"test-{Guid.NewGuid().ToString("n").Substring(0, 6)}";
     public static T MakeEntity<T>(Func<T> retn) where T : AppDbEntity
     {
         var e = retn();
-        if(e is AppDbJsonField jeb)
+        if (e is AppDbJsonField jeb)
         {
             jeb.Id = jeb.Id ?? MiniId.Generate();
         }

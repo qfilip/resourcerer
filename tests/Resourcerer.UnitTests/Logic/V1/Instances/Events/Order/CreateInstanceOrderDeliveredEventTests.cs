@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
+using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Instances.Events.Order;
 using Resourcerer.UnitTests.Utilities;
-using Resourcerer.UnitTests.Utilities.Faker;
 
 namespace Resourcerer.UnitTests.Logic.V1.Instances.Events.Order;
 

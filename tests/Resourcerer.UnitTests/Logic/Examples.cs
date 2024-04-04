@@ -1,5 +1,5 @@
 ﻿using Resourcerer.DataAccess.Entities;
-using Resourcerer.UnitTests.Utilities.Faker;
+using Resourcerer.DataAccess.Utilities.Faking;
 
 namespace Resourcerer.UnitTests.Logic;
 

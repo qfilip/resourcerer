@@ -1,4 +1,5 @@
-﻿using Resourcerer.Api.Endpoints.V1;
+﻿using Resourcerer.Api.Endpoints.Fake;
+using Resourcerer.Api.Endpoints.V1;
 using Resourcerer.Dtos;
 using System.Text.RegularExpressions;
 
@@ -11,7 +12,7 @@ public static class EndpointMapper
         EndpointMapperV1_0.Map(app);
         
         var group = GetGroup(app, "1.0", "seed");
-        SeedDatabaseEndpoint.MapToGroup(group);
+        SeedFakeDataEndpoint.MapToGroup(group);
     }
 
     public static void AddAuthorization(

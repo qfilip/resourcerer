@@ -1,7 +1,6 @@
-﻿using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.UnitTests.Utilities;
-using Resourcerer.UnitTests.Utilities.Faker;
 
 namespace Resourcerer.UnitTests.Logic.V1.Items.Events.Production;
 

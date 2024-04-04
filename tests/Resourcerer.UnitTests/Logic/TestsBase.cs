@@ -1,8 +1,8 @@
 ﻿using FakeItEasy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.UnitTests.Utilities;
-using Resourcerer.UnitTests.Utilities.Faker;
 using System.Text.Json;
 
 namespace Resourcerer.UnitTests.Logic;

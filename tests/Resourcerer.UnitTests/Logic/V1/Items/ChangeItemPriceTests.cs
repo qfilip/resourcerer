@@ -3,12 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
+using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Items;
 using Resourcerer.UnitTests.Utilities;
-using Resourcerer.UnitTests.Utilities.Faker;
-using System.Diagnostics;
 
 namespace Resourcerer.UnitTests.Logic.V1.Items;
 
