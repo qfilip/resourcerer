@@ -1,7 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { UserService } from '../../../../services/user.service';
-import { Observable } from 'rxjs';
-import { IAppUserDto } from '../../../../models/dtos/interfaces';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-logout',
@@ -11,6 +10,13 @@ import { IAppUserDto } from '../../../../models/dtos/interfaces';
   styleUrl: './logout.component.css'
 })
 export class LogoutComponent {
+  private router = inject(Router);
   private userService = inject(UserService);
-  user$ = computed(() =>this.userService.user());
+  
+  user$ = computed(() => this.userService.user());
+
+  logout() {
+    this.userService.clearUser();
+    this.router.navigate(['login']);
+  }
 }

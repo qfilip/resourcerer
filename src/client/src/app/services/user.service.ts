@@ -27,4 +27,9 @@ export class UserService {
         this._cache.store(x);
         this._user$.set(x);
     }
+
+    clearUser() {
+        this._cache.clear();
+        this._user$.set(null);
+    }
 }

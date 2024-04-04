@@ -12,10 +12,13 @@ export class LocalstorageCacheService {
             throw `Localstorage cache key ${key} already exists`;
         }
 
-        const now = new Date();
         this._cacheKeys.add(key);
-        const cache: ICache = { data: {} as T, storedAt: now.getTime(), expiresAfter: 0 };
-        localStorage.setItem(key, JSON.stringify(cache));
+
+        if(!localStorage.getItem(key)) {
+            const now = new Date();
+            const cache: ICache = { data: {} as T, expiresAt: now.getTime() };
+            localStorage.setItem(key, JSON.stringify(cache));
+        }
 
         return {
             store: <T>(x: T) => {
@@ -23,16 +26,19 @@ export class LocalstorageCacheService {
             },
             retrieve: <T>() => {
                 return this.retrieve<T>(key);
+            },
+            clear: () => {
+                this.clear(key);
             }
         }
     }
 
     private store<T>(key: string, data: T, expiresAfter: number) {
         const now = new Date().getTime();
+
         const cachedData: ICache = {
             data: data,
-            storedAt: now,
-            expiresAfter: expiresAfter
+            expiresAt: new Date(now + expiresAfter).getTime()
         }
 
         localStorage.setItem(key, JSON.stringify(cachedData));
@@ -42,8 +48,13 @@ export class LocalstorageCacheService {
         const now = new Date().getTime();
         const cacheString = localStorage.getItem(key) as string;
         const cache = JSON.parse(cacheString) as ICache;
-        const expired = (cache.storedAt + cache.expiresAfter) >= now;
-
+        const expired = (cache.expiresAt) <= now;
+        console.log(expired)
         return expired ? null : (cache.data as T);
+    }
+
+    private clear(key: string) {
+        const cache: ICache = { data: {}, expiresAt: 0 };
+        localStorage.setItem(key, JSON.stringify(cache));
     }
 }
