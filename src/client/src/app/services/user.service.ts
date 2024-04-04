@@ -9,6 +9,7 @@ import { IAppUserDto } from '../models/dtos/interfaces';
 export class UserService {
     private _cache: CacheFunctions;
     private _user$ = signal<IAppUserDto | null>(null);
+    user = this._user$.asReadonly();
 
     constructor(private cacheService: LocalstorageCacheService) {
         const minutes = 30 * 60 * 1000;

@@ -1,0 +1,10 @@
+header {
+    padding: var(--pad-sm);
+}
+
+
+header > .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

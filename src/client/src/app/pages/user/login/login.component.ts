@@ -3,6 +3,7 @@ import { UserController } from '../../../controllers/user.controller';
 import { PopupService } from '../../../services/popup.service';
 import { IAppUserDto } from '../../../models/dtos/interfaces';
 import { UserService } from '../../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ import { UserService } from '../../../services/user.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  router = inject(Router);
   popup = inject(PopupService);
   userService = inject(UserService);
   userController = inject(UserController);
@@ -39,8 +41,8 @@ export class LoginComponent {
     this.userController.login(dto)
       .subscribe({
         next: x => {
-          console.log(x);
           this.userService.setUser(x);
+          this.router.navigate(['home']);
         },
         error: e => console.log(e)
       })

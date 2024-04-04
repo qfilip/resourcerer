@@ -1,20 +1,21 @@
 import { Injectable } from "@angular/core";
 import { CacheFunctions, ICache } from "../models/services/ICache";
-import { Observable, tap } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
 })
 export class LocalstorageCacheService {
-    private _cache = new Map<string, ICache>();
+    private _cacheKeys = new Set<string>();
 
     register<T>(key: string, expiresAfter: number): CacheFunctions {
-        if(this._cache.has(key)) {
+        if(this._cacheKeys.has(key)) {
             throw `Localstorage cache key ${key} already exists`;
         }
 
         const now = new Date();
-        this._cache.set(key, { data: {} as T, storedAt: now.getTime(), expiresAfter: 0 } as ICache);
+        this._cacheKeys.add(key);
+        const cache: ICache = { data: {} as T, storedAt: now.getTime(), expiresAfter: 0 };
+        localStorage.setItem(key, JSON.stringify(cache));
 
         return {
             store: <T>(x: T) => {
@@ -34,13 +35,14 @@ export class LocalstorageCacheService {
             expiresAfter: expiresAfter
         }
 
-        this._cache.set(key, cachedData);
+        localStorage.setItem(key, JSON.stringify(cachedData));
     }
 
     private retrieve<T>(key: string): T | null {
         const now = new Date().getTime();
-        const cache = this._cache.get(key) as ICache;
-        const expired = (cache.storedAt + cache.expiresAfter) <= now;
+        const cacheString = localStorage.getItem(key) as string;
+        const cache = JSON.parse(cacheString) as ICache;
+        const expired = (cache.storedAt + cache.expiresAfter) >= now;
 
         return expired ? null : (cache.data as T);
     }

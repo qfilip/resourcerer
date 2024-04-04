@@ -6,13 +6,14 @@ import { SpinnerComponent } from "./components/spinner/spinner.component";
 import { PopupComponent } from "./components/popup/popup.component";
 import { UserController } from './controllers/user.controller';
 import { UserService } from './services/user.service';
+import { LogoutComponent } from "./pages/user/components/logout/logout.component";
 
 @Component({
     selector: 'app-root',
     standalone: true,
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
-    imports: [RouterOutlet, DialogComponent, ScratchpadComponent, SpinnerComponent, PopupComponent]
+    imports: [RouterOutlet, DialogComponent, ScratchpadComponent, SpinnerComponent, PopupComponent, LogoutComponent]
 })
 export class AppComponent implements OnInit {
     router = inject(Router);
