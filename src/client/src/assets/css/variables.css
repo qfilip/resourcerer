@@ -1,6 +1,8 @@
 :root {
     /* colors */
     --c-black: hsl(0, 0%, 7%);
+    --c-black-l1: hsl(0, 0%, 17%);
+    --c-black-l2: hsl(0, 0%, 27%);
     --c-black-t1: hsla(0, 0%, 7%, 90%);
     --c-white: hsl(0, 0%, 100%);
     --c-white-d1: hsl(0, 0%, 90%);

@@ -1,0 +1,28 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+h2 {
+    margin: 0rem 0rem var(--rem);
+    padding: 0rem var(--rem-xs);
+}
+
+.page-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+ul {
+    display: flex;
+    padding: var(--rem-xs);
+    margin: 0;
+    list-style: none;
+}
+
+article {
+    flex-grow: 20;
+    padding: 0rem var(--rem-xs);
+}
