@@ -29,7 +29,7 @@ export class ScratchpadComponent {
     const x = setTimeout(() => {
       this.spinnerService.hide();
       clearTimeout(x);
-    }, 1000)
+    }, 5000)
   }
 
   sendPopup(t: PopupType) {
