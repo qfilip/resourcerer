@@ -1,6 +1,8 @@
 @if(user$(); as user) {
-    <span>
-        {{ user.company.name }} / {{ user.name }}
-    </span>
-    <i (click)="logout()" class="ra ra-metal-gate"></i>
+    <div>
+        <span>
+            {{ user.company.name }} / {{ user.name }}
+        </span>
+        <i (click)="logout()" class="ra ra-metal-gate"></i>
+    </div>
 }

@@ -1,35 +1,50 @@
 <section>
     <header>
-        <h2>Home</h2>
+        <h2>{{ page$() }}</h2>
+        <hr />
         <nav>
             <ul>
                 <li>
-                    <i class="ra ra-hydra"></i>
+                    <i (click)="page$.set('Companies')" class="ra ra-hydra"></i>
                 </li>
                 <li>
-                    <!-- company -->
-                    <i class="ra ra-castle-emblem"></i>
+                    <i (click)="page$.set('Company')" class="ra ra-castle-emblem"></i>
                 </li>
                 <li>
-                    <!-- items -->
-                    <i class="ra ra-bone-knife"></i>
+                    <i (click)="page$.set('Items')" class="ra ra-bone-knife"></i>
                 </li>
                 <li>
-                    <!-- events -->
-                    <i class="ra ra-lightning"></i>
+                    <i (click)="page$.set('Events')" class="ra ra-lightning"></i>
                 </li>
                 <li>
-                    <!-- manage users -->
-                    <i class="ra ra-queen-crown"></i>
+                    <i (click)="page$.set('Users')" class="ra ra-queen-crown"></i>
                 </li>
                 <li>
-                    <!-- personal page -->
-                    <i class="ra ra-aware"></i>
+                    <i (click)="page$.set('Account')" class="ra ra-aware"></i>
                 </li>
             </ul>
         </nav>
     </header>
     <article>
-        I have content
+        @switch (page$()) {
+            @case ('Companies') {
+                <div>Companies</div>
+            }
+            @case ('Company') {
+                <div>Company</div>
+            }
+            @case ('Items') {
+                <div>Items</div>
+            }
+            @case ('Events') {
+                <div>Events</div>
+            }
+            @case ('Users') {
+                <div>Users</div>
+            }
+            @case ('Account') {
+                <account-page></account-page>
+            }
+        }
     </article>
 </section>

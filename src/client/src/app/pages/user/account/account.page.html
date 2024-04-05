@@ -1,0 +1,41 @@
+<section>
+    <h3>General</h3>
+    <dl>
+        <div>
+            <dt>Name:</dt>
+            <dd>{{ user$()?.name }}</dd>
+        </div>
+        <div>
+            <dt>Company:</dt>
+            <dd>{{ user$()?.company?.name }}</dd>
+        </div>
+        <div>
+            <dt>Admin:</dt>
+            <dd>{{ user$()?.isAdmin ? 'Yes' : 'No' }}</dd>
+        </div>
+    </dl>
+</section>
+<section>
+    <h3>Permissions</h3>
+    <dl class="permission-list">
+        @for(up of userPermissions; track up.section) {
+        <div>
+            <dt>{{ up.section }}</dt>
+            <dd>
+                <ul>
+                    @for(v of up.values; track $index) {
+                        <li>
+                            <div>
+                                <dt>{{ v.permission }}</dt>
+                                <dd>
+                                    <input type="checkbox" readonly disabled checked={{v.hasPermission}} />
+                                </dd>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </dd>
+        </div>
+        }
+    </dl>
+</section>

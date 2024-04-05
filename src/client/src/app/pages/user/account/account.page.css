@@ -1,0 +1,40 @@
+h3 {
+    font-size: var(--rem);
+}
+
+dl {
+    margin: var(--rem) 0rem;
+    width: 20%;
+    font-size: var(--rem-s);
+}
+
+dl > div, li > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.permission-list {
+    display: flex;
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    dd {
+        margin: 0;
+    }
+}
+
+.permission-list > div {
+    margin: var(--rem) var(--rem) 0rem 0rem;
+    display: flex;
+    flex-flow: column;
+
+    dt {
+        width: 100%;
+        text-align: left;
+    }
+}
+

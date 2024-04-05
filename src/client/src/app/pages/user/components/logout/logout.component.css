@@ -1,0 +1,10 @@
+div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+span {
+    font-size: var(--rem-s);
+    padding-right: var(--rem-s);
+}
