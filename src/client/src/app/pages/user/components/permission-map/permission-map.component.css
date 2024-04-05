@@ -1,0 +1,33 @@
+dl {
+    font-size: var(--rem-s);
+}
+
+.permission-list {
+    display: flex;
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    dd {
+        margin: 0;
+    }
+}
+
+li > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.permission-list > div {
+    margin: var(--rem) var(--rem) 0rem 0rem;
+    display: flex;
+    flex-flow: column;
+
+    dt {
+        width: 100%;
+        text-align: left;
+    }
+}

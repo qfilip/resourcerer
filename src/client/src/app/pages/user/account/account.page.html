@@ -17,25 +17,7 @@
 </section>
 <section>
     <h3>Permissions</h3>
-    <dl class="permission-list">
-        @for(up of userPermissions; track up.section) {
-        <div>
-            <dt>{{ up.section }}</dt>
-            <dd>
-                <ul>
-                    @for(v of up.values; track $index) {
-                        <li>
-                            <div>
-                                <dt>{{ v.permission }}</dt>
-                                <dd>
-                                    <input type="checkbox" readonly disabled checked={{v.hasPermission}} />
-                                </dd>
-                            </div>
-                        </li>
-                    }
-                </ul>
-            </dd>
-        </div>
-        }
-    </dl>
+    @if(user$()) {
+        <app-permission-map [user]="user$()!"></app-permission-map>
+    }
 </section>
