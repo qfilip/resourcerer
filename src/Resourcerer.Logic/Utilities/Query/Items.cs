@@ -1,7 +1,7 @@
 ﻿using Resourcerer.DataAccess.Entities;
 using System.Linq.Expressions;
 
-namespace Resourcerer.DataAccess.Utilities.Query;
+namespace Resourcerer.Logic.Utilities.Query;
 
 public static class Items
 {

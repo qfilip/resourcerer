@@ -40,16 +40,24 @@ public static class Exporter
 
     private static void ExportCustom(TsBuilder builder)
     {
-        var customExporters = new List<(Action<StringBuilder> exporter, string file)>()
+        var customExporters = new List<(string File, List<Action<StringBuilder>> Exporters)>()
         {
-            (CustomExports.ExportPermissionsMapConst, "constants.ts")
+            ("constants.ts", new List<Action<StringBuilder>>()
+            {
+                CustomExports.ExportPermissionsMapConst,
+                CustomExports.ExportJwtClaimKeys
+            })
         };
 
         var sb = new StringBuilder();
         customExporters.ForEach(ce =>
         {
-            ce.exporter(sb);
-            var path = Path.Combine(builder.Context.TargetDirectory, ce.file);
+            ce.Exporters.ForEach(e =>
+            {
+                e(sb);
+                sb.Append(Environment.NewLine);
+            });
+            var path = Path.Combine(builder.Context.TargetDirectory, ce.File);
             File.WriteAllText(path, sb.ToString());
             sb.Clear();
         });

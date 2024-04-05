@@ -40,8 +40,8 @@ export class LoginComponent {
     const dto = { name: name, password: password } as IAppUserDto;
     this.userController.login(dto)
       .subscribe({
-        next: x => {
-          this.userService.setUser(x);
+        next: jwt => {
+          this.userService.setUser(jwt);
           this.router.navigate(['home']);
         },
         error: e => console.log(e)

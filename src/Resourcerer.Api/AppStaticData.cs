@@ -22,7 +22,10 @@ public static class AppStaticData
 
             public static string Issuer { get; private set; } = string.Empty;
             public static string Audience { get; private set; } = string.Empty;
-            public static string UserId { get; private set; } = "userid";
+            public const string UserId = "user_id";
+            public const string Admin = "admin";
+            public const string CompanyId = "company_id";
+            public const string CompanyName = "company_name";
         }
 
         public static class AuthorizationPolicy

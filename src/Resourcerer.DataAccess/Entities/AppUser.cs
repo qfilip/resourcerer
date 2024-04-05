@@ -2,6 +2,7 @@
 public class AppUser : AppDbEntity
 {
     public string? Name { get; set; }
+    public bool IsAdmin { get; set; }
     public string? PasswordHash { get; set; }
     public string? Permissions { get; set; }
 

@@ -37,9 +37,10 @@ export class UserService {
         return true;
     }
 
-    setUser(x: IAppUserDto) {
-        this._cache.store(x.jwt);
-        this._user$.set(x);
+    setUser(jwt: string) {
+        this._cache.store(jwt);
+        const jwtData = parseJwt(jwt)
+        this._user$.set(jwtData.dto);
     }
 
     clearUser() {

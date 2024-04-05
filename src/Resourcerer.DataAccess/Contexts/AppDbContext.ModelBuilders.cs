@@ -12,12 +12,12 @@ public partial class AppDbContext
         ConfigureEntity<Company>(modelBuilder, e =>
         {
             e.ToTable("Companies");
+            e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
         });
 
         ConfigureEntity<AppUser>(modelBuilder, (e) =>
         {
-            e.HasIndex(x => x.Name).IsUnique();
             e.Property(x => x.Name).IsRequired();
 
             e.HasOne(x => x.Company).WithMany(x => x.Employees)

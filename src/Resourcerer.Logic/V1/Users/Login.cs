@@ -24,6 +24,7 @@ public static class Login
         public async Task<HandlerResult<AppUserDto>> Handle(AppUserDto request)
         {
             var user = await _appDbContext.AppUsers
+                .Include(x => x.Company)
                 .FirstOrDefaultAsync(x => x.Name == request.Name);
 
             if (user == null)
@@ -39,12 +40,8 @@ public static class Login
             }
 
             var permissionDict = Permissions.GetCompressedFrom(user.Permissions!);
-            var dto = new AppUserDto
-            {
-                Id = user.Id,
-                Name = user.Name,
-                PermissionsMap = Permissions.GetPermissionsMap(user.Permissions!)
-            };
+
+            var dto = AppUserDto.MapForJwt(user);
 
             return HandlerResult<AppUserDto>.Ok(dto);
         }

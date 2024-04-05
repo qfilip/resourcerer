@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
-using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Users;
 
 namespace Resourcerer.Api.Endpoints.V1;
@@ -8,7 +8,7 @@ namespace Resourcerer.Api.Endpoints.V1;
 public static class RegisterEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] AppUserDto dto,
+        [FromBody] V1Register dto,
         [FromServices] Pipeline pipeline,
         [FromServices] Register.Handler handler)
     {

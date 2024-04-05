@@ -15,6 +15,9 @@ public class JwtService
         claims.Add(new Claim(JwtRegisteredClaimNames.Sub, dto.Name!));
         claims.Add(new Claim(JwtRegisteredClaimNames.Iat, now.ToString()));
         claims.Add(new Claim(AppStaticData.Auth.Jwt.UserId, dto.Id.ToString()));
+        claims.Add(new Claim(AppStaticData.Auth.Jwt.Admin, dto.IsAdmin.ToString()));
+        claims.Add(new Claim(AppStaticData.Auth.Jwt.CompanyId, dto.Company?.Id.ToString() ?? string.Empty));
+        claims.Add(new Claim(AppStaticData.Auth.Jwt.CompanyName, dto.Company?.Name?.ToString() ?? string.Empty));
 
         return WriteToken(claims);
     }

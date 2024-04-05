@@ -14,8 +14,8 @@ public class LoginEndpoint
     {
         return await pipeline.Pipe(handler, dto, (result) =>
         {
-            result.Jwt = JwtService.GenerateToken(result);
-            return Results.Ok(result);
+            var jwt = JwtService.GenerateToken(result);
+            return Results.Ok(jwt);
         });
     }
 

@@ -1,4 +1,4 @@
-import { permissionsMap } from "../models/dtos/constants";
+import { jwtClaimKeys, permissionsMap } from "../models/dtos/constants";
 import { IAppUserDto } from "../models/dtos/interfaces";
 
 export function parseJwt(jwt: string) {
@@ -6,7 +6,7 @@ export function parseJwt(jwt: string) {
     const jwtObj = JSON.parse(atob(body));
 
     const now = (new Date()).getTime();
-    const issuedAt = new Date(jwtObj['iat']).getTime();
+    const issuedAt = new Date(jwtObj[jwtClaimKeys.issuedAt]).getTime();
     
     const lifetime = new Date(Date.UTC(jwtObj['exp'] as number)).getTime();
     const utcNow = new Date(Date.UTC(now)).getTime();
@@ -14,9 +14,13 @@ export function parseJwt(jwt: string) {
     const expired = (issuedAt + lifetime) <= utcNow;
 
     const userDto = {
-        id: jwtObj['userid'],
-        name: jwtObj['sub'],
-        jwt: jwt,
+        id: jwtObj[jwtClaimKeys.userId],
+        name: jwtObj[jwtClaimKeys.name],
+        isAdmin: jwtObj[jwtClaimKeys.isAdmin],
+        company: {
+            id: jwtObj[jwtClaimKeys.companyId],
+            name: jwtObj[jwtClaimKeys.companyName]
+        },
         permissionsMap: {}
     } as IAppUserDto;
 
