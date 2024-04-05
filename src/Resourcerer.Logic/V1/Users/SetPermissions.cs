@@ -46,7 +46,7 @@ public static class SetPermissions
             {
                 Id = user.Id,
                 Name = user.Name,
-                Permissions = Permissions.GetPermissionDictFromString(user.Permissions!)
+                PermissionsMap = Permissions.GetPermissionsMap(user.Permissions!)
             };
 
             return HandlerResult<AppUserDto>.Ok(dto);

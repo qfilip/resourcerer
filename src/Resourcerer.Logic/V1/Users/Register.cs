@@ -44,7 +44,7 @@ public static class Register
             var dto = new AppUserDto
             {
                 Name = entity.Name,
-                Permissions = new()
+                PermissionsMap = new()
             };
 
             return HandlerResult<AppUserDto>.Ok(dto);

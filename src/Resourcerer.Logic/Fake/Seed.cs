@@ -21,7 +21,7 @@ public static class Seed
 
         public async Task<HandlerResult<DataSeedDto>> Handle(Unit _)
         {
-            var allPermissions = Permissions.GetAllPermissionsDictionary();
+            var allPermissions = Permissions.GetCompressed();
             var adminPermissoins = JsonSerializer.Serialize(allPermissions);
             
             DF.FakeDatabase(_dbContext, adminPermissoins);

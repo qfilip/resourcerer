@@ -26,7 +26,7 @@ public class Permissions
         return errors;
     }
 
-    public static Dictionary<string, int> GetAllPermissionsDictionary()
+    public static Dictionary<string, int> GetCompressed()
     {
         var dict = new Dictionary<string, int>();
         AllSections.ForEach(s =>
@@ -42,16 +42,22 @@ public class Permissions
         return dict;
     }
 
-    public static Dictionary<string, int> GetPermissionDictFromString(string permissionsJson)
+    public static Dictionary<string, int> GetCompressedFrom(string permissionsJson)
     {
         return JsonSerializer.Deserialize<Dictionary<string, int>>(permissionsJson)!;
     }
 
-    public static Dictionary<string, string[]> GetPermissionMap(Dictionary<string, int> permissionsDict)
+    public static Dictionary<string, string[]> GetPermissionsMap(string permissionsJson)
+    {
+        var compressed = GetCompressedFrom(permissionsJson);
+        return GetPermissionsMap(compressed);
+    }
+
+    public static Dictionary<string, string[]> GetPermissionsMap(Dictionary<string, int> compressed)
     {
         var dict = new Dictionary<string, string[]>();
 
-        var setPermissions = permissionsDict
+        var setPermissions = compressed
             .Where(x => AllSections.Contains(x.Key))
             .ToList();
 
@@ -79,9 +85,20 @@ public class Permissions
         return dict;
     }
 
-    public static List<Claim> GetClaimsFromDictionary(Dictionary<string, int> permissionsDict)
+    public static List<Claim> GetClaimsFromPermissionsMap(Dictionary<string, string[]> permissionsMap)
     {
-        var setPermissions = permissionsDict
+        var claims = new List<Claim>();
+
+        foreach (var kv in permissionsMap)
+            foreach (var v in kv.Value)
+                claims.Add(new Claim(kv.Key, v));
+
+        return claims;
+    }
+
+    public static List<Claim> GetClaimsFromCompressed(Dictionary<string, int> compressed)
+    {
+        var setPermissions = compressed
             .Where(x => AllSections.Contains(x.Key))
             .ToList();
 
@@ -98,7 +115,7 @@ public class Permissions
         return claims;
     }
 
-    public static Dictionary<string, int> GetPermissionDictionaryFromClaims(List<Claim> claims)
+    public static Dictionary<string, int> GetCompressedFromClaims(List<Claim> claims)
     {
         var lookup = claims
             .Where(x => AllSections.Contains(x.Type))

@@ -26,7 +26,7 @@ public class GetAllUsers
             {
                 Id = x.Id,
                 Name = x.Name,
-                Permissions = Permissions.GetPermissionDictFromString(x.Permissions!),
+                PermissionsMap = Permissions.GetPermissionsMap(x.Permissions!),
                 EntityStatus = x.EntityStatus
             })
             .ToArray();

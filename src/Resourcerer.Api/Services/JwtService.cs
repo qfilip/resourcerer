@@ -2,7 +2,6 @@
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Security.Claims;
 
 namespace Resourcerer.Api.Services;
@@ -11,7 +10,7 @@ public class JwtService
 {
     public static string GenerateToken(AppUserDto dto)
     {
-        var claims = Permissions.GetClaimsFromDictionary(dto.Permissions!);
+        var claims = Permissions.GetClaimsFromPermissionsMap(dto.PermissionsMap!);
         claims.Add(new Claim(JwtRegisteredClaimNames.Sub, dto.Name!));
         claims.Add(new Claim(AppStaticData.Auth.Jwt.UserId, dto.Id.ToString()));
 
