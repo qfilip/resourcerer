@@ -1,6 +1,7 @@
 ﻿using Reinforced.Typings.Fluent;
 using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos;
+using System.Text;
 using TsBuilder = Reinforced.Typings.Fluent.ConfigurationBuilder;
 
 namespace Resourcerer.Api.TsExport;
@@ -37,6 +38,26 @@ public static class Exporter
         .BaseConfiguration()
         .ExportTo("interfaces.ts");
 
+    private static void ExportPermissionsMapConst(TsBuilder builder, string targetFile)
+    {
+        var permissions = Permissions.AllPermissions.Select(x => $"'{x}'").ToArray();
+        var permissionsArrayString = string.Join(',', permissions);
+        
+        var sb = new StringBuilder();
+        sb.Append("export const permissionsMap: { [key:string]: string[] } = {");
+        sb.Append(Environment.NewLine);
+        Permissions.AllSections.ForEach(s =>
+        {
+            var kv = $"\t'{s}': [{permissionsArrayString}],";
+            sb.Append(kv);
+            sb.Append(Environment.NewLine);
+        });
+        sb.Append("};");
+        
+        var path = Path.Combine(builder.Context.TargetDirectory, targetFile);
+        File.WriteAllText(path, sb.ToString());
+    }
+
 
     public static void Configure(TsBuilder builder)
     {
@@ -48,6 +69,8 @@ public static class Exporter
     {
         var dtos = GetDtos<IDto>();
 
+        // export self defined
+        ExportPermissionsMapConst(builder, "constants.ts");
         // Tools > Options > Projects And Solutions > Build And Run
         // Set MSBuild project build output verbosity -> Detailed
         Console.WriteLine("EXPORT-DIR");

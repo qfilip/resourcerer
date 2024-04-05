@@ -10,6 +10,6 @@ export class UserController extends BaseController {
 
     login(user: IAppUserDto) {
         const url = this.url + '/login';
-        return this.http.post<IAppUserDto>(url, user);
+        return this.http.post<string>(url, user);
     }
 }

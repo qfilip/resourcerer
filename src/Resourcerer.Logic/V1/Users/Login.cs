@@ -38,10 +38,13 @@ public static class Login
                 return HandlerResult<AppUserDto>.Rejected("Bad credentials");
             }
 
+            var permissionDict = Permissions.GetPermissionDictFromString(user.Permissions!);
             var dto = new AppUserDto
             {
+                Id = user.Id,
                 Name = user.Name,
-                Permissions = Permissions.GetPermissionDictFromString(user.Permissions!)
+                Permissions = permissionDict,
+                PermissionsMap = Permissions.GetPermissionMap(permissionDict!)
             };
 
             return HandlerResult<AppUserDto>.Ok(dto);

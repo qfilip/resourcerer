@@ -5,8 +5,8 @@ namespace Resourcerer.Dtos;
 
 public class Permissions
 {
-    private static List<ePermission> AllPermissions = Enum.GetValues<ePermission>().ToList();
-    private static List<string> AllSections = Enum.GetValues<ePermissionSection>()
+    public readonly static List<ePermission> AllPermissions = Enum.GetValues<ePermission>().ToList();
+    public readonly static List<string> AllSections = Enum.GetValues<ePermissionSection>()
         .Select(x => x.ToString())
         .ToList();
 
@@ -45,6 +45,38 @@ public class Permissions
     public static Dictionary<string, int> GetPermissionDictFromString(string permissionsJson)
     {
         return JsonSerializer.Deserialize<Dictionary<string, int>>(permissionsJson)!;
+    }
+
+    public static Dictionary<string, string[]> GetPermissionMap(Dictionary<string, int> permissionsDict)
+    {
+        var dict = new Dictionary<string, string[]>();
+
+        var setPermissions = permissionsDict
+            .Where(x => AllSections.Contains(x.Key))
+            .ToList();
+
+        var claims = new List<Claim>();
+        setPermissions.ForEach(x =>
+        {
+            var permissions = AllPermissions
+                .Select(p =>
+                {
+                    if (((int)p & x.Value) > 0)
+                    {
+                        return p.ToString();
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                })
+                .OfType<string>()
+                .ToArray();
+
+            dict.Add(x.Key.ToString(), permissions);
+        });
+
+        return dict;
     }
 
     public static List<Claim> GetClaimsFromDictionary(Dictionary<string, int> permissionsDict)

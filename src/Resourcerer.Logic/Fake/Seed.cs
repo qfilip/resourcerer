@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Utilities.Faking;
+using Resourcerer.Dtos;
 using Resourcerer.Dtos.Fake;
 using System.Text.Json;
 
@@ -20,7 +21,10 @@ public static class Seed
 
         public async Task<HandlerResult<DataSeedDto>> Handle(Unit _)
         {
-            DF.FakeDatabase(_dbContext);
+            var allPermissions = Permissions.GetAllPermissionsDictionary();
+            var adminPermissoins = JsonSerializer.Serialize(allPermissions);
+            
+            DF.FakeDatabase(_dbContext, adminPermissoins);
 
             await _dbContext.SaveChangesAsync();
 
