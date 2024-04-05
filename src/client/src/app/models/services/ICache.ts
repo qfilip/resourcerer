@@ -3,8 +3,8 @@ export interface ICache {
     expiresAt: number;
 }
 
-export type CacheFunctions = {
-    store: <T>(x: T) => void;
-    retrieve: <T>() => T | null;
+export type CacheFunctions<T> = {
+    store: (x: T) => void;
+    retrieve: () => T | null;
     clear: () => void;
 }

@@ -38,24 +38,21 @@ public static class Exporter
         .BaseConfiguration()
         .ExportTo("interfaces.ts");
 
-    private static void ExportPermissionsMapConst(TsBuilder builder, string targetFile)
+    private static void ExportCustom(TsBuilder builder)
     {
-        var permissions = Permissions.AllPermissions.Select(x => $"'{x}'").ToArray();
-        var permissionsArrayString = string.Join(',', permissions);
-        
-        var sb = new StringBuilder();
-        sb.Append("export const permissionsMap: { [key:string]: string[] } = {");
-        sb.Append(Environment.NewLine);
-        Permissions.AllSections.ForEach(s =>
+        var customExporters = new List<(Action<StringBuilder> exporter, string file)>()
         {
-            var kv = $"\t'{s}': [{permissionsArrayString}],";
-            sb.Append(kv);
-            sb.Append(Environment.NewLine);
+            (CustomExports.ExportPermissionsMapConst, "constants.ts")
+        };
+
+        var sb = new StringBuilder();
+        customExporters.ForEach(ce =>
+        {
+            ce.exporter(sb);
+            var path = Path.Combine(builder.Context.TargetDirectory, ce.file);
+            File.WriteAllText(path, sb.ToString());
+            sb.Clear();
         });
-        sb.Append("};");
-        
-        var path = Path.Combine(builder.Context.TargetDirectory, targetFile);
-        File.WriteAllText(path, sb.ToString());
     }
 
 
@@ -70,7 +67,8 @@ public static class Exporter
         var dtos = GetDtos<IDto>();
 
         // export self defined
-        ExportPermissionsMapConst(builder, "constants.ts");
+        ExportCustom(builder);
+
         // Tools > Options > Projects And Solutions > Build And Run
         // Set MSBuild project build output verbosity -> Detailed
         Console.WriteLine("EXPORT-DIR");

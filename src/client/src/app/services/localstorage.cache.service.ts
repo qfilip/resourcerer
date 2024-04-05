@@ -7,7 +7,7 @@ import { CacheFunctions, ICache } from "../models/services/ICache";
 export class LocalstorageCacheService {
     private _cacheKeys = new Set<string>();
 
-    register<T>(key: string, expiresAfter: number): CacheFunctions {
+    register<T>(key: string, expiresAfter: number): CacheFunctions<T> {
         if(this._cacheKeys.has(key)) {
             throw `Localstorage cache key ${key} already exists`;
         }
@@ -21,10 +21,10 @@ export class LocalstorageCacheService {
         }
 
         return {
-            store: <T>(x: T) => {
+            store: (x: T) => {
                 this.store(key, x, expiresAfter);
             },
-            retrieve: <T>() => {
+            retrieve: () => {
                 return this.retrieve<T>(key);
             },
             clear: () => {
