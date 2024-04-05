@@ -10,8 +10,10 @@ public class JwtService
 {
     public static string GenerateToken(AppUserDto dto)
     {
+        var now = DateTime.UtcNow;
         var claims = Permissions.GetClaimsFromPermissionsMap(dto.PermissionsMap!);
         claims.Add(new Claim(JwtRegisteredClaimNames.Sub, dto.Name!));
+        claims.Add(new Claim(JwtRegisteredClaimNames.Iat, now.ToString()));
         claims.Add(new Claim(AppStaticData.Auth.Jwt.UserId, dto.Id.ToString()));
 
         return WriteToken(claims);
