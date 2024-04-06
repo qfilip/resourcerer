@@ -1,25 +1,33 @@
-﻿using System.Security.Claims;
+﻿using System.Reflection.Emit;
+using System.Security.Claims;
 using System.Text.Json;
 
 namespace Resourcerer.Dtos;
 
 public class Permissions
 {
-    public readonly static List<ePermission> AllPermissions = Enum.GetValues<ePermission>().ToList();
+    public readonly static List<ePermission> AllPermissions = Enum.GetValues<ePermission>()
+        .ToList();
+    
     public readonly static List<string> AllSections = Enum.GetValues<ePermissionSection>()
         .Select(x => x.ToString())
         .ToList();
 
-    public static List<string> Validate(Dictionary<string, int> permissions)
+    public static List<string> Validate(Dictionary<string, string[]> permissionsMap)
     {
         var errors = new List<string>();
-        var lookup = permissions.ToLookup(x => x.Key);
 
-        foreach(var l in lookup)
+        foreach(var kv in permissionsMap)
         {
-            if(!AllSections.Contains(l.Key))
+            if(!Enum.TryParse<ePermissionSection>(kv.Key, out var _))
             {
-                errors.Add($"Permission of type {l.Key} doesn't exist");
+                errors.Add($"Permission section {kv.Key} doesn't exist");
+            }
+
+            foreach(var permission in  kv.Value)
+            {
+                if(!Enum.TryParse<ePermission>(permission, out var _))
+                    errors.Add($"Permission {permission} doesn't exist");
             }
         }
 
@@ -45,6 +53,24 @@ public class Permissions
     public static Dictionary<string, int> GetCompressedFrom(string permissionsJson)
     {
         return JsonSerializer.Deserialize<Dictionary<string, int>>(permissionsJson)!;
+    }
+
+    public static Dictionary<string, int> GetCompressedFrom(Dictionary<string, string[]> permissionsMap)
+    {
+        var compressed = new Dictionary<string, int>();
+        foreach(var kv in permissionsMap)
+        {
+            var level = 0;
+            foreach (var permission in kv.Value)
+            {
+                var e = Enum.Parse<ePermission>(permission);
+                level = level | (int)e;
+            }
+
+            compressed.Add(kv.Key, level);
+        }
+
+        return compressed;
     }
 
     public static Dictionary<string, string[]> GetPermissionsMap(string permissionsJson)

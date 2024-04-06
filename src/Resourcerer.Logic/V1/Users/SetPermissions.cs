@@ -38,7 +38,7 @@ public static class SetPermissions
                 return HandlerResult<AppUserDto>.NotFound($"User with Id {request.UserId} not found");
             }
 
-            user.Permissions = JsonSerializer.Serialize(request.Permissions);
+            user.Permissions = JsonSerializer.Serialize(Permissions.GetCompressedFrom(request.Permissions!));
 
             await _appDbContext.SaveChangesAsync();
 
@@ -58,7 +58,7 @@ public static class SetPermissions
     {
         public Validator()
         {
-            RuleFor(x => x.Permissions)
+            RuleFor(x => x.UserId)
                 .NotEmpty()
                 .WithMessage("User id cannot be empty");
 
