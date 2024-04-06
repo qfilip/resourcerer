@@ -40,6 +40,11 @@ public static class Exporter
 
     private static void ExportCustom(TsBuilder builder)
     {
+        if(!Directory.Exists(builder.Context.TargetDirectory))
+        {
+            Directory.CreateDirectory(builder.Context.TargetDirectory);
+        }
+
         var customExporters = new List<(string File, List<Action<StringBuilder>> Exporters)>()
         {
             ("constants.ts", new List<Action<StringBuilder>>()
