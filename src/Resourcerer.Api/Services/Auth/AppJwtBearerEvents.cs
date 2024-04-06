@@ -15,7 +15,7 @@ public class AppJwtBearerEvents : JwtBearerEvents
 
     public override Task TokenValidated(TokenValidatedContext context)
     {
-        foreach(var c in context.Principal.Claims)
+        foreach(var c in context.Principal!.Claims)
         {
             Console.WriteLine(c.Value);
         }

@@ -23,20 +23,22 @@ public static class Login
 
         public async Task<HandlerResult<AppUserDto>> Handle(AppUserDto request)
         {
-            var user = await _appDbContext.AppUsers
+            var users = await _appDbContext.AppUsers
                 .Include(x => x.Company)
-                .FirstOrDefaultAsync(x => x.Name == request.Name);
+                .Where(x => x.Name == request.Name)
+                .ToArrayAsync();
 
-            if (user == null)
+            if (users.Length == 0)
             {
-                return HandlerResult<AppUserDto>.NotFound($"User with name {request.Name} not found");
+                return HandlerResult<AppUserDto>.NotFound($"Username not found");
             }
 
             var hash = Hasher.GetSha256Hash(request.Password!);
+            var user = users.FirstOrDefault(x => x.PasswordHash == hash);
 
-            if (user.PasswordHash != hash)
+            if(user == null)
             {
-                return HandlerResult<AppUserDto>.Rejected("Bad credentials");
+                return HandlerResult<AppUserDto>.Rejected($"Bad credentials");
             }
 
             var permissionDict = Permissions.GetCompressedFrom(user.Permissions!);
