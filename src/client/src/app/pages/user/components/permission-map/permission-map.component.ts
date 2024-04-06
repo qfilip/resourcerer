@@ -1,5 +1,6 @@
-import { Component, Input, computed, input, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, computed, input, signal } from '@angular/core';
 import { IAppUserDto } from '../../../../models/dtos/interfaces';
+import { UserPermission } from '../../../../models/components/UserPermission';
 import { permissionsMap } from '../../../../models/dtos/constants';
 
 @Component({
@@ -10,14 +11,21 @@ import { permissionsMap } from '../../../../models/dtos/constants';
   styleUrl: './permission-map.component.css'
 })
 export class PermissionMapComponent {
+  @Input() editable = false;
+  @Output() onMapChanged = new EventEmitter<UserPermission[]>();
+  
   @Input({
     required: true,
-    alias: 'user',
+    alias: 'userr',
     transform: (x: IAppUserDto) => PermissionMapComponent.mapPermissionTable(x)
-  }) permissions: any;
+   }) permissions: UserPermission[] = [];
+  
+  emitMap() {
+    this.onMapChanged.emit(this.permissions);
+  }
 
   private static mapPermissionTable(user: IAppUserDto) {
-    let map = [];
+    let map: UserPermission[] = [];
     for(const key in permissionsMap) {
       const userKey = user.permissionsMap[key];
       
@@ -27,9 +35,9 @@ export class PermissionMapComponent {
       
       map.push({
         section: key,
-        values: permissionsMap[key].map(x => {
+        permissions: permissionsMap[key].map(x => {
           return {
-            permission: x,
+            name: x,
             hasPermission: hasPermissionSelector(x)
           }
         })

@@ -17,7 +17,7 @@
 </section>
 <section>
     <h3>Permissions</h3>
-    @if(user$()) {
-        <app-permission-map [user]="user$()!"></app-permission-map>
+    @if(user$(); as user) {
+        <app-permission-map [editable]="true" [userr]="user"></app-permission-map>
     }
 </section>
