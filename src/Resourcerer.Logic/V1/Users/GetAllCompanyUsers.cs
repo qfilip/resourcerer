@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
+using Resourcerer.Logic.Utilities.Query;
 
 namespace Resourcerer.Logic.V1;
 
@@ -23,12 +24,8 @@ public static class GetAllCompanyUsers
         {
             var users = await _dbContext.AppUsers
                 .Where(x => x.CompanyId == request)
-                .Select(x => new AppUserDto
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    PermissionsMap = Permissions.GetPermissionsMap(x.Permissions!)
-                }).ToArrayAsync();
+                .Select(AppUsers.DefaultDtoProjection)
+                .ToArrayAsync();
 
             return HandlerResult<AppUserDto[]>.Ok(users);
         }

@@ -8,7 +8,7 @@ import { CacheService } from "./cache.service";
 export class LocalstorageCacheService extends CacheService {
     private _cacheKeys = new Set<string>();
 
-    override register<T>(key: string, expiresAfter: number): CacheFunctions<T> {
+    register<T>(key: string, expiresAfter: number): CacheFunctions<T> {
         if(this._cacheKeys.has(key)) {
             throw `Localstorage cache key ${key} already exists`;
         }
