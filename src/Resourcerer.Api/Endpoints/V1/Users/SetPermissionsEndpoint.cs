@@ -2,7 +2,7 @@
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
-using Resourcerer.Logic.V1.Users;
+using Resourcerer.Logic.V1;
 
 namespace Resourcerer.Api.Endpoints.V1;
 

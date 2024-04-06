@@ -7,7 +7,7 @@ using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
 using System.Text.Json;
 
-namespace Resourcerer.Logic.V1.Users;
+namespace Resourcerer.Logic.V1;
 
 public static class SetPermissions
 {

@@ -9,7 +9,7 @@ using Resourcerer.Dtos.V1;
 using Resourcerer.Utilities.Cryptography;
 using System.Text.Json;
 
-namespace Resourcerer.Logic.V1.Users;
+namespace Resourcerer.Logic.V1;
 public static class Register
 {
     public class Handler : IAppHandler<V1Register, AppUserDto>

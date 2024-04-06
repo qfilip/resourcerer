@@ -4,7 +4,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
 
-namespace Resourcerer.Logic.V1.Users;
+namespace Resourcerer.Logic.V1;
 
 public static class GetUser
 {

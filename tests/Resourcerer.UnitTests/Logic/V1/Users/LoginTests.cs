@@ -1,10 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Logic;
-using Resourcerer.Logic.V1.Users;
+using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.Utilities.Cryptography;
 using System.Text.Json;

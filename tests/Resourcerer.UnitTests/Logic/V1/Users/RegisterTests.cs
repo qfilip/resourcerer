@@ -5,10 +5,9 @@ using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
-using Resourcerer.Logic.V1.Users;
+using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.Utilities.Cryptography;
-using System.Text.Json;
 
 namespace Resourcerer.UnitTests.Logic.V1.Users;
 

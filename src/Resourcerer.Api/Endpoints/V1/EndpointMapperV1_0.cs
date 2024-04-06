@@ -59,6 +59,7 @@ public class EndpointMapperV1_0
     {
         var g = EndpointMapper.GetGroup(app, Version, "Users");
         
+        GetAllCompanyUsersEndpoint.MapToGroup(g);
         GetUserEndpoint.MapToGroup(g);
         LoginEndpoint.MapToGroup(g);
         RefreshSessionEndpoint.MapToGroup(g);

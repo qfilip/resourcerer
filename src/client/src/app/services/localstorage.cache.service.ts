@@ -1,13 +1,14 @@
 import { Injectable } from "@angular/core";
 import { CacheFunctions, ICache } from "../models/services/ICache";
+import { CacheService } from "./cache.service";
 
 @Injectable({
     providedIn: 'root'
 })
-export class LocalstorageCacheService {
+export class LocalstorageCacheService extends CacheService {
     private _cacheKeys = new Set<string>();
 
-    register<T>(key: string, expiresAfter: number): CacheFunctions<T> {
+    override register<T>(key: string, expiresAfter: number): CacheFunctions<T> {
         if(this._cacheKeys.has(key)) {
             throw `Localstorage cache key ${key} already exists`;
         }
@@ -33,7 +34,7 @@ export class LocalstorageCacheService {
         }
     }
 
-    private store<T>(key: string, data: T, expiresAfter: number) {
+    protected override store<T>(key: string, data: T, expiresAfter: number) {
         const now = new Date().getTime();
 
         const cachedData: ICache = {
@@ -44,7 +45,7 @@ export class LocalstorageCacheService {
         localStorage.setItem(key, JSON.stringify(cachedData));
     }
 
-    private retrieve<T>(key: string): T | null {
+    protected override retrieve<T>(key: string): T | null {
         const now = new Date().getTime();
         const cacheString = localStorage.getItem(key) as string;
         const cache = JSON.parse(cacheString) as ICache;
@@ -53,7 +54,7 @@ export class LocalstorageCacheService {
         return expired ? null : (cache.data as T);
     }
 
-    private clear(key: string) {
+    protected override clear(key: string) {
         const cache: ICache = { data: {}, expiresAt: 0 };
         localStorage.setItem(key, JSON.stringify(cache));
     }
