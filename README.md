@@ -1,39 +1,63 @@
 # resourcerer
 
-## Setting the project up
+## .NET project setup
 
-- Open `Resourcerer_Sol/Resourcerer_Sol.sln` with Visual Studio and build the project. This will generate some client side files.
+- From the `root` directory run:
+  ```
+    dotnet build ./src/Resourcerer.Api/Resourcerer.Api.csproj
+  ```
+  This will generate `./src/client/src/app/models/dtos` directory, and export C# classes to TypeScript.
+
+### Database (Visual Studio)
 
 - Set `Resourcerer.Api` as startup project.
 
 - Open nuget package manager console and select `Resourcerer.DataAccess` project there. Run `Add-Migration Initial`. Run `Update-Database`.
 
-- In `/Resourcerer_Sol/src/Resourcerer.Api/wwwroot` a database file `resourcerer.db3` should appear. Use Sqlite Studio or similar program to execute the following SQL script to insert admin user:
+### Database (CLI)
 
-<pre>
-  INSERT INTO AppUser (
-    Id,
-    Name,
-    PasswordHash,
-    Permissions,
-    EntityStatus,
-    CreatedAt,
-    ModifiedAt)
-    VALUES (
-        '11111111-1111-1111-1111-111111111111',
-        'admin',
-        '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',
-        '{"User":15,"Category":15,"Element":15,"Event":15}',
-        '0',
-        '01.01.2000. 0:00:00',
-        '01.01.2000. 0:00:00');
-</pre>
+- Install ef core cli tools: [link](https://learn.microsoft.com/en-us/ef/core/cli/)
 
-- Open `/Resourcerer_Sol/client` and run `npm install`. Use `npm run dev` to start client app (make sure the backend project is running as well). Default port is `8080`.
+- Execute
+  ```
+  cd ./src/Resourcerer.DataAccess
+  dotnet ef migrations add Initial
+  dotnet ef database update
+  ```
 
-- You will land on login screen. Username: `admin`, password `admin`.
+### User setup
 
-- Check the browser console for certificate errors. If there are any, run:
+The easiest way to seed admin user, is to run the project and execute an endpoint from swagger. Resourcerer uses `ReinforcedTypings` library to scaffold client side models, which may interfere with `dotnet run` command. Use Visual Studio to run the project, or build it first, then run the executable.
+
+#### Seed default admin user
+
+SQLite db file should now be present in `./src/Resourcerer.Api/wwwroot`. Run the api project and open http://localhost:24822/swagger. Find `seed` endpoint and execute it. Mocked admin user should be inserted into the DB. 
+
+#### Seed custom admin user
+
+To modify mocked user, open: `./src/Resourcerer.DataAccess/Utilities/Faking/DF.Database.cs`, and modify the following lines:
+
+```csharp
+var appUser = Fake<AppUser>(ctx, x =>
+{
+    // set username
+    x.Name = "shk";
+    // set password
+    x.PasswordHash = Resourcerer.Utilities.Cryptography.Hasher.GetSha256Hash("123");
+    x.Company = company;
+    x.Permissions = permissions;
+});
+```
+
+Usernames are unique, so if the database was seeded, it will have to be recreated from scratch.
+
+## Angular project setup
+
+- Open `./src/client` and run `npm install`. Use `ng s -o` to start client app (make sure the backend project is running as well). Default port is `8080`.
+
+## Other
+
+Check the browser console for certificate errors. If there are any, run:
 
 <pre>
 dotnet dev-certs https --clean
