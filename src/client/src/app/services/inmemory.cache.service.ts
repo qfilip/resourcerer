@@ -25,6 +25,9 @@ export class InMemoryCacheService {
 
     protected retrieve<T>(key: string, source: Observable<T>): Observable<T> {
         const data = this._cache.get(key) as T;
-        return iif(() => !!data, of(data), source);
+        const cache = of(data);
+        
+        return iif(() => !data, source, cache)
+            .pipe(tap((x) => this._cache.set(key, x)));
     }
 }

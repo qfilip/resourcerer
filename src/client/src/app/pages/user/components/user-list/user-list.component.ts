@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { UserController } from '../../../../controllers/user.controller';
 import { InMemoryCacheService } from '../../../../services/inmemory.cache.service';
 import { UserService } from '../../../../services/user.service';
-import { Observable } from 'rxjs';
+import { Observable, iif } from 'rxjs';
 import { IAppUserDto } from '../../../../models/dtos/interfaces';
 import { CommonModule } from '@angular/common';
 
