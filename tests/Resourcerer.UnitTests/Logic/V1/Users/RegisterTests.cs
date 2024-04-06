@@ -3,6 +3,7 @@ using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Users;
 using Resourcerer.UnitTests.Utilities;
@@ -11,17 +12,21 @@ using System.Text.Json;
 
 namespace Resourcerer.UnitTests.Logic.V1.Users;
 
-public class LoginTests : TestsBase
+public class RegisterTests : TestsBase
 {
-    private readonly Login.Handler _sut;
-    public LoginTests() => _sut = new(_ctx, new());
+    private readonly Register.Handler _sut;
+    public RegisterTests() => _sut = new(_ctx, new());
 
     [Fact]
     public void HappyPath__Ok()
     {
         // arrange
-        var (user, password) = ArrangeDb(_ctx);
-        var request = new AppUserDto { Name = user.Name, Password = password };
+        var request = new V1Register
+        {
+            Username = "vaas",
+            Password = "montenegro",
+            CompanyName = "island_trade_inc"
+        };
 
         // act
         var result = _sut.Handle(request).Await();
@@ -29,10 +34,15 @@ public class LoginTests : TestsBase
         // assert
         Assert.Multiple(
             () => Assert.Equal(eHandlerResultStatus.Ok, result.Status),
-            () => Assert.NotNull(result.Object),
             () =>
             {
                 _ctx.Clear();
+                var user = _ctx.AppUsers
+                    .Include(x => x.Company)
+                    .First(x =>
+                        x.Name == request.Username &&
+                        x.PasswordHash == Hasher.GetSha256Hash(request.Password));
+                
                 var expected = new AppUserDto
                 {
                     Id = user.Id,
@@ -41,14 +51,14 @@ public class LoginTests : TestsBase
                     Company = new CompanyDto
                     {
                         Id = user.Company!.Id,
-                        Name = user.Company.Name
+                        Name = user.Company!.Name
                     },
                     PermissionsMap = Permissions.GetPermissionsMap(user.Permissions!)
                 };
-                
+
                 var diffs = AssertUtils.Diffs(expected, result.Object);
 
-                if(diffs.Length > 0)
+                if (diffs.Length > 0)
                 {
                     throw new Exception(JsonSerializer.Serialize(diffs, _serializerOptions));
                 }
@@ -57,48 +67,23 @@ public class LoginTests : TestsBase
     }
 
     [Fact]
-    public void Username_NotFound__NotFound()
+    public void CompanyExists__Rejected()
     {
         // arrange
-        var (_, password) = ArrangeDb(_ctx);
-        var request = new AppUserDto { Name = "fnaah", Password = password };
+        var company = DF.Fake<Company>(_ctx, x => x.Name = "island_trade_inc");
+        var request = new V1Register
+        {
+            Username = "vaas",
+            Password = "montenegro",
+            CompanyName = company.Name
+        };
 
-        // act
-        var result = _sut.Handle(request).Await();
-
-        // assert
-        Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
-    }
-
-    [Fact]
-    public void BadPassword__Rejected()
-    {
-        // arrange
-        var (user, _) = ArrangeDb(_ctx);
-        var request = new AppUserDto { Name = user.Name, Password = "gauguin" };
+        _ctx.SaveChanges();
 
         // act
         var result = _sut.Handle(request).Await();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
-    }
-
-    private static (AppUser, string) ArrangeDb(TestDbContext ctx)
-    {
-        var username = "village_person";
-        var password = "y.m.c.a";
-
-        var user = DF.Fake<AppUser>(ctx, x =>
-        {
-            x.Name = username;
-            x.IsAdmin = true;
-            x.PasswordHash = Hasher.GetSha256Hash(password);
-            x.Permissions = JsonSerializer.Serialize(Permissions.GetCompressed());
-        });
-
-        ctx.SaveChanges();
-
-        return (user, password);
     }
 }

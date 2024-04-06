@@ -10,10 +10,15 @@ namespace Resourcerer.UnitTests.Logic;
 public class TestsBase
 {
     protected readonly TestDbContext _ctx;
+    protected readonly JsonSerializerOptions _serializerOptions;
 
     public TestsBase()
     {
         _ctx = new ContextCreator().GetTestDbContext();
+        _serializerOptions = new JsonSerializerOptions()
+        {
+            WriteIndented = true
+        };
     }
 
     protected ILogger<T> MockLogger<T>() => A.Fake<ILogger<T>>();

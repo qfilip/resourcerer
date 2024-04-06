@@ -17,6 +17,7 @@ public class AppUserDto : EntityDto<AppUserDto>
         {
             Id = entity.Id,
             Name = entity.Name,
+            IsAdmin = entity.IsAdmin,
             Company = new CompanyDto
             {
                 Id = entity.Company!.Id,
