@@ -1,4 +1,7 @@
 <div>
+    @if(user && user.isAdmin) {
+        <button>Add new user</button>
+    }
     @if(companyUsers$ | async; as users) {
         <table>
             <thead>
@@ -6,6 +9,9 @@
                     <th>Name</th>
                     <th>Admin</th>
                     <th>Company</th>
+                    @if(user && user.isAdmin) {
+                        <th>Actions</th>
+                    } 
                 </tr>
             </thead>
             <tbody>
@@ -14,10 +20,14 @@
                         <td>{{ user.name }}</td>
                         <td>{{ user.isAdmin ? 'Yes' : 'No' }}</td>
                         <td>{{ user.company.name }}</td>
+                        @if(user && user.isAdmin) {
+                            <td>
+                                <button>Edit</button>
+                            </td>
+                        }
                     </tr>
                 }
             </tbody>
-        </table>
-       
+        </table>  
     }
 </div>

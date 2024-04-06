@@ -15,6 +15,7 @@ public static partial class DF
         var appUser = Fake<AppUser>(ctx, x =>
         {
             x.Name = "shk";
+            x.IsAdmin = true;
             x.PasswordHash = Resourcerer.Utilities.Cryptography.Hasher.GetSha256Hash("123");
             x.Company = company;
             x.Permissions = permissions;

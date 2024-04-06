@@ -18,11 +18,13 @@ export class UserListComponent implements OnInit {
   private memoryCache = inject(InMemoryCacheService);
   
   companyUsers$: Observable<IAppUserDto[]> | null = null;
+  user: IAppUserDto | null = null;
 
   ngOnInit() {
     const user = this.userService.user();
     if(!user) return;
-
+    
+    this.user = user;
     this.companyUsers$ = this.memoryCache.companyUsers.retrieve(user.company.id);
   }
 }
