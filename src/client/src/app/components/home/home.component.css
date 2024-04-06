@@ -26,3 +26,7 @@ article {
     flex-grow: 20;
     padding: 0rem var(--rem-xs);
 }
+
+.selected-icon {
+    border-bottom: var(--rem-xxs) solid var(--c-black);
+}

@@ -28,7 +28,8 @@
     --c-red-d1: hsl(4, 90%, 38%);
 
     /* layout */
-    --rem-xxs: .1rem;
+    --rem-xxxs: .1rem;
+    --rem-xxs: .3rem;
     --rem-xs: .6rem;
     --rem-s: .8rem;
     --rem: 1rem;

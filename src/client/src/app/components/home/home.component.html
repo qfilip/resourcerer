@@ -4,22 +4,22 @@
         <hr />
         <nav>
             <ul>
-                <li>
+                <li [ngClass]="{'selected-icon': page$() === 'Companies' }">
                     <i (click)="page$.set('Companies')" class="ra ra-hydra"></i>
                 </li>
-                <li>
+                <li [ngClass]="{'selected-icon': page$() === 'Company' }">
                     <i (click)="page$.set('Company')" class="ra ra-castle-emblem"></i>
                 </li>
-                <li>
+                <li [ngClass]="{'selected-icon': page$() === 'Items' }">
                     <i (click)="page$.set('Items')" class="ra ra-bone-knife"></i>
                 </li>
-                <li>
+                <li [ngClass]="{'selected-icon': page$() === 'Events' }">
                     <i (click)="page$.set('Events')" class="ra ra-lightning"></i>
                 </li>
-                <li>
+                <li [ngClass]="{'selected-icon': page$() === 'Users' }">
                     <i (click)="page$.set('Users')" class="ra ra-queen-crown"></i>
                 </li>
-                <li>
+                <li [ngClass]="{'selected-icon': page$() === 'Account' }">
                     <i (click)="page$.set('Account')" class="ra ra-aware"></i>
                 </li>
             </ul>

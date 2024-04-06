@@ -15,7 +15,6 @@ import { CommonModule } from '@angular/common';
 })
 export class UserListComponent implements OnInit {
   private userService = inject(UserService);
-  private userController = inject(UserController);
   private memoryCache = inject(InMemoryCacheService);
   
   companyUsers$: Observable<IAppUserDto[]> | null = null;
@@ -24,7 +23,6 @@ export class UserListComponent implements OnInit {
     const user = this.userService.user();
     if(!user) return;
 
-    const usersData = this.userController.getAllCompanyUsers(user.company.id);
-    this.companyUsers$ = this.memoryCache.companyUsers.retrieve(usersData);
+    this.companyUsers$ = this.memoryCache.companyUsers.retrieve(user.company.id);
   }
 }

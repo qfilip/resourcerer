@@ -21,18 +21,15 @@ export class UserService {
         const jwt = this._cache.retrieve();
 
         if(!jwt) {
-            console.log('no jwt');
             return false;
         }
         
         const jwtData = parseJwt(jwt);
         
         if(jwtData.expired) {
-            console.log('expired');
             return false;
         }
         
-        console.log('ok');
         this._user$.set(jwtData.dto);
         return true;
     }
