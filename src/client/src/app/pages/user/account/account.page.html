@@ -1,19 +1,21 @@
 <section>
     <h3>General</h3>
-    <dl>
-        <div>
-            <dt>Name:</dt>
-            <dd>{{ user$()?.name }}</dd>
-        </div>
-        <div>
-            <dt>Company:</dt>
-            <dd>{{ user$()?.company?.name }}</dd>
-        </div>
-        <div>
-            <dt>Admin:</dt>
-            <dd>{{ user$()?.isAdmin ? 'Yes' : 'No' }}</dd>
-        </div>
-    </dl>
+    @if(user$(); as user) {
+        <dl>
+            <div>
+                <dt>Name:</dt>
+                <dd>{{ user.name }}</dd>
+            </div>
+            <div>
+                <dt>Company:</dt>
+                <dd>{{ user?.company?.name }}</dd>
+            </div>
+            <div>
+                <dt>Admin:</dt>
+                <dd>{{ user.isAdmin ? 'Yes' : 'No' }}</dd>
+            </div>
+        </dl>
+    }
 </section>
 <section>
     <h3>Permissions</h3>
