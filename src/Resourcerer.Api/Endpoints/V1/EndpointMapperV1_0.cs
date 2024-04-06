@@ -1,4 +1,5 @@
 ﻿using Resourcerer.Api.Endpoints.V1.Items.Production;
+using Resourcerer.Logic.V1;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
@@ -7,11 +8,19 @@ public class EndpointMapperV1_0
     private const string Version = "1.0";
     public static void Map(WebApplication app)
     {
+        MapCompanies(app);
         MapCategories(app);
         MapInstances(app);
         MapItems(app);
         MapUnitsOfMeasure(app);
         MapUsers(app);
+    }
+
+    private static void MapCompanies(WebApplication app)
+    {
+        var g = EndpointMapper.GetGroup(app, Version, "Companies");
+
+        GetAllCompaniesEndpoint.MapToGroup(g);
     }
 
     private static void MapCategories(WebApplication app)

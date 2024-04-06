@@ -5,7 +5,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
 
-namespace Resourcerer.Logic.V1.Categories;
+namespace Resourcerer.Logic.V1;
 
 public static class GetAllCompanyCategories
 {
