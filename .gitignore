@@ -63,12 +63,11 @@ obj
 /msi_system/client/public/build/bundle.js.map
 /msi_system/db/pb_data
 /msi_system/db/pb_data
-Migrations
-/Resourcerer_Sol/src/Resourcerer.Api/wwwroot/resourcerer.db3
-/Resourcerer_Sol/src/Resourcerer.Api/wwwroot/resourcerer.db3-shm
-/Resourcerer_Sol/src/Resourcerer.Api/wwwroot/resourcerer.db3-wal
-/Resourcerer_Sol/src/Resourcerer.Api/wwwroot/*.db3-shm
-/Resourcerer_Sol/src/Resourcerer.Api/wwwroot/*.db3-wal
+
+# Migrations
+/src/Resourcerer.Api/wwwroot/*.db3
+/src/Resourcerer.Api/wwwroot/*.db3-shm
+/src/Resourcerer.Api/wwwroot/*.db3-wal
 /src/client/src/app/models/dtos/
-wwwroot/
+
 Migrations/
