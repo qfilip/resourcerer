@@ -10,7 +10,7 @@ public class UnitOfMeasure : AppDbEntity
     public string? Symbol { get; set; }
 
     // relational
-    public Guid? CompanyId { get; set; }
+    public Guid CompanyId { get; set; }
     public virtual Company? Company { get; set; }
 
     public ICollection<Item> Items { get; set; }

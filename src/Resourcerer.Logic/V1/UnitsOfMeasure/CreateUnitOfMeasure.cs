@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.V1;
@@ -21,14 +22,36 @@ public class CreateUnitOfMeasure
 
         public async Task<HandlerResult<Unit>> Handle(V1CreateUnitOfMeasure request)
         {
-            var companyExists = _appDbContext.Companies
+            var company = await _appDbContext.Companies
+                .Include(x => x.UnitsOfMeasure)
                 .Where(x => x.Id == request.CompanyId)
-                .Count() > 0;
+                .Select(x => new
+                {
+                    CompanyId = x.Id,
+                    UnitsOfMeasure = x.UnitsOfMeasure
+                        .Select(x => new
+                        {
+                            Name = x.Name,
+                            Symbol = x.Symbol
+                        })
+                })
+                .FirstOrDefaultAsync();
 
-            if (!companyExists)
+            if (company == null)
             {
-                return HandlerResult<Unit>.Rejected("Company id not found");
+                return HandlerResult<Unit>.NotFound("Company not found");
             }
+
+            var errors = new List<string>();
+
+            if (company.UnitsOfMeasure.Any(x => x.Name == request.Name))
+                errors.Add("Unit of measure with the same name already exists");
+
+            if (company.UnitsOfMeasure.Any(x => x.Symbol == request.Symbol))
+                errors.Add("Unit of measure with the same symbol already exists");
+
+            if(errors.Count > 0)
+                return HandlerResult<Unit>.Rejected(errors);
 
             var entity = new UnitOfMeasure
             {

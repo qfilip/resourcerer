@@ -38,7 +38,7 @@ public class CreateUnitOfMeasureTests : TestsBase
     }
 
     [Fact]
-    public void CompanyNotFound__Rejected()
+    public void CompanyNotFound__NotFound()
     {
         // arrange
         var company = DF.Fake<Company>(_ctx);
@@ -55,6 +55,35 @@ public class CreateUnitOfMeasureTests : TestsBase
         var result = _handler.Handle(dto).Await();
 
         // assert
-        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+        Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
+    }
+
+    [Fact]
+    public void CompanyNotFound__Rejected()
+    {
+        // arrange
+        var uom = DF.Fake<UnitOfMeasure>(_ctx, x =>
+        {
+            x.Name = "Unit";
+            x.Symbol = "u";
+        });
+
+        var dto = new V1CreateUnitOfMeasure
+        {
+            CompanyId = uom.CompanyId,
+            Name = uom.Name,
+            Symbol = uom.Symbol
+        };
+
+        _ctx.SaveChanges();
+
+        // act
+        var result = _handler.Handle(dto).Await();
+
+        // assert
+        Assert.Multiple(
+            () => Assert.Equal(eHandlerResultStatus.Rejected, result.Status),
+            () => Assert.True(result.Errors.Length == 2)
+        );
     }
 }
