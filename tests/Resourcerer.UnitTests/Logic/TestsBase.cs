@@ -23,7 +23,7 @@ public class TestsBase
 
     protected ILogger<T> MockLogger<T>() => A.Fake<ILogger<T>>();
 
-    [Fact]
+    [Fact(Skip = "Not an actual test")]
     public void TryMockDb()
     {
         DF.FakeDatabase(_ctx);

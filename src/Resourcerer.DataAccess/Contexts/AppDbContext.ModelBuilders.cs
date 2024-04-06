@@ -19,6 +19,7 @@ public partial class AppDbContext
         ConfigureEntity<AppUser>(modelBuilder, (e) =>
         {
             e.Property(x => x.Name).IsRequired();
+            e.HasIndex(x => x.Name).IsUnique();
 
             e.HasOne(x => x.Company).WithMany(x => x.Employees)
                 .HasForeignKey(x => x.CompanyId)

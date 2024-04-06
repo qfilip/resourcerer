@@ -46,12 +46,7 @@ public class LoginTests : TestsBase
                     PermissionsMap = Permissions.GetPermissionsMap(user.Permissions!)
                 };
                 
-                var diffs = AssertUtils.Diffs(expected, result.Object);
-
-                if(diffs.Length > 0)
-                {
-                    throw new Exception(JsonSerializer.Serialize(diffs, _serializerOptions));
-                }
+                Assert.Equivalent(expected, result.Object, strict: true);
             }
         );
     }

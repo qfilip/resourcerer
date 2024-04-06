@@ -56,24 +56,20 @@ public class RegisterTests : TestsBase
                     PermissionsMap = Permissions.GetPermissionsMap(user.Permissions!)
                 };
 
-                var diffs = AssertUtils.Diffs(expected, result.Object);
-
-                if (diffs.Length > 0)
-                {
-                    throw new Exception(JsonSerializer.Serialize(diffs, _serializerOptions));
-                }
+                Assert.Equivalent(expected, result.Object);
             }
         );
     }
 
     [Fact]
-    public void CompanyExists__Rejected()
+    public void CompanyOrUserExists__Rejected()
     {
         // arrange
         var company = DF.Fake<Company>(_ctx, x => x.Name = "island_trade_inc");
+        var user = DF.Fake<AppUser>(_ctx, x => x.Name = "vaas");
         var request = new V1Register
         {
-            Username = "vaas",
+            Username = user.Name,
             Password = "montenegro",
             CompanyName = company.Name
         };
@@ -84,6 +80,9 @@ public class RegisterTests : TestsBase
         var result = _sut.Handle(request).Await();
 
         // assert
-        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+        Assert.Multiple(
+            () => Assert.Equal(eHandlerResultStatus.Rejected, result.Status),
+            () => Assert.True(result.Errors.Length == 2)
+        );
     }
 }
