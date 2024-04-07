@@ -1,5 +1,4 @@
 ﻿using Resourcerer.Api.Endpoints.V1.Items.Production;
-using Resourcerer.Logic.V1;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
@@ -21,6 +20,7 @@ public class EndpointMapperV1_0
         var g = EndpointMapper.GetGroup(app, Version, "Companies");
 
         GetAllCompaniesEndpoint.MapToGroup(g);
+        GetCompanyOverviewEndpoint.MapToGroup(g);
     }
 
     private static void MapCategories(WebApplication app)

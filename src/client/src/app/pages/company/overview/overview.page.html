@@ -1,0 +1,32 @@
+@if(overview$ | async; as overview) {
+    <div class="content">
+        <h3>{{ overview.name }}</h3>
+        <section>
+            <h4>Categories</h4>
+            @for(category of overview.categories; track category.id) {
+            <category-tree [category]="category"></category-tree>
+            }
+        </section>
+        <section>
+            <h4>Employees</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Admin</th>
+                        <th>Created at</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(employee of overview.employees; track employee.id) {
+                        <tr>
+                            <td>{{ employee.name }}</td>
+                            <td>{{ employee.isAdmin }}</td>
+                            <td>{{ employee.createdAt }}</td>
+                        </tr>
+                        }
+                </tbody>
+            </table>
+        </section>
+    </div>
+}

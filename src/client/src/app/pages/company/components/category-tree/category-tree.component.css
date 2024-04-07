@@ -1,0 +1,18 @@
+.datalist {
+    margin: var(--rem) 0rem;
+    font-size: var(--rem);
+}
+
+dt, dd {
+    margin: 0;
+}
+
+.datalist > div:not(.children-block) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.children-block {
+    display: block;
+}

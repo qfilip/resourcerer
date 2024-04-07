@@ -66,8 +66,10 @@ public static partial class ServiceRegistry
 
         TwoWayMap<AppUser, AppUserDto>();
         TwoWayMap<Category, CategoryDto>();
-        TwoWayMap<Item, ItemDto>();
+        TwoWayMap<Company, CompanyDto>();
         TwoWayMap<Excerpt, ExcerptDto>();
+        TwoWayMap<Instance, InstanceDto>();
+        TwoWayMap<Item, ItemDto>();
         TwoWayMap<Price, PriceDto>();
         TwoWayMap<UnitOfMeasure, UnitOfMeasureDto>();
 

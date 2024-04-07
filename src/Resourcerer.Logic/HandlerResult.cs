@@ -1,4 +1,6 @@
-﻿namespace Resourcerer.Logic;
+﻿using System.Diagnostics;
+
+namespace Resourcerer.Logic;
 
 public enum eHandlerResultStatus
 {
@@ -30,6 +32,17 @@ public class HandlerResult<T>
     public static HandlerResult<T> Rejected(IEnumerable<string> errors)
     {
         return new HandlerResult<T>(eHandlerResultStatus.Rejected, errors.ToArray());
+    }
+
+    public HandlerResult<U> MorphTo<U>(string? notFoundMessage = null)
+    {
+        return this.Status switch
+        {
+            eHandlerResultStatus.Ok => throw new InvalidOperationException("Cannot morph from Ok status"),
+            eHandlerResultStatus.NotFound => notFoundMessage == null ? HandlerResult<U>.NotFound() : HandlerResult<U>.NotFound(notFoundMessage),
+            eHandlerResultStatus.Rejected => HandlerResult<U>.Rejected(this.Errors),
+            _ => throw new UnreachableException($"Cannot remap result handler of status ${this.Status}")
+        };
     }
 
     private HandlerResult(T? obj)

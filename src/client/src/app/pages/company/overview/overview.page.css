@@ -1,0 +1,22 @@
+h3 {
+    margin: var(--rem) 0rem;
+}
+
+.content {
+    width: 25%;
+}
+
+table {
+    border-collapse: collapse;
+    font-size: var(--rem);
+
+    th {
+        color: var(--c-white);
+        background-color: var(--c-black);
+        text-align: center;
+    }
+
+    tbody tr:nth-of-type(even) {
+        background-color: var(--c-white-d2);
+    }
+}

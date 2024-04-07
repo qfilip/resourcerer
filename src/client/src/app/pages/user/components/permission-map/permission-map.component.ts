@@ -16,7 +16,7 @@ export class PermissionMapComponent {
   
   @Input({
     required: true,
-    alias: 'userr',
+    alias: 'user',
     transform: (x: IAppUserDto) => PermissionMapComponent.mapPermissionTable(x)
    }) permissions: UserPermission[] = [];
   

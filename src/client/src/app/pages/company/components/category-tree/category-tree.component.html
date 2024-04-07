@@ -1,0 +1,31 @@
+@if(category) {
+<dl class="datalist">
+    <div>
+        <dt>Name:</dt>
+        <dd>{{ category.name }}</dd>
+    </div>
+    <div>
+        <dt>Subcategory count:</dt>
+        <dd>{{ category.childCategories.length }}</dd>
+    </div>
+    <details>
+        <summary>Children</summary>
+        <div>
+            <dd>
+                <ul>
+                    @for(child of category.childCategories; track $index) {
+                    <li>
+                        <category-tree [category]="child"></category-tree>
+                    </li>
+                    }
+                </ul>
+            </dd>
+        </div>
+    </details>
+    <!-- <div class="children-block">
+
+        <dt>Children</dt>
+        
+    </div> -->
+</dl>
+}

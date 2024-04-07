@@ -24,6 +24,7 @@ public static class GetAllCompanyCategories
         {
             var entities = await _appDbContext.Categories
                 .Where(x => x.CompanyId == companyId)
+                .AsNoTracking()
                 .ToArrayAsync();
 
             var result = entities
@@ -45,7 +46,7 @@ public static class GetAllCompanyCategories
                 Id = current.Id,
                 Name = current.Name,
                 ParentCategoryId = current.ParentCategoryId,
-                ChildCategories = children.Select(x => MapDto(x, all)).ToList(),
+                ChildCategories = children.Select(x => MapDto(x, all)).ToArray(),
                 CreatedAt = current.CreatedAt,
                 ModifiedAt = current.ModifiedAt
             };
