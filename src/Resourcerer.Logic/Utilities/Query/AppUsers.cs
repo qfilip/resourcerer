@@ -12,6 +12,7 @@ public class AppUsers
         {
             Id = x.Id,
             Name = x.Name,
+            IsAdmin = x.IsAdmin,
             Company = new()
             {
                 Id = x.Company!.Id,

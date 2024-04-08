@@ -19,7 +19,7 @@
                 @for(user of users; track $index) {
                     <tr>
                         <td>{{ user.name }}</td>
-                        <td>{{ user.isAdmin ? 'Yes' : 'No' }}</td>
+                        <td>{{ user.isAdmin }}</td>
                         <td>{{ user.company.name }}</td>
                         @if(currentUser.isAdmin) {
                             <td>

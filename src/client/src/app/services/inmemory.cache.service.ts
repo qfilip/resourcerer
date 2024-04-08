@@ -1,7 +1,7 @@
 import { Injectable, inject } from "@angular/core";
 import { ICache } from "../models/services/ICache";
 import { IAppUserDto } from "../models/dtos/interfaces";
-import { Observable, iif, of, switchMap, tap } from "rxjs";
+import { Observable, iif, of, tap } from "rxjs";
 import { UserController } from "../controllers/user.controller";
 
 @Injectable({
