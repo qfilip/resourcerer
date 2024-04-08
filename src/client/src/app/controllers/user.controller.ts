@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BaseController } from "./base.controller";
-import { IAppUserDto } from "../models/dtos/interfaces";
+import { IAppUserDto, IV1RegisterUser } from "../models/dtos/interfaces";
 import { HttpParams } from "@angular/common/http";
 import { tap } from "rxjs";
 
@@ -20,5 +20,10 @@ export class UserController extends BaseController {
         return this.http.get<IAppUserDto[]>(url, {
             params: new HttpParams().set('companyId', companyId)
         });
+    }
+
+    registerUser(dto: IV1RegisterUser) {
+        const url = this.url + '/register-user';
+        return this.http.post<IAppUserDto[]>(url, dto);
     }
 }

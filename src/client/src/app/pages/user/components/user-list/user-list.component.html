@@ -2,7 +2,7 @@
     <section>
     @if(currentUser) {
         @if(currentUser.isAdmin) {
-            <button (click)="ruDialog.open()" class="add-user">Add new user</button>
+            <button (click)="ruDialog.open(currentUser.company.id)" class="add-user">Add new user</button>
             }
             @if(companyUsers$ | async; as users) {
             <table>

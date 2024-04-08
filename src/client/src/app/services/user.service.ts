@@ -10,7 +10,10 @@ import { parseJwt } from '../functions/user.functions';
 export class UserService {
     private _cache: CacheFunctions<string>;
     private _user$ = signal<IAppUserDto | null>(null);
+    private _jwt$ = signal<string | null>(null);
+    
     user = this._user$.asReadonly();
+    jwt = this._jwt$.asReadonly();
 
     constructor(private cacheService: LocalstorageCacheService) {
         const minutes = 30 * 60 * 1000;
@@ -31,17 +34,22 @@ export class UserService {
         }
         
         this._user$.set(jwtData.dto);
+        this._jwt$.set(jwt);
+
         return true;
     }
 
     setUser(jwt: string) {
         this._cache.store(jwt);
         const jwtData = parseJwt(jwt)
+        
         this._user$.set(jwtData.dto);
+        this._jwt$.set(jwt);
     }
 
     clearUser() {
         this._cache.clear();
         this._user$.set(null);
+        this._jwt$.set(null);
     }
 }

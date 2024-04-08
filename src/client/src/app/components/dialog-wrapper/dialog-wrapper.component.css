@@ -23,12 +23,12 @@ section {
     background-color: var(--c-white);
 }
 
+main {
+    margin: var(--rem) 0rem;
+}
+
 footer {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-}
-
-footer > button {
-    margin: var(--rem-xs);
 }

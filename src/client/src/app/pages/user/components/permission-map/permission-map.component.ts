@@ -17,17 +17,19 @@ export class PermissionMapComponent {
   @Input({
     required: true,
     alias: 'user',
-    transform: (x: IAppUserDto) => PermissionMapComponent.mapPermissionTable(x)
+    transform: (x: IAppUserDto | null) => PermissionMapComponent.mapPermissionTable(x)
    }) permissions: UserPermission[] = [];
   
   emitMap() {
     this.onMapChanged.emit(this.permissions);
   }
 
-  private static mapPermissionTable(user: IAppUserDto) {
+  private static mapPermissionTable(user: IAppUserDto | null) {
+    const userPermissionsMap: { [key:string]: string[] } = !user ? {} : user.permissionsMap;
     let map: UserPermission[] = [];
+    
     for(const key in permissionsMap) {
-      const userKey = user.permissionsMap[key];
+      const userKey = userPermissionsMap[key];
       
       const hasPermissionSelector = userKey ?
         (x: string) => userKey.includes(x) :

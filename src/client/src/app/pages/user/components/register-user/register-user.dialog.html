@@ -18,11 +18,22 @@
                     <input #email type="text" />
                 </label>
             </div>
+
+            <div>
+                <label>
+                    <span>Admin</span>
+                    <input #admin type="checkbox" />
+                </label>
+            </div>
+
+            <div>
+                <permission-map (onMapChanged)="mapPermissions($event)" [editable]="true" [user]="null"></permission-map>
+            </div>
         </form>
     </ng-container>
 
     <ng-container ngProjectAs="[footer]">
-        <button>Ok</button>
+        <button (click)="registerUser(username.value, email.value, admin.checked)">Ok</button>
         <button (click)="wrapper.close()">Cancel</button>
     </ng-container>
 </app-dialog-wrapper>

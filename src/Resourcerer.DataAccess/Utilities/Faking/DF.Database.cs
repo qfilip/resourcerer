@@ -5,7 +5,7 @@ namespace Resourcerer.DataAccess.Utilities.Faking;
 
 public static partial class DF
 {
-    public static void FakeDatabase(AppDbContext ctx, string? permissions = "[]")
+    public static void FakeDatabase(AppDbContext ctx, string? permissions = "{}")
     {
         var company = Fake<Company>(ctx, x =>
         {
@@ -16,6 +16,8 @@ public static partial class DF
         {
             x.Name = "shk";
             x.IsAdmin = true;
+            x.Email = "a@a.com";
+            x.DisplayName = "Shaka";
             x.PasswordHash = Resourcerer.Utilities.Cryptography.Hasher.GetSha256Hash("123");
             x.Company = company;
             x.Permissions = permissions;

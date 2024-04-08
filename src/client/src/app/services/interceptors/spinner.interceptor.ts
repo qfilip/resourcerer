@@ -21,7 +21,7 @@ export class SpinnerInterceptor implements HttpInterceptor {
                             this.service.show();
                         }
                     },
-                    error: (e) => {
+                    error: _ => {
                         this.service.hide();
                     }
                 })
