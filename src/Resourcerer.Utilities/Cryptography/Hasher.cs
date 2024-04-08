@@ -4,6 +4,12 @@ using System.Text;
 namespace Resourcerer.Utilities.Cryptography;
 public class Hasher
 {
+    public static string GetSha1Hash(string plainText)
+    {
+        using var sha = SHA1.Create();
+        return GetHash(plainText, sha);
+    }
+
     public static string GetSha256Hash(string plainText)
     {
         using var sha = SHA256.Create();

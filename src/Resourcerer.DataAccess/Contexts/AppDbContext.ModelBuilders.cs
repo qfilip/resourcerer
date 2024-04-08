@@ -20,6 +20,7 @@ public partial class AppDbContext
         {
             e.Property(x => x.Name).IsRequired();
             e.HasIndex(x => x.Name).IsUnique();
+            e.HasIndex(x => x.Email).IsUnique();
 
             e.HasOne(x => x.Company).WithMany(x => x.Employees)
                 .HasForeignKey(x => x.CompanyId)
