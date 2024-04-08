@@ -23,21 +23,31 @@ public static class RegisterUser
         private readonly AppDbContext _dbContext;
         private readonly Validator _validator;
         private readonly IEmailService _emailService;
+        private readonly IAppIdentityService<AppUser> _identityService;
 
-        public Handler(AppDbContext dbContext, Validator validator, IEmailService emailService)
+        public Handler(
+            AppDbContext dbContext,
+            Validator validator,
+            IEmailService emailService,
+            IAppIdentityService<AppUser> identityService)
         {
             _dbContext = dbContext;
             _validator = validator;
             _emailService = emailService;
+            _identityService = identityService;
         }
 
         public async Task<HandlerResult<AppUserDto>> Handle(V1RegisterUser request)
         {
+            if(!_identityService.Get().IsAdmin && request.IsAdmin)
+                return HandlerResult<AppUserDto>.Rejected("Only admin can add another admin user");
+            
             var errors = Permissions.Validate(request.PermissionsMap);
+            
             if (!_emailService.Validate(request.Email!))
                 errors.Add("Invalid email address");
 
-            if(errors.Any())
+            if (errors.Any())
             {
                 return HandlerResult<AppUserDto>.Rejected(errors);
             }

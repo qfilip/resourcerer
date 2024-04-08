@@ -15,9 +15,9 @@ public class AppJwtBearerEvents : JwtBearerEvents
 
     public override Task TokenValidated(TokenValidatedContext context)
     {
-        foreach(var c in context.Principal!.Claims)
+        if(context.Principal == null)
         {
-            Console.WriteLine(c.Value);
+            throw new Exception("User principal not found");
         }
 
         _appIdentityService.Set(context.Principal.Claims);
