@@ -31,7 +31,7 @@ public static class RegisterUser
         public async Task<HandlerResult<AppUserDto>> Handle(V1RegisterUser request)
         {
             var errors = Permissions.Validate(request.PermissionsMap);
-            if (_emailService.Validate(request.Email!))
+            if (!_emailService.Validate(request.Email!))
                 errors.Add("Invalid email address");
 
             if(errors.Any())
@@ -62,11 +62,12 @@ public static class RegisterUser
                 CompanyId = request.CompanyId
             };
 
+            _dbContext.AppUsers.Add(user);
             await _dbContext.SaveChangesAsync();
 
             var content = $"Hello, you've been added to the system. Username {request.Username}, Password: {temporaryPassword}";
             
-            await _emailService.Send(content, request.Email!);
+            await _emailService.Send(content, user.Email!);
             
             var result = await _dbContext.AppUsers
                 .Where(x => x.Id == user.Id)
