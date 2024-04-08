@@ -31,7 +31,6 @@ public static class CustomExports
             ("name", JwtRegisteredClaimNames.Sub),
             ("issuedAt", JwtRegisteredClaimNames.Iat),
             ("id", AppStaticData.Auth.Jwt.UserId),
-            ("userName", AppStaticData.Auth.Jwt.UserName),
             ("displayName", AppStaticData.Auth.Jwt.DisplayName),
             ("email", JwtRegisteredClaimNames.Email),
             ("isAdmin", AppStaticData.Auth.Jwt.IsAdmin),
