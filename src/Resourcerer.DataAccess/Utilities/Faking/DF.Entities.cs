@@ -8,6 +8,7 @@ public static partial class DF
 {
     public static DateTime Now = new DateTime(2000, 1, 1);
     public static string MakeName() => $"test-{Guid.NewGuid().ToString("n").Substring(0, 6)}";
+    public static string MakeEmail() => $"{MiniId.Generate(5)}@notmail.com";
     public static T MakeEntity<T>(Func<T> retn) where T : AppDbEntity
     {
         var e = retn();

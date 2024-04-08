@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Resourcerer.Api;
+using Resourcerer.Api.Services;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Utilities.Faking;
-using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic;
+using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.Utilities.Cryptography;
@@ -20,10 +21,12 @@ public class RegisterTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
+        AppStaticData.Auth.Jwt.Configure(Guid.Empty.ToString(), "issuer", "audience");
         var request = new V1Register
         {
             Username = "vaas",
             Password = "montenegro",
+            Email = "vaas.montenegro@notmail.com",
             CompanyName = "island_trade_inc"
         };
 
@@ -33,26 +36,32 @@ public class RegisterTests : TestsBase
         // assert
         Assert.Multiple(
             () => Assert.Equal(eHandlerResultStatus.Ok, result.Status),
+            () => Assert.NotNull(JwtService.GenerateToken(result.Object!)),
+            () => Assert.True(string.IsNullOrEmpty(result.Object!.Password)),
             () =>
             {
                 _ctx.Clear();
+
                 var user = _ctx.AppUsers
-                    .Include(x => x.Company)
-                    .First(x =>
+                    .Where(x =>
                         x.Name == request.Username &&
-                        x.PasswordHash == Hasher.GetSha256Hash(request.Password));
-                
+                        x.PasswordHash == Hasher.GetSha256Hash(request.Password))
+                    .Select(AppUsers.DefaultDtoProjection)
+                    .First();
+
                 var expected = new AppUserDto
                 {
                     Id = user.Id,
                     Name = user.Name,
                     IsAdmin = user.IsAdmin,
+                    DisplayName = user.DisplayName,
+                    Email = user.Email,
+                    PermissionsMap = user.PermissionsMap,
                     Company = new CompanyDto
                     {
                         Id = user.Company!.Id,
                         Name = user.Company!.Name
                     },
-                    PermissionsMap = Permissions.GetPermissionsMap(user.Permissions!)
                 };
 
                 Assert.Equivalent(expected, result.Object);
@@ -70,6 +79,7 @@ public class RegisterTests : TestsBase
         {
             Username = user.Name,
             Password = "montenegro",
+            Email = "vaas.montenegro@notmail.com",
             CompanyName = company.Name
         };
 

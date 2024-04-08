@@ -1,10 +1,12 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1.Users;
+using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Utilities;
 using Resourcerer.Utilities.Cryptography;
 using System.Text.Json;
@@ -63,17 +65,13 @@ public static class RegisterUser
             await _dbContext.SaveChangesAsync();
 
             var content = $"Hello, you've been added to the system. Username {request.Username}, Password: {temporaryPassword}";
+            
             await _emailService.Send(content, request.Email!);
             
-            var result = new AppUserDto
-            {
-                Id = user.Id,
-                Name = user.Name,
-                DisplayName= user.DisplayName,
-                IsAdmin= user.IsAdmin,
-                Email = user.Email,
-                PermissionsMap = request.PermissionsMap
-            };
+            var result = await _dbContext.AppUsers
+                .Where(x => x.Id == user.Id)
+                .Select(AppUsers.DefaultDtoProjection)
+                .FirstAsync();
 
             return HandlerResult<AppUserDto>.Ok(result);
         }

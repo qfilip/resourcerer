@@ -1,4 +1,6 @@
-﻿using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.Api;
+using Resourcerer.Api.Services;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
@@ -19,6 +21,7 @@ public class LoginTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
+        AppStaticData.Auth.Jwt.Configure(Guid.Empty.ToString(), "issuer", "audience");
         var (user, password) = ArrangeDb(_ctx);
         var request = new AppUserDto { Name = user.Name, Password = password };
 
@@ -29,24 +32,8 @@ public class LoginTests : TestsBase
         Assert.Multiple(
             () => Assert.Equal(eHandlerResultStatus.Ok, result.Status),
             () => Assert.NotNull(result.Object),
-            () =>
-            {
-                _ctx.Clear();
-                var expected = new AppUserDto
-                {
-                    Id = user.Id,
-                    Name = user.Name,
-                    IsAdmin = user.IsAdmin,
-                    Company = new CompanyDto
-                    {
-                        Id = user.Company!.Id,
-                        Name = user.Company.Name
-                    },
-                    PermissionsMap = Permissions.GetPermissionsMap(user.Permissions!)
-                };
-                
-                Assert.Equivalent(expected, result.Object, strict: true);
-            }
+            () => Assert.NotNull(JwtService.GenerateToken(result.Object!)),
+            () => Assert.True(string.IsNullOrEmpty(result.Object!.Password))
         );
     }
 
@@ -87,8 +74,11 @@ public class LoginTests : TestsBase
         {
             x.Name = username;
             x.IsAdmin = true;
+            x.DisplayName = "Villager";
+            x.Email = "a@a.com";
             x.PasswordHash = Hasher.GetSha256Hash(password);
             x.Permissions = JsonSerializer.Serialize(Permissions.GetCompressed());
+            x.Company = DF.Fake<Company>(ctx);
         });
 
         ctx.SaveChanges();

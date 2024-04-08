@@ -1,5 +1,6 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.Utilities.Cryptography;
 
 namespace Resourcerer.DataAccess.Utilities.Faking;
 
@@ -18,7 +19,14 @@ public static partial class DF
             },
             {
                 typeof(AppUser),
-                (() => MakeEntity(() => new AppUser { Name = MakeName() }),
+                (() => MakeEntity(() => new AppUser
+                {
+                    Name = MakeName(),
+                    DisplayName = MakeName(),
+                    Email = MakeEmail(),
+                    PasswordHash = Hasher.GetSha256Hash(MakeName()),
+                    Permissions = "{}"
+                }),
                 [typeof(Company)])
             },
             {

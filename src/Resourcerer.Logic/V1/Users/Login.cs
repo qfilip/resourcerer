@@ -2,8 +2,10 @@
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
+using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Utilities.Cryptography;
 
 namespace Resourcerer.Logic.V1;
@@ -24,8 +26,11 @@ public static class Login
         public async Task<HandlerResult<AppUserDto>> Handle(AppUserDto request)
         {
             var users = await _appDbContext.AppUsers
-                .Include(x => x.Company)
                 .Where(x => x.Name == request.Name)
+                .Select(AppUsers.Expand(x => new AppUser
+                { 
+                    PasswordHash = x.PasswordHash
+                }))
                 .ToArrayAsync();
 
             if (users.Length == 0)

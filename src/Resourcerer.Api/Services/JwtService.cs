@@ -18,8 +18,8 @@ public class JwtService
         claims.Add(new Claim(AppStaticData.Auth.Jwt.UserId, dto.Id.ToString()));
         claims.Add(new Claim(AppStaticData.Auth.Jwt.DisplayName, dto.DisplayName!.ToString()));
         claims.Add(new Claim(AppStaticData.Auth.Jwt.IsAdmin, dto.IsAdmin.ToString()));
-        claims.Add(new Claim(AppStaticData.Auth.Jwt.CompanyId, dto.Company?.Id.ToString() ?? string.Empty));
-        claims.Add(new Claim(AppStaticData.Auth.Jwt.CompanyName, dto.Company?.Name?.ToString() ?? string.Empty));
+        claims.Add(new Claim(AppStaticData.Auth.Jwt.CompanyId, dto.Company!.Id.ToString()));
+        claims.Add(new Claim(AppStaticData.Auth.Jwt.CompanyName, dto.Company!.Name!.ToString()));
 
         return WriteToken(claims);
     }

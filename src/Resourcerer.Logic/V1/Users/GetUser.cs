@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
+using Resourcerer.Logic.Utilities.Query;
 
 namespace Resourcerer.Logic.V1;
 
@@ -19,21 +20,16 @@ public static class GetUser
         public async Task<HandlerResult<AppUserDto>> Handle(Guid request)
         {
             var user = await _dbContext.AppUsers
-                .FirstOrDefaultAsync(x => x.Id == request);
+                .Where(x => x.Id == request)
+                .Select(AppUsers.DefaultDtoProjection)
+                .FirstOrDefaultAsync();
 
             if (user == null)
             {
                 return HandlerResult<AppUserDto>.NotFound($"User with id {request} doesn't exist");
             }
 
-            var dto = new AppUserDto()
-            {
-                Id = user.Id,
-                Name = user.Name,
-                PermissionsMap = Permissions.GetPermissionsMap(user.Permissions!)
-            };
-
-            return HandlerResult<AppUserDto>.Ok(dto);
+            return HandlerResult<AppUserDto>.Ok(user);
         }
 
         public ValidationResult Validate(Guid request) => new ValidationResult();
