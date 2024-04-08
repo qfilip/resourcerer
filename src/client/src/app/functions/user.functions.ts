@@ -14,8 +14,10 @@ export function parseJwt(jwt: string) {
     const expired = (issuedAt + lifetime) <= utcNow;
 
     const userDto = {
-        id: jwtObj[jwtClaimKeys.userId],
+        id: jwtObj[jwtClaimKeys.id],
         name: jwtObj[jwtClaimKeys.name],
+        displayName: jwtObj[jwtClaimKeys.displayName],
+        email: jwtObj[jwtClaimKeys.email],
         isAdmin: jwtObj[jwtClaimKeys.isAdmin],
         company: {
             id: jwtObj[jwtClaimKeys.companyId],

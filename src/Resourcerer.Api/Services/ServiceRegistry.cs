@@ -34,6 +34,8 @@ public static partial class ServiceRegistry
         services.AddMessagingService<V1InstanceOrderEvent, InstanceOrderEventService>();
         services.AddMessagingService<V1InstanceDiscardedRequest, InstanceDiscardEventService>();
         services.AddMessagingService<V1ItemProductionEvent, ItemProductionOrderEventService>();
+
+        services.AddScoped<IEmailService, EmailService>();
     }
 
     public static void AddAspNetServices(this IServiceCollection services)
