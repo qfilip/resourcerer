@@ -7,12 +7,20 @@ dt, dd {
     margin: 0;
 }
 
-.datalist > div:not(.children-block) {
+.kv-block {
+    width: 20%;
+}
+
+.kv-block > div {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+ul {
+    padding: 0;
+}
+
 .children-block {
-    display: block;
+    margin-left: var(--rem);
 }

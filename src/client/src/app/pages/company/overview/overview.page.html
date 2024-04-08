@@ -1,5 +1,5 @@
 @if(overview$ | async; as overview) {
-    <div class="content">
+    <div>
         <h3>{{ overview.name }}</h3>
         <section>
             <h4>Categories</h4>
@@ -9,7 +9,7 @@
         </section>
         <section>
             <h4>Employees</h4>
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Name</th>

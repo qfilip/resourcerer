@@ -16,3 +16,20 @@ html, body {
     
     font-size: 1.2rem;
 }
+
+table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin: var(--rem) 0rem;
+    font-size: var(--rem);
+
+    th {
+        color: var(--c-white);
+        background-color: var(--c-black);
+        text-align: center;
+    }
+
+    tbody tr:nth-of-type(even) {
+        background-color: var(--c-white-d1);
+    }
+}

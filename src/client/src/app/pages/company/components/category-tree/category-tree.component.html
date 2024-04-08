@@ -1,16 +1,18 @@
 @if(category) {
 <dl class="datalist">
-    <div>
-        <dt>Name:</dt>
-        <dd>{{ category.name }}</dd>
-    </div>
-    <div>
-        <dt>Subcategory count:</dt>
-        <dd>{{ category.childCategories.length }}</dd>
+    <div class="kv-block">
+        <div>
+            <dt>Name:</dt>
+            <dd>{{ category.name }}</dd>
+        </div>
+        <div>
+            <dt>Subcategory count:</dt>
+            <dd>{{ category.childCategories.length }}</dd>
+        </div>
     </div>
     <details>
         <summary>Children</summary>
-        <div>
+        <div class="children-block">
             <dd>
                 <ul>
                     @for(child of category.childCategories; track $index) {
