@@ -4,7 +4,7 @@ import { UserPermission } from '../../../../models/components/UserPermission';
 import { permissionsMap } from '../../../../models/dtos/constants';
 
 @Component({
-  selector: 'app-permission-map',
+  selector: 'permission-map',
   standalone: true,
   imports: [],
   templateUrl: './permission-map.component.html',

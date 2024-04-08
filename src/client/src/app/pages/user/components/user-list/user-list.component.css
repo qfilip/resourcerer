@@ -1,5 +1,15 @@
-table {
+div {
+    display: flex;
+    justify-content: flex-start;
+}
+
+div > section {
     width: 25%;
+    padding: var(--rem-s);
+}
+
+table, .add-user {
+    width: 100%;
 }
 
 tr > th:nth-child(1), tr > td:nth-child(1) {

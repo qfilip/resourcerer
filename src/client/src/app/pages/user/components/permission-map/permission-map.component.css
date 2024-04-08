@@ -4,6 +4,7 @@ dl {
 
 .permission-list {
     display: flex;
+    justify-content: space-between;
 
     ul {
         list-style: none;
