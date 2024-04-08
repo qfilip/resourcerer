@@ -1,15 +1,15 @@
 @if(visible) {
     <article>
-        <div>
+        <section>
             <header>
                 <ng-content select="[header]"></ng-content>
             </header>
-            <section>
+            <main>
                 <ng-content select="[body]"></ng-content>
-            </section>
+            </main>
             <footer>
                 <ng-content select="[footer]"></ng-content>
             </footer>
-        </div>
+        </section>
     </article>
 }

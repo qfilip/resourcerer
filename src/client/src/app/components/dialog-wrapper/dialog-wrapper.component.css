@@ -1,0 +1,34 @@
+article {
+    position: absolute;
+    width: 100%;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--c-black-t1);
+}
+
+section {
+    padding: var(--rem-xs);
+    width: fit-content;
+    min-width: 40%;
+
+    border: 2px groove var(--c-black);
+    background-color: var(--c-white);
+}
+
+footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+footer > button {
+    margin: var(--rem-xs);
+}

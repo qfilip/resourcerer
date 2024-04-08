@@ -33,3 +33,13 @@ table {
         background-color: var(--c-white-d1);
     }
 }
+
+form > button {
+    width: 100%;
+}
+
+label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

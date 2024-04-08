@@ -1,0 +1,28 @@
+<app-dialog-wrapper #wrapper>
+    <ng-container ngProjectAs="[header]">
+        <h2>Register User</h2>
+    </ng-container>
+
+    <ng-container ngProjectAs="[body]">
+        <form>
+            <div>
+                <label>
+                    <span>Username</span>
+                    <input type="text" />
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    <span>Email</span>
+                    <input type="text" />
+                </label>
+            </div>
+        </form>
+    </ng-container>
+
+    <ng-container ngProjectAs="[footer]">
+        <button>Ok</button>
+        <button (click)="wrapper.close()">Cancel</button>
+    </ng-container>
+</app-dialog-wrapper>

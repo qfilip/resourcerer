@@ -7,13 +7,14 @@ import { PopupComponent } from "./components/popup/popup.component";
 import { UserController } from './controllers/user.controller';
 import { UserService } from './services/user.service';
 import { LogoutComponent } from "./pages/user/components/logout/logout.component";
+import { DialogWrapperComponent } from "./components/dialog-wrapper/dialog-wrapper.component";
 
 @Component({
     selector: 'app-root',
     standalone: true,
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
-    imports: [RouterOutlet, DialogComponent, ScratchpadComponent, SpinnerComponent, PopupComponent, LogoutComponent]
+    imports: [RouterOutlet, DialogComponent, ScratchpadComponent, SpinnerComponent, PopupComponent, LogoutComponent, DialogWrapperComponent]
 })
 export class AppComponent implements OnInit {
     router = inject(Router);
