@@ -11,7 +11,6 @@ using Resourcerer.Api.Services.Messaging.Channels;
 using Resourcerer.Api.Services.V1;
 using Resourcerer.Application.Abstractions.Handlers;
 using Resourcerer.Application.Abstractions.Services;
-using Resourcerer.Application.Services;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
@@ -116,7 +115,8 @@ public static partial class ServiceRegistry
     private static void AddAuth(this IServiceCollection services)
     {
         services.AddScoped<AppJwtBearerEvents>();
-        services.AddScoped<AppIdentityService<AppUser>>();
+        services.AddScoped<IAppIdentityService<AppUser>, AppIdentityService>();
+        
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
         {

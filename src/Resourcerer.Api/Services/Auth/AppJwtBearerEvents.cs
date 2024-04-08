@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Resourcerer.Application.Services;
+using Resourcerer.Application.Abstractions.Services;
 using Resourcerer.DataAccess.Entities;
 
 namespace Resourcerer.Api.Services.Auth;
 
 public class AppJwtBearerEvents : JwtBearerEvents
 {
-    private readonly AppIdentityService<AppUser> _appIdentityService;
+    private readonly IAppIdentityService<AppUser> _appIdentityService;
 
-    public AppJwtBearerEvents(AppIdentityService<AppUser> appIdentityService)
+    public AppJwtBearerEvents(IAppIdentityService<AppUser> appIdentityService)
     {
         _appIdentityService = appIdentityService;
     }
@@ -20,16 +20,7 @@ public class AppJwtBearerEvents : JwtBearerEvents
             Console.WriteLine(c.Value);
         }
 
-        var idClaimType = AppStaticData.Auth.Jwt.UserId;
-        if (context.Principal.Claims.Any(x => x.Type == idClaimType))
-        {
-            var claim = context.Principal.Claims.First(x => x.Type == idClaimType);
-            var userId = Guid.Parse(claim.Value);
-            _appIdentityService.SetUser(new AppUser
-            {
-                Id = userId
-            }); 
-        }
+        _appIdentityService.Set(context.Principal.Claims);
 
         return Task.CompletedTask;
     }

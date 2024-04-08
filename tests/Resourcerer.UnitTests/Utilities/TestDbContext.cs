@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.Application.Services;
+using Resourcerer.Application.Abstractions.Services;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 
@@ -9,7 +9,7 @@ public class TestDbContext : AppDbContext
 {
     public TestDbContext(
         DbContextOptions<AppDbContext> options,
-        AppIdentityService<AppUser> _appIdentityService) : base(options, _appIdentityService)
+        IAppIdentityService<AppUser> _appIdentityService) : base(options, _appIdentityService)
     {
     }
 

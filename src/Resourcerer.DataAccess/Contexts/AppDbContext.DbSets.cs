@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.Application.Services;
+using Resourcerer.Application.Abstractions.Services;
 using Resourcerer.DataAccess.Entities;
 
 namespace Resourcerer.DataAccess.Contexts;
 
 public partial class AppDbContext : DbContext
 {
-    private readonly AppIdentityService<AppUser> _appIdentityService;
+    private readonly IAppIdentityService<AppUser> _appIdentityService;
 
     public AppDbContext(
         DbContextOptions<AppDbContext> options,
-        AppIdentityService<AppUser> appIdentityService) : base(options)
+        IAppIdentityService<AppUser> appIdentityService) : base(options)
 	{
         _appIdentityService = appIdentityService;
     }
@@ -44,15 +44,15 @@ public partial class AppDbContext : DbContext
                 added.Id = added.Id == Guid.Empty ? Guid.NewGuid() : added.Id;
                 added.CreatedAt = now;
                 added.ModifiedAt = now;
-                added.CreatedBy = _appIdentityService.User.Id;
-                added.ModifiedBy = _appIdentityService.User.Id;
+                added.CreatedBy = _appIdentityService.Get().Id;
+                added.ModifiedBy = _appIdentityService.Get().Id;
 
             }
             else if (entry.State == EntityState.Modified && entry.Entity is AppDbEntity modded)
             {
                 modded.ModifiedAt = now;
-                modded.CreatedBy = _appIdentityService.User.Id;
-                modded.ModifiedBy = _appIdentityService.User.Id;
+                modded.CreatedBy = _appIdentityService.Get().Id;
+                modded.ModifiedBy = _appIdentityService.Get().Id;
             }
         }
 
