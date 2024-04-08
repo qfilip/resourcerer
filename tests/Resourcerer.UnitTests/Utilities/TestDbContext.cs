@@ -1,12 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.DataAccess.AuthService;
+using Resourcerer.Application.Services;
 using Resourcerer.DataAccess.Contexts;
+using Resourcerer.DataAccess.Entities;
 
 namespace Resourcerer.UnitTests.Utilities;
 
 public class TestDbContext : AppDbContext
 {
-    public TestDbContext(DbContextOptions<AppDbContext> options, AppDbIdentity appDbIdentity) : base(options, appDbIdentity)
+    public TestDbContext(
+        DbContextOptions<AppDbContext> options,
+        AppIdentityService<AppUser> _appIdentityService) : base(options, _appIdentityService)
     {
     }
 

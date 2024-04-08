@@ -9,12 +9,13 @@ using Resourcerer.Api.Services.Auth;
 using Resourcerer.Api.Services.Messaging;
 using Resourcerer.Api.Services.Messaging.Channels;
 using Resourcerer.Api.Services.V1;
-using Resourcerer.DataAccess.AuthService;
+using Resourcerer.Application.Abstractions.Handlers;
+using Resourcerer.Application.Abstractions.Services;
+using Resourcerer.Application.Services;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
-using Resourcerer.Logic;
 using System.Threading.Channels;
 
 namespace Resourcerer.Api.Services;
@@ -26,7 +27,7 @@ public static partial class ServiceRegistry
         foreach (var handlerType in handlerTypes)
         {
             RegisterHandlers(handlerType, services);
-            RegisterValidators(handlerType, services);
+            RegisterValidators(services);
         }
 
         services.AddScoped<Pipeline>();
@@ -115,7 +116,7 @@ public static partial class ServiceRegistry
     private static void AddAuth(this IServiceCollection services)
     {
         services.AddScoped<AppJwtBearerEvents>();
-        services.AddScoped<AppDbIdentity>();
+        services.AddScoped<AppIdentityService<AppUser>>();
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
         {
@@ -166,7 +167,7 @@ public static partial class ServiceRegistry
 
     private static void RegisterHandlers(Type handlerType, IServiceCollection services)
     {
-        var assembly = handlerType.Assembly;
+        var assembly = typeof(Logic.IAssemblyMarker).Assembly;
 
         var handlers = assembly
             .GetTypes()
@@ -179,9 +180,9 @@ public static partial class ServiceRegistry
         handlers.ForEach(x => services.AddTransient(x));
     }
 
-    public static void RegisterValidators(Type handlerType, IServiceCollection services)
+    public static void RegisterValidators(IServiceCollection services)
     {
-        var assembly = handlerType.Assembly;
+        var assembly = typeof(Logic.IAssemblyMarker).Assembly;
         
         var validators = assembly
         .GetTypes()

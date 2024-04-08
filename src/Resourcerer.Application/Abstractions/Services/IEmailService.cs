@@ -1,4 +1,4 @@
-﻿namespace Resourcerer.Logic;
+﻿namespace Resourcerer.Application.Abstractions.Services;
 
 public interface IEmailService
 {

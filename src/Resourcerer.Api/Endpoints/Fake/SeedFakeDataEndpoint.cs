@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
-using Resourcerer.Logic;
+using Resourcerer.Application.Models;
 using Resourcerer.Logic.Fake;
 
 namespace Resourcerer.Api.Endpoints.Fake;

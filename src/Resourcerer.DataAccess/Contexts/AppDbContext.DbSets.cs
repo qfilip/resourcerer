@@ -1,16 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.DataAccess.AuthService;
+using Resourcerer.Application.Services;
 using Resourcerer.DataAccess.Entities;
 
 namespace Resourcerer.DataAccess.Contexts;
 
 public partial class AppDbContext : DbContext
 {
-    private readonly AppDbIdentity _appDbIdentity;
+    private readonly AppIdentityService<AppUser> _appIdentityService;
 
-    public AppDbContext(DbContextOptions<AppDbContext> options, AppDbIdentity appDbIdentity) : base(options)
+    public AppDbContext(
+        DbContextOptions<AppDbContext> options,
+        AppIdentityService<AppUser> appIdentityService) : base(options)
 	{
-        _appDbIdentity = appDbIdentity;
+        _appIdentityService = appIdentityService;
     }
 
 	public virtual DbSet<AppUser> AppUsers { get; set; }
@@ -42,15 +44,15 @@ public partial class AppDbContext : DbContext
                 added.Id = added.Id == Guid.Empty ? Guid.NewGuid() : added.Id;
                 added.CreatedAt = now;
                 added.ModifiedAt = now;
-                added.CreatedBy = _appDbIdentity.User.Id;
-                added.ModifiedBy = _appDbIdentity.User.Id;
+                added.CreatedBy = _appIdentityService.User.Id;
+                added.ModifiedBy = _appIdentityService.User.Id;
 
             }
             else if (entry.State == EntityState.Modified && entry.Entity is AppDbEntity modded)
             {
                 modded.ModifiedAt = now;
-                modded.CreatedBy = _appDbIdentity.User.Id;
-                modded.ModifiedBy = _appDbIdentity.User.Id;
+                modded.CreatedBy = _appIdentityService.User.Id;
+                modded.ModifiedBy = _appIdentityService.User.Id;
             }
         }
 

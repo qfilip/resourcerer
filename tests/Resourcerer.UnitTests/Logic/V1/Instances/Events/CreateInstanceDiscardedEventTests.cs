@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
-using Resourcerer.Logic;
 using Resourcerer.Logic.Exceptions;
 using Resourcerer.Logic.V1.Instances.Events;
 using Resourcerer.UnitTests.Utilities;

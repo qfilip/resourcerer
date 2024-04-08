@@ -1,4 +1,6 @@
-﻿namespace Resourcerer.Logic;
+﻿using Resourcerer.Application.Models;
+
+namespace Resourcerer.Application.Abstractions.Handlers;
 
 public interface IAppEventHandler<TRequest, TResponse>
 {

@@ -1,11 +1,11 @@
 ﻿using FakeItEasy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
 using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
-using Resourcerer.Logic;
 using Resourcerer.Logic.V1.Items;
 using Resourcerer.UnitTests.Utilities;
 

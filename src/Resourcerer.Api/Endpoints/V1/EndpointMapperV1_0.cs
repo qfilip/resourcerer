@@ -73,6 +73,7 @@ public class EndpointMapperV1_0
         LoginEndpoint.MapToGroup(g);
         RefreshSessionEndpoint.MapToGroup(g);
         RegisterEndpoint.MapToGroup(g);
+        RegisterUserEndpoint.MapToGroup(g);
         SetPermissionsEndpoint.MapToGroup(g);
     }
 }

@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Resourcerer.DataAccess.AuthService;
+using Resourcerer.Application.Services;
 using Resourcerer.DataAccess.Entities;
 
 namespace Resourcerer.Api.Services.Auth;
 
 public class AppJwtBearerEvents : JwtBearerEvents
 {
-    private readonly AppDbIdentity _appDbIdentity;
+    private readonly AppIdentityService<AppUser> _appIdentityService;
 
-    public AppJwtBearerEvents(AppDbIdentity appDbIdentity)
+    public AppJwtBearerEvents(AppIdentityService<AppUser> appIdentityService)
     {
-        _appDbIdentity = appDbIdentity;
+        _appIdentityService = appIdentityService;
     }
 
     public override Task TokenValidated(TokenValidatedContext context)
@@ -25,7 +25,7 @@ public class AppJwtBearerEvents : JwtBearerEvents
         {
             var claim = context.Principal.Claims.First(x => x.Type == idClaimType);
             var userId = Guid.Parse(claim.Value);
-            _appDbIdentity.SetUser(new AppUser
+            _appIdentityService.SetUser(new AppUser
             {
                 Id = userId
             }); 

@@ -1,5 +1,6 @@
 ﻿using FluentValidation.Results;
-using Resourcerer.Logic;
+using Resourcerer.Application.Abstractions.Handlers;
+using Resourcerer.Application.Models;
 
 namespace Resourcerer.UnitTests.Utilities.TestClasses;
 

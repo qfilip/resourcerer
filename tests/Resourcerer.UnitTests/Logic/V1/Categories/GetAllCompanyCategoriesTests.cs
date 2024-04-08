@@ -1,6 +1,6 @@
-﻿using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.Application.Models;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Utilities.Faking;
-using Resourcerer.Logic;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 

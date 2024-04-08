@@ -1,9 +1,10 @@
 ﻿using FakeItEasy;
+using Resourcerer.Application.Abstractions.Services;
+using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos;
-using Resourcerer.Dtos.V1.Users;
-using Resourcerer.Logic;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;

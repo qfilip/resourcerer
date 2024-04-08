@@ -1,6 +1,4 @@
-﻿using Resourcerer.Dtos;
-
-namespace Resourcerer.Logic;
+﻿namespace Resourcerer.Application.Models;
 
 public struct Unit
 {

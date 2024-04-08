@@ -1,7 +1,8 @@
 ﻿using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
+using Resourcerer.Application.Abstractions.Handlers;
+using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
-using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Logic.Utilities.Query;
 

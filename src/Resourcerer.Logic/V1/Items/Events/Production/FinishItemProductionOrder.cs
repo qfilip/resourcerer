@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
+using Resourcerer.Application.Abstractions.Handlers;
+using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
-using Resourcerer.Logic.V1.Functions;
 
 namespace Resourcerer.Logic.V1.Items.Events.Production;
 public static class FinishItemProductionOrder

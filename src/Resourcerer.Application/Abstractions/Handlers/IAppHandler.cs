@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
+using Resourcerer.Application.Models;
 
-namespace Resourcerer.Logic;
+namespace Resourcerer.Application.Abstractions.Handlers;
 
 public interface IAppHandler<TRequest, TResponse>
 {

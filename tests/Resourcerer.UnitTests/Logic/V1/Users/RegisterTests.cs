@@ -1,10 +1,10 @@
 ﻿using Resourcerer.Api;
 using Resourcerer.Api.Services;
+using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
-using Resourcerer.Logic;
 using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;

@@ -1,4 +1,4 @@
-﻿using Resourcerer.Logic;
+﻿using Resourcerer.Application.Abstractions.Services;
 
 namespace Resourcerer.Api.Services;
 

@@ -1,4 +1,4 @@
-﻿namespace Resourcerer.Dtos.V1.Users;
+﻿namespace Resourcerer.Dtos.V1;
 
 public class V1RegisterUser : IDto
 {

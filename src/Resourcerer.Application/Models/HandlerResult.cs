@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Resourcerer.Logic;
+namespace Resourcerer.Application.Models;
 
 public enum eHandlerResultStatus
 {

@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Resourcerer.Application.Abstractions.Handlers;
+using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;

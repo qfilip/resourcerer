@@ -1,10 +1,9 @@
 ﻿using FakeItEasy;
-using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Logging;
 using Resourcerer.Api.Services;
-using Resourcerer.Logic;
+using Resourcerer.Application.Models;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.TestClasses;
 
