@@ -30,8 +30,11 @@ public static class CustomExports
         {
             ("name", JwtRegisteredClaimNames.Sub),
             ("issuedAt", JwtRegisteredClaimNames.Iat),
-            ("userId", AppStaticData.Auth.Jwt.UserId),
-            ("isAdmin", AppStaticData.Auth.Jwt.Admin),
+            ("id", AppStaticData.Auth.Jwt.UserId),
+            ("userName", AppStaticData.Auth.Jwt.UserName),
+            ("displayName", AppStaticData.Auth.Jwt.DisplayName),
+            ("email", JwtRegisteredClaimNames.Email),
+            ("isAdmin", AppStaticData.Auth.Jwt.IsAdmin),
             ("companyId", AppStaticData.Auth.Jwt.CompanyId),
             ("companyName", AppStaticData.Auth.Jwt.CompanyName)
         };

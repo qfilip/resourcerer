@@ -19,6 +19,8 @@ public class AppUserDto : EntityDto<AppUserDto>
         {
             Id = entity.Id,
             Name = entity.Name,
+            DisplayName = entity.DisplayName,
+            Email = entity.Email,
             IsAdmin = entity.IsAdmin,
             Company = new CompanyDto
             {

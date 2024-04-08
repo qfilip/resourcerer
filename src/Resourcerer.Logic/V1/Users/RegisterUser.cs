@@ -52,6 +52,7 @@ public static class RegisterUser
                 Id = Guid.NewGuid(),
                 Name = request.Username,
                 DisplayName = request.Username,
+                IsAdmin = request.IsAdmin,
                 Email = request.Email,
                 PasswordHash = Hasher.GetSha256Hash(temporaryPassword),
                 Permissions = JsonSerializer.Serialize(Permissions.GetCompressedFrom(request.PermissionsMap)),
@@ -69,6 +70,7 @@ public static class RegisterUser
                 Id = user.Id,
                 Name = user.Name,
                 DisplayName= user.DisplayName,
+                IsAdmin= user.IsAdmin,
                 Email = user.Email,
                 PermissionsMap = request.PermissionsMap
             };

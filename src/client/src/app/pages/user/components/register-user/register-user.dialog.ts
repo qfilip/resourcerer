@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { DialogWrapperComponent } from "../../../../components/dialog-wrapper/dialog-wrapper.component";
+import { IAppUserDto } from '../../../../models/dtos/interfaces';
 
 @Component({
     selector: 'register-user-dialog',
@@ -10,8 +11,9 @@ import { DialogWrapperComponent } from "../../../../components/dialog-wrapper/di
 })
 export class RegisterUserComponent {
     @ViewChild('wrapper') wrapper!: DialogWrapperComponent;
-
-    open() {
+    private user = {} as IAppUserDto;
+    
+    open(companyId: string) {
         this.wrapper.open();
     }
 }
