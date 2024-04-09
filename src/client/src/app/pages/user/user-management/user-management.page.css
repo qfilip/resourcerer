@@ -1,0 +1,14 @@
+article {
+    display: flex;
+    justify-content: flex-start;
+}
+
+article > section {
+    width: 25%;
+    margin-right: var(--rem-xs);
+
+}
+
+.add-user {
+    width: 100%;
+}

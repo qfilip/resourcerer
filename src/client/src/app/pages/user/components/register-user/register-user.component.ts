@@ -1,5 +1,4 @@
-import { Component, ViewChild, inject } from '@angular/core';
-import { DialogWrapperComponent } from "../../../../components/dialog-wrapper/dialog-wrapper.component";
+import { Component, Input, inject } from '@angular/core';
 import { IV1RegisterUser } from '../../../../models/dtos/interfaces';
 import { PopupService } from '../../../../services/popup.service';
 import { IPopup } from '../../../../models/components/IPopup';
@@ -8,25 +7,19 @@ import { UserPermission } from '../../../../models/components/UserPermission';
 import { UserController } from '../../../../controllers/user.controller';
 
 @Component({
-    selector: 'register-user-dialog',
+    selector: 'register-user',
     standalone: true,
-    templateUrl: './register-user.dialog.html',
-    styleUrl: './register-user.dialog.css',
-    imports: [DialogWrapperComponent, PermissionMapComponent]
+    templateUrl: './register-user.component.html',
+    styleUrl: './register-user.component.css',
+    imports: [PermissionMapComponent]
 })
 export class RegisterUserComponent {
-    @ViewChild('wrapper') wrapper!: DialogWrapperComponent;
+    @Input({ required: true }) companyId!: string;
     
     private popupService = inject(PopupService);
     private userController = inject(UserController);
     
-    private companyId: string = '';
     private permissionMap: { [key: string]: string[] } = {}; 
-    
-    open(companyId: string) {
-        this.wrapper.open();
-        this.companyId = companyId;
-    }
 
     mapPermissions(xs: UserPermission[]) {
         xs.forEach(x => {

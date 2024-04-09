@@ -1,15 +1,18 @@
 @if(user) {
-    <div>
-        <label>
-            <span>Name</span>
-            <input type="text" [value]="user.name" readonly />
-        </label>
-        <label>
-            <span>Admin</span>
-            <input type="checkbox" [value]="user.isAdmin" />
-        </label>
-    </div>
-    <div>
-        <permission-map [editable]="true" [user]="user"></permission-map>
-    </div>
+    <fieldset>
+        <legend>Edit</legend>
+        <div>
+            <label>
+                <span>Name</span>
+                <input type="text" [value]="user.name" readonly />
+            </label>
+            <label>
+                <span>Admin</span>
+                <input type="checkbox" [value]="user.isAdmin" />
+            </label>
+        </div>
+        <div>
+            <permission-map [editable]="true" [user]="user"></permission-map>
+        </div>
+    </fieldset>
 }

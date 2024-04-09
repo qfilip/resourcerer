@@ -1,13 +1,3 @@
-div {
-    display: flex;
-    justify-content: flex-start;
-}
-
-div > section {
-    width: 25%;
-    padding: var(--rem-s);
-}
-
 table, .add-user {
     width: 100%;
 }

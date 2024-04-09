@@ -1,56 +1,28 @@
-<div>
-    <section>
-    @if(currentUser) {
-        @if(currentUser.isAdmin) {
-            <button (click)="ruDialog.open(currentUser.company.id)" class="add-user">Add new user</button>
-            }
-            @if(companyUsers$ | async; as users) {
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Admin</th>
-                        <th>Company</th>
-                        @if(currentUser.isAdmin) {
-                            <th>Actions</th>
-                        } 
-                    </tr>
-                </thead>
-            <tbody>
-                @for(user of users; track $index) {
-                    <tr>
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.isAdmin }}</td>
-                        <td>{{ user.company.name }}</td>
-                        @if(currentUser.isAdmin) {
-                            <td>
-                                <button (click)="selectedUser$.set(user)">Edit</button>
-                            </td>
-                        }
-                    </tr>
+@if(companyUsers$ | async; as users) {
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Admin</th>
+                <th>Company</th>
+                @if(currentUser!.isAdmin) {
+                    <th>Actions</th>
+                } 
+            </tr>
+        </thead>
+    <tbody>
+        @for(user of users; track $index) {
+            <tr>
+                <td>{{ user.name }}</td>
+                <td>{{ user.isAdmin }}</td>
+                <td>{{ user.company.name }}</td>
+                @if(currentUser!.isAdmin) {
+                    <td>
+                        <button (click)="onUserEdit.emit(user)">Edit</button>
+                    </td>
                 }
-            </tbody>
-        </table>  
+            </tr>
         }
-    }
-    </section>
-
-    <section>
-    @if(selectedUser$(); as user) {
-        <user-edit [user]="user"></user-edit>
-    }
-    </section>
-</div>
-
-<register-user-dialog #ruDialog>
-    <h2 header>Register User</h2>
-
-    <div body>
-        Dummy content
-    </div>
-
-    <div footer>
-        <button>Ok</button>
-        <button>Cancel</button>
-    </div>
-</register-user-dialog>
+    </tbody>
+</table>  
+}

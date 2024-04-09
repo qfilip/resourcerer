@@ -1,8 +1,0 @@
-form > div > label {
-    width: 50%;
-    font-size: var(--rem-s);
-}
-
-button {
-    margin-left: var(--rem-xs);
-}

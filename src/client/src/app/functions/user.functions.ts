@@ -12,13 +12,13 @@ export function parseJwt(jwt: string) {
     const utcNow = new Date(Date.UTC(now)).getTime();
     
     const expired = (issuedAt + lifetime) <= utcNow;
-
+    
     const userDto = {
         id: jwtObj[jwtClaimKeys.id],
         name: jwtObj[jwtClaimKeys.name],
         displayName: jwtObj[jwtClaimKeys.displayName],
         email: jwtObj[jwtClaimKeys.email],
-        isAdmin: jwtObj[jwtClaimKeys.isAdmin],
+        isAdmin: jwtObj[jwtClaimKeys.isAdmin].toLowerCase() === 'true' ? true : false,
         company: {
             id: jwtObj[jwtClaimKeys.companyId],
             name: jwtObj[jwtClaimKeys.companyName]

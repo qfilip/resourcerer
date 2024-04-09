@@ -1,0 +1,3 @@
+form > div > label {
+    font-size: var(--rem-s);
+}
