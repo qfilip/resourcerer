@@ -10,7 +10,7 @@
     <section>
         @switch (component$()) {
             @case ('edit') {
-                <user-edit [user]="currentUser"></user-edit>
+                <user-edit [user]="selectedUser$()"></user-edit>
             }
             @case ('register') {
                 <register-user [companyId]="currentUser!.company.id"></register-user>

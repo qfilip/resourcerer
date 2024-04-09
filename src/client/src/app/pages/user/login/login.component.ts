@@ -43,8 +43,7 @@ export class LoginComponent {
         next: jwt => {
           this.userService.setUser(jwt);
           this.router.navigate(['home']);
-        },
-        error: e => console.log(e)
+        }
       })
   }
 }

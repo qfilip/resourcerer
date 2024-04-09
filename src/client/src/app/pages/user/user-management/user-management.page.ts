@@ -25,7 +25,6 @@ export class UserManagementPage {
 
   ngOnInit() {
     const user = this.userService.user();
-    console.log(user);
     if(!user) return;
     
     this.currentUser = user;

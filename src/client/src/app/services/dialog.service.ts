@@ -9,7 +9,6 @@ export class DialogService {
     dialogOptions = this.dialogOptions$.asReadonly();
 
     open(options: IDialogOptions) {
-        console.log('setting options')
         const o = this.setDefaultOptions(options);
         this.dialogOptions$.set(o);
     }

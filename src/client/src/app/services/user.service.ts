@@ -32,7 +32,6 @@ export class UserService {
         if(jwtData.expired) {
             return false;
         }
-        console.log(jwtData.dto)
         this._user$.set(jwtData.dto);
         this._jwt$.set(jwt);
 

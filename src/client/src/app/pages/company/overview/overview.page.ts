@@ -25,7 +25,6 @@ export class CompanyOverviewPage implements OnInit {
     if(!user) return;
 
     this.overview$ = this.companyController
-      .getCompanyOverview(user.company.id)
-      .pipe(tap(x => console.log(x)));
+      .getCompanyOverview(user.company.id);
   }
 }

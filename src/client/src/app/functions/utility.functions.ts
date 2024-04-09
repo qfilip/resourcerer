@@ -6,6 +6,6 @@ export function dictToArray(dict: { [key: string]: any[] }) {
             values: dict[key]
         });
     }
-    console.log(xs)
+    
     return xs;
 }

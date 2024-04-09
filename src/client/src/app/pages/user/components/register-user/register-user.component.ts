@@ -56,8 +56,7 @@ export class RegisterUserComponent {
         }
 
         this.userController.registerUser(dto).subscribe({
-            next: x => console.log(x)
-            // error: e => console.log(e)
+            next: x => this.popupService.success('User registered')
         });
     }
 }
