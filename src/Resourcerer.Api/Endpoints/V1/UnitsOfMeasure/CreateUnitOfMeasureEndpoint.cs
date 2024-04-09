@@ -22,7 +22,7 @@ public class CreateUnitOfMeasureEndpoint
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
-            (ePermissionSection.Element, new[] { ePermission.Write })
+            (ePermissionSection.Item, new[] { ePermission.Write })
         });
     }
 }

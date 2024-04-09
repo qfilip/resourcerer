@@ -20,7 +20,7 @@ public class GetItemsStatisticsEndpoint
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
-            (ePermissionSection.Event, new[] { ePermission.Read })
+            (ePermissionSection.Item, new[] { ePermission.Read })
         });
     }
 }

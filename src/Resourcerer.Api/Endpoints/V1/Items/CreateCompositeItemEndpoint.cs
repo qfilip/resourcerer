@@ -22,7 +22,7 @@ public class CreateCompositeItemEndpoint
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
-            (ePermissionSection.Event, new[] { ePermission.Write })
+            (ePermissionSection.Item, new[] { ePermission.Write })
         });
     }
 }

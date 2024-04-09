@@ -177,8 +177,10 @@ public enum ePermission
 
 public enum ePermissionSection
 {
+    Company,
     User,
     Category,
-    Element,
+    Item,
+    Instance,
     Event
 }

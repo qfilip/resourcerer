@@ -22,7 +22,7 @@ public class SetPermissionsEndpoint
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
-            (ePermissionSection.User, new[] { ePermission.Write })
+            (ePermissionSection.User, new[] { ePermission.Modify })
         });
     }
 }
