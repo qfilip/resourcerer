@@ -2,7 +2,7 @@
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
-using Resourcerer.Logic.V1.UnitsOfMeasure;
+using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 
 namespace Resourcerer.UnitTests.Logic.V1.UnitsOfMeasure;

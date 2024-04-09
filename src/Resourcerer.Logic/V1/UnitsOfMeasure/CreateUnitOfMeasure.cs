@@ -7,7 +7,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.V1;
 
-namespace Resourcerer.Logic.V1.UnitsOfMeasure;
+namespace Resourcerer.Logic.V1;
 
 public class CreateUnitOfMeasure
 {
