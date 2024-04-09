@@ -1,118 +1,167 @@
 ﻿using FakeItEasy;
 using Resourcerer.Application.Abstractions.Services;
-using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Utilities.Faking;
-using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
-using Resourcerer.Logic.Utilities.Query;
+using Resourcerer.Dtos;
 using Resourcerer.Logic.V1;
+using Resourcerer.Application.Models;
+using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.UnitTests.Utilities;
 
 namespace Resourcerer.UnitTests.Logic.V1.Users;
 
-public class RegisterUserTests : TestsBase
+public class EditUserTests : TestsBase
 {
-    private readonly RegisterUser.Handler _sut;
+    private readonly EditUser.Handler _sut;
     private readonly IEmailService _fakeEmailService = A.Fake<IEmailService>();
     private readonly IAppIdentityService<AppUser> _fakeIdentityService = A.Fake<IAppIdentityService<AppUser>>();
-    public RegisterUserTests()
+    
+    public EditUserTests()
     {
         _sut = new(_ctx, new(), _fakeEmailService, _fakeIdentityService);
     }
 
     [Fact]
-    public void HappyPath_AdminAddsAdmin__Ok()
+    public void AdminEditsAdmin__Ok()
     {
         // arrange
-        var company = DF.Fake<Company>(_ctx);
+        var oldUser = DF.Fake<AppUser>(_ctx, x => x.IsAdmin = true);
+
+        var request = new V1EditUser
+        {
+            UserId = oldUser.Id,
+            Email = DF.MakeEmail(),
+            IsAdmin = false,
+            PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
+        };
+
+        _ctx.SaveChanges();
+
+        A.CallTo(() =>
+            _fakeIdentityService.Get())
+            .Returns(new AppUser { IsAdmin = true, CompanyId = oldUser.Company!.Id});
+
+        A.CallTo(() =>
+            _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
+            .Returns(true);
+
+
+        // act assert
+        HappyPathActAssert(request);
+    }
+
+    [Fact]
+    public void AdminEditsNonAdmin__Ok()
+    {
+        // arrange
+        var oldUser = DF.Fake<AppUser>(_ctx);
+
+        var request = new V1EditUser
+        {
+            UserId = oldUser.Id,
+            Email = DF.MakeEmail(),
+            IsAdmin = true,
+            PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
+        };
+
+        _ctx.SaveChanges();
+
+        A.CallTo(() =>
+            _fakeIdentityService.Get())
+            .Returns(new AppUser { IsAdmin = true, CompanyId = oldUser.Company!.Id });
+
+        A.CallTo(() =>
+            _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
+            .Returns(true);
+
+
+        // act assert
+        HappyPathActAssert(request);
+    }
+
+    [Fact]
+    public void NonAdminEditsNonAdmin__Ok()
+    {
+        // arrange
+        var oldUser = DF.Fake<AppUser>(_ctx);
+
+        var request = new V1EditUser
+        {
+            UserId = oldUser.Id,
+            Email = DF.MakeEmail(),
+            IsAdmin = false,
+            PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
+        };
+
+        _ctx.SaveChanges();
+
+        A.CallTo(() =>
+            _fakeIdentityService.Get())
+            .Returns(new AppUser { IsAdmin = false, CompanyId = oldUser.Company!.Id });
+
+        A.CallTo(() =>
+            _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
+            .Returns(true);
+
+        // act assert
+        HappyPathActAssert(request);
+    }
+
+    [Fact]
+    public void NonAdminEditsAdmin__Rejected()
+    {
+        // arrange
+        var oldUser = DF.Fake<AppUser>(_ctx, x => x.IsAdmin = true);
+
+        var request = new V1EditUser
+        {
+            UserId = oldUser.Id,
+            Email = DF.MakeEmail(),
+            IsAdmin = false,
+            PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
+        };
+
+        _ctx.SaveChanges();
+
+        A.CallTo(() =>
+            _fakeIdentityService.Get())
+            .Returns(new AppUser { IsAdmin = false, CompanyId = oldUser.Company!.Id });
+
+        A.CallTo(() =>
+            _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
+            .Returns(true);
+
+        // act
+        var result = _sut.Handle(request).Await();
         
-        var request = new V1RegisterUser
-        {
-            CompanyId = company.Id,
-            Username = DF.MakeName(),
-            Email = DF.MakeEmail(),
-            IsAdmin = true,
-            PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
-        };
-
-        _ctx.SaveChanges();
-
-        A.CallTo(() =>
-            _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = true });
-
-        HappyPathActAssert(request);
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
     }
 
     [Fact]
-    public void HappyPath_AdminAddsNonAdmin__Ok()
+    public void InvalidPermissions__Rejected()
     {
         // arrange
-        var company = DF.Fake<Company>(_ctx);
+        var oldUser = DF.Fake<AppUser>(_ctx);
 
-        var request = new V1RegisterUser
+        var request = new V1EditUser
         {
-            CompanyId = company.Id,
-            Username = DF.MakeName(),
+            UserId = oldUser.Id,
             Email = DF.MakeEmail(),
             IsAdmin = false,
-            PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
+            PermissionsMap = new Dictionary<string, string[]> { { "one", ["two"] } }
         };
 
         _ctx.SaveChanges();
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = true });
-
-        HappyPathActAssert(request);
-    }
-
-    [Fact]
-    public void HappyPath_NonAdminAddsNonAdmin__Ok()
-    {
-        // arrange
-        var company = DF.Fake<Company>(_ctx);
-
-        var request = new V1RegisterUser
-        {
-            CompanyId = company.Id,
-            Username = DF.MakeName(),
-            Email = DF.MakeEmail(),
-            IsAdmin = false,
-            PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
-        };
-
-        _ctx.SaveChanges();
+            .Returns(new AppUser { IsAdmin = true, CompanyId = oldUser.Company!.Id });
 
         A.CallTo(() =>
-            _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = false });
-
-        HappyPathActAssert(request);
-    }
-
-    [Fact]
-    public void HappyPath_NonAdminAddsAdmin__Rejected()
-    {
-        // arrange
-        var company = DF.Fake<Company>(_ctx);
-
-        var request = new V1RegisterUser
-        {
-            CompanyId = company.Id,
-            Username = DF.MakeName(),
-            Email = DF.MakeEmail(),
-            IsAdmin = true,
-            PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
-        };
-
-        _ctx.SaveChanges();
-
-        A.CallTo(() =>
-            _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = false });
+            _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
+            .Returns(true);
 
         // act
         var result = _sut.Handle(request).Await();
@@ -122,57 +171,16 @@ public class RegisterUserTests : TestsBase
     }
 
     [Fact]
-    public void InvalidPermissions__Rejected()
-    {
-        // arrange
-        var company = DF.Fake<Company>(_ctx);
-
-        var request = new V1RegisterUser
-        {
-            CompanyId = company.Id,
-            Username = DF.MakeName(),
-            Email = DF.MakeEmail(),
-            IsAdmin = true,
-            PermissionsMap = new Dictionary<string, string[]>
-            {
-                { 
-                    ePermissionSection.User.ToString(), ["one", "two"]
-                }
-            }
-        };
-
-        _ctx.SaveChanges();
-
-        A.CallTo(() =>
-            _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = true });
-
-        A.CallTo(() =>
-            _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
-            .Returns(true);
-
-        // act
-        var result = _sut.Handle(request).Await();
-
-        // assert
-        Assert.Multiple(
-            () => Assert.Equal(eHandlerResultStatus.Rejected, result.Status),
-            () => Assert.Equal(2, result.Errors.Length)
-        );
-    }
-
-    [Fact]
     public void InvalidEmail__Rejected()
     {
         // arrange
-        var company = DF.Fake<Company>(_ctx);
+        var oldUser = DF.Fake<AppUser>(_ctx);
 
-        var request = new V1RegisterUser
+        var request = new V1EditUser
         {
-            CompanyId = company.Id,
-            Username = DF.MakeName(),
+            UserId = oldUser.Id,
             Email = DF.MakeEmail(),
-            IsAdmin = true,
+            IsAdmin = false,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
         };
 
@@ -180,7 +188,7 @@ public class RegisterUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = true });
+            .Returns(new AppUser { IsAdmin = true, CompanyId = oldUser.Company!.Id });
 
         A.CallTo(() =>
             _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
@@ -190,22 +198,18 @@ public class RegisterUserTests : TestsBase
         var result = _sut.Handle(request).Await();
 
         // assert
-        Assert.Multiple(
-            () => Assert.Equal(eHandlerResultStatus.Rejected, result.Status),
-            () => Assert.Single(result.Errors)
-        );
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
     }
 
     [Fact]
-    public void FailedToSendEmail__Exception()
+    public void UserNotFound__NotFound()
     {
         // arrange
-        var company = DF.Fake<Company>(_ctx);
+        var oldUser = DF.Fake<AppUser>(_ctx);
 
-        var request = new V1RegisterUser
+        var request = new V1EditUser
         {
-            CompanyId = company.Id,
-            Username = DF.MakeName(),
+            UserId = Guid.NewGuid(),
             Email = DF.MakeEmail(),
             IsAdmin = true,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
@@ -215,31 +219,55 @@ public class RegisterUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = true });
+            .Returns(new AppUser { IsAdmin = true, CompanyId = oldUser.Company!.Id });
 
         A.CallTo(() =>
             _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
             .Returns(true);
 
-        A.CallTo(() => _fakeEmailService.Send(A<string>.Ignored, A<string>.That.Matches(x => x == request.Email)))
-            .Throws(new Exception());
-
         // act
-        var action = () => _sut.Handle(request).Await();
+        var result = _sut.Handle(request).Await();
 
         // assert
-        Assert.Throws<Exception>(action);
+        Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
     }
 
-    private void HappyPathActAssert(V1RegisterUser request)
+    [Fact]
+    public void EditorFromDifferentCompany__Rejected()
+    {
+        // arrange
+        var oldUser = DF.Fake<AppUser>(_ctx);
+
+        var request = new V1EditUser
+        {
+            UserId = oldUser.Id,
+            Email = DF.MakeEmail(),
+            IsAdmin = true,
+            PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
+        };
+
+        _ctx.SaveChanges();
+
+        A.CallTo(() =>
+            _fakeIdentityService.Get())
+            .Returns(new AppUser { IsAdmin = true, CompanyId = Guid.NewGuid() });
+
+        A.CallTo(() =>
+            _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
+            .Returns(true);
+
+        // act
+        var result = _sut.Handle(request).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    private void HappyPathActAssert(V1EditUser request)
     {
         A.CallTo(() =>
             _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
             .Returns(true);
-
-        A.CallTo(() => _fakeEmailService.Send(A<string>.Ignored, A<string>.That.Matches(x => x == request.Email)))
-            .Returns(Task.CompletedTask);
-
 
         // act
         var result = _sut.Handle(request).Await();
@@ -253,21 +281,29 @@ public class RegisterUserTests : TestsBase
                 A.CallTo(() => _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
                     .MustHaveHappenedOnceExactly();
 
-                A.CallTo(() => _fakeEmailService.Send(A<string>.Ignored, request.Email!))
-                    .MustHaveHappenedOnceExactly();
-
                 _ctx.Clear();
 
                 var user = _ctx.AppUsers
                     .Select(AppUsers.DefaultDtoProjection)
                     .First();
 
-                Assert.Equal(request.CompanyId, user.Company!.Id);
-                Assert.Equal(request.Username, user.Name);
                 Assert.Equal(request.Email, user.Email);
                 Assert.Equal(request.IsAdmin, user.IsAdmin);
                 Assert.Equal(request.PermissionsMap, user.PermissionsMap);
             }
         );
+    }
+
+    private AppUser GetIdentity(Action<AppUser>? modifier = null)
+    {
+        var identityUser = new AppUser
+        {
+            CompanyId = Guid.NewGuid(),
+            IsAdmin = true
+        };
+
+        modifier?.Invoke(identityUser);
+
+        return identityUser;
     }
 }

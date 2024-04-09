@@ -37,9 +37,6 @@ public static class EditUser
 
         public async Task<HandlerResult<AppUserDto>> Handle(V1EditUser request)
         {
-            if (!_identityService.Get().IsAdmin && request.IsAdmin)
-                return HandlerResult<AppUserDto>.Rejected("Only admin can add another admin user");
-
             var errors = Permissions.Validate(request.PermissionsMap);
 
             if (!_emailService.Validate(request.Email!))
@@ -56,14 +53,15 @@ public static class EditUser
                 .FirstOrDefaultAsync();
 
             if (entity == null)
-            {
                 return HandlerResult<AppUserDto>.NotFound($"User with id {request.UserId} not found");
-            }
 
-            if(entity.CompanyId != _identityService.Get().CompanyId)
-            {
+            if (!_identityService.Get().IsAdmin && entity.IsAdmin)
+                return HandlerResult<AppUserDto>.Rejected("Only admin can add another admin user");
+
+            if (entity.Company!.Id != _identityService.Get().CompanyId)
                 return HandlerResult<AppUserDto>.Rejected($"Editing user from another company is forbidden");
-            }
+
+            _dbContext.AppUsers.Attach(entity);
 
             entity.Email = request.Email;
             entity.IsAdmin = request.IsAdmin;
