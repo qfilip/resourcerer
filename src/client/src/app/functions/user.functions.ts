@@ -6,14 +6,10 @@ import { IAppUserDto } from "../models/dtos/interfaces";
 export function parseJwt(jwt: string) {
     const body = jwt.split('.')[1];
     const jwtObj = JSON.parse(atob(body));
-
-    const now = (new Date()).getTime();
-    const issuedAt = new Date(jwtObj[jwtClaimKeys.issuedAt]).getTime();
-    
-    const lifetime = new Date(Date.UTC(jwtObj['exp'] as number)).getTime();
-    const utcNow = new Date(Date.UTC(now)).getTime();
-    
-    const expired = (issuedAt + lifetime) <= utcNow;
+    debugger
+    const now = new Date().getTime();
+    const expiresAt = new Date(jwtObj['exp']).getTime();
+    const expired = false;
     
     const userDto = {
         id: jwtObj[jwtClaimKeys.id],

@@ -28,9 +28,8 @@ public static class CustomExports
         sb.Append(Environment.NewLine);
         var xs = new List<(string Key, string Value)>()
         {
-            ("name", JwtRegisteredClaimNames.Sub),
-            ("issuedAt", JwtRegisteredClaimNames.Iat),
             ("id", AppStaticData.Auth.Jwt.UserId),
+            ("name", AppStaticData.Auth.Jwt.UserName),
             ("displayName", AppStaticData.Auth.Jwt.DisplayName),
             ("email", JwtRegisteredClaimNames.Email),
             ("isAdmin", AppStaticData.Auth.Jwt.IsAdmin),

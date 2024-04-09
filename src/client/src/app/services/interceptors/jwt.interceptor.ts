@@ -1,7 +1,6 @@
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
 import { Observable, tap } from "rxjs";
-import { SpinnerService } from "../spinner.service";
 import { UserService } from "../user.service";
 
 @Injectable({
@@ -15,8 +14,7 @@ export class JwtInterceptor implements HttpInterceptor {
         if(!jwt) {
             return next.handle(req);
         }
-
-        const headers = new HttpHeaders().set('Bearer', jwt);
+        const headers = req.headers.set('Authorization', `Bearer ${jwt}`);
         const reqClone = req.clone({ headers: headers });
 
         return next.handle(reqClone);

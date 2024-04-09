@@ -1,10 +1,11 @@
-import { Component, Input, inject } from '@angular/core';
-import { IAppUserDto } from '../../../../models/dtos/interfaces';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { IAppUserDto, IV1EditUser } from '../../../../models/dtos/interfaces';
 import { PermissionMapComponent } from "../permission-map/permission-map.component";
 import { UserPermission } from '../../../../models/components/UserPermission';
 import { tryMapUser } from '../../../../functions/user.functions';
 import { IPopup } from '../../../../models/components/IPopup';
 import { PopupService } from '../../../../services/popup.service';
+import { UserController } from '../../../../controllers/user.controller';
 
 @Component({
     selector: 'user-edit',
@@ -14,9 +15,11 @@ import { PopupService } from '../../../../services/popup.service';
     imports: [PermissionMapComponent]
 })
 export class UserEditComponent {
-  @Input({ required: true }) user: IAppUserDto | null = null;
+  @Input({ required: true }) user!: IAppUserDto;
+  @Output() onUserEdited = new EventEmitter<IAppUserDto>();
   
   private popupService = inject(PopupService);
+  private userController = inject(UserController);
 
   permissions: UserPermission[] = [];
 
@@ -31,6 +34,16 @@ export class UserEditComponent {
         return;
     }
 
-    // call edit user controller function
+    const dto: IV1EditUser = {
+      userId: this.user.id,
+      email: result.x.email,
+      isAdmin: result.x.isAdmin,
+      permissionsMap: result.x.permissionsMap
+    };
+
+    this.userController.editUser(dto)
+      .subscribe({
+        next: x => this.onUserEdited.emit(x)
+      });
   }
 }

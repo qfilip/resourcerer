@@ -4,16 +4,16 @@
             @if(currentUser.isAdmin) {
                 <button (click)="setRegisterComponent()" class="add-user">Add new user</button>
             }
-            <user-list [currentUser]="currentUser" (onUserEdit)="setEditComponent($event)"></user-list>
+            <user-list #userList [currentUser]="currentUser" (onUserEdit)="setEditComponent($event)"></user-list>
         }
     </section>
     <section>
         @switch (component$()) {
             @case ('edit') {
-                <user-edit [user]="selectedUser$()"></user-edit>
+                <user-edit (onUserEdited)="onUserEdited()" [user]="selectedUser$()!"></user-edit>
             }
             @case ('register') {
-                <register-user [companyId]="currentUser!.company.id"></register-user>
+                <register-user (onUserRegistered)="onUserRegistered()" [companyId]="currentUser!.company.id"></register-user>
             }
         }
     </section>

@@ -16,7 +16,7 @@ public sealed class AppIdentityService : IAppIdentityService<AppUser>
     public void Set(IEnumerable<Claim> claims)
     {
         var id = GetClaim<Guid>(claims, AppStaticData.Auth.Jwt.UserId, Guid.TryParse);
-        var name = GetClaim<string>(claims, JwtRegisteredClaimNames.Sub, Return);
+        var name = GetClaim<string>(claims, AppStaticData.Auth.Jwt.UserName, Return);
         var email = GetClaim<string>(claims, JwtRegisteredClaimNames.Email, Return);
         var isAdmin = GetClaim<bool>(claims, AppStaticData.Auth.Jwt.IsAdmin, bool.TryParse);
         var companyId = GetClaim<Guid>(claims, AppStaticData.Auth.Jwt.CompanyId, Guid.TryParse);

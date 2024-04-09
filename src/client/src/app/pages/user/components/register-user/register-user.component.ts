@@ -1,5 +1,5 @@
-import { Component, Input, inject } from '@angular/core';
-import { IV1RegisterUser } from '../../../../models/dtos/interfaces';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { IAppUserDto, IV1RegisterUser } from '../../../../models/dtos/interfaces';
 import { PopupService } from '../../../../services/popup.service';
 import { IPopup } from '../../../../models/components/IPopup';
 import { PermissionMapComponent } from "../permission-map/permission-map.component";
@@ -16,6 +16,7 @@ import { tryMapUser } from '../../../../functions/user.functions';
 })
 export class RegisterUserComponent {
     @Input({ required: true }) companyId!: string;
+    @Output() onUserRegistered = new EventEmitter<IAppUserDto>();
     
     private popupService = inject(PopupService);
     private userController = inject(UserController);
@@ -43,7 +44,10 @@ export class RegisterUserComponent {
         }
 
         this.userController.registerUser(dto).subscribe({
-            next: _ => this.popupService.success('User registered')
+            next: x => {
+                this.popupService.success('User registered');
+                this.onUserRegistered.emit(x);
+            }
         });
     }
 }

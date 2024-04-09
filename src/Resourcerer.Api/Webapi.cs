@@ -32,11 +32,11 @@ public class Webapi
             app.UseSwaggerUI();
         }
 
-
         app.UseHttpsRedirection();
 
         app.UseRouting();
         app.UseCors();
+
         app.UseAuthentication();
         app.UseAuthorization();
 

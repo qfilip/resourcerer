@@ -14,11 +14,11 @@ public static partial class DF
 
         var appUser = Fake<AppUser>(ctx, x =>
         {
-            x.Name = "shk";
+            x.Name = "sss";
             x.IsAdmin = true;
             x.Email = "a@a.com";
-            x.DisplayName = "Shaka";
-            x.PasswordHash = Resourcerer.Utilities.Cryptography.Hasher.GetSha256Hash("123");
+            x.DisplayName = "Snake Pliskin";
+            x.PasswordHash = Resourcerer.Utilities.Cryptography.Hasher.GetSha256Hash("111");
             x.Company = company;
             x.Permissions = permissions;
         });

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, ViewChild, inject, signal } from '@angular/core';
 import { UserListComponent } from "../components/user-list/user-list.component";
 import { Observable } from 'rxjs';
 import { IAppUserDto } from '../../../models/dtos/interfaces';
@@ -6,20 +6,20 @@ import { InMemoryCacheService } from '../../../services/inmemory.cache.service';
 import { UserService } from '../../../services/user.service';
 import { RegisterUserComponent } from '../components/register-user/register-user.component';
 import { UserEditComponent } from '../components/user-edit/user-edit.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'user-management',
     standalone: true,
     templateUrl: './user-management.page.html',
     styleUrl: './user-management.page.css',
-    imports: [UserListComponent, RegisterUserComponent, UserEditComponent]
+    imports: [CommonModule, UserListComponent, RegisterUserComponent, UserEditComponent]
 })
 export class UserManagementPage {
+  @ViewChild('userList') userList!: UserListComponent;
   private userService = inject(UserService);
-  private memoryCache = inject(InMemoryCacheService);
   
   component$ = signal<null | 'edit' | 'register'>(null);
-  companyUsers$: Observable<IAppUserDto[]> | null = null;
   currentUser: IAppUserDto | null = null;
   selectedUser$ = signal<IAppUserDto | null>(null);
 
@@ -28,7 +28,6 @@ export class UserManagementPage {
     if(!user) return;
     
     this.currentUser = user;
-    this.companyUsers$ = this.memoryCache.companyUsers.retrieve(user.company.id);
   }
 
   setRegisterComponent() {
@@ -38,5 +37,13 @@ export class UserManagementPage {
   setEditComponent(x: IAppUserDto) {
     this.selectedUser$.set(x);
     this.component$.set('edit');
+  }
+
+  onUserEdited() {
+    this.userList.refreshList();
+  }
+
+  onUserRegistered() {
+    this.userList.refreshList();
   }
 }

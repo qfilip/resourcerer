@@ -17,7 +17,9 @@ export class InMemoryCacheService {
     companyUsers = {
         store: (xs: IAppUserDto[]) => this.store<IAppUserDto[]>(this.keys.companyUsers, xs),
         retrieve: (companyId: string) => this.retrieve<IAppUserDto[]>(this.keys.companyUsers, this.userController.getAllCompanyUsers(companyId)),
-        clear: () => this._cache.delete(this.keys.companyUsers)
+        refresh: (companyId: string) =>
+            this.userController.getAllCompanyUsers(companyId)
+                .pipe(tap(xs => this.store<IAppUserDto[]>(this.keys.companyUsers, xs)))
     }
     
     protected store<T>(key: string, data: T) {

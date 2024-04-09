@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

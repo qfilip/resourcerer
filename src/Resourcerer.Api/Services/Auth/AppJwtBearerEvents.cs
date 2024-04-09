@@ -13,6 +13,18 @@ public class AppJwtBearerEvents : JwtBearerEvents
         _appIdentityService = appIdentityService;
     }
 
+    public override Task AuthenticationFailed(AuthenticationFailedContext context)
+    {
+        var t = context.Exception.Message;
+        return Task.CompletedTask;
+    }
+
+    public override Task MessageReceived(MessageReceivedContext context)
+    {
+        var t = context.Token;
+        return Task.CompletedTask;
+    }
+
     public override Task TokenValidated(TokenValidatedContext context)
     {
         if(context.Principal == null)

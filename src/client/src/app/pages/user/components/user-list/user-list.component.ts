@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { UserEditComponent } from "../user-edit/user-edit.component";
 import { DialogWrapperComponent } from "../../../../components/dialog-wrapper/dialog-wrapper.component";
 import { RegisterUserComponent } from "../register-user/register-user.component";
+import { UserController } from '../../../../controllers/user.controller';
 
 @Component({
     selector: 'user-list',
@@ -19,12 +20,15 @@ export class UserListComponent implements OnInit {
   @Input({ required: true }) currentUser!: IAppUserDto;
   @Output() onUserEdit = new EventEmitter<IAppUserDto>();
   
-  private userService = inject(UserService);
-  private memoryCache = inject(InMemoryCacheService);
-  
-  companyUsers$: Observable<IAppUserDto[]> | null = null;
+  private cacheService = inject(InMemoryCacheService);
+
+  users$: Observable<IAppUserDto[]> | null = null;
 
   ngOnInit() {
-    this.companyUsers$ = this.memoryCache.companyUsers.retrieve(this.currentUser.company.id);
+    this.users$ = this.cacheService.companyUsers.retrieve(this.currentUser.company.id);
+  }
+
+  refreshList() {
+    this.users$ = this.cacheService.companyUsers.refresh(this.currentUser.company.id);
   }
 }

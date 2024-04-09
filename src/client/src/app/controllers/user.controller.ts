@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BaseController } from "./base.controller";
-import { IAppUserDto, IV1RegisterUser } from "../models/dtos/interfaces";
+import { IAppUserDto, IV1EditUser, IV1RegisterUser } from "../models/dtos/interfaces";
 import { HttpParams } from "@angular/common/http";
 import { tap } from "rxjs";
 
@@ -24,6 +24,11 @@ export class UserController extends BaseController {
 
     registerUser(dto: IV1RegisterUser) {
         const url = this.url + '/register-user';
-        return this.http.post<IAppUserDto[]>(url, dto);
+        return this.http.post<IAppUserDto>(url, dto);
+    }
+
+    editUser(dto: IV1EditUser) {
+        const url = this.url + '/edit';
+        return this.http.post<IAppUserDto>(url, dto);
     }
 }
