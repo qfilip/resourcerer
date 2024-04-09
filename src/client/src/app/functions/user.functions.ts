@@ -1,3 +1,5 @@
+import { Result } from "../models/components/Result";
+import { UserPermission } from "../models/components/UserPermission";
 import { jwtClaimKeys, permissionsMap } from "../models/dtos/constants";
 import { IAppUserDto } from "../models/dtos/interfaces";
 
@@ -38,4 +40,41 @@ export function parseJwt(jwt: string) {
         dto: userDto,
         expired: expired
     };
+}
+
+export function tryMapUser(name: string, email: string, isAdmin: boolean, permissions: UserPermission[]): Result<IAppUserDto> {
+    const validate = (x: string, error: string) =>
+        !x || x.length === 0 ? error : '';
+
+    const errors = [
+        validate(name, 'Name cannot be empty'),
+        validate(email, 'Email cannot be empty'),
+    ]
+    .filter(x => x.length > 0);
+
+    const result: Result<IAppUserDto> = {
+        x: {
+            name: name,
+            email: email,
+            isAdmin: isAdmin,
+            permissionsMap: mapPermissions(permissions)
+        } as IAppUserDto,
+        errors: errors
+    }
+
+    return result;
+}
+
+function mapPermissions(xs: UserPermission[]) {
+    const permissionMap: { [key: string]: string[] } = {};
+    
+    xs.forEach(x => {
+        const ps = x.permissions
+            .filter(p => p.hasPermission)
+            .map(p => p.name);
+
+        permissionMap[x.section] = ps;
+    });
+
+    return permissionMap;
 }

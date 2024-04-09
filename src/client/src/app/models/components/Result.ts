@@ -1,0 +1,1 @@
+export type Result<T> = { x: T, errors: string[] }

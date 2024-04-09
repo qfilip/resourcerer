@@ -5,6 +5,7 @@ import { IPopup } from '../../../../models/components/IPopup';
 import { PermissionMapComponent } from "../permission-map/permission-map.component";
 import { UserPermission } from '../../../../models/components/UserPermission';
 import { UserController } from '../../../../controllers/user.controller';
+import { tryMapUser } from '../../../../functions/user.functions';
 
 @Component({
     selector: 'register-user',
@@ -19,44 +20,30 @@ export class RegisterUserComponent {
     private popupService = inject(PopupService);
     private userController = inject(UserController);
     
-    private permissionMap: { [key: string]: string[] } = {}; 
+    userPermissions: UserPermission[] = [];
 
-    mapPermissions(xs: UserPermission[]) {
-        xs.forEach(x => {
-            const ps = x.permissions
-                .filter(p => p.hasPermission)
-                .map(p => p.name);
+    registerUser(ev: Event, name: string, email: string, isAdmin: boolean) {
+        ev.preventDefault();
 
-            this.permissionMap[x.section] = ps;
-        });
-    }
+        const result = tryMapUser(name, email, isAdmin, this.userPermissions);
 
-    registerUser(name: string, email: string, isAdmin: boolean) {
-        const validate = (x: string, error: string) =>
-            !x || x.length === 0 ? error : null;
-
-        const errors = [
-            validate(name, 'Name cannot be empty'),
-            validate(email, 'Email cannot be empty'),
-        ]
-        .filter(x => x !== null)
-        .map(x => ({ message: x, type: 'warning' } as IPopup));
-
-        if(errors.length > 0) {
+        if(result.errors.length > 0) {
+            const errors = result.errors.map(x => ({ message: x, type: 'warning' } as IPopup));
             this.popupService.many(errors);
+            
             return;
         }
 
         const dto: IV1RegisterUser = {
             companyId: this.companyId,
-            email: email,
-            username: name,
-            isAdmin: isAdmin,
-            permissionsMap: this.permissionMap
+            email: result.x.email,
+            username: result.x.name,
+            isAdmin: result.x.isAdmin,
+            permissionsMap: result.x.permissionsMap
         }
 
         this.userController.registerUser(dto).subscribe({
-            next: x => this.popupService.success('User registered')
+            next: _ => this.popupService.success('User registered')
         });
     }
 }
