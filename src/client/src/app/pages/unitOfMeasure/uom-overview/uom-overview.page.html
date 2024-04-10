@@ -1,22 +1,21 @@
-<article>
-    <section>
-        <button (click)="setEditor('Create')" class="create">Create Unit of Measure</button>
-        @if(appUser$(); as appUser) {
-            <uom-list [appUser]="appUser"></uom-list>
-        }
-        <button (click)="setEditor('Edit')" class="create">Edit Unit of Measure</button>
-    </section>
-    <section>
-        @if(editor$().visible) {
-            @switch (editor$().mode)
-            {
-                @case ('Create') {
-                    <uom-editor title="Create"></uom-editor>
-                }
-                @case ('Edit') {
-                    <uom-editor title="Create" [uom]="editor$().data"></uom-editor>
+@if(appUser$(); as appUser) {
+    <article>
+        <section>
+            <button (click)="setEditor('Create')" class="create">Create Unit of Measure</button>
+            <uom-list [appUser]="appUser" [unitsOfMeasure$]="unitsOfMeasure$"></uom-list>
+        </section>
+        <section>
+            @if(editor$().visible) {
+                @switch (editor$().mode)
+                {
+                    @case ('Create') {
+                        <uom-editor (onSubmitted)="create($event)" title="Create"></uom-editor>
+                    }
+                    @case ('Edit') {
+                        <uom-editor (onSubmitted)="edit($event)" title="Create" [uom]="editor$().data"></uom-editor>
+                    }
                 }
             }
-        }
-    </section>
-</article>
+        </section>
+    </article>
+}

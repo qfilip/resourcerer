@@ -1,35 +1,32 @@
-@if(unitsOfMeasure$ | async; as uoms) {
-    @if(uoms.length > 0) {
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Symbol</th>
-                    @if(appUser!.isAdmin) {
-                        <th>Actions</th>
-                    } 
-                </tr>
-            </thead>
-        <tbody>
-            @for(uom of uoms; track $index) {
-                <tr>
-                    <td>{{ uom.name }}</td>
-                    <td>{{ uom.symbol }}</td>
-                    @if(appUser!.isAdmin) {
-                        <td class="action-buttons">
-                            <i (click)="onEdit.emit(uom)" class="ra ra-quill-ink"></i>
-                            <i (click)="openDeleteDialog(uom)" class="ra ra-skull"></i>
-                        </td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>  
-    }
-    @else {
-        <p>
-            No units of measure were found
-        </p>
-    }
-    
+@if(unitsOfMeasure$(); as unitsOfMeasure) {
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Symbol</th>
+                @if(appUser!.isAdmin) {
+                    <th>Actions</th>
+                } 
+            </tr>
+        </thead>
+    <tbody>
+        @for(uom of unitsOfMeasure; track $index) {
+            <tr>
+                <td>{{ uom.name }}</td>
+                <td>{{ uom.symbol }}</td>
+                @if(appUser!.isAdmin) {
+                    <td class="action-buttons">
+                        <i (click)="onEdit.emit(uom)" class="ra ra-quill-ink"></i>
+                        <i (click)="openDeleteDialog(uom)" class="ra ra-skull"></i>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>  
+}
+@else {
+    <p>
+        No units of measure were found
+    </p>
 }

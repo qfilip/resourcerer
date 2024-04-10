@@ -13,7 +13,7 @@ import { PopupService } from '../../../../services/popup.service';
 export class UomEditorComponent {
   @Input() uom: IUnitOfMeasureDto = { name: '', symbol: '' } as IUnitOfMeasureDto;
   @Input({ required: true }) title!: 'Create' | 'Edit';
-  @Output() onEdited = new EventEmitter<IUnitOfMeasureDto>();
+  @Output() onSubmitted = new EventEmitter<IUnitOfMeasureDto>();
 
   private popupService = inject(PopupService);
 
@@ -35,6 +35,6 @@ export class UomEditorComponent {
       return;
     }
 
-    this.onEdited.emit({...this.uom, name: name, symbol: symbol } as IUnitOfMeasureDto);
+    this.onSubmitted.emit({...this.uom, name: name, symbol: symbol } as IUnitOfMeasureDto);
   }
 }

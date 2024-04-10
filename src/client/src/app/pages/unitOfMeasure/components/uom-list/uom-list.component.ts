@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Signal, inject } from '@angular/core';
 import { IAppUserDto, IUnitOfMeasureDto } from '../../../../models/dtos/interfaces';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -13,19 +13,12 @@ import { UnitOfMeasureController } from '../../../../controllers/unitOfMeasure.c
   templateUrl: './uom-list.component.html',
   styleUrl: './uom-list.component.css'
 })
-export class UomListComponent implements OnInit {
+export class UomListComponent {
   @Input({ required: true }) appUser!: IAppUserDto;
+  @Input({ required: true }) unitsOfMeasure$!: Signal<IUnitOfMeasureDto[] | null>;
   @Output() onEdit = new EventEmitter<IUnitOfMeasureDto>();
   
   private dialogService = inject(DialogService);
-  private uomController = inject(UnitOfMeasureController);
-  
-  unitsOfMeasure$: Observable<IUnitOfMeasureDto[]> | null = null;
-
-  ngOnInit() {
-    this.unitsOfMeasure$ = this.uomController
-      .getCompanyUnitsOfMeasure(this.appUser.company.id);
-  }
 
   openDeleteDialog(uom: IUnitOfMeasureDto) {
     this.dialogService.open({
