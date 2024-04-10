@@ -18,7 +18,7 @@ html, body {
     font-size: 1.2rem;
 }
 
-form > fieldset > button {
+form > button {
     width: 100%;
 }
 

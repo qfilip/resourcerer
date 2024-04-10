@@ -1,1 +1,8 @@
-export type HomepageNav = 'Companies' | 'Company' | 'Items' | 'Events' | 'Users' | 'Account';
+export type HomepageNav =
+    | 'Companies'
+    | 'Company'
+    | 'Units of Measure'
+    | 'Items'
+    | 'Events'
+    | 'Users'
+    | 'Account';

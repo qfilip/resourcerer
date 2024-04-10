@@ -1,10 +1,13 @@
 ﻿namespace Resourcerer.Dtos.Entity;
 
-public class UnitOfMeasureDto : IDto
+public class UnitOfMeasureDto : EntityDto<UnitOfMeasureDto>
 {
     public string? Name { get; set; }
     public string? Symbol { get; set; }
 
-    public List<ExcerptDto> Excerpts { get; set; } = new();
-    public List<ItemDto> Elements { get; set; } = new();
+    // relational
+    public Guid CompanyId { get; set; }
+    public CompanyDto? Company { get; set; }
+
+    public ItemDto[] Items { get; set; } = Array.Empty<ItemDto>();
 }

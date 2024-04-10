@@ -8,6 +8,4 @@ public class V1CreateElementItem : IDto
     public Guid CategoryId { get; set; }
     public Guid UnitOfMeasureId { get; set; }
     public double UnitPrice { get; set; }
-
-
 }

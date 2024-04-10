@@ -4,24 +4,11 @@
         <hr />
         <nav>
             <ul>
-                <li [ngClass]="{'selected-icon': page$() === 'Company' }">
-                    <i (click)="page$.set('Company')" class="ra ra-castle-emblem"></i>
-                </li>
-                <li [ngClass]="{'selected-icon': page$() === 'Companies' }">
-                    <i (click)="page$.set('Companies')" class="ra ra-hydra"></i>
-                </li>
-                <li [ngClass]="{'selected-icon': page$() === 'Items' }">
-                    <i (click)="page$.set('Items')" class="ra ra-bone-knife"></i>
-                </li>
-                <li [ngClass]="{'selected-icon': page$() === 'Events' }">
-                    <i (click)="page$.set('Events')" class="ra ra-lightning"></i>
-                </li>
-                <li [ngClass]="{'selected-icon': page$() === 'Users' }">
-                    <i (click)="page$.set('Users')" class="ra ra-queen-crown"></i>
-                </li>
-                <li [ngClass]="{'selected-icon': page$() === 'Account' }">
-                    <i (click)="page$.set('Account')" class="ra ra-aware"></i>
-                </li>
+                @for(i of iconList; track $index) {
+                    <li [ngClass]="{'selected-icon': page$() === i.pageName}">
+                        <i (click)="page$.set(i.pageName)" class="{{i.icon}}"></i>
+                    </li>
+                }
             </ul>
         </nav>
     </header>
@@ -32,6 +19,9 @@
             }
             @case ('Companies') {
                 <div>Companies</div>
+            }
+            @case ('Units of Measure') {
+                <uom-overview></uom-overview>
             }
             @case ('Items') {
                 <div>Items</div>

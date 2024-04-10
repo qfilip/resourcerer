@@ -1,0 +1,13 @@
+article {
+    display: flex;
+    justify-content: flex-start;
+}
+
+section {
+    width: 30%;
+    margin-right: var(--rem-xs);
+}
+
+.create {
+    width: 100%;
+}

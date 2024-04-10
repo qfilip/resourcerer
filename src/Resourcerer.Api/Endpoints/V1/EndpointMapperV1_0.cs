@@ -61,7 +61,9 @@ public class EndpointMapperV1_0
     private static void MapUnitsOfMeasure(WebApplication app)
     {
         var g = EndpointMapper.GetGroup(app, Version, "Units Of Measure");
+        
         CreateUnitOfMeasureEndpoint.MapToGroup(g);
+        GetCompanyUnitsOfMeasureEndpoint.MapToGroup(g);
     }
 
     private static void MapUsers(WebApplication app)

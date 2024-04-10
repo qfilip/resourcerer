@@ -1,0 +1,22 @@
+<article>
+    <section>
+        <button (click)="setEditor('Create')" class="create">Create Unit of Measure</button>
+        @if(appUser$(); as appUser) {
+            <uom-list [appUser]="appUser"></uom-list>
+        }
+        <button (click)="setEditor('Edit')" class="create">Edit Unit of Measure</button>
+    </section>
+    <section>
+        @if(editor$().visible) {
+            @switch (editor$().mode)
+            {
+                @case ('Create') {
+                    <uom-editor title="Create"></uom-editor>
+                }
+                @case ('Edit') {
+                    <uom-editor title="Create" [uom]="editor$().data"></uom-editor>
+                }
+            }
+        }
+    </section>
+</article>
