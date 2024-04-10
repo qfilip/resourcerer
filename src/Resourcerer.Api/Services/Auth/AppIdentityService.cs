@@ -1,6 +1,5 @@
 ﻿using Resourcerer.Application.Abstractions.Services;
 using Resourcerer.DataAccess.Entities;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace Resourcerer.Api.Services.Auth;
@@ -15,11 +14,12 @@ public sealed class AppIdentityService : IAppIdentityService<AppUser>
     public void Set(AppUser identity) => _user = identity;
     public void Set(IEnumerable<Claim> claims)
     {
-        var id = GetClaim<Guid>(claims, AppStaticData.Auth.Jwt.UserId, Guid.TryParse);
-        var name = GetClaim<string>(claims, AppStaticData.Auth.Jwt.UserName, Return);
-        var email = GetClaim<string>(claims, JwtRegisteredClaimNames.Email, Return);
-        var isAdmin = GetClaim<bool>(claims, AppStaticData.Auth.Jwt.IsAdmin, bool.TryParse);
-        var companyId = GetClaim<Guid>(claims, AppStaticData.Auth.Jwt.CompanyId, Guid.TryParse);
+        
+        var id = GetClaim<Guid>(claims, IAppIdentityService<AppUser>.ClaimId, Guid.TryParse);
+        var name = GetClaim<string>(claims, IAppIdentityService<AppUser>.ClaimUsername, Return);
+        var email = GetClaim<string>(claims, IAppIdentityService<AppUser>.ClaimEmail, Return);
+        var isAdmin = GetClaim<bool>(claims, IAppIdentityService<AppUser>.ClaimIsAdmin, bool.TryParse);
+        var companyId = GetClaim<Guid>(claims, IAppIdentityService<AppUser>.ClaimCompanyId, Guid.TryParse);
 
         _user = new AppUser
         {

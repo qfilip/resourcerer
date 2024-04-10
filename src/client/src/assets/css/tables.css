@@ -1,0 +1,22 @@
+table {
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+table th {
+    color: var(--c-white);
+    background-color: var(--c-black);
+    text-align: center;
+}
+
+tbody tr:nth-of-type(even) {
+    background-color: var(--c-white-d1);
+}
+
+tr > th {
+    font-size: var(--rem-s);
+}
+
+tr > td {
+    font-size: var(--rem-s);
+}

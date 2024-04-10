@@ -1,17 +1,17 @@
 @if(options) {
 <article>
-    <div>
+    <section>
         <header>
             {{ options.header }}
         </header>
-        <section>
+        <main>
             {{ options.message }}
-        </section>
+        </main>
         <footer>
             @for(btn of options.buttons; track $index) {
                 <button (click)="onButtonClicked(btn.action)">{{ btn.label }}</button>
             }
         </footer>
-    </div>
+    </section>
 </article>
 }

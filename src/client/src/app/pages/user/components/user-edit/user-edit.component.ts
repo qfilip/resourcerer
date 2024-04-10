@@ -27,6 +27,7 @@ export class UserEditComponent {
     ev.preventDefault();
 
     const result = tryMapUser(name, email, isAdmin, this.permissions);
+    
     if(result.errors.length > 0) {
         const errors = result.errors.map(x => ({ message: x, type: 'warning' } as IPopup));
         this.popupService.many(errors);
@@ -43,7 +44,10 @@ export class UserEditComponent {
 
     this.userController.editUser(dto)
       .subscribe({
-        next: x => this.onUserEdited.emit(x)
+        next: x => {
+          this.popupService.success('User edited');
+          this.onUserEdited.emit(x);
+        }
       });
   }
 }

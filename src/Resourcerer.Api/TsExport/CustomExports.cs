@@ -1,4 +1,6 @@
-﻿using Resourcerer.Dtos;
+﻿using Resourcerer.Application.Abstractions.Services;
+using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
@@ -28,13 +30,13 @@ public static class CustomExports
         sb.Append(Environment.NewLine);
         var xs = new List<(string Key, string Value)>()
         {
-            ("id", AppStaticData.Auth.Jwt.UserId),
-            ("name", AppStaticData.Auth.Jwt.UserName),
-            ("displayName", AppStaticData.Auth.Jwt.DisplayName),
-            ("email", JwtRegisteredClaimNames.Email),
-            ("isAdmin", AppStaticData.Auth.Jwt.IsAdmin),
-            ("companyId", AppStaticData.Auth.Jwt.CompanyId),
-            ("companyName", AppStaticData.Auth.Jwt.CompanyName)
+            ("id", IAppIdentityService<AppUser>.ClaimId),
+            ("name", IAppIdentityService<AppUser>.ClaimUsername),
+            ("displayName", IAppIdentityService<AppUser>.ClaimUsername),
+            ("email", IAppIdentityService<AppUser>.ClaimEmail),
+            ("isAdmin", IAppIdentityService<AppUser>.ClaimIsAdmin),
+            ("companyId", IAppIdentityService<AppUser>.ClaimCompanyId),
+            ("companyName", IAppIdentityService<AppUser>.ClaimCompanyName)
         };
 
         xs.ForEach(x =>

@@ -4,11 +4,12 @@ article {
 }
 
 article > section {
-    width: 25%;
+    width: 30%;
     margin-right: var(--rem-xs);
 
 }
 
 .add-user {
     width: 100%;
+    margin-bottom: var(--rem);
 }

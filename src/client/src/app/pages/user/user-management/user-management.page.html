@@ -2,7 +2,7 @@
     <section>
         @if(currentUser) {
             @if(currentUser.isAdmin) {
-                <button (click)="setRegisterComponent()" class="add-user">Add new user</button>
+                <button (click)="setRegisterComponent()" class="add-user">Register new user</button>
             }
             <user-list #userList [currentUser]="currentUser" (onUserEdit)="setEditComponent($event)"></user-list>
         }

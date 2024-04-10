@@ -1,6 +1,6 @@
-<fieldset>
-    <legend>Register</legend>
-    <form (submit)="registerUser($event, username.value, email.value, admin.checked)">
+<form (submit)="registerUser($event, username.value, email.value, admin.checked)">
+    <fieldset>
+        <legend>Register</legend>
         <div>
             <label>
                 <span>Username</span>
@@ -26,6 +26,6 @@
             <permission-map (onMapChanged)="userPermissions = $event" [editable]="true" [user]="null"></permission-map>
         </div>
         
-        <button type="submit">Ok</button>
-    </form>
-</fieldset>
+        <button type="submit">Submit</button>
+    </fieldset>
+</form>

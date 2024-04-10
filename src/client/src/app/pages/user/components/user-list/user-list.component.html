@@ -3,6 +3,7 @@
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Display Name</th>
                 <th>Admin</th>
                 <th>Company</th>
                 @if(currentUser!.isAdmin) {
@@ -14,11 +15,13 @@
         @for(user of users; track $index) {
             <tr>
                 <td>{{ user.name }}</td>
+                <td>{{ user.displayName }}</td>
                 <td>{{ user.isAdmin }}</td>
                 <td>{{ user.company.name }}</td>
                 @if(currentUser!.isAdmin) {
-                    <td>
-                        <button (click)="onUserEdit.emit(user)">Edit</button>
+                    <td class="action-buttons">
+                        <i (click)="onUserEdit.emit(user)" class="ra ra-quill-ink"></i>
+                        <i (click)="openDeleteUserDialog(user)" class="ra ra-skull"></i>
                     </td>
                 }
             </tr>

@@ -1,4 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Resourcerer.Application.Abstractions.Services;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,13 +14,13 @@ public class JwtService
     {
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Email, dto.Email!.ToString()),
-            new Claim(AppStaticData.Auth.Jwt.UserName, dto.Name!),
-            new Claim(AppStaticData.Auth.Jwt.UserId, dto.Id.ToString()),
-            new Claim(AppStaticData.Auth.Jwt.DisplayName, dto.DisplayName!.ToString()),
-            new Claim(AppStaticData.Auth.Jwt.IsAdmin, dto.IsAdmin.ToString()),
-            new Claim(AppStaticData.Auth.Jwt.CompanyId, dto.Company!.Id.ToString()),
-            new Claim(AppStaticData.Auth.Jwt.CompanyName, dto.Company!.Name!.ToString())
+            new Claim(IAppIdentityService<AppUser>.ClaimId, dto.Id.ToString()),
+            new Claim(IAppIdentityService<AppUser>.ClaimUsername, dto.Name!),
+            new Claim(IAppIdentityService<AppUser>.ClaimEmail, dto.Email!.ToString()),
+            new Claim(IAppIdentityService<AppUser>.ClaimDisplayName, dto.DisplayName!.ToString()),
+            new Claim(IAppIdentityService<AppUser>.ClaimIsAdmin, dto.IsAdmin.ToString()),
+            new Claim(IAppIdentityService<AppUser>.ClaimCompanyId, dto.Company!.Id.ToString()),
+            new Claim(IAppIdentityService<AppUser>.ClaimCompanyName, dto.Company!.Name!.ToString())
         };
 
         claims.AddRange(Permissions.GetClaimsFromPermissionsMap(dto.PermissionsMap!));
