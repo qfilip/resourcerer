@@ -10,14 +10,18 @@ public class JwtService
 {
     public static string GenerateToken(AppUserDto dto)
     {
-        var claims = Permissions.GetClaimsFromPermissionsMap(dto.PermissionsMap!);
-        claims.Add(new Claim(JwtRegisteredClaimNames.Email, dto.Email!.ToString()));
-        claims.Add(new Claim(AppStaticData.Auth.Jwt.UserName, dto.Name!));
-        claims.Add(new Claim(AppStaticData.Auth.Jwt.UserId, dto.Id.ToString()));
-        claims.Add(new Claim(AppStaticData.Auth.Jwt.DisplayName, dto.DisplayName!.ToString()));
-        claims.Add(new Claim(AppStaticData.Auth.Jwt.IsAdmin, dto.IsAdmin.ToString()));
-        claims.Add(new Claim(AppStaticData.Auth.Jwt.CompanyId, dto.Company!.Id.ToString()));
-        claims.Add(new Claim(AppStaticData.Auth.Jwt.CompanyName, dto.Company!.Name!.ToString()));
+        var claims = new List<Claim>
+        {
+            new Claim(JwtRegisteredClaimNames.Email, dto.Email!.ToString()),
+            new Claim(AppStaticData.Auth.Jwt.UserName, dto.Name!),
+            new Claim(AppStaticData.Auth.Jwt.UserId, dto.Id.ToString()),
+            new Claim(AppStaticData.Auth.Jwt.DisplayName, dto.DisplayName!.ToString()),
+            new Claim(AppStaticData.Auth.Jwt.IsAdmin, dto.IsAdmin.ToString()),
+            new Claim(AppStaticData.Auth.Jwt.CompanyId, dto.Company!.Id.ToString()),
+            new Claim(AppStaticData.Auth.Jwt.CompanyName, dto.Company!.Name!.ToString())
+        };
+
+        claims.AddRange(Permissions.GetClaimsFromPermissionsMap(dto.PermissionsMap!));
 
         return WriteToken(claims);
     }
