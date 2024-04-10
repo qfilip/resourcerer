@@ -10,11 +10,6 @@ h2 {
     padding: 0rem var(--rem-xs);
 }
 
-.page-container {
-    display: flex;
-    justify-content: space-between;
-}
-
 ul {
     display: flex;
     padding: var(--rem-xs);
@@ -22,7 +17,7 @@ ul {
     list-style: none;
 }
 
-article {
+.sub-page {
     flex-grow: 20;
     padding: 0rem var(--rem-xs);
 }

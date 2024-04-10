@@ -1,5 +1,5 @@
 @if(appUser$(); as appUser) {
-    <article>
+    <article class="page">
         <section>
             <button (click)="setEditor('Create')" class="create">Create Unit of Measure</button>
             <uom-list [appUser]="appUser" [unitsOfMeasure$]="unitsOfMeasure$"></uom-list>

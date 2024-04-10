@@ -18,6 +18,18 @@ html, body {
     font-size: 1.2rem;
 }
 
+/* page convention */
+article.page {
+    display: flex;
+    justify-content: flex-start;
+}
+
+article.page > section {
+    width: 30%;
+    margin-right: var(--rem-xs);
+}
+
+/* form convention */
 form > button {
     width: 100%;
 }
