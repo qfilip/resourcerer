@@ -13,6 +13,10 @@ public class InstanceOrderedEvent : AppDbEntity
     public double UnitPrice { get; set; }
     public int TotalDiscountPercent { get; set; }
     public DateTime? ExpectedDeliveryDate { get; set; }
+    
+    // relational
+    public Guid InstanceId { get; set; }
+    public virtual Instance? Instance { get; set; }
 
     // json
     [NotMapped]
@@ -49,7 +53,4 @@ public class InstanceOrderedEvent : AppDbEntity
             DeliveredEvent = JsonSerializer.Deserialize<InstanceOrderDeliveredEvent>(value);
         }
     }
-    // relational
-    public Guid InstanceId { get; set; }
-    public virtual Instance? Instance { get; set; }
 }

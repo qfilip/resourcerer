@@ -1,19 +1,25 @@
-﻿using Resourcerer.DataAccess.Entities;
+﻿namespace Resourcerer.Dtos.Entity;
 
-namespace Resourcerer.Dtos.Entity;
-
-public class ItemDto : IDto
+public class ItemDto : EntityDto<ItemDto>
 {
     public string? Name { get; set; }
+    public double ProductionPrice { get; set; }
+    public double ProductionTimeSeconds { get; set; }
+    public double? ExpirationTimeSeconds { get; set; }
 
-    public Guid? CategoryId { get; set; }
-    public CategoryDto? Category { get; set; }
+    // relational
+
+    public Guid CategoryId { get; set; }
+    public virtual CategoryDto? Category { get; set; }
 
     public Guid UnitOfMeasureId { get; set; }
-    public UnitOfMeasureDto? UnitOfMeasure { get; set; }
+    public virtual UnitOfMeasureDto? UnitOfMeasure { get; set; }
 
-    public List<ExcerptDto>? Excerpts { get; set; }
-    public List<Price>? Prices { get; set; }
+    public ExcerptDto[] ElementExcerpts { get; set; } = Array.Empty<ExcerptDto>();
+    public ExcerptDto[] CompositeExcerpts { get; set; } = Array.Empty<ExcerptDto>();
+    public PriceDto[] Prices { get; set; } = Array.Empty<PriceDto>();
+    public InstanceDto[] Instances { get; set; } = Array.Empty<InstanceDto>();
+    public ItemProductionOrderDto[] ProductionOrders { get; set; } = Array.Empty<ItemProductionOrderDto>();
 }
 
 

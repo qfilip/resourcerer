@@ -12,8 +12,11 @@ public class InstanceDto : EntityDto<InstanceDto>
     public CompanyDto? OwnerCompany { get; set; }
 
     public Guid? SourceInstanceId { get; set; }
-    public virtual InstanceDto? SourceInstance { get; set; }
+    public InstanceDto? SourceInstance { get; set; }
 
     public InstanceDto[] DerivedInstances { get; set; } = Array.Empty<InstanceDto>();
 
+    public InstanceOrderedEventDto[] OrderedEvents { get; set; } = Array.Empty<InstanceOrderedEventDto>();
+    public InstanceReservedEventDto[] ReservedEvents { get; set; } = Array.Empty<InstanceReservedEventDto>();
+    public InstanceDiscardedEventDto[] DiscardedEvents { get; set; } = Array.Empty<InstanceDiscardedEventDto>();
 }

@@ -1,11 +1,12 @@
 ﻿namespace Resourcerer.Dtos.Entity;
 
-public class ExcerptDto : IDto
+public class ExcerptDto : EntityDto<ExcerptDto>
 {
-    public Guid CompositeId { get; set; }
-    public Guid ElementId { get; set; }
-
-    public ItemDto? Element { get; set; }
-
     public double Quantity { get; set; }
+    
+    public Guid CompositeId { get; set; }
+    public ItemDto? Composite{ get; set; }
+
+    public Guid ElementId { get; set; }
+    public ItemDto? Element { get; set; }
 }

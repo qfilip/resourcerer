@@ -11,6 +11,7 @@ public class AppUserDto : EntityDto<AppUserDto>
     public Dictionary<string, string[]>? PermissionsMap { get; set; }
 
     // relational
+    public Guid CompanyId { get; set; }
     public CompanyDto? Company { get; set; }
 
     public static AppUserDto MapForJwt(AppUser entity)

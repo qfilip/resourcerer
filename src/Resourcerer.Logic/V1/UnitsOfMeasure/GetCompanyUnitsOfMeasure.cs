@@ -24,7 +24,7 @@ public static class GetCompanyUnitsOfMeasure
         {
             var result = await _dbContext.UnitsOfMeasure
                 .Where(u => u.CompanyId == request)
-                .Select(UnitsOfMeasure.DefaultDtoProjection)
+                .Select(Utilities.Query.UnitsOfMeasure.DefaultDtoProjection)
                 .AsNoTracking()
                 .ToArrayAsync();
 

@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="AuthService\**" />
     <Compile Remove="Entities\JsonEntities\Item\**" />
+    <EmbeddedResource Remove="AuthService\**" />
     <EmbeddedResource Remove="Entities\JsonEntities\Item\**" />
+    <None Remove="AuthService\**" />
     <None Remove="Entities\JsonEntities\Item\**" />
   </ItemGroup>
 
@@ -26,10 +29,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Resourcerer.Application\Resourcerer.Application.csproj" />
 		<ProjectReference Include="..\Resourcerer.Utilities\Resourcerer.Utilities.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="AuthService\" />
 	</ItemGroup>
 
 </Project>

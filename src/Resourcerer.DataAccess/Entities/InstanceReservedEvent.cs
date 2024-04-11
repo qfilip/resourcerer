@@ -10,6 +10,10 @@ public class InstanceReservedEvent : AppDbEntity
     public double Quantity { get; set; }
     public string? Reason { get; set; }
 
+    // relational
+    public Guid InstanceId { get; set; }
+    public virtual Instance? Instance { get; set; }
+
     // json
     [NotMapped]
     public InstanceReserveCancelledEvent? CancelledEvent { get; set; }
@@ -34,8 +38,4 @@ public class InstanceReservedEvent : AppDbEntity
             UsedEvent = JsonSerializer.Deserialize<InstanceReserveUsedEvent>(value);
         }
     }
-
-    // relational
-    public Guid InstanceId { get; set; }
-    public virtual Instance? Instance { get; set; }
 }
