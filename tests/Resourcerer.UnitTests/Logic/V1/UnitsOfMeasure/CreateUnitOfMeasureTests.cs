@@ -41,7 +41,7 @@ public class CreateUnitOfMeasureTests : TestsBase
     public void CompanyNotFound__NotFound()
     {
         // arrange
-        var company = DF.Fake<Company>(_ctx);
+        DF.Fake<Company>(_ctx);
         var dto = new V1CreateUnitOfMeasure
         {
             CompanyId = Guid.NewGuid(),

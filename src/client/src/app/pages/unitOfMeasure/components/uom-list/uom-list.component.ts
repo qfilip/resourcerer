@@ -17,6 +17,7 @@ export class UomListComponent {
   @Input({ required: true }) appUser!: IAppUserDto;
   @Input({ required: true }) unitsOfMeasure$!: Signal<IUnitOfMeasureDto[] | null>;
   @Output() onEdit = new EventEmitter<IUnitOfMeasureDto>();
+  @Output() onDelete = new EventEmitter<IUnitOfMeasureDto>();
   
   private dialogService = inject(DialogService);
 
@@ -27,11 +28,10 @@ export class UomListComponent {
       buttons: [
         {
           label: 'Yes',
-          action: () => {}
+          action: () => this.onDelete.emit(uom)
         },
         {
-          label: 'Cancel',
-          action: () => this.dialogService.close()
+          label: 'Cancel'
         }
       ]
     } as IDialogOptions)

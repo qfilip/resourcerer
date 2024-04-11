@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BaseController } from "./base.controller";
-import { IUnitOfMeasureDto, IV1CompanyOverview, IV1CreateUnitOfMeasure } from "../models/dtos/interfaces";
+import { IUnitOfMeasureDto, IV1CompanyOverview, IV1CreateUnitOfMeasure, IV1EditUnitOfMeasure } from "../models/dtos/interfaces";
 import { HttpParams } from "@angular/common/http";
 
 @Injectable({
@@ -16,7 +16,12 @@ export class UnitOfMeasureController extends BaseController {
         });
     }
 
-    createUnitOfMeasure(dto: IV1CreateUnitOfMeasure) {
-        return this.http.post<number>(this.url, dto);
+    create(dto: IV1CreateUnitOfMeasure) {
+        return this.http.post<IUnitOfMeasureDto>(this.url, dto);
+    }
+
+    edit(dto: IV1EditUnitOfMeasure) {
+        const url = this.url + '/edit';
+        return this.http.post<IUnitOfMeasureDto>(url, dto);
     }
 }

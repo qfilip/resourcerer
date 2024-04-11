@@ -5,13 +5,14 @@ using Resourcerer.Application.Abstractions.Handlers;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
 
 namespace Resourcerer.Logic.V1;
 
 public class CreateUnitOfMeasure
 {
-    public class Handler : IAppHandler<V1CreateUnitOfMeasure, Unit>
+    public class Handler : IAppHandler<V1CreateUnitOfMeasure, UnitOfMeasureDto>
     {
         private readonly AppDbContext _appDbContext;
         private readonly Validator _validator;
@@ -22,7 +23,7 @@ public class CreateUnitOfMeasure
             _validator = validator;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(V1CreateUnitOfMeasure request)
+        public async Task<HandlerResult<UnitOfMeasureDto>> Handle(V1CreateUnitOfMeasure request)
         {
             var company = await _appDbContext.Companies
                 .Include(x => x.UnitsOfMeasure)
@@ -41,7 +42,7 @@ public class CreateUnitOfMeasure
 
             if (company == null)
             {
-                return HandlerResult<Unit>.NotFound("Company not found");
+                return HandlerResult<UnitOfMeasureDto>.NotFound("Company not found");
             }
 
             var errors = new List<string>();
@@ -53,10 +54,11 @@ public class CreateUnitOfMeasure
                 errors.Add("Unit of measure with the same symbol already exists");
 
             if(errors.Count > 0)
-                return HandlerResult<Unit>.Rejected(errors);
+                return HandlerResult<UnitOfMeasureDto>.Rejected(errors);
 
             var entity = new UnitOfMeasure
             {
+                Id = Guid.NewGuid(),
                 CompanyId = request.CompanyId,
                 Name = request.Name,
                 Symbol = request.Symbol
@@ -65,7 +67,7 @@ public class CreateUnitOfMeasure
             _appDbContext.UnitsOfMeasure.Add(entity);
             await _appDbContext.SaveChangesAsync();
 
-            return HandlerResult<Unit>.Ok(new Unit());
+            return HandlerResult<UnitOfMeasureDto>.Ok(Mapper.Map(entity));
         }
 
         public ValidationResult Validate(V1CreateUnitOfMeasure request) => _validator.Validate(request);

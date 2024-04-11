@@ -2,7 +2,7 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { UomListComponent } from "../components/uom-list/uom-list.component";
 import { UserService } from '../../../services/user.service';
 import { UomEditorComponent } from "../components/uom-editor/uom-editor.component";
-import { IUnitOfMeasureDto, IV1CreateUnitOfMeasure } from '../../../models/dtos/interfaces';
+import { IUnitOfMeasureDto, IV1CreateUnitOfMeasure, IV1EditUnitOfMeasure } from '../../../models/dtos/interfaces';
 import { UnitOfMeasureController } from '../../../controllers/unitOfMeasure.controller';
 import { Observable, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -65,18 +65,32 @@ export class UomOverviewPage implements OnInit {
       symbol: uom.symbol
     };
 
-    this.uomController.createUnitOfMeasure(dto)
-      .pipe(
-        switchMap(_ => this.uomController.getCompanyUnitsOfMeasure(companyId)))
-      .subscribe({
-        next: xs => {
-          this.setEditor(null);
-          this.unitsOfMeasure$.set(xs);
-        }
-      })
+    const apiCall = () => this.uomController.create(dto);
+    this.refreshList(apiCall);
   }
 
   edit(uom: IUnitOfMeasureDto) {
+    const dto: IV1EditUnitOfMeasure = {
+      id: uom.id,
+      name: uom.name,
+      symbol: uom.symbol
+    };
+
+    const apiCall = () => this.uomController.edit(dto);
+    this.refreshList(apiCall);
+  }
+
+  private refreshList(apiCall: () => Observable<IUnitOfMeasureDto>) {
+    const companyId = this.appUser$()!.company.id;
     
+    apiCall()
+    .pipe(
+      switchMap(_ => this.uomController.getCompanyUnitsOfMeasure(companyId)))
+    .subscribe({
+      next: xs => {
+        this.setEditor(null);
+        this.unitsOfMeasure$.set(xs);
+      }
+    });
   }
 }
