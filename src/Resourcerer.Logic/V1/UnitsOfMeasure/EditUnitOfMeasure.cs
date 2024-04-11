@@ -7,7 +7,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
 
-namespace Resourcerer.Logic.V1.UnitsOfMeasure;
+namespace Resourcerer.Logic.V1;
 
 public static class EditUnitOfMeasure
 {
@@ -35,12 +35,9 @@ public static class EditUnitOfMeasure
 
             await _dbContext.SaveChangesAsync();
 
-            var dto = new UnitOfMeasureDto
-            {
+            var dto = Mapper.Map(entity);
 
-            };
-
-            throw new NotImplementedException();
+            return HandlerResult<UnitOfMeasureDto>.Ok(dto);
         }
 
         public ValidationResult Validate(V1EditUnitOfMeasure request) => _validator.Validate(request);
