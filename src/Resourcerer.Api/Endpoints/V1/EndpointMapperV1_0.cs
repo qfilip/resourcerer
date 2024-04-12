@@ -46,16 +46,19 @@ public class EndpointMapperV1_0
     {
         var g = EndpointMapper.GetGroup(app, Version, "Items");
 
-        ChangeItemPriceEndpoint.MapToGroup(g);
-        CreateCompositeItemEndpoint.MapToGroup(g);
-        CreateElementItemEndpoint.MapToGroup(g);
-        GetItemsStatisticsEndpoint.MapToGroup(g);
-
         // production
         CreateItemProductionOrderEndpoint.MapToGroup(g);
         CancelItemProductionOrderEndpoint.MapToGroup(g);
         FinishItemProductionOrderEndpoint.MapToGroup(g);
         StartItemProductionEndpoint.MapToGroup(g);
+        
+        // regular
+        ChangeItemPriceEndpoint.MapToGroup(g);
+        CreateCompositeItemEndpoint.MapToGroup(g);
+        CreateElementItemEndpoint.MapToGroup(g);
+        GetCompanyItemsEndpoint.MapToGroup(g);
+        GetItemsStatisticsEndpoint.MapToGroup(g);
+
     }
 
     private static void MapUnitsOfMeasure(WebApplication app)

@@ -1,0 +1,33 @@
+@if(items$(); as items) {
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                @if(appUser!.isAdmin) {
+                    <th>Actions</th>
+                } 
+            </tr>
+        </thead>
+    <tbody>
+        @for(item of items; track $index) {
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.prices[0] }}</td>
+                @if(appUser!.isAdmin) {
+                    <td class="action-buttons">
+                        <i (click)="onSelect.emit(item)" class="ra ra-rune-stone"></i>
+                        <i (click)="onEdit.emit(item)" class="ra ra-quill-ink"></i>
+                        <i (click)="openDeleteDialog(item)" class="ra ra-skull"></i>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>  
+}
+@else {
+    <p>
+        No units of measure were found
+    </p>
+}
