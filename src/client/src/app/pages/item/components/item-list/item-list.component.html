@@ -13,7 +13,7 @@
         @for(item of items; track $index) {
             <tr>
                 <td>{{ item.name }}</td>
-                <td>{{ item.prices[0] }}</td>
+                <td>{{ item.prices[0].unitValue }}</td>
                 @if(appUser!.isAdmin) {
                     <td class="action-buttons">
                         <i (click)="onSelect.emit(item)" class="ra ra-rune-stone"></i>

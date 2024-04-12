@@ -21,11 +21,13 @@ public class GetCompanyItemsTests : TestsBase
             DF.Fake<Item>(_ctx, item =>
             {
                 item.Category = category;
-                DF.Fake<Price>(_ctx, p =>
-                {
-                    p.Item = item;
-                    p.EntityStatus = i == 0 ? eEntityStatus.Active : eEntityStatus.Deleted;
-                });
+
+                for (var j = 0; j < 10; j++)
+                    DF.Fake<Price>(_ctx, p =>
+                    {
+                        p.Item = item;
+                        p.EntityStatus = j == 0 ? eEntityStatus.Active : eEntityStatus.Deleted;
+                    });
             });
 
         _ctx.SaveChanges();

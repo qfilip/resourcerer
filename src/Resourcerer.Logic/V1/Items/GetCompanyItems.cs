@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Abstractions.Handlers;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Logic.Utilities;
 
@@ -23,7 +24,10 @@ public static class GetCompanyItems
         {
             var entities = await _dbContext.Items
                 .Where(x => x.Category!.CompanyId == request)
-                .Include(x => x.Prices)
+                .Select(Utilities.Query.Items.Expand(x => new Item
+                {
+                    Prices = x.Prices
+                }))
                 .ToArrayAsync();
 
             var result = entities
