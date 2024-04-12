@@ -24,4 +24,10 @@ export class UnitOfMeasureController extends BaseController {
         const url = this.url + '/edit';
         return this.http.post<IUnitOfMeasureDto>(url, dto);
     }
+
+    delete(uom: IUnitOfMeasureDto) {
+        return this.http.delete<IUnitOfMeasureDto>(this.url, {
+            params: new HttpParams().set('id', uom.id)
+        });
+    }
 }

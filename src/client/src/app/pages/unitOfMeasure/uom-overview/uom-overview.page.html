@@ -2,7 +2,7 @@
     <article class="page">
         <section>
             <button (click)="setEditor('Create')" class="create">Create Unit of Measure</button>
-            <uom-list [appUser]="appUser" [unitsOfMeasure$]="unitsOfMeasure$" (onEdit)="setEditor('Edit', $event)" ></uom-list>
+            <uom-list [appUser]="appUser" [unitsOfMeasure$]="unitsOfMeasure$" (onEdit)="setEditor('Edit', $event)" (onDelete)="delete($event)" ></uom-list>
         </section>
         <section>
             @if(editor$().visible) {

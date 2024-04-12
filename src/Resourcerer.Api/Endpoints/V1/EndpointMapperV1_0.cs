@@ -63,6 +63,7 @@ public class EndpointMapperV1_0
         var g = EndpointMapper.GetGroup(app, Version, "Units Of Measure");
         
         CreateUnitOfMeasureEndpoint.MapToGroup(g);
+        DeleteUnitOfMeasureEndpoint.MapToGroup(g);
         EditUnitOfMeasureEndpoint.MapToGroup(g);
         GetCompanyUnitsOfMeasureEndpoint.MapToGroup(g);
     }

@@ -14,7 +14,8 @@ public sealed class AppIdentityService : IAppIdentityService<AppUser>
     public void Set(AppUser identity) => _user = identity;
     public void Set(IEnumerable<Claim> claims)
     {
-        
+        if (!AppStaticData.Auth.Enabled) return;
+
         var id = GetClaim<Guid>(claims, IAppIdentityService<AppUser>.ClaimId, Guid.TryParse);
         var name = GetClaim<string>(claims, IAppIdentityService<AppUser>.ClaimUsername, Return);
         var email = GetClaim<string>(claims, IAppIdentityService<AppUser>.ClaimEmail, Return);

@@ -80,6 +80,11 @@ export class UomOverviewPage implements OnInit {
     this.refreshList(apiCall);
   }
 
+  delete(uom: IUnitOfMeasureDto) {
+    const apiCall = () => this.uomController.delete(uom);
+    this.refreshList(apiCall);
+  }
+
   private refreshList(apiCall: () => Observable<IUnitOfMeasureDto>) {
     const companyId = this.appUser$()!.company.id;
     
