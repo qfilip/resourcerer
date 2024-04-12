@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output, Signal } from '@angular/core';
 import { IAppUserDto, IItemDto } from '../../../../models/dtos/interfaces';
 
 @Component({
-  selector: 'app-item-list',
+  selector: 'item-list',
   standalone: true,
   imports: [],
   templateUrl: './item-list.component.html',

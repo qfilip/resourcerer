@@ -6,13 +6,14 @@ import { CommonModule } from '@angular/common';
 import { CompanyOverviewPage } from "../../pages/company/overview/overview.page";
 import { UserManagementPage } from "../../pages/user/user-management/user-management.page";
 import { UomOverviewPage } from "../../pages/unitOfMeasure/uom-overview/uom-overview.page";
+import { ItemsOverviewPage } from '../../pages/item/items-overview/items-overview.page';
 
 @Component({
     selector: 'app-home',
     standalone: true,
     templateUrl: './home.component.html',
     styleUrl: './home.component.css',
-    imports: [CommonModule, AccountPage, UserListComponent, CompanyOverviewPage, UserManagementPage, UomOverviewPage]
+    imports: [CommonModule, ItemsOverviewPage, AccountPage, UserListComponent, CompanyOverviewPage, UserManagementPage, UomOverviewPage]
 })
 export class HomeComponent {
   page$ = signal<HomepageNav>('Company');
