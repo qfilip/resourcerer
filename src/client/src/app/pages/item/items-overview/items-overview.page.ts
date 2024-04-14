@@ -18,6 +18,7 @@ export class ItemsOverviewPage implements OnInit {
 
   appUser$ = computed(() => this.userService.user());
   items$ = signal<IItemDto[] | null>(null);
+  component$ = signal<null | 'Create' | 'Edit'>(null);
 
   ngOnInit() {
     const user = this.userService.user();
@@ -28,5 +29,9 @@ export class ItemsOverviewPage implements OnInit {
       .subscribe({
         next: xs => this.items$.set(xs)
       });
+  }
+
+  onSelected(item: IItemDto) {
+    console.log(item);
   }
 }

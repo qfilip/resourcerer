@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Input, Output, Signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, Signal, inject } from '@angular/core';
 import { IAppUserDto, IItemDto } from '../../../../models/dtos/interfaces';
+import { DialogService } from '../../../../services/dialog.service';
+import { IDialogOptions } from '../../../../models/components/IDialogOptions';
 
 @Component({
   selector: 'item-list',
@@ -16,7 +18,21 @@ export class ItemListComponent {
   @Output() onEdit = new EventEmitter<IItemDto>();
   @Output() onDelete = new EventEmitter<IItemDto>();
 
-  openDeleteDialog(item: IItemDto) {
+  private dialogService = inject(DialogService)
 
+  openDeleteDialog(item: IItemDto) {
+    this.dialogService.open({
+      header: 'Delete Item',
+      message: `Are you sure you wish to delete item: ${item.name}?`,
+      buttons: [
+        {
+          label: 'Yes',
+          action: () => this.onDelete.emit(item)
+        },
+        {
+          label: 'Cancel'
+        }
+      ]
+    } as IDialogOptions);
   }
 }
