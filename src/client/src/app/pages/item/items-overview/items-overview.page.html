@@ -1,6 +1,6 @@
 <article class="page">
     <section>
-        <button class="add-button">Create Item</button>
+        <button (click)="setComponent('Create')" class="add-button">Create Item</button>
         @if(appUser$(); as appUser) {
             <item-list
                 [appUser]="appUser"
@@ -13,7 +13,7 @@
         @if(component$(); as c) {
             @switch(c) {
                 @case('Create') {
-                    
+                    <create-item></create-item>
                 }
                 @case('Edit') {
                     

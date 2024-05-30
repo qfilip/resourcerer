@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-create-item',
+  selector: 'create-item',
   standalone: true,
   imports: [],
   templateUrl: './create-item.component.html',
