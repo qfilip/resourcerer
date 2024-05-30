@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Abstractions.Handlers;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Utilities;
@@ -17,12 +16,12 @@ public static class GetCompanyOverview
     public class Handler : IAppHandler<Guid, V1CompanyOverview>
     {
         private readonly AppDbContext _dbContext;
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
 
-        public Handler(AppDbContext dbContext, IMapper mapper)
+        public Handler(AppDbContext dbContext)
         {
             _dbContext = dbContext;
-            _mapper = mapper;
+            //_mapper = mapper;
         }
 
         public async Task<HandlerResult<V1CompanyOverview>> Handle(Guid request)
@@ -62,16 +61,15 @@ public static class GetCompanyOverview
 
             var categories = Categories.MapTree(allCategories);
 
-            var dto = _mapper.Map<CategoryDto>(new Category());
             var categoryDtos = categories
-                .Select(_mapper.Map<CategoryDto>)
+                .Select(Mapper.Map)
                 .ToArray();
             
             foreach (var category in categoryDtos)
             {
                 category.Items = items
                     .Where(x => x.CategoryId == category.Id)
-                    .Select(_mapper.Map<ItemDto>)
+                    .Select(Mapper.Map)
                     .ToArray();
             }
 
