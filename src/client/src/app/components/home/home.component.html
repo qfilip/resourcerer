@@ -4,37 +4,17 @@
         <hr />
         <nav>
             <ul>
-                @for(i of iconList; track $index) {
-                    <li [ngClass]="{'selected-icon': page$() === i.pageName}">
-                        <i (click)="page$.set(i.pageName)" class="{{i.icon}}"></i>
+                @for(i of pages; track $index) {
+                    <li (click)="page$.set(i.pageName)" [ngClass]="{'selected-icon': page$() === i.pageName}">
+                        <a routerLink="{{i.route}}">
+                            <i class="{{i.icon}}"></i>
+                        </a>
                     </li>
                 }
             </ul>
         </nav>
     </header>
     <section class="sub-page">
-        @switch (page$()) {
-            @case ('Company') {
-                <company-overview></company-overview>
-            }
-            @case ('Companies') {
-                <div>Companies</div>
-            }
-            @case ('Units of Measure') {
-                <uom-overview></uom-overview>
-            }
-            @case ('Items') {
-                <items-overview></items-overview>
-            }
-            @case ('Events') {
-                <div>Events</div>
-            }
-            @case ('Users') {
-                <user-management></user-management>
-            }
-            @case ('Account') {
-                <account-page></account-page>
-            }
-        }
+        <router-outlet></router-outlet>
     </section>
 </section>
