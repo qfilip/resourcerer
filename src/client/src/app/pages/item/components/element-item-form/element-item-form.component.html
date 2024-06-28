@@ -1,0 +1,40 @@
+<form (submit)="onSubmit($event)">
+    <label>
+        <span>Name:</span>
+        <input [(ngModel)]="elementItem.name" [ngModelOptions]="{standalone: true}" type="text" />
+    </label>
+
+    <label>
+        <span>Preparation Time (seconds):</span>
+        <input [(ngModel)]="elementItem.productionTimeSeconds" [ngModelOptions]="{standalone: true}" min="0" />
+    </label>
+
+    <label>
+        <span>Expiration Time (seconds):</span>
+        <input [(ngModel)]="elementItem.expirationTimeSeconds" [ngModelOptions]="{standalone: true}" min="0" />
+    </label>
+
+    <label>
+        <span>Unit price:</span>
+        <input [(ngModel)]="unitPrice" [ngModelOptions]="{standalone: true}" min="0" />
+    </label>
+
+    <label>
+        <span>Category:</span>
+        <input type="text" />
+    </label>
+
+    <label>
+        <span>Unit of Measure:</span>
+        <input type="text" />
+    </label>
+
+    @switch (formType) {
+        @case ("create") {
+            <button>Create</button>
+        }
+        @case ("edit") {
+            <button>Edit</button>
+        }
+    }
+</form>
