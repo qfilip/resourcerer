@@ -56,6 +56,7 @@ public class EndpointMapperV1_0
         ChangeItemPriceEndpoint.MapToGroup(g);
         CreateCompositeItemEndpoint.MapToGroup(g);
         CreateElementItemEndpoint.MapToGroup(g);
+        CreateElementItemLoadFormEndpoint.MapToGroup(g);
         GetCompanyItemsEndpoint.MapToGroup(g);
         GetItemsStatisticsEndpoint.MapToGroup(g);
 

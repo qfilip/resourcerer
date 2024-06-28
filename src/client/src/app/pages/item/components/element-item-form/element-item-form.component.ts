@@ -1,6 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ICategoryDto, IItemDto, IUnitOfMeasureDto } from '../../../../models/dtos/interfaces';
+import { ItemController } from '../../../../controllers/item.controller';
+import { UserService } from '../../../../services/user.service';
 
 @Component({
   selector: 'element-item-form',
@@ -12,13 +14,16 @@ import { ICategoryDto, IItemDto, IUnitOfMeasureDto } from '../../../../models/dt
 export class ElementItemFormComponent implements OnInit {
   @Input({ required: true }) formType!: 'create' | 'edit';
 
+  itemController = inject(ItemController);
+  userService = inject(UserService);
+
   elementItem = {
     name: '',
     productionTimeSeconds: 0,
-    expirationTimeSeconds: 0,
-    category: {} as ICategoryDto,
-    unitOfMeasure: {} as IUnitOfMeasureDto
+    expirationTimeSeconds: 0
   } as IItemDto;
+  categories: ICategoryDto[] = [];
+  unitsOfMeasure: IUnitOfMeasureDto[] = [];
   unitPrice = 0;
 
   ngOnInit() {
@@ -28,7 +33,14 @@ export class ElementItemFormComponent implements OnInit {
   }
 
   loadForCreate() {
-    console.log('creating');
+    const companyId = this.userService.user()!.companyId;
+    this.itemController.getCreateElementItemFormData(companyId)
+      .subscribe({
+        next: (x) => {
+          this.categories = [... x.categories];
+          this.unitsOfMeasure = [... x.unitsOfMeasure];
+        }
+      });
   }
 
   loadForEdit() {
