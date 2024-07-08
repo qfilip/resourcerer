@@ -1,21 +1,21 @@
-<form [formGroup]="f" (submit)="onSubmit($event)">
+<form [formGroup]="form" (submit)="onSubmit($event)">
     <label>
         <div class="input">
             <span>Name:</span>
             <input formControlName="name" />
         </div>
-        @if(f.controls.name.errors && f.controls.name.dirty) {
+        @if(form.controls.name.errors && form.controls.name.dirty) {
             <div class="error">Name must have at least 2 characters</div>
         }
     </label>
 
     <label>
         <div class="input">
-            <span>Production Time (seconds):</span>
-            <input formControlName="name" />
+            <span>Production Price:</span>
+            <input formControlName="productionPrice" />
         </div>
-        @if(f.controls.productionTimeSeconds.errors && f.controls.productionTimeSeconds.dirty) {
-            <div class="error">Production time cannot be negative</div>
+        @if(form.controls.productionPrice.errors && form.controls.productionPrice.dirty) {
+            <div class="error">Production price cannot be negative</div>
         }
     </label>
 
@@ -24,7 +24,7 @@
             <span>Production Time (seconds):</span>
             <input formControlName="productionTimeSeconds" />
         </div>
-        @if(f.controls.productionTimeSeconds.errors && f.controls.productionTimeSeconds.dirty) {
+        @if(form.controls.productionTimeSeconds.errors && form.controls.productionTimeSeconds.dirty) {
             <div class="error">Production time cannot be negative</div>
         }
     </label>
@@ -36,12 +36,12 @@
         </div>
     </label>
 
-    <label [class.disabled] = "!f.controls.canExpire.value">
+    <label [class.disabled] = "!form.controls.canExpire.value">
         <div class="input">
             <span>Expiration Time (seconds):</span>
-            <input formControlName="expirationTimeSeconds" />
+            <input formControlName="expirationTimeSeconds" [readOnly]="!form.controls.canExpire" />
         </div>
-        @if(f.controls.expirationTimeSeconds.errors && f.controls.expirationTimeSeconds.dirty) {
+        @if(form.controls.expirationTimeSeconds.errors && form.controls.expirationTimeSeconds.dirty) {
             <div class="error">Expiration time cannot be negative</div>
         }
     </label>
@@ -51,20 +51,10 @@
             <span>Unit Price:</span>
             <input formControlName="unitPrice" />
         </div>
-        @if(f.controls.unitPrice.errors && f.controls.unitPrice.dirty) {
+        @if(form.controls.unitPrice.errors && form.controls.unitPrice.dirty) {
             <div class="error">
                 Unit price cannot be negative
             </div>
-        }
-    </label>
-
-    <label>
-        <div class="input">
-            <span>Production Time (seconds):</span>
-            <input formControlName="name" />
-        </div>
-        @if(f.controls.productionTimeSeconds.errors && f.controls.productionTimeSeconds.dirty) {
-            <div class="error">Production time cannot be negative</div>
         }
     </label>
 
@@ -77,7 +67,7 @@
                 }
             </select>
         </div>
-        @if(f.controls.categoryId.errors && f.controls.categoryId.dirty) {
+        @if(form.controls.categoryId.errors && form.controls.categoryId.dirty) {
             <div class="error">
                 Category is required
             </div>
@@ -93,7 +83,7 @@
                 }
             </select>
         </div>
-        @if(f.controls.unitOfMeasureId.errors && f.controls.unitOfMeasureId.dirty) {
+        @if(form.controls.unitOfMeasureId.errors && form.controls.unitOfMeasureId.dirty) {
             <div class="error">
                 Unit of Measure is required
             </div>
@@ -102,9 +92,9 @@
 
     @switch (formType) {
         @case ("create") {
-            <button (click)="createItem()">Create</button>
+            <button (click)="onSubmit($event)">Create</button>
         } @case ("edit") {
-            <button>Edit</button>
+            <button (click)="onSubmit($event)">Edit</button>
         }
     }
 </form>

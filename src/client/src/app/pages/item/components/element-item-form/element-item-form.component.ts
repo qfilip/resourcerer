@@ -19,13 +19,13 @@ import { PopupService } from '../../../../services/popup.service';
 })
 export class ElementItemFormComponent implements OnInit {
     @Input({ required: true }) formType!: 'create' | 'edit';
-
     itemController = inject(ItemController);
     userService = inject(UserService);
     popupService = inject(PopupService);
 
-    f = new FormGroup({
+    form = new FormGroup({
         name: new FormControl('', [Validators.required, Validators.minLength(2)]),
+        productionPrice: new FormControl(0, [Validators.required, Validators.min(0)]),
         productionTimeSeconds: new FormControl(null, [Validators.required, Validators.min(0)]),
         canExpire: new FormControl(false),
         expirationTimeSeconds:  new FormControl(null, [Validators.min(0)]),
@@ -58,11 +58,27 @@ export class ElementItemFormComponent implements OnInit {
 
     onSubmit(ev: Event) {
         ev.preventDefault();
-        console.log(this.f.value.name);
-        console.log(this.f.value.categoryId);
+        if(!this.form.valid) {
+            return;
+        }
+
+        if(this.formType === 'create') {
+            this.createItem();
+        }
+        else {
+
+        }
     }
 
     createItem() {
-        // this.form
+        const dto: IV1CreateElementItem = {
+            name: this.form.controls.name.value!,
+            productionPrice: this.form.controls.productionPrice.value!,
+            productionTimeSeconds: this.form.controls.productionTimeSeconds.value!,
+            expirationTimeSeconds: this.form.controls.expirationTimeSeconds.value ?? undefined,
+            unitPrice: this.form.controls.unitPrice.value!,
+            categoryId: this.form.controls.categoryId.value!,
+            unitOfMeasureId: this.form.controls.unitOfMeasureId.value!
+        }
     }
 }
