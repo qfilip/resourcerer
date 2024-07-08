@@ -60,7 +60,7 @@ public static class CreateElementItem
             var item = new Item
             {
                 Id = Guid.NewGuid(),
-                ProductionTimeSeconds = request.PreparationTimeSeconds,
+                ProductionTimeSeconds = request.ProductionTimeSeconds,
                 ExpirationTimeSeconds = request.ExpirationTimeSeconds,
                 Name = request.Name,
                 CategoryId = request.CategoryId,
@@ -92,8 +92,8 @@ public static class CreateElementItem
                 .NotEmpty().WithMessage("Element name cannot be empty")
                 .Length(min: 3, max: 50).WithMessage("Element name must be between 3 and 50 characters long");
 
-            RuleFor(x => x.PreparationTimeSeconds)
-                .LessThan(0).WithMessage("PreparationTimeSeconds cannot be negative");
+            RuleFor(x => x.ProductionTimeSeconds)
+                .LessThan(0).WithMessage("ProductionTimeSeconds cannot be negative");
 
             RuleFor(x => x.ExpirationTimeSeconds)
                 .Must(x =>

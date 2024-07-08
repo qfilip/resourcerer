@@ -15,8 +15,14 @@ public static class Exporter
     {
         conf
             .WithPublicProperties(i => i.CamelCase())
-            .WithProperties(i => i.PropertyType == typeof(DateTime) || i.PropertyType == (typeof(DateTime?)), i => i.Type("Date"))
             .WithProperties(i => i.PropertyType == typeof(Guid) || i.PropertyType == (typeof(Guid?)), i => i.Type("string"))
+            .WithProperties(i => i.PropertyType == typeof(Guid?), i => { i.Type("string"); i.ForceNullable(); })
+
+            .WithProperties(i => i.PropertyType == typeof(DateTime) || i.PropertyType == (typeof(DateTime?)), i => i.Type("Date"))
+            .WithProperties(i => i.PropertyType == typeof(DateTime?), i => { i.Type("Date"); i.ForceNullable(); })
+            
+            .WithProperties(i => i.PropertyType == typeof(double?), i => { i.Type("number"); i.ForceNullable(); })
+            
             .WithProperties(i => i.PropertyType == typeof(Dictionary<Guid, double>), i => i.Type("{ [key:string]: number }"))
             .WithProperties(i => i.PropertyType == typeof(Dictionary<Guid, int>), i => i.Type("{ [key:string]: number }"));
         

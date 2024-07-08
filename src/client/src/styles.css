@@ -34,10 +34,21 @@ form > button {
     width: 100%;
 }
 
-label {
+label > div.input {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+label > div.error {
+    color: var(--c-red);
+    text-align: center;
+    min-height: var(--rem-s);
+    font-size: var(--rem-s);
+}
+
+label.disabled > * {
+    color: var(--c-white-d3);
 }
 
 input[readonly] {
