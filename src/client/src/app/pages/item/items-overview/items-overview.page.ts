@@ -4,7 +4,7 @@ import { ItemListComponent } from '../components/item-list/item-list.component';
 import { IItemDto } from '../../../models/dtos/interfaces';
 import { UserService } from '../../../services/user.service';
 import { ItemController } from '../../../controllers/item.controller';
-import { CreateItemComponent } from "../components/create-item/create-item.component";
+import { CreateItemComponent } from "../components/item-form/item-form.component";
 
 @Component({
     selector: 'items-overview',
@@ -19,9 +19,21 @@ export class ItemsOverviewPage implements OnInit {
 
   appUser$ = computed(() => this.userService.user());
   items$ = signal<IItemDto[] | null>(null);
-  component$ = signal<null | 'Create' | 'Edit'>(null);
+  component$ = signal<null | 'create' | 'edit'>(null);
 
   ngOnInit() {
+    this.loadItems();
+  }
+
+  setComponent(x: null | 'create' | 'edit') {
+    this.component$.set(x);
+  }
+
+  onSelected(item: IItemDto) {
+    console.log(item);
+  }
+
+  loadItems() {
     const user = this.userService.user();
     if(!user) return;
 
@@ -30,13 +42,5 @@ export class ItemsOverviewPage implements OnInit {
       .subscribe({
         next: xs => this.items$.set(xs)
       });
-  }
-
-  setComponent(x: null | 'Create' | 'Edit') {
-    this.component$.set(x);
-  }
-
-  onSelected(item: IItemDto) {
-    console.log(item);
   }
 }

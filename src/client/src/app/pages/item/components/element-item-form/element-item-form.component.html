@@ -4,7 +4,7 @@
             <span>Name:</span>
             <input formControlName="name" />
         </div>
-        @if(form.controls.name.errors && form.controls.name.dirty) {
+        @if(formSubmitted && form.controls.name.invalid && form.controls.name.dirty) {
             <div class="error">Name must have at least 2 characters</div>
         }
     </label>
@@ -14,7 +14,7 @@
             <span>Production Price:</span>
             <input formControlName="productionPrice" />
         </div>
-        @if(form.controls.productionPrice.errors && form.controls.productionPrice.dirty) {
+        @if(formSubmitted && form.controls.productionPrice.invalid) {
             <div class="error">Production price cannot be negative</div>
         }
     </label>
@@ -24,7 +24,7 @@
             <span>Production Time (seconds):</span>
             <input formControlName="productionTimeSeconds" />
         </div>
-        @if(form.controls.productionTimeSeconds.errors && form.controls.productionTimeSeconds.dirty) {
+        @if(formSubmitted && form.controls.productionTimeSeconds.invalid) {
             <div class="error">Production time cannot be negative</div>
         }
     </label>
@@ -39,9 +39,9 @@
     <label [class.disabled] = "!form.controls.canExpire.value">
         <div class="input">
             <span>Expiration Time (seconds):</span>
-            <input formControlName="expirationTimeSeconds" [readOnly]="!form.controls.canExpire" />
+            <input formControlName="expirationTimeSeconds" [readOnly]="!form.controls.canExpire.value" />
         </div>
-        @if(form.controls.expirationTimeSeconds.errors && form.controls.expirationTimeSeconds.dirty) {
+        @if(formSubmitted && form.controls.expirationTimeSeconds.invalid) {
             <div class="error">Expiration time cannot be negative</div>
         }
     </label>
@@ -51,7 +51,7 @@
             <span>Unit Price:</span>
             <input formControlName="unitPrice" />
         </div>
-        @if(form.controls.unitPrice.errors && form.controls.unitPrice.dirty) {
+        @if(formSubmitted && form.controls.unitPrice.invalid) {
             <div class="error">
                 Unit price cannot be negative
             </div>
@@ -67,7 +67,7 @@
                 }
             </select>
         </div>
-        @if(form.controls.categoryId.errors && form.controls.categoryId.dirty) {
+        @if(formSubmitted && form.controls.categoryId.invalid) {
             <div class="error">
                 Category is required
             </div>
@@ -77,24 +77,18 @@
     <label>
         <div class="input">
             <span>Unit of Measure:</span>
-            <select formControlName="unitOfMeasure">
+            <select formControlName="unitOfMeasureId">
                 @for(x of formData.unitsOfMeasure; track $index) {
                     <option [ngValue]="x.id">{{ x.name }}</option>
                 }
             </select>
         </div>
-        @if(form.controls.unitOfMeasureId.errors && form.controls.unitOfMeasureId.dirty) {
+        @if(formSubmitted && form.controls.unitOfMeasureId.invalid) {
             <div class="error">
                 Unit of Measure is required
             </div>
         }
     </label>
 
-    @switch (formType) {
-        @case ("create") {
-            <button (click)="onSubmit($event)">Create</button>
-        } @case ("edit") {
-            <button (click)="onSubmit($event)">Edit</button>
-        }
-    }
+    <button (click)="onSubmit($event)">Submit</button>
 </form>

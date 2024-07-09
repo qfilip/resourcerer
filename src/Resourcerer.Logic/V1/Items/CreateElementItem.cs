@@ -93,7 +93,7 @@ public static class CreateElementItem
                 .Length(min: 3, max: 50).WithMessage("Element name must be between 3 and 50 characters long");
 
             RuleFor(x => x.ProductionTimeSeconds)
-                .LessThan(0).WithMessage("ProductionTimeSeconds cannot be negative");
+                .GreaterThanOrEqualTo(0).WithMessage("ProductionTimeSeconds cannot be negative");
 
             RuleFor(x => x.ExpirationTimeSeconds)
                 .Must(x =>
@@ -109,7 +109,7 @@ public static class CreateElementItem
                 .NotEmpty().WithMessage("Element's unit of measure cannot be empty");
 
             RuleFor(x => x.UnitPrice)
-                .GreaterThan(0).WithMessage("Element's price must be greater than 0");
+                .GreaterThanOrEqualTo(0).WithMessage("Element's price must be greater than 0");
         }
     }
 }

@@ -1,9 +1,6 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
-    ICategoryDto,
-    IItemDto,
-    IUnitOfMeasureDto,
     IV1CreateElementItem,
     IV1CreateElementItemFormDataDto,
 } from '../../../../models/dtos/interfaces';
@@ -19,20 +16,21 @@ import { PopupService } from '../../../../services/popup.service';
 })
 export class ElementItemFormComponent implements OnInit {
     @Input({ required: true }) formType!: 'create' | 'edit';
+    @Output() onSubmitted = new EventEmitter();
     itemController = inject(ItemController);
     userService = inject(UserService);
-    popupService = inject(PopupService);
 
     form = new FormGroup({
-        name: new FormControl('', [Validators.required, Validators.minLength(2)]),
+        name: new FormControl('', [Validators.required, Validators.minLength(3)]),
         productionPrice: new FormControl(0, [Validators.required, Validators.min(0)]),
-        productionTimeSeconds: new FormControl(null, [Validators.required, Validators.min(0)]),
+        productionTimeSeconds: new FormControl(0, [Validators.required, Validators.min(0)]),
         canExpire: new FormControl(false),
         expirationTimeSeconds:  new FormControl(null, [Validators.min(0)]),
         unitPrice: new FormControl(0, [Validators.required, Validators.min(0)]),
         categoryId: new FormControl(null, [Validators.required]),
         unitOfMeasureId: new FormControl(null, [Validators.required])
     });
+    formSubmitted = false;
 
     formData: IV1CreateElementItemFormDataDto = {
         companyId: '',
@@ -53,11 +51,13 @@ export class ElementItemFormComponent implements OnInit {
 
     loadForEdit() {
         console.log('editing');
-        this.f.controls.name.errors
+        this.form.controls.name.errors;
     }
 
     onSubmit(ev: Event) {
         ev.preventDefault();
+        this.formSubmitted = true;
+
         if(!this.form.valid) {
             return;
         }
@@ -80,5 +80,10 @@ export class ElementItemFormComponent implements OnInit {
             categoryId: this.form.controls.categoryId.value!,
             unitOfMeasureId: this.form.controls.unitOfMeasureId.value!
         }
+
+        this.itemController.createElementItem(dto)
+            .subscribe({
+                next: _ => this.onSubmitted.emit()
+            })
     }
 }

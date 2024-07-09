@@ -1,4 +1,4 @@
-<div (submit)="onSubmit($event)">
+<div>
     <fieldset>
         <legend>Create Item</legend>
         <div>
@@ -14,7 +14,7 @@
         <div>
             @switch (itemType()) {
                 @case ("element") {
-                    <element-item-form [formType]="formType"></element-item-form>
+                    <element-item-form [formType]="formType" (onSubmitted)="onSubmitted.emit()"></element-item-form>
                 }
                 @case ("composite") {
                     <composite-item-form></composite-item-form>
