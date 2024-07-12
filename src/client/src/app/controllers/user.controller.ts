@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { BaseController } from "./base.controller";
 import { IAppUserDto, IV1EditUser, IV1RegisterUser } from "../models/dtos/interfaces";
 import { HttpParams } from "@angular/common/http";
-import { tap } from "rxjs";
 
 @Injectable({
     providedIn: 'root'

@@ -11,14 +11,7 @@
     </section>
     <section>
         @if(component$(); as c) {
-            @switch(c) {
-                @case('create') {
-                    <item-form formType="create" (onSubmitted)="onItemCreated()"></item-form>
-                }
-                @case('edit') {
-                    
-                }
-            }
+            <item-form [formType]="c" (onSubmitted)="onItemCreated()"></item-form>
         }
     </section>
 </article>

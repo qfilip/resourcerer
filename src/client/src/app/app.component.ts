@@ -8,6 +8,7 @@ import { UserController } from './controllers/user.controller';
 import { UserService } from './services/user.service';
 import { LogoutComponent } from "./pages/user/components/logout/logout.component";
 import { DialogWrapperComponent } from "./components/dialog-wrapper/dialog-wrapper.component";
+import { tap } from 'rxjs';
 
 @Component({
     selector: 'app-root',
@@ -22,7 +23,12 @@ export class AppComponent implements OnInit {
     userController = inject(UserController);
     
     ngOnInit() {
-        const route = this.userService.isLoggedIn() ? 'home' : 'login';
-        this.router.navigate([route]);
+        this.userService.isLoggedIn()
+            .subscribe({
+                next: x => {
+                    const route = x ? 'home' : 'login';
+                    this.router.navigate([route]);
+                }
+            });
     }
 }
