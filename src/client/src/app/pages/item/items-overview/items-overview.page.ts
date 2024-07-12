@@ -33,7 +33,12 @@ export class ItemsOverviewPage implements OnInit {
     console.log(item);
   }
 
-  loadItems() {
+  onItemCreated() {
+    this.setComponent(null);
+    this.loadItems();
+  }
+
+  private loadItems() {
     const user = this.userService.user();
     if(!user) return;
 

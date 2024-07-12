@@ -13,7 +13,7 @@
         @if(component$(); as c) {
             @switch(c) {
                 @case('create') {
-                    <item-form formType="create" (onSubmitted)="loadItems()"></item-form>
+                    <item-form formType="create" (onSubmitted)="onItemCreated()"></item-form>
                 }
                 @case('edit') {
                     
