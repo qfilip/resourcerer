@@ -69,7 +69,7 @@ public class FinishItemProductionOrderTests : TestsBase
         var fd = Faking.FakeData(_ctx, 2, 2);
         var order = Faking.FakeOrder(_ctx, fd, x =>
         {
-            x.CanceledEvent = AppDbJsonField.Create(() => new ItemProductionOrderCancelledEvent());
+            x.CancelledEvent = AppDbJsonField.Create(() => new ItemProductionOrderCancelledEvent());
         });
         var dto = new V1FinishItemProductionOrderRequest
         {

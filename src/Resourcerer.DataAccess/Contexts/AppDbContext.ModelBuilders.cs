@@ -92,6 +92,10 @@ public partial class AppDbContext
             e.HasOne(x => x.Item).WithMany(x => x.ProductionOrders)
                 .HasForeignKey(x => x.ItemId).IsRequired()
                 .HasConstraintName($"FK_{nameof(Item)}_{nameof(ItemProductionOrder)}");
+
+            e.OwnsOne(x => x.StartedEvent, nav => nav.ToJson());
+            e.OwnsOne(x => x.CancelledEvent, nav => nav.ToJson());
+            e.OwnsOne(x => x.FinishedEvent, nav => nav.ToJson());
         });
 
         ConfigureEntity<Instance>(modelBuilder, (e) =>
@@ -114,6 +118,10 @@ public partial class AppDbContext
             e.HasOne(x => x.Instance).WithMany(x => x.OrderedEvents)
                 .HasForeignKey(x => x.InstanceId)
                 .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceOrderedEvent)}");
+
+            e.OwnsOne(x => x.CancelledEvent, nav => nav.ToJson());
+            e.OwnsOne(x => x.SentEvent, nav => nav.ToJson());
+            e.OwnsOne(x => x.DeliveredEvent, nav => nav.ToJson());
         });
 
 
@@ -122,6 +130,9 @@ public partial class AppDbContext
             e.HasOne(x => x.Instance).WithMany(x => x.ReservedEvents)
                 .HasForeignKey(x => x.InstanceId)
                 .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceReservedEvent)}");
+
+            e.OwnsOne(x => x.CancelledEvent, nav => nav.ToJson());
+            e.OwnsOne(x => x.UsedEvent, nav => nav.ToJson());
         });
         
         ConfigureEntity<InstanceDiscardedEvent>(modelBuilder, (e) =>

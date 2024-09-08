@@ -20,7 +20,7 @@ public static partial class Mapper
                 InstancesUsedIds = src.InstancesUsedIds,
 
                 StartedEvent = src.StartedEvent,
-                CanceledEvent = src.CanceledEvent,
+                CancelledEvent = src.CanceledEvent,
                 FinishedEvent = src.FinishedEvent
             }, src);
 
@@ -38,7 +38,7 @@ public static partial class Mapper
                 InstancesUsedIds = src.InstancesUsedIds,
 
                 StartedEvent = src.StartedEvent,
-                CanceledEvent = src.CanceledEvent,
+                CanceledEvent = src.CancelledEvent,
                 FinishedEvent = src.FinishedEvent
             }, src);
 }

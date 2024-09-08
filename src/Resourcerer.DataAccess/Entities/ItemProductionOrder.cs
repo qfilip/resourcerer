@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace Resourcerer.DataAccess.Entities;
 
@@ -14,19 +13,13 @@ public class ItemProductionOrder : AppDbEntity
     public virtual Item? Item { get; set; }
 
     // json
-    [NotMapped]
     public Guid[] InstancesUsedIds { get; set; } = Array.Empty<Guid>();
-    
-    [NotMapped]
     public ItemProductionStartedEvent? StartedEvent { get; set; }
-    
-    [NotMapped]
-    public ItemProductionOrderCancelledEvent? CanceledEvent { get; set; }
-    
-    [NotMapped]
+    public ItemProductionOrderCancelledEvent? CancelledEvent { get; set; }
     public ItemProductionFinishedEvent? FinishedEvent { get; set; }
 
     // json mapping
+    // (Guid/value types, cannot be used with EF Core model builder for Json entities)
     public string InstancesUsedIdsJson
     {
         get => JsonSerializer.Serialize(InstancesUsedIds);
@@ -36,33 +29,5 @@ public class ItemProductionOrder : AppDbEntity
             InstancesUsedIds = JsonSerializer.Deserialize<Guid[]>(value)!;
         }
     }
-    public string StartedEventJson
-    {
-        get => JsonSerializer.Serialize(StartedEvent);
-        set
-        {
-            if (value == null) return;
-            StartedEvent = JsonSerializer.Deserialize<ItemProductionStartedEvent>(value)!;
-        }
-    }
-
-    public string CanceledEventJson
-    {
-        get => JsonSerializer.Serialize(CanceledEvent);
-        set
-        {
-            if (value == null) return;
-            CanceledEvent = JsonSerializer.Deserialize<ItemProductionOrderCancelledEvent>(value)!;
-        }
-    }
-
-    public string FinishedEventJson
-    {
-        get => JsonSerializer.Serialize(FinishedEvent);
-        set
-        {
-            if (value == null) return;
-            FinishedEvent = JsonSerializer.Deserialize<ItemProductionFinishedEvent>(value)!;
-        }
-    }
 }
+
