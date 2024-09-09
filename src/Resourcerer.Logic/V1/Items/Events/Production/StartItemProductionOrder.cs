@@ -29,7 +29,7 @@ public static class StartItemProductionOrder
                     Id = x.Id,
                     InstancesUsedIds = x.InstancesUsedIds,
                     StartedEvent = x.StartedEvent,
-                    CanceledEvent = x.CanceledEvent,
+                    CancelledEvent = x.CancelledEvent,
                     FinishedEvent = x.FinishedEvent,
                 })
                 .AsNoTracking()
@@ -40,7 +40,7 @@ public static class StartItemProductionOrder
                 return HandlerResult<Unit>.NotFound($"Production order {request.ProductionOrderId} not found");
             }
 
-            if (order.CanceledEvent != null)
+            if (order.CancelledEvent != null)
             {
                 return HandlerResult<Unit>.Rejected($"Production order {request.ProductionOrderId} was cancelled and cannot be started");
             }

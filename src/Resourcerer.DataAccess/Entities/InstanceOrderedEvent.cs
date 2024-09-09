@@ -19,38 +19,7 @@ public class InstanceOrderedEvent : AppDbEntity
     public virtual Instance? Instance { get; set; }
 
     // json
-    [NotMapped]
     public InstanceOrderCancelledEvent? CancelledEvent { get; set; }
-    [NotMapped]
     public InstanceOrderSentEvent? SentEvent { get; set; }
-    [NotMapped]
     public InstanceOrderDeliveredEvent? DeliveredEvent { get; set; }
-
-    public string CancelledEventJson
-    {
-        get => JsonSerializer.Serialize(CancelledEvent);
-        private set
-        {
-            if (value == null) return;
-            CancelledEvent = JsonSerializer.Deserialize<InstanceOrderCancelledEvent>(value);
-        }
-    }
-    public string SentEventJson
-    {
-        get => JsonSerializer.Serialize(SentEvent);
-        private set
-        {
-            if (value == null) return;
-            SentEvent = JsonSerializer.Deserialize<InstanceOrderSentEvent>(value);
-        }
-    }
-    public string DeliveredEventJson
-    {
-        get => JsonSerializer.Serialize(DeliveredEvent);
-        private set
-        {
-            if (value == null) return;
-            DeliveredEvent = JsonSerializer.Deserialize<InstanceOrderDeliveredEvent>(value);
-        }
-    }
 }

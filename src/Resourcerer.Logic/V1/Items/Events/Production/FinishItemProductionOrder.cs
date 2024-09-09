@@ -32,9 +32,9 @@ public static class FinishItemProductionOrder
                         ExpirationTimeSeconds = x.Item!.ExpirationTimeSeconds
                     },
                     CompanyId = x.CompanyId,
-                    CanceledEventJson = x.CanceledEventJson,
-                    StartedEventJson = x.StartedEventJson,
-                    FinishedEventJson = x.FinishedEventJson
+                    CancelledEvent = x.CancelledEvent,
+                    StartedEvent = x.StartedEvent,
+                    FinishedEvent = x.FinishedEvent
                 })
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.ProductionOrderId);
@@ -44,7 +44,7 @@ public static class FinishItemProductionOrder
                 return HandlerResult<Unit>.NotFound($"Production order {request.ProductionOrderId} not found");
             }
 
-            if (order.CanceledEvent != null)
+            if (order.CancelledEvent != null)
             {
                 return HandlerResult<Unit>.Rejected("Production order was cancelled");
             }

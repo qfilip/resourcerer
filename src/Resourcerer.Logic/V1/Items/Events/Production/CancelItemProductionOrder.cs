@@ -51,7 +51,7 @@ public static class CancelItemProductionOrder
                     new InstanceReserveCancelledEvent() { Reason = request.Reason });
             }
 
-            orderEvent.CanceledEvent = AppDbJsonField.Create(() =>
+            orderEvent.CancelledEvent = AppDbJsonField.Create(() =>
                 new ItemProductionOrderCancelledEvent() { Reason = request.Reason });
 
             await _dbContext.SaveChangesAsync();
