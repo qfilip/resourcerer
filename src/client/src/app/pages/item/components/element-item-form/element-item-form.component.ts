@@ -42,18 +42,6 @@ export class ElementItemFormComponent implements OnInit {
         this.formType === 'create' ? this.loadForCreate() : this.loadForEdit();
     }
 
-    loadForCreate() {
-        const companyId = this.userService.user()!.company.id;
-        this.itemController.getCreateElementItemFormData(companyId).subscribe({
-            next: (x) => (this.formData = x),
-        });
-    }
-
-    loadForEdit() {
-        console.log('editing');
-        this.form.controls.name.errors;
-    }
-
     onSubmit(ev: Event) {
         ev.preventDefault();
         this.formSubmitted = true;
@@ -62,15 +50,33 @@ export class ElementItemFormComponent implements OnInit {
             return;
         }
 
-        if(this.formType === 'create') {
-            this.createItem();
-        }
-        else {
-
-        }
+        this.formType === 'create' ? this.createItem() : this.editItem();
+    }
+    loadForCreate() {
+        const companyId = this.userService.user()!.company.id;
+        this.itemController.getCreateElementItemFormData(companyId).subscribe({
+            next: (x) => (this.formData = x),
+        });
     }
 
     createItem() {
+        const dto = this.mapDtoFromForm();
+
+        this.itemController.createElementItem(dto)
+            .subscribe({
+                next: _ => this.onSubmitted.emit()
+            })
+    }
+    
+    loadForEdit() {
+        
+    }
+
+    editItem() {
+
+    }
+
+    private mapDtoFromForm() {
         const dto: IV1CreateElementItem = {
             name: this.form.controls.name.value!,
             productionPrice: this.form.controls.productionPrice.value!,
@@ -81,9 +87,6 @@ export class ElementItemFormComponent implements OnInit {
             unitOfMeasureId: this.form.controls.unitOfMeasureId.value!
         }
 
-        this.itemController.createElementItem(dto)
-            .subscribe({
-                next: _ => this.onSubmitted.emit()
-            })
+        return dto;
     }
 }

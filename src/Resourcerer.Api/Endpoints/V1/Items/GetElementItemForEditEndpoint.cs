@@ -1,22 +1,24 @@
-﻿using Resourcerer.Api.Services;
+﻿using Microsoft.AspNetCore.Mvc;
+using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.V1;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public class GetCompanyItemsEndpoint
+public class GetElementItemForEditEndpoint
 {
     public static async Task<IResult> Action(
-        Guid companyId,
+        [FromQuery] Guid itemId,
+        [FromQuery] Guid companyId,
         Pipeline pipeline,
-        GetCompanyItems.Handler handler)
+        GetElementItemForEdit.Handler handler)
     {
-        return await pipeline.Pipe(handler, companyId);
+        return await pipeline.Pipe(handler, (itemId, companyId));
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapGet("/company-all", Action);
+        var endpoint = group.MapGet("/edit/element/form", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

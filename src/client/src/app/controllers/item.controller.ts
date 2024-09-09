@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BaseController } from "./base.controller";
-import { IItemDto, IV1CreateElementItem, IV1CreateElementItemFormDataDto } from "../models/dtos/interfaces";
+import { IItemDto, IV1CreateElementItem, IV1CreateElementItemFormDataDto, IV1EditElementItemFormData } from "../models/dtos/interfaces";
 import { HttpParams } from "@angular/common/http";
 
 @Injectable({
@@ -26,5 +26,12 @@ export class ItemController extends BaseController {
     createElementItem(dto: IV1CreateElementItem) {
         const url = this.url + '/create/element';
         return this.http.post<string>(url, dto);
+    }
+
+    getEditElementItemFormData(itemId: string, companyId: string) {
+        const url = this.url + '/edit/element/form';
+        return this.http.get<IV1EditElementItemFormData>(url, {
+            params: new HttpParams().set('itemId', itemId).set('companyId', companyId)
+        });
     }
 }

@@ -58,6 +58,7 @@ public class EndpointMapperV1_0
         CreateElementItemEndpoint.MapToGroup(g);
         CreateElementItemLoadFormEndpoint.MapToGroup(g);
         GetCompanyItemsEndpoint.MapToGroup(g);
+        GetElementItemForEditEndpoint.MapToGroup(g);
         GetItemsStatisticsEndpoint.MapToGroup(g);
 
     }

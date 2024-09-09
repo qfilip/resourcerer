@@ -17,7 +17,7 @@ export class PopupInterceptor implements HttpInterceptor {
                 tap({
                     error: (e: HttpErrorResponse) => {
                         const warn = (xs: string[]) => {
-                            if(!xs) return ;
+                            if(!xs) return;
                             
                             const errors = xs.map(x => ({ message: x, type: 'warning' } as IPopup));
                             this.service.many(errors);

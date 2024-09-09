@@ -33,17 +33,11 @@ export class UserService {
     isLoggedIn() {
         return this._cache.retrieve().pipe(
             map((jwt) => {
-                if (!jwt) {
-                    return false;
-                }
-
+                if (!jwt) return false;
+                
                 const jwtData = parseJwt(jwt);
-
-                if (jwtData.expired) {
-                    return false;
-                }
-
-                return true;
+                
+                return !jwtData.expired;
             })
         );
     }
