@@ -1,6 +1,5 @@
 ﻿using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 
@@ -15,7 +14,7 @@ public class GetUserTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var user = DF.Fake<AppUser>(_ctx);
+        var user = _forger.Fake<AppUser>();
         _ctx.SaveChanges();
 
         // act
@@ -33,7 +32,7 @@ public class GetUserTests : TestsBase
     public void UserNotFound__NotFound()
     {
         // arrange
-        var user = DF.Fake<AppUser>(_ctx);
+        var user = _forger.Fake<AppUser>();
         _ctx.SaveChanges();
 
         // act

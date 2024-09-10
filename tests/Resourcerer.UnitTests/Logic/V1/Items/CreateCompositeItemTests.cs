@@ -1,6 +1,5 @@
 ﻿using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Items;
 using Resourcerer.UnitTests.Utilities;
@@ -33,7 +32,7 @@ public class CreateCompositeItemTests : TestsBase
     public void ElementWithSameNameAndCategory_Exsts__Rejected()
     {
         // arrange
-        var existingElement = DF.Fake<Item>(_ctx);
+        var existingElement = _forger.Fake<Item>();
         var dto = GetDto(x =>
         {
             x.Name = existingElement.Name;
@@ -99,15 +98,15 @@ public class CreateCompositeItemTests : TestsBase
         var dto = new V1CreateCompositeItem
         {
             Name = "test",
-            CategoryId = DF.Fake<Category>(_ctx).Id,
-            UnitOfMeasureId = DF.Fake<UnitOfMeasure>(_ctx).Id,
+            CategoryId = _forger.Fake<Category>().Id,
+            UnitOfMeasureId = _forger.Fake<UnitOfMeasure>().Id,
             UnitPrice = 2,
             PreparationTimeSeconds = 2,
             ExpirationTimeSeconds = 2,
             ExcerptMap = new Dictionary<Guid, double>
             {
-                { DF.Fake<Item>(_ctx).Id, 1 },
-                { DF.Fake<Item>(_ctx).Id, 2 }
+                { _forger.Fake<Item>().Id, 1 },
+                { _forger.Fake<Item>().Id, 2 }
             }
         };
 

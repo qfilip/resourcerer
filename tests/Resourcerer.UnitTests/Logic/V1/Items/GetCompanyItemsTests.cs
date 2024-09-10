@@ -1,7 +1,6 @@
 ﻿using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 
@@ -16,14 +15,14 @@ public class GetCompanyItemsTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var category = DF.Fake<Category>(_ctx);
+        var category = _forger.Fake<Category>();
         for (var i = 0; i < 10; i++)
-            DF.Fake<Item>(_ctx, item =>
+            _forger.Fake<Item>(item =>
             {
                 item.Category = category;
 
                 for (var j = 0; j < 10; j++)
-                    DF.Fake<Price>(_ctx, p =>
+                    _forger.Fake<Price>(p =>
                     {
                         p.Item = item;
                         p.EntityStatus = j == 0 ? eEntityStatus.Active : eEntityStatus.Deleted;

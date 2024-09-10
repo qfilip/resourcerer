@@ -1,6 +1,5 @@
 ﻿using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 
@@ -15,10 +14,10 @@ public class GetAllCompanyUsersTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var company = DF.Fake<Company>(_ctx);
+        var company = _forger.Fake<Company>();
         var numOfUsers = 3;
         for (var i = 0; i < numOfUsers; i++)
-            DF.Fake<AppUser>(_ctx, x => x.Company = company);
+            _forger.Fake<AppUser>(x => x.Company = company);
 
         _ctx.SaveChanges();
 

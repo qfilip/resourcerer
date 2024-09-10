@@ -1,6 +1,5 @@
 ﻿using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
@@ -20,7 +19,7 @@ public class CreateUnitOfMeasureTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var company = DF.Fake<Company>(_ctx);
+        var company = _forger.Fake<Company>();
         var dto = new V1CreateUnitOfMeasure
         {
             CompanyId = company.Id,
@@ -41,7 +40,7 @@ public class CreateUnitOfMeasureTests : TestsBase
     public void CompanyNotFound__NotFound()
     {
         // arrange
-        DF.Fake<Company>(_ctx);
+        _forger.Fake<Company>();
         var dto = new V1CreateUnitOfMeasure
         {
             CompanyId = Guid.NewGuid(),
@@ -62,7 +61,7 @@ public class CreateUnitOfMeasureTests : TestsBase
     public void CompanyNotFound__Rejected()
     {
         // arrange
-        var uom = DF.Fake<UnitOfMeasure>(_ctx, x =>
+        var uom = _forger.Fake<UnitOfMeasure>(x =>
         {
             x.Name = "Unit";
             x.Symbol = "u";

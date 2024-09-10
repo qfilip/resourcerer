@@ -2,12 +2,13 @@
 using Resourcerer.Application.Abstractions.Services;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using System.ComponentModel.Design;
 
 namespace Resourcerer.UnitTests.Logic.V1.Users;
 
@@ -25,16 +26,9 @@ public class RegisterUserTests : TestsBase
     public void HappyPath_AdminAddsAdmin__Ok()
     {
         // arrange
-        var company = DF.Fake<Company>(_ctx);
+        var company = _forger.Fake<Company>();
         
-        var request = new V1RegisterUser
-        {
-            CompanyId = company.Id,
-            Username = DF.MakeName(),
-            Email = DF.MakeEmail(),
-            IsAdmin = true,
-            PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
-        };
+        var request = GetRequest(company);
 
         _ctx.SaveChanges();
 
@@ -49,16 +43,9 @@ public class RegisterUserTests : TestsBase
     public void HappyPath_AdminAddsNonAdmin__Ok()
     {
         // arrange
-        var company = DF.Fake<Company>(_ctx);
+        var company = _forger.Fake<Company>();
 
-        var request = new V1RegisterUser
-        {
-            CompanyId = company.Id,
-            Username = DF.MakeName(),
-            Email = DF.MakeEmail(),
-            IsAdmin = false,
-            PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
-        };
+        var request = GetRequest(company, x => x.IsAdmin = false);
 
         _ctx.SaveChanges();
 
@@ -73,16 +60,9 @@ public class RegisterUserTests : TestsBase
     public void HappyPath_NonAdminAddsNonAdmin__Ok()
     {
         // arrange
-        var company = DF.Fake<Company>(_ctx);
+        var company = _forger.Fake<Company>();
 
-        var request = new V1RegisterUser
-        {
-            CompanyId = company.Id,
-            Username = DF.MakeName(),
-            Email = DF.MakeEmail(),
-            IsAdmin = false,
-            PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
-        };
+        var request = GetRequest(company, x => x.IsAdmin = false);
 
         _ctx.SaveChanges();
 
@@ -97,16 +77,9 @@ public class RegisterUserTests : TestsBase
     public void HappyPath_NonAdminAddsAdmin__Rejected()
     {
         // arrange
-        var company = DF.Fake<Company>(_ctx);
+        var company = _forger.Fake<Company>();
 
-        var request = new V1RegisterUser
-        {
-            CompanyId = company.Id,
-            Username = DF.MakeName(),
-            Email = DF.MakeEmail(),
-            IsAdmin = true,
-            PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
-        };
+        var request = GetRequest(company);
 
         _ctx.SaveChanges();
 
@@ -125,21 +98,17 @@ public class RegisterUserTests : TestsBase
     public void InvalidPermissions__Rejected()
     {
         // arrange
-        var company = DF.Fake<Company>(_ctx);
+        var company = _forger.Fake<Company>();
 
-        var request = new V1RegisterUser
+        var request = GetRequest(company, x =>
         {
-            CompanyId = company.Id,
-            Username = DF.MakeName(),
-            Email = DF.MakeEmail(),
-            IsAdmin = true,
-            PermissionsMap = new Dictionary<string, string[]>
+            x.PermissionsMap = new Dictionary<string, string[]>
             {
-                { 
+                {
                     ePermissionSection.User.ToString(), ["one", "two"]
                 }
-            }
-        };
+            };
+        });
 
         _ctx.SaveChanges();
 
@@ -165,16 +134,9 @@ public class RegisterUserTests : TestsBase
     public void InvalidEmail__Rejected()
     {
         // arrange
-        var company = DF.Fake<Company>(_ctx);
+        var company = _forger.Fake<Company>();
 
-        var request = new V1RegisterUser
-        {
-            CompanyId = company.Id,
-            Username = DF.MakeName(),
-            Email = DF.MakeEmail(),
-            IsAdmin = true,
-            PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
-        };
+        var request = GetRequest(company);
 
         _ctx.SaveChanges();
 
@@ -200,16 +162,9 @@ public class RegisterUserTests : TestsBase
     public void FailedToSendEmail__Exception()
     {
         // arrange
-        var company = DF.Fake<Company>(_ctx);
+        var company = _forger.Fake<Company>();
 
-        var request = new V1RegisterUser
-        {
-            CompanyId = company.Id,
-            Username = DF.MakeName(),
-            Email = DF.MakeEmail(),
-            IsAdmin = true,
-            PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
-        };
+        var request = GetRequest(company);
 
         _ctx.SaveChanges();
 
@@ -229,6 +184,22 @@ public class RegisterUserTests : TestsBase
 
         // assert
         Assert.Throws<Exception>(action);
+    }
+
+    private static V1RegisterUser GetRequest(Company company, Action<V1RegisterUser>? modifier = null)
+    {
+        var request = new V1RegisterUser
+        {
+            CompanyId = company.Id,
+            Username = DataFaking.MakeName(),
+            Email = DataFaking.MakeEmail(),
+            IsAdmin = true,
+            PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
+        };
+
+        modifier?.Invoke(request);
+
+        return request;
     }
 
     private void HappyPathActAssert(V1RegisterUser request)

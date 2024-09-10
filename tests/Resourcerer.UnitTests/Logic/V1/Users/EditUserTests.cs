@@ -1,7 +1,6 @@
 ﻿using FakeItEasy;
 using Resourcerer.Application.Abstractions.Services;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.V1;
@@ -26,12 +25,12 @@ public class EditUserTests : TestsBase
     public void AdminEditsAdmin__Ok()
     {
         // arrange
-        var oldUser = DF.Fake<AppUser>(_ctx, x => x.IsAdmin = true);
+        var oldUser = _forger.Fake<AppUser>(x => x.IsAdmin = true);
 
         var request = new V1EditUser
         {
             UserId = oldUser.Id,
-            Email = DF.MakeEmail(),
+            Email = DataFaking.MakeEmail(),
             IsAdmin = false,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
         };
@@ -55,12 +54,12 @@ public class EditUserTests : TestsBase
     public void AdminEditsNonAdmin__Ok()
     {
         // arrange
-        var oldUser = DF.Fake<AppUser>(_ctx);
+        var oldUser = _forger.Fake<AppUser>();
 
         var request = new V1EditUser
         {
             UserId = oldUser.Id,
-            Email = DF.MakeEmail(),
+            Email = DataFaking.MakeEmail(),
             IsAdmin = true,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
         };
@@ -84,12 +83,12 @@ public class EditUserTests : TestsBase
     public void NonAdminEditsNonAdmin__Ok()
     {
         // arrange
-        var oldUser = DF.Fake<AppUser>(_ctx);
+        var oldUser = _forger.Fake<AppUser>();
 
         var request = new V1EditUser
         {
             UserId = oldUser.Id,
-            Email = DF.MakeEmail(),
+            Email = DataFaking.MakeEmail(),
             IsAdmin = false,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
         };
@@ -112,12 +111,12 @@ public class EditUserTests : TestsBase
     public void NonAdminEditsAdmin__Rejected()
     {
         // arrange
-        var oldUser = DF.Fake<AppUser>(_ctx, x => x.IsAdmin = true);
+        var oldUser = _forger.Fake<AppUser>(x => x.IsAdmin = true);
 
         var request = new V1EditUser
         {
             UserId = oldUser.Id,
-            Email = DF.MakeEmail(),
+            Email = DataFaking.MakeEmail(),
             IsAdmin = false,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
         };
@@ -143,12 +142,12 @@ public class EditUserTests : TestsBase
     public void InvalidPermissions__Rejected()
     {
         // arrange
-        var oldUser = DF.Fake<AppUser>(_ctx);
+        var oldUser = _forger.Fake<AppUser>();
 
         var request = new V1EditUser
         {
             UserId = oldUser.Id,
-            Email = DF.MakeEmail(),
+            Email = DataFaking.MakeEmail(),
             IsAdmin = false,
             PermissionsMap = new Dictionary<string, string[]> { { "one", ["two"] } }
         };
@@ -174,12 +173,12 @@ public class EditUserTests : TestsBase
     public void InvalidEmail__Rejected()
     {
         // arrange
-        var oldUser = DF.Fake<AppUser>(_ctx);
+        var oldUser = _forger.Fake<AppUser>();
 
         var request = new V1EditUser
         {
             UserId = oldUser.Id,
-            Email = DF.MakeEmail(),
+            Email = DataFaking.MakeEmail(),
             IsAdmin = false,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
         };
@@ -205,12 +204,12 @@ public class EditUserTests : TestsBase
     public void UserNotFound__NotFound()
     {
         // arrange
-        var oldUser = DF.Fake<AppUser>(_ctx);
+        var oldUser = _forger.Fake<AppUser>();
 
         var request = new V1EditUser
         {
             UserId = Guid.NewGuid(),
-            Email = DF.MakeEmail(),
+            Email = DataFaking.MakeEmail(),
             IsAdmin = true,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
         };
@@ -236,12 +235,12 @@ public class EditUserTests : TestsBase
     public void EditorFromDifferentCompany__Rejected()
     {
         // arrange
-        var oldUser = DF.Fake<AppUser>(_ctx);
+        var oldUser = _forger.Fake<AppUser>();
 
         var request = new V1EditUser
         {
             UserId = oldUser.Id,
-            Email = DF.MakeEmail(),
+            Email = DataFaking.MakeEmail(),
             IsAdmin = true,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
         };

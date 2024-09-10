@@ -2,12 +2,12 @@
 using Resourcerer.Api.Services;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.Utilities.Cryptography;
+using SqlForgery;
 using System.Text.Json;
 
 namespace Resourcerer.UnitTests.Logic.V1.Users;
@@ -22,7 +22,7 @@ public class LoginTests : TestsBase
     {
         // arrange
         AppStaticData.Auth.Jwt.Configure(Guid.Empty.ToString(), "issuer", "audience");
-        var (user, password) = ArrangeDb(_ctx);
+        var (user, password) = ArrangeDb(_ctx, _forger);
         var request = new AppUserDto { Name = user.Name, Password = password };
 
         // act
@@ -41,7 +41,7 @@ public class LoginTests : TestsBase
     public void Username_NotFound__NotFound()
     {
         // arrange
-        var (_, password) = ArrangeDb(_ctx);
+        var (_, password) = ArrangeDb(_ctx, _forger);
         var request = new AppUserDto { Name = "fnaah", Password = password };
 
         // act
@@ -55,7 +55,7 @@ public class LoginTests : TestsBase
     public void BadPassword__Rejected()
     {
         // arrange
-        var (user, _) = ArrangeDb(_ctx);
+        var (user, _) = ArrangeDb(_ctx, _forger);
         var request = new AppUserDto { Name = user.Name, Password = "gauguin" };
 
         // act
@@ -65,12 +65,12 @@ public class LoginTests : TestsBase
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
     }
 
-    private static (AppUser, string) ArrangeDb(TestDbContext ctx)
+    private static (AppUser, string) ArrangeDb(TestDbContext ctx, Forger forger)
     {
         var username = "village_person";
         var password = "y.m.c.a";
 
-        var user = DF.Fake<AppUser>(ctx, x =>
+        var user = forger.Fake<AppUser>(x =>
         {
             x.Name = username;
             x.IsAdmin = true;
@@ -78,7 +78,7 @@ public class LoginTests : TestsBase
             x.Email = "a@a.com";
             x.PasswordHash = Hasher.GetSha256Hash(password);
             x.Permissions = JsonSerializer.Serialize(Permissions.GetCompressed());
-            x.Company = DF.Fake<Company>(ctx);
+            x.Company = forger.Fake<Company>();
         });
 
         ctx.SaveChanges();

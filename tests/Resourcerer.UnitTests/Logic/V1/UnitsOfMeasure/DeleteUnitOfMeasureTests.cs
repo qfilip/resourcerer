@@ -2,7 +2,6 @@
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 
@@ -17,7 +16,7 @@ public class DeleteUnitOfMeasureTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var uom = DF.Fake<UnitOfMeasure>(_ctx);
+        var uom = _forger.Fake<UnitOfMeasure>();
         _ctx.SaveChanges();
 
         // act
@@ -43,7 +42,7 @@ public class DeleteUnitOfMeasureTests : TestsBase
     public void EntityNotFound__NotFound()
     {
         // arrange
-        DF.Fake<UnitOfMeasure>(_ctx);
+        _forger.Fake<UnitOfMeasure>();
         _ctx.SaveChanges();
 
         // act

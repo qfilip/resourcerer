@@ -1,6 +1,5 @@
 ﻿using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
@@ -16,7 +15,7 @@ public class EditUnitOfMeasureTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var uom = DF.Fake<UnitOfMeasure>(_ctx);
+        var uom = _forger.Fake<UnitOfMeasure>();
         var request = new V1EditUnitOfMeasure
         {
             Id = uom.Id,
@@ -41,7 +40,7 @@ public class EditUnitOfMeasureTests : TestsBase
     public void UnitNotFound__NotFound()
     {
         // arrange
-        DF.Fake<UnitOfMeasure>(_ctx);
+        _forger.Fake<UnitOfMeasure>();
         var request = new V1EditUnitOfMeasure
         {
             Id = Guid.NewGuid()

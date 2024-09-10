@@ -1,6 +1,5 @@
 ﻿using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Items;
 using Resourcerer.UnitTests.Utilities;
@@ -19,8 +18,8 @@ public class CreateElementItemTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var category = DF.Fake<Category>(_ctx);
-        var uom = DF.Fake<UnitOfMeasure>(_ctx);
+        var category = _forger.Fake<Category>();
+        var uom = _forger.Fake<UnitOfMeasure>();
         var dto = new V1CreateElementItem
         {
             Name = "test",
@@ -50,7 +49,7 @@ public class CreateElementItemTests : TestsBase
     public void ElementWithSameName_Exsts__Rejected()
     {
         // arrange
-        var existingElement = DF.Fake<Item>(_ctx);
+        var existingElement = _forger.Fake<Item>();
         var dto = new V1CreateElementItem
         {
             Name = existingElement.Name,
@@ -71,8 +70,8 @@ public class CreateElementItemTests : TestsBase
     public void Category_NotFound__Rejected()
     {
         // arrange
-        var comp = DF.Fake<Company>(_ctx);
-        var uom = DF.Fake<UnitOfMeasure>(_ctx);
+        var comp = _forger.Fake<Company>();
+        var uom = _forger.Fake<UnitOfMeasure>();
         var dto = new V1CreateElementItem
         {
             Name = "test",
@@ -93,7 +92,7 @@ public class CreateElementItemTests : TestsBase
     public void UnitOfMeasure_NotFound__Rejected()
     {
         // arrange
-        var category = DF.Fake<Category>(_ctx);
+        var category = _forger.Fake<Category>();
         var dto = new V1CreateElementItem
         {
             Name = "test",

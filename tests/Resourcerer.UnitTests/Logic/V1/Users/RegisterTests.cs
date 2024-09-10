@@ -2,7 +2,6 @@
 using Resourcerer.Api.Services;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Utilities.Query;
@@ -73,8 +72,8 @@ public class RegisterTests : TestsBase
     public void CompanyOrUserExists__Rejected()
     {
         // arrange
-        var company = DF.Fake<Company>(_ctx, x => x.Name = "island_trade_inc");
-        var user = DF.Fake<AppUser>(_ctx, x => x.Name = "vaas");
+        var company = _forger.Fake<Company>(x => x.Name = "island_trade_inc");
+        var user = _forger.Fake<AppUser>(x => x.Name = "vaas");
         var request = new V1Register
         {
             Username = user.Name,

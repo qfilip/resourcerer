@@ -1,6 +1,5 @@
 ﻿using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
@@ -24,7 +23,7 @@ public class SetPermissionsTest : TestsBase
             { ePermissionSection.User.ToString(), [ePermission.Read.ToString()] }
         };
 
-        var user = DF.Fake<AppUser>(_ctx, x => x.Permissions = JsonSerializer.Serialize(permissions));
+        var user = _forger.Fake<AppUser>(x => x.Permissions = JsonSerializer.Serialize(permissions));
         _ctx.SaveChanges();
 
         var request = new V1SetUserPermissions
@@ -63,7 +62,7 @@ public class SetPermissionsTest : TestsBase
     public void InvalidPermissionValues__Rejected()
     {
         // arrange
-        var user = DF.Fake<AppUser>(_ctx);
+        var user = _forger.Fake<AppUser>();
         _ctx.SaveChanges();
 
         var request = new V1SetUserPermissions
@@ -96,7 +95,7 @@ public class SetPermissionsTest : TestsBase
     public void UserNotFound__NotFound()
     {
         // arrange
-        var user = DF.Fake<AppUser>(_ctx);
+        var user = _forger.Fake<AppUser>();
         _ctx.SaveChanges();
 
         var request = new V1SetUserPermissions
