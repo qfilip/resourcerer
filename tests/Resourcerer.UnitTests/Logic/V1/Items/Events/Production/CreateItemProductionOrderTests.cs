@@ -19,7 +19,7 @@ public class CreateItemProductionOrderTests : TestsBase
     public void HappyPath()
     {
         // arrange
-        var fd = Faking.FakeData(_ctx, 2, 2);
+        var fd = Faking.FakeData(_forger, 2, 2);
 
         var dto = new V1CreateItemProductionOrderRequest
         {
@@ -43,7 +43,7 @@ public class CreateItemProductionOrderTests : TestsBase
     public void When_ItemNotFound_Then_NotFound()
     {
         // arrange
-        Faking.FakeData(_ctx, 2, 2);
+        Faking.FakeData(_forger, 2, 2);
         var dto = new V1CreateItemProductionOrderRequest { ItemId = Guid.NewGuid() };
 
         _ctx.SaveChanges();
@@ -59,7 +59,7 @@ public class CreateItemProductionOrderTests : TestsBase
     public void When_RequestedInstancesNotFound_Then_NotFound()
     {
         // arrange
-        var fd = Faking.FakeData(_ctx, 2, 2);
+        var fd = Faking.FakeData(_forger, 2, 2);
         var dto = new V1CreateItemProductionOrderRequest
         {
             ItemId = fd.Composite!.Id,
@@ -83,7 +83,7 @@ public class CreateItemProductionOrderTests : TestsBase
     public void When_RequestedInstancesDontBelongToCompany_Then_Rejected()
     {
         // arrange
-        var fd = Faking.FakeData(_ctx, 2, 2);
+        var fd = Faking.FakeData(_forger, 2, 2);
         var otherCompany = DF.Fake<Company>(_ctx);
 
         fd.Elements.ForEach(e => e.Instances.ForEach(i =>
@@ -111,7 +111,7 @@ public class CreateItemProductionOrderTests : TestsBase
     public void When_NotEnoughInstances_Then_Rejected()
     {
         // arrange
-        var fd = Faking.FakeData(_ctx, 2, 1);
+        var fd = Faking.FakeData(_forger, 2, 1);
 
         var dto = new V1CreateItemProductionOrderRequest
         {
@@ -134,7 +134,7 @@ public class CreateItemProductionOrderTests : TestsBase
     public void When_IncorrectInstanceQuantitySpecified_Then_Rejected()
     {
         // arrange
-        var fd = Faking.FakeData(_ctx, 2, 2);
+        var fd = Faking.FakeData(_forger, 2, 2);
 
         var dto = new V1CreateItemProductionOrderRequest
         {

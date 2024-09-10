@@ -1,6 +1,5 @@
 ﻿using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
@@ -19,7 +18,7 @@ public class RemoveCategoryTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var category = DF.Fake<Category>(_ctx);
+        var category = _forger.Fake<Category>();
         var dto = new CategoryDto { Id = category.Id };
 
         _ctx.SaveChanges();

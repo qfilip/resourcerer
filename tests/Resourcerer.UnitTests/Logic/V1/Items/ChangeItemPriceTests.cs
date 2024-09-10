@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Items;
 using Resourcerer.UnitTests.Utilities;
@@ -25,9 +24,9 @@ public class ChangeItemPriceTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var item = DF.Fake<Item>(_ctx);
-        var price1 = DF.Fake<Price>(_ctx, x => x.Item = item);
-        var price2 = DF.Fake<Price>(_ctx, x =>
+        var item = _forger.Fake<Item>();
+        var price1 = _forger.Fake<Price>(x => x.Item = item);
+        var price2 = _forger.Fake<Price>(x =>
         {
             x.Item = item;
             x.EntityStatus = eEntityStatus.Deleted;
@@ -87,9 +86,9 @@ public class ChangeItemPriceTests : TestsBase
     public void Element_HasCorruptedPrices_Then_PricesAreFixed__Ok()
     {
         // arrange
-        var item = DF.Fake<Item>(_ctx);
+        var item = _forger.Fake<Item>();
         var oldPrices = Enumerable.Range(0, 3)
-            .Select(_ => DF.Fake<Price>(_ctx, x => x.Item = item))
+            .Select(_ => _forger.Fake<Price>(x => x.Item = item))
             .ToArray();
 
         var dto = new V1ChangePrice

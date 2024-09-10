@@ -19,8 +19,8 @@ public class FinishItemProductionOrderTests : TestsBase
     public void HappyPath()
     {
         // arrange
-        var fd = Faking.FakeData(_ctx, 2, 2);
-        var order = Faking.FakeOrder(_ctx, fd, x =>
+        var fd = Faking.FakeData(_forger, 2, 2);
+        var order = Faking.FakeOrder(_forger, fd, x =>
         {
             x.Quantity = 2;
             x.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
@@ -66,8 +66,8 @@ public class FinishItemProductionOrderTests : TestsBase
     public void OrderCancelled__Rejected()
     {
         // arrange
-        var fd = Faking.FakeData(_ctx, 2, 2);
-        var order = Faking.FakeOrder(_ctx, fd, x =>
+        var fd = Faking.FakeData(_forger, 2, 2);
+        var order = Faking.FakeOrder(_forger, fd, x =>
         {
             x.CancelledEvent = AppDbJsonField.Create(() => new ItemProductionOrderCancelledEvent());
         });
@@ -89,8 +89,8 @@ public class FinishItemProductionOrderTests : TestsBase
     public void OrderNotStarted__Rejected()
     {
         // arrange
-        var fd = Faking.FakeData(_ctx, 2, 2);
-        var order = Faking.FakeOrder(_ctx, fd);
+        var fd = Faking.FakeData(_forger, 2, 2);
+        var order = Faking.FakeOrder(_forger, fd);
         var dto = new V1FinishItemProductionOrderRequest
         {
             ProductionOrderId = order.Id
@@ -109,8 +109,8 @@ public class FinishItemProductionOrderTests : TestsBase
     public void Idempotency_OrderFinished__Ok()
     {
         // arrange
-        var fd = Faking.FakeData(_ctx, 2, 2);
-        var order = Faking.FakeOrder(_ctx, fd, x =>
+        var fd = Faking.FakeData(_forger, 2, 2);
+        var order = Faking.FakeOrder(_forger, fd, x =>
         {
             x.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
             x.FinishedEvent = AppDbJsonField.Create(() => new ItemProductionFinishedEvent());

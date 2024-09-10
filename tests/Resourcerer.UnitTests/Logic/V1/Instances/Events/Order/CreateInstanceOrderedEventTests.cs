@@ -2,7 +2,6 @@
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Instances.Events.Order;
 using Resourcerer.UnitTests.Utilities;
@@ -21,8 +20,8 @@ public class CreateInstanceOrderedEventTests : TestsBase
     public void WithDerivedInstanceItemMapping__Ok()
     {
         // arrange
-        var derivedInstanceItem = DF.Fake<Item>(_ctx);
-        var sourceInstance = DF.Fake<Instance>(_ctx, x =>
+        var derivedInstanceItem = _forger.Fake<Item>();
+        var sourceInstance = _forger.Fake<Instance>(x =>
         {
             x.Quantity = 1;
         });
@@ -60,8 +59,8 @@ public class CreateInstanceOrderedEventTests : TestsBase
     public void WithoutDerivedInstanceItemMapping__Ok()
     {
         // arrange
-        var buyerCompany = DF.Fake<Company>(_ctx);
-        var sourceInstance = DF.Fake<Instance>(_ctx, x =>
+        var buyerCompany = _forger.Fake<Company>();
+        var sourceInstance = _forger.Fake<Instance>(x =>
         {
             x.Quantity = 1;
         });
@@ -120,7 +119,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
     [Fact]
     public void BuyerNotFound__Rejected()
     {
-        var sourceInstance = DF.Fake<Instance>(_ctx, x =>
+        var sourceInstance = _forger.Fake<Instance>(x =>
         {
             x.Quantity = 1;
         });
@@ -143,8 +142,8 @@ public class CreateInstanceOrderedEventTests : TestsBase
     [Fact]
     public void SellerNotFound__Rejected()
     {
-        var buyerCompany = DF.Fake<Company>(_ctx);
-        var sourceInstance = DF.Fake<Instance>(_ctx, x =>
+        var buyerCompany = _forger.Fake<Company>();
+        var sourceInstance = _forger.Fake<Instance>(x =>
         {
             x.Quantity = 1;
         });
@@ -168,8 +167,8 @@ public class CreateInstanceOrderedEventTests : TestsBase
     public void DerivedInstanceItem_NotFound__Rejected()
     {
         // arrange
-        var derivedInstanceItem = DF.Fake<Item>(_ctx);
-        var sourceInstance = DF.Fake<Instance>(_ctx, x =>
+        var derivedInstanceItem = _forger.Fake<Item>();
+        var sourceInstance = _forger.Fake<Instance>(x =>
         {
             x.Quantity = 1;
         });
@@ -194,12 +193,12 @@ public class CreateInstanceOrderedEventTests : TestsBase
     public void DerivedInstanceItem_HasDifferentBuyerCompany__Rejected()
     {
         // arrange
-        var buyerCompany = DF.Fake<Company>(_ctx);
-        var derivedInstanceItem = DF.Fake<Item>(_ctx, x =>
+        var buyerCompany = _forger.Fake<Company>();
+        var derivedInstanceItem = _forger.Fake<Item>(x =>
         {
-            x.Category!.Company = DF.Fake<Company>(_ctx);
+            x.Category!.Company = _forger.Fake<Company>();
         });
-        var sourceInstance = DF.Fake<Instance>(_ctx, x =>
+        var sourceInstance = _forger.Fake<Instance>(x =>
         {
             x.Quantity = 1;
         });
@@ -223,8 +222,8 @@ public class CreateInstanceOrderedEventTests : TestsBase
     [Fact]
     public void InstanceNotFound__Rejected()
     {
-        var buyerCompany = DF.Fake<Company>(_ctx);
-        var sourceInstance = DF.Fake<Instance>(_ctx, x =>
+        var buyerCompany = _forger.Fake<Company>();
+        var sourceInstance = _forger.Fake<Instance>(x =>
         {
             x.Quantity = 1;
         });
@@ -248,8 +247,8 @@ public class CreateInstanceOrderedEventTests : TestsBase
     [Fact]
     public void ExpectedDeliveryDate_NotSet_And_Instance_HasExpiryDate__Rejected()
     {
-        var buyerCompany = DF.Fake<Company>(_ctx);
-        var sourceInstance = DF.Fake<Instance>(_ctx, x =>
+        var buyerCompany = _forger.Fake<Company>();
+        var sourceInstance = _forger.Fake<Instance>(x =>
         {
             x.Quantity = 1;
             x.ExpiryDate = DateTime.UtcNow;
@@ -275,8 +274,8 @@ public class CreateInstanceOrderedEventTests : TestsBase
     [Fact]
     public void DeliveryDate_LargerOrEqualTo_InstanceExpiryDate__Rejected()
     {
-        var buyerCompany = DF.Fake<Company>(_ctx);
-        var sourceInstance = DF.Fake<Instance>(_ctx, x =>
+        var buyerCompany = _forger.Fake<Company>();
+        var sourceInstance = _forger.Fake<Instance>(x =>
         {
             x.Quantity = 1;
             x.ExpiryDate = DateTime.UtcNow;
@@ -304,14 +303,14 @@ public class CreateInstanceOrderedEventTests : TestsBase
     [Fact]
     public void UnitsOrdered_LargerThan_UnitsInStock__Rejected()
     {
-        var buyerCompany = DF.Fake<Company>(_ctx);
-        var sourceInstance = DF.Fake<Instance>(_ctx, x =>
+        var buyerCompany = _forger.Fake<Company>();
+        var sourceInstance = _forger.Fake<Instance>(x =>
         {
             x.Quantity = 2;
             x.ExpiryDate = DateTime.UtcNow;
         });
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, ev => ev.Instance = sourceInstance);
-        var discardEvent = DF.Fake<InstanceDiscardedEvent>(_ctx, ev => ev.Instance = sourceInstance);
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(ev => ev.Instance = sourceInstance);
+        var discardEvent = _forger.Fake<InstanceDiscardedEvent>(ev => ev.Instance = sourceInstance);
 
         _ctx.SaveChanges();
 
@@ -334,18 +333,18 @@ public class CreateInstanceOrderedEventTests : TestsBase
     [Fact]
     public void UnitsOrdered_LessOrEqualTo_UnitsInStock__Ok()
     {
-        var buyerCompany = DF.Fake<Company>(_ctx);
-        var sourceInstance = DF.Fake<Instance>(_ctx, x =>
+        var buyerCompany = _forger.Fake<Company>();
+        var sourceInstance = _forger.Fake<Instance>(x =>
         {
             x.Quantity = 4;
             x.ExpiryDate = DateTime.UtcNow;
         });
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x =>
         {
             x.Instance = sourceInstance;
             x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
         });
-        var discardEvent = DF.Fake<InstanceDiscardedEvent>(_ctx, x => x.Instance = sourceInstance);
+        var discardEvent = _forger.Fake<InstanceDiscardedEvent>(x => x.Instance = sourceInstance);
 
         _ctx.SaveChanges();
 

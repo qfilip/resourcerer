@@ -20,8 +20,8 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var sourceInstance = DF.Fake<Instance>(_ctx);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x => x.Instance = sourceInstance);
+        var sourceInstance = _forger.Fake<Instance>();
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x => x.Instance = sourceInstance);
 
         _ctx.SaveChanges();
 
@@ -48,8 +48,8 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     [Fact]
     public void Instance_NotFound__Rejected()
     {
-        var sourceInstance = DF.Fake<Instance>(_ctx);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x => x.Instance = sourceInstance);
+        var sourceInstance = _forger.Fake<Instance>();
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x => x.Instance = sourceInstance);
 
         _ctx.SaveChanges();
 
@@ -69,8 +69,8 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     [Fact]
     public void InstanceOrderEvent_NotFound__Rejected()
     {
-        var sourceInstance = DF.Fake<Instance>(_ctx);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x => x.Instance = sourceInstance);
+        var sourceInstance = _forger.Fake<Instance>();
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x => x.Instance = sourceInstance);
 
         _ctx.SaveChanges();
 
@@ -91,8 +91,8 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     public void OrderCancelled__Rejected()
     {
         // arrange
-        var sourceInstance = DF.Fake<Instance>(_ctx);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
+        var sourceInstance = _forger.Fake<Instance>();
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x =>
         {
             x.Instance = sourceInstance;
             x.CancelledEvent = AppDbJsonField.Create(() => new InstanceOrderCancelledEvent());
@@ -117,8 +117,8 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     public void Is_Idempotent()
     {
         // arrange
-        var sourceInstance = DF.Fake<Instance>(_ctx);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
+        var sourceInstance = _forger.Fake<Instance>();
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x =>
         {
             x.Instance = sourceInstance;
             x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
@@ -143,8 +143,8 @@ public class CreateInstanceOrderSentEventTests : TestsBase
     public void OrderDelivered__Rejected()
     {
         // arrange
-        var sourceInstance = DF.Fake<Instance>(_ctx);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
+        var sourceInstance = _forger.Fake<Instance>();
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x =>
         {
             x.Instance = sourceInstance;
             x.DeliveredEvent = AppDbJsonField.Create(() => new InstanceOrderDeliveredEvent());

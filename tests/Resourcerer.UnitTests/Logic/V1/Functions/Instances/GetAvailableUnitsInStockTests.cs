@@ -1,6 +1,5 @@
 ﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.DataAccess.Utilities.Faking;
 
 namespace Resourcerer.UnitTests.Logic.V1.Functions.Instances;
 
@@ -18,7 +17,7 @@ public class GetAvailableUnitsInStockTests : TestsBase
     public void Without_SourceInstance()
     {
         // arrange
-        var instance = DF.Fake<Instance>(_ctx, x => x.Quantity = 11);
+        var instance = _forger.Fake<Instance>(x => x.Quantity = 11);
         var instanceEvents = FakeEvents(2, instance);
 
         _ctx.SaveChanges();
@@ -39,8 +38,8 @@ public class GetAvailableUnitsInStockTests : TestsBase
     public void With_SourceInstance()
     {
         // arrange
-        var sourceInstance = DF.Fake<Instance>(_ctx, x => x.Quantity = 11);
-        var instance = DF.Fake<Instance>(_ctx, x =>
+        var sourceInstance = _forger.Fake<Instance>(x => x.Quantity = 11);
+        var instance = _forger.Fake<Instance>(x =>
         {
             x.Quantity = 0;
             x.SourceInstance = sourceInstance;
@@ -120,7 +119,7 @@ public class GetAvailableUnitsInStockTests : TestsBase
 
     private TEvent[] FakeEvent<TEvent>(int count, Action<TEvent> modifier) where TEvent : AppDbEntity =>
         Enumerable.Range(0, count)
-            .Select(_ => DF.Fake(_ctx, modifier))
+            .Select(_ => _forger.Fake(modifier))
             .ToArray();
 
     private class AppEvents

@@ -1,6 +1,5 @@
 ﻿using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 
@@ -18,13 +17,13 @@ public class GetAllCompanyCategoriesTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var company = DF.Fake<Company>(_ctx);
+        var company = _forger.Fake<Company>();
         Enumerable.Range(0, 2)
-            .Select(x => DF.Fake<Category>(_ctx, x => x.Company = company))
+            .Select(x => _forger.Fake<Category>(x => x.Company = company))
             .ToList()
             .ForEach(parent =>
             {
-                DF.Fake<Category>(_ctx, catg =>
+                _forger.Fake<Category>(catg =>
                 {
                     catg.Company = company;
                     catg.ParentCategory = parent;

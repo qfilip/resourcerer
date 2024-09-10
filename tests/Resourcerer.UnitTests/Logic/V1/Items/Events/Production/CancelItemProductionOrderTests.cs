@@ -1,7 +1,6 @@
 ﻿using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Exceptions;
 using Resourcerer.Logic.V1.Items.Events.Production;
@@ -168,15 +167,15 @@ public class CancelItemProductionOrderTests : TestsBase
     {
         var productionOrderId = Guid.NewGuid();
 
-        var composite = DF.Fake<Item>(_ctx);
+        var composite = _forger.Fake<Item>();
 
         var items = new List<Item>()
         {
-            DF.Fake<Item>(_ctx),
-            DF.Fake<Item>(_ctx)
+            _forger.Fake<Item>(),
+            _forger.Fake<Item>()
         };
 
-        items.ForEach(i => DF.Fake<Excerpt>(_ctx, x =>
+        items.ForEach(i => _forger.Fake<Excerpt>(x =>
         {
             x.Composite = composite;
             x.Element = i;
@@ -186,8 +185,8 @@ public class CancelItemProductionOrderTests : TestsBase
         var instances = items
             .Select(x =>
             {
-                var instance = DF.Fake<Instance>(_ctx, i => i.Item = x);
-                DF.Fake<InstanceReservedEvent>(_ctx, x =>
+                var instance = _forger.Fake<Instance>(i => i.Item = x);
+                _forger.Fake<InstanceReservedEvent>(x =>
                 {
                     x.ItemProductionOrderId = productionOrderId;
                     x.InstanceId = instance.Id;
@@ -198,7 +197,7 @@ public class CancelItemProductionOrderTests : TestsBase
             })
             .ToArray();
 
-        var order = DF.Fake<ItemProductionOrder>(_ctx, x =>
+        var order = _forger.Fake<ItemProductionOrder>(x =>
         {
             x.Id = productionOrderId;
             x.ItemId = composite.Id;

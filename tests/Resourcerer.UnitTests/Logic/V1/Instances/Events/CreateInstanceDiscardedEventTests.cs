@@ -2,7 +2,6 @@
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Exceptions;
 using Resourcerer.Logic.V1.Instances.Events;
@@ -22,8 +21,8 @@ public class CreateInstanceDiscardedEventTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var sourceInstance = DF.Fake<Instance>(_ctx);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x => x.Instance = sourceInstance);
+        var sourceInstance = _forger.Fake<Instance>();
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x => x.Instance = sourceInstance);
 
         var dto = new V1InstanceDiscardedRequest
         {
@@ -56,8 +55,8 @@ public class CreateInstanceDiscardedEventTests : TestsBase
     public void OrderNotFound__NotFound()
     {
         // arrange
-        var sourceInstance = DF.Fake<Instance>(_ctx);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x => x.Instance = sourceInstance);
+        var sourceInstance = _forger.Fake<Instance>();
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x => x.Instance = sourceInstance);
 
         var dto = new V1InstanceDiscardedRequest
         {
@@ -77,14 +76,14 @@ public class CreateInstanceDiscardedEventTests : TestsBase
     public void QuantityLeft_SmallerThan_Zero__Exception()
     {
         // arrange
-        var sourceInstance = DF.Fake<Instance>(_ctx, x => x.Quantity = 1);
-        DF.Fake<InstanceOrderedEvent>(_ctx, x =>
+        var sourceInstance = _forger.Fake<Instance>(x => x.Quantity = 1);
+        _forger.Fake<InstanceOrderedEvent>(x =>
         {
             x.Instance = sourceInstance;
             x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
         });
-        DF.Fake<InstanceReservedEvent>(_ctx, x => x.Instance = sourceInstance);
-        DF.Fake<InstanceDiscardedEvent>(_ctx, x => x.Instance = sourceInstance);
+        _forger.Fake<InstanceReservedEvent>(x => x.Instance = sourceInstance);
+        _forger.Fake<InstanceDiscardedEvent>(x => x.Instance = sourceInstance);
 
         var dto = new V1InstanceDiscardedRequest
         {
@@ -104,8 +103,8 @@ public class CreateInstanceDiscardedEventTests : TestsBase
     public void QuantityLeft_Equals_Zero__Rejected()
     {
         // arrange
-        var sourceInstance = DF.Fake<Instance>(_ctx, x => x.Quantity = 1);
-        DF.Fake<InstanceDiscardedEvent>(_ctx, x =>
+        var sourceInstance = _forger.Fake<Instance>(x => x.Quantity = 1);
+        _forger.Fake<InstanceDiscardedEvent>(x =>
         {
             x.Instance = sourceInstance;
             x.Quantity = sourceInstance.Quantity;
@@ -129,8 +128,8 @@ public class CreateInstanceDiscardedEventTests : TestsBase
     public void RequestedDiscardQuantity_LargerThan_QuantityLeft__Rejected()
     {
         // arrange
-        var sourceInstance = DF.Fake<Instance>(_ctx, x => x.Quantity = 1);
-        DF.Fake<InstanceDiscardedEvent>(_ctx, x =>
+        var sourceInstance = _forger.Fake<Instance>(x => x.Quantity = 1);
+        _forger.Fake<InstanceDiscardedEvent>(x =>
         {
             x.Instance = sourceInstance;
             x.Quantity = sourceInstance.Quantity;

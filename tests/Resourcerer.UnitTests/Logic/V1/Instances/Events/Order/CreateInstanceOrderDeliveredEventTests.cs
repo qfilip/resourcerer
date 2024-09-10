@@ -2,7 +2,6 @@
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Instances.Events.Order;
 using Resourcerer.UnitTests.Utilities;
@@ -21,8 +20,8 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var sourceInstance = DF.Fake<Instance>(_ctx);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
+        var sourceInstance = _forger.Fake<Instance>();
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x =>
         {
             x.Instance = sourceInstance;
             x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
@@ -71,8 +70,8 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
     [Fact]
     public void CancelledEvent_Exists__Rejected()
     {
-        var sourceInstance = DF.Fake<Instance>(_ctx);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
+        var sourceInstance = _forger.Fake<Instance>();
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x =>
         {
             x.Instance = sourceInstance;
             x.CancelledEvent = AppDbJsonField.Create(() => new InstanceOrderCancelledEvent());
@@ -94,8 +93,8 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
     [Fact]
     public void SentEvent_NotExists__Rejected()
     {
-        var sourceInstance = DF.Fake<Instance>(_ctx);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
+        var sourceInstance = _forger.Fake<Instance>();
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x =>
         {
             x.Instance = sourceInstance;
             x.DeliveredEvent = AppDbJsonField.Create(() => new InstanceOrderDeliveredEvent());
@@ -118,8 +117,8 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
     [Fact]
     public void Idempotent_DeliveredEventExist__Ok()
     {
-        var sourceInstance = DF.Fake<Instance>(_ctx);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
+        var sourceInstance = _forger.Fake<Instance>();
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x =>
         {
             x.Instance = sourceInstance;
             x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());

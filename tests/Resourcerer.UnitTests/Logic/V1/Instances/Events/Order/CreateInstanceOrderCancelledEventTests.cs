@@ -2,7 +2,6 @@
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Instances.Events.Order;
 using Resourcerer.UnitTests.Utilities;
@@ -21,8 +20,8 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var sourceInstance = DF.Fake<Instance>(_ctx);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x => x.Instance = sourceInstance);
+        var sourceInstance = _forger.Fake<Instance>();
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x => x.Instance = sourceInstance);
         _ctx.SaveChanges();
 
         var dto = new V1InstanceOrderCancelRequest
@@ -68,8 +67,8 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     [Fact]
     public void DeliveredEvent_Exists__Rejected()
     {
-        var sourceInstance = DF.Fake<Instance>(_ctx);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
+        var sourceInstance = _forger.Fake<Instance>();
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x =>
         {
             x.Instance = sourceInstance;
             x.DeliveredEvent = AppDbJsonField.Create(() => new InstanceOrderDeliveredEvent());
@@ -94,8 +93,8 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     [Fact]
     public void SentEvent_Exists__Rejected()
     {
-        var sourceInstance = DF.Fake<Instance>(_ctx);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x =>
+        var sourceInstance = _forger.Fake<Instance>();
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x =>
         {
             x.Instance = sourceInstance;
             x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
@@ -121,8 +120,8 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     public void Idempotent_CancelEventExists__Ok()
     {
         // arrange
-        var sourceInstance = DF.Fake<Instance>(_ctx);
-        var orderEvent = DF.Fake<InstanceOrderedEvent>(_ctx, x => x.Instance = sourceInstance);
+        var sourceInstance = _forger.Fake<Instance>();
+        var orderEvent = _forger.Fake<InstanceOrderedEvent>(x => x.Instance = sourceInstance);
 
         _ctx.SaveChanges();
 

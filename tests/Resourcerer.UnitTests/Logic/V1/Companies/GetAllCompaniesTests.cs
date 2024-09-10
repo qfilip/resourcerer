@@ -1,6 +1,5 @@
 ﻿using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 
@@ -21,7 +20,7 @@ public class GetAllCompaniesTests : TestsBase
         var fakeCount = 3;
 
         for(int i = 0; i < fakeCount; i++)
-            DF.Fake<Company>(_ctx);
+            _forger.Fake<Company>();
 
         _ctx.SaveChanges();
 

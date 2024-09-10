@@ -1,17 +1,18 @@
 ﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.UnitTests.Utilities;
+using SqlForgery;
 
 namespace Resourcerer.UnitTests.Logic.V1.Items.Events.Production;
 
 internal class Faking
 {
-    internal static FakedData FakeData(TestDbContext ctx, int elementCount, int instanceCount)
+    internal static FakedData FakeData(Forger forger, int elementCount, int instanceCount)
     {
-        var company = DF.Fake<Company>(ctx);
-        var composite = DF.Fake<Item>(ctx, x =>
+        var company = forger.Fake<Company>();
+        var composite = forger.Fake<Item>(x =>
         {
-            x.Category = DF.Fake<Category>(ctx, x => x.Company = company);
+            x.Category = forger.Fake<Category>(x => x.Company = company);
         });
         var fd = new FakedData()
         {
@@ -22,9 +23,9 @@ internal class Faking
         var elements = new List<(Item, double)>();
 
         for (int i = 0; i < elementCount; i++)
-            elements.Add((DF.Fake<Item>(ctx, x =>
+            elements.Add((forger.Fake<Item>(x =>
             {
-                x.Category = DF.Fake<Category>(ctx, x => x.Company = company);
+                x.Category = forger.Fake<Category>(x => x.Company = company);
             }), 1));
 
         for (int i = 0; i < elements.Count; i++)
@@ -33,7 +34,7 @@ internal class Faking
 
             for (int j = 0; j < instanceCount; j++)
             {
-                var instance = DF.Fake<Instance>(ctx, x =>
+                var instance = forger.Fake<Instance>(x =>
                 {
                     x.Quantity = 1;
 
@@ -46,7 +47,7 @@ internal class Faking
 
         foreach (var element in elements)
         {
-            DF.Fake<Excerpt>(ctx, x =>
+            forger.Fake<Excerpt>(x =>
             {
                 x.Composite = composite;
                 x.Element = element.Item1;
@@ -57,9 +58,9 @@ internal class Faking
 
         return fd;
     }
-    internal static ItemProductionOrder FakeOrder(TestDbContext context, FakedData data, Action<ItemProductionOrder>? modifier = null)
+    internal static ItemProductionOrder FakeOrder(Forger forger, FakedData data, Action<ItemProductionOrder>? modifier = null)
     {
-        return DF.Fake<ItemProductionOrder>(context, x =>
+        return forger.Fake<ItemProductionOrder>(x =>
         {
             x.Item = data.Composite;
             x.CompanyId = data.CompanyId;

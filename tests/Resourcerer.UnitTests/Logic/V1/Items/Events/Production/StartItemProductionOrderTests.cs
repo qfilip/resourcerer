@@ -21,13 +21,13 @@ public class StartItemProductionOrderTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        var fd = Faking.FakeData(_ctx, 2, 2);
-        var order = Faking.FakeOrder(_ctx, fd, x => x.Quantity = 2);
+        var fd = Faking.FakeData(_forger, 2, 2);
+        var order = Faking.FakeOrder(_forger, fd, x => x.Quantity = 2);
         fd.Elements.ForEach(el =>
         {
             el.Instances.ForEach(i =>
             {
-                DF.Fake<InstanceReservedEvent>(_ctx, x =>
+                _forger.Fake<InstanceReservedEvent>(x =>
                 {
                     x.ItemProductionOrderId = order.Id;
                     x.Quantity = 1;
@@ -93,8 +93,8 @@ public class StartItemProductionOrderTests : TestsBase
     [Fact]
     public void OrderCancelled__Rejected()
     {
-        var fd = Faking.FakeData(_ctx, 2, 2);
-        var order = Faking.FakeOrder(_ctx, fd, x =>
+        var fd = Faking.FakeData(_forger, 2, 2);
+        var order = Faking.FakeOrder(_forger, fd, x =>
         {
             x.Quantity = 2;
             x.CancelledEvent = AppDbJsonField.Create(() => new ItemProductionOrderCancelledEvent());
@@ -116,8 +116,8 @@ public class StartItemProductionOrderTests : TestsBase
     [Fact]
     public void OrderFinished__Rejected()
     {
-        var fd = Faking.FakeData(_ctx, 2, 2);
-        var order = Faking.FakeOrder(_ctx, fd, x =>
+        var fd = Faking.FakeData(_forger, 2, 2);
+        var order = Faking.FakeOrder(_forger, fd, x =>
         {
             x.Quantity = 2;
             x.FinishedEvent = AppDbJsonField.Create(() => new ItemProductionFinishedEvent());
@@ -139,8 +139,8 @@ public class StartItemProductionOrderTests : TestsBase
     [Fact]
     public void Idempotent_OrderStarted__Ok()
     {
-        var fd = Faking.FakeData(_ctx, 2, 2);
-        var order = Faking.FakeOrder(_ctx, fd, x =>
+        var fd = Faking.FakeData(_forger, 2, 2);
+        var order = Faking.FakeOrder(_forger, fd, x =>
         {
             x.Quantity = 2;
             x.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
