@@ -1,6 +1,5 @@
 ﻿using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Items.Events.Production;
 using Resourcerer.UnitTests.Utilities;
@@ -84,7 +83,7 @@ public class CreateItemProductionOrderTests : TestsBase
     {
         // arrange
         var fd = Faking.FakeData(_forger, 2, 2);
-        var otherCompany = DF.Fake<Company>(_ctx);
+        var otherCompany = _forger.Fake<Company>();
 
         fd.Elements.ForEach(e => e.Instances.ForEach(i =>
         {
