@@ -51,6 +51,54 @@ public class GetPendingUnitsCountTests : TestsBase
         Assert.Equal(2, actual);
     }
 
+    [Fact]
+    public void InstanceProduced__ThrowsException()
+    {
+        // arrange
+        Enumerable.Range(0, 2)
+            .Select(_ => _forger.Fake<Instance>(x =>
+            {
+                x.Item = _item;
+                x.SourceInstance = null;
+            }))
+            .ToArray();
+
+        _ctx.SaveChanges();
+
+        // act
+        var instances = _query.Where(x => x.ItemId == _item.Id).ToArray();
+        var func = () => _sut(instances);
+
+        // assert
+        Assert.Throws<InvalidOperationException>(() => func());
+    }
+
+    [Fact]
+    public void SourceInstance_NotLoaded__ThrowsException()
+    {
+        // arrange
+        var sourceInstance = _forger.Fake<Instance>();
+        Enumerable.Range(0, 2)
+            .Select(_ => _forger.Fake<Instance>(x =>
+            {
+                x.Item = _item;
+                x.SourceInstance = sourceInstance;
+            }))
+            .ToArray();
+
+        _ctx.SaveChanges();
+
+        // act
+        var instances = _query
+            .Where(x => x.ItemId == _item.Id)
+            .Select(x => new Instance { Id = x.Id, SourceInstanceId = x.SourceInstanceId })
+            .ToArray();
+        var func = () => _sut(instances);
+
+        // assert
+        Assert.Throws<InvalidOperationException>(() => func());
+    }
+
     private InstanceOrderedEvent FakeEvent(Instance sourceInstance, Action<InstanceOrderedEvent>? modifier = null)
     {
         var @event = _forger.Fake<InstanceOrderedEvent>(ev =>
