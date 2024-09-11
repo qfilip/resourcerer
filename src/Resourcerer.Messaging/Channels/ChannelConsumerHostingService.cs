@@ -1,13 +1,15 @@
-﻿using Resourcerer.Api.Services.Messaging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Resourcerer.DataAccess.Contexts;
+using Resourcerer.Messaging.Abstractions;
 
-namespace Resourcerer.Api.Services;
+namespace Resourcerer.Messaging.Channels;
 
-public abstract class EventConsumerServiceBase<TEventBase> : BackgroundService
+public abstract class ChannelConsumerHostingService<TMessage> : BackgroundService
 {
-    private readonly IConsumerAdapter<TEventBase> _consumer;
+    private readonly IMessageConsumer<TMessage> _consumer;
     private readonly IServiceProvider _serviceProvider;
-    public EventConsumerServiceBase(IConsumerAdapter<TEventBase> consumer, IServiceProvider serviceProvider)
+    public ChannelConsumerHostingService(IMessageConsumer<TMessage> consumer, IServiceProvider serviceProvider)
     {
         _consumer = consumer;
         _serviceProvider = serviceProvider;
@@ -16,7 +18,7 @@ public abstract class EventConsumerServiceBase<TEventBase> : BackgroundService
     {
         while (!_consumer.IsCompleted())
         {
-            var message = await _consumer.ReadAsync();
+            var message = await _consumer.ConsumeAsync();
             using (var scope = _serviceProvider.CreateScope())
             {
                 var database = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -31,5 +33,5 @@ public abstract class EventConsumerServiceBase<TEventBase> : BackgroundService
         }
     }
 
-    protected abstract Task HandleEvent(TEventBase message, AppDbContext appDbContext);
+    protected abstract Task HandleEvent(TMessage message, AppDbContext appDbContext);
 }

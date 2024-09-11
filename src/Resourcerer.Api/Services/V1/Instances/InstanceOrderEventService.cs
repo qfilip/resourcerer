@@ -1,14 +1,15 @@
-﻿using Resourcerer.Api.Services.Messaging;
-using Resourcerer.DataAccess.Contexts;
+﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Instances.Events.Order;
+using Resourcerer.Messaging.Abstractions;
+using Resourcerer.Messaging.Channels;
 
 namespace Resourcerer.Api.Services.V1;
 
-public class InstanceOrderEventService : EventConsumerServiceBase<V1InstanceOrderEvent>
+public class InstanceOrderEventService : ChannelConsumerHostingService<V1InstanceOrderEvent>
 {
     public InstanceOrderEventService(
-        IConsumerAdapter<V1InstanceOrderEvent> consumer,
+        IMessageConsumer<V1InstanceOrderEvent> consumer,
         IServiceProvider serviceProvider) : base(consumer, serviceProvider) {}
 
     protected override Task HandleEvent(V1InstanceOrderEvent message, AppDbContext appDbContext)

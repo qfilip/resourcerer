@@ -7,8 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Resourcerer.Api.Services.Auth;
-using Resourcerer.Api.Services.Messaging;
-using Resourcerer.Api.Services.Messaging.Channels;
+using Resourcerer.Messaging;
 using Resourcerer.Api.Services.V1;
 using Resourcerer.Application.Abstractions.Handlers;
 using Resourcerer.Application.Abstractions.Services;
@@ -16,6 +15,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
+using System.Reflection;
 using System.Threading.Channels;
 
 namespace Resourcerer.Api.Services;
@@ -23,6 +23,7 @@ public static partial class ServiceRegistry
 {
     public static void AddAppServices(this IServiceCollection services)
     {
+        // handlers and validators
         var handlerTypes = new Type[] { typeof(IAppHandler<,>), typeof(IAppEventHandler<,>) };
         foreach (var handlerType in handlerTypes)
         {
@@ -32,9 +33,10 @@ public static partial class ServiceRegistry
 
         services.AddScoped<Pipeline>();
 
-        services.AddMessagingService<V1InstanceOrderEvent, InstanceOrderEventService>();
-        services.AddMessagingService<V1InstanceDiscardedRequest, InstanceDiscardEventService>();
-        services.AddMessagingService<V1ItemProductionEvent, ItemProductionOrderEventService>();
+        // messaging
+        services.AddChannelMessagingService<V1InstanceOrderEvent, InstanceOrderEventService>();
+        services.AddChannelMessagingService<V1InstanceDiscardedRequest, InstanceDiscardEventService>();
+        services.AddChannelMessagingService<V1ItemProductionEvent, ItemProductionOrderEventService>();
 
         services.AddScoped<IEmailService, EmailService>();
     }
@@ -143,57 +145,41 @@ public static partial class ServiceRegistry
         });
     }
 
-    private static void AddMessagingService<TMessage, TService>(this IServiceCollection services)
-        where TService : EventConsumerServiceBase<TMessage>
-    {
-        services.AddSingleton(_ => Channel.CreateUnbounded<TMessage>());
-        services.AddSingleton(sp => sp.GetRequiredService<Channel<TMessage>>().Writer);
-        services.AddSingleton(sp => sp.GetRequiredService<Channel<TMessage>>().Reader);
-
-        services.AddSingleton<ISenderAdapter<TMessage>, ChannelSenderService<TMessage>>(sp =>
-        {
-            var sender = sp.GetRequiredService<Channel<TMessage>>().Writer;
-            var consumer = sp.GetRequiredService<Channel<TMessage>>().Reader;
-            return new ChannelSenderService<TMessage>(sender);
-        });
-
-        services.AddSingleton<IConsumerAdapter<TMessage>, ChannelReaderService<TMessage>>(sp =>
-        {
-            var consumer = sp.GetRequiredService<Channel<TMessage>>().Reader;
-            return new ChannelReaderService<TMessage>(consumer);
-        });
-
-        services.AddHostedService<TService>();
-    }
-
     private static void RegisterHandlers(Type handlerType, IServiceCollection services)
     {
-        var assembly = typeof(Logic.IAssemblyMarker).Assembly;
+        var interfaceName = handlerType.Name;
+        var registerAction = (Type x) =>
+        {
+            services.AddTransient(x);
+        };
 
-        var handlers = assembly
-            .GetTypes()
-            .Where(x =>
-                x.GetInterface(handlerType.Name) != null &&
-                !x.IsAbstract &&
-                !x.IsInterface)
-            .ToList();
-
-        handlers.ForEach(x => services.AddTransient(x));
+        RegisterDynamically(interfaceName, registerAction);
     }
 
-    public static void RegisterValidators(IServiceCollection services)
+    private static void RegisterValidators(IServiceCollection services)
+    {
+        var interfaceName = typeof(IValidator).Name;
+        var registerAction = (Type x) =>
+        {
+            services.AddSingleton(x);
+        };
+
+        RegisterDynamically(interfaceName, registerAction);
+    }
+
+    private static void RegisterDynamically(string interfaceName, Action<Type> registerAction)
     {
         var assembly = typeof(Logic.IAssemblyMarker).Assembly;
-        
-        var validators = assembly
+
+        var serviceTypes = assembly
         .GetTypes()
         .Where(x =>
-            x.GetInterface(typeof(IValidator).Name) != null &&
+            x.GetInterface(interfaceName) != null &&
             !x.IsAbstract &&
             !x.IsInterface)
         .ToList();
 
-        validators.ForEach(x => services.AddSingleton(x));
+        serviceTypes.ForEach(registerAction);
     }
 }
 

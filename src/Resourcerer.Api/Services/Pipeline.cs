@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using Resourcerer.Api.Services.Messaging;
 using Resourcerer.Application.Abstractions.Handlers;
 using Resourcerer.Application.Models;
+using Resourcerer.Messaging.Abstractions;
 
 namespace Resourcerer.Api.Services;
 
@@ -41,7 +41,7 @@ public class Pipeline
     public async Task<IResult> PipeMessage<TRequest, TRequestBase>(
         TRequest request,
         IValidator<TRequest> validator,
-        ISenderAdapter<TRequestBase> sender,
+        IMessageSender<TRequestBase> sender,
         string actionName) where TRequest : TRequestBase
     {
         _logger.LogInformation("Action {Action} started", actionName);

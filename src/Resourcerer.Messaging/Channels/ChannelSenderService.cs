@@ -1,9 +1,9 @@
-﻿
+﻿using Resourcerer.Messaging.Abstractions;
 using System.Threading.Channels;
 
-namespace Resourcerer.Api.Services.Messaging.Channels;
+namespace Resourcerer.Messaging.Channels;
 
-public class ChannelSenderService<TMessage> : ISenderAdapter<TMessage>
+public class ChannelSenderService<TMessage> : IMessageSender<TMessage>
 {
     private readonly ChannelWriter<TMessage> _channel;
 

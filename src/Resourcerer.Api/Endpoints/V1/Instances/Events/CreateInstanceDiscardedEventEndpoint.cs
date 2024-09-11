@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
-using Resourcerer.Api.Services.Messaging;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Instances.Events;
+using Resourcerer.Messaging.Abstractions;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
@@ -12,7 +12,7 @@ public class CreateInstanceDiscardedEventEndpoint
     public static async Task<IResult> Action(
         [FromBody] V1InstanceDiscardedRequest dto,
         [FromServices] CreateInstanceDiscardedEvent.Validator validator,
-        [FromServices] ISenderAdapter<V1InstanceDiscardedRequest> sender,
+        [FromServices] IMessageSender<V1InstanceDiscardedRequest> sender,
         [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeMessage(
