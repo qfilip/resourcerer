@@ -1,18 +1,18 @@
-﻿using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities;
+using SqlForgery;
 
 namespace Resourcerer.DataAccess.Utilities.Faking;
 
 public static partial class DF
 {
-    public static void FakeDatabase(AppDbContext ctx, string? permissions = "{}")
+    public static void FakeDatabase(Forger forger, string? permissions = "{}")
     {
-        var company = Fake<Company>(ctx, x =>
+        var company = forger.Fake<Company>(x =>
         {
             x.Name = "Item shop";
         });
 
-        var appUser = Fake<AppUser>(ctx, x =>
+        var appUser = forger.Fake<AppUser>(x =>
         {
             x.Name = "sss";
             x.IsAdmin = true;
@@ -23,46 +23,46 @@ public static partial class DF
             x.Permissions = permissions;
         });
 
-        var ctgMaterials = Fake<Category>(ctx, x =>
+        var ctgMaterials = forger.Fake<Category>(x =>
         {
             x.Name = "Materials";
             x.Company = company;
         });
 
-        var ctgWeapons = Fake<Category>(ctx, x =>
+        var ctgWeapons = forger.Fake<Category>(x =>
         {
             x.Name = "Weapons";
             x.Company = company;
         });
 
-        var ctgMelee = Fake<Category>(ctx, x =>
+        var ctgMelee = forger.Fake<Category>(x =>
         {
             x.Name = "Melee";
             x.Company = company;
             x.ParentCategory = ctgWeapons;
         });
 
-        var uomItem = Fake<UnitOfMeasure>(ctx, x =>
+        var uomItem = forger.Fake<UnitOfMeasure>(x =>
         {
             x.Name = "Piece";
             x.Symbol = "p";
         });
 
-        var cSword = Fake<Item>(ctx, x =>
+        var cSword = forger.Fake<Item>(x =>
         {
             x.Name = "Sword";
             x.UnitOfMeasure = uomItem;
             x.Category = ctgMelee;
         });
 
-        var cWood = Fake<Item>(ctx, x =>
+        var cWood = forger.Fake<Item>(x =>
         {
             x.Name = "Wood";
             x.UnitOfMeasure = uomItem;
             x.Category = ctgMaterials;
         });
 
-        var cIron = Fake<Item>(ctx, x =>
+        var cIron = forger.Fake<Item>(x =>
         {
             x.Name = "Iron";
             x.UnitOfMeasure = uomItem;
@@ -71,20 +71,18 @@ public static partial class DF
 
         (Item element, double qty)[] elements = [(cWood, 0.2d), (cIron, 1d)];
 
-        FakeExcerpts(ctx, cSword, elements);
+        FakeExcerpts(forger, cSword, elements);
 
-        Fake<Price>(ctx, x => { x.Item = cSword; x.UnitValue = 2d; });
-        Fake<Price>(ctx, x => { x.Item = cWood; x.UnitValue = 0.2d; });
-        Fake<Price>(ctx, x => { x.Item = cIron; x.UnitValue = 1d; });
-
-        ctx.SaveChanges();
+        forger.Fake<Price>(x => { x.Item = cSword; x.UnitValue = 2d; });
+        forger.Fake<Price>(x => { x.Item = cWood; x.UnitValue = 0.2d; });
+        forger.Fake<Price>(x => { x.Item = cIron; x.UnitValue = 1d; });
     }
 
-    private static void FakeExcerpts(AppDbContext ctx, Item composite, (Item element, double qty)[] elements)
+    private static void FakeExcerpts(Forger forger, Item composite, (Item element, double qty)[] elements)
     {
         foreach (var item in elements)
         {
-            Fake<Excerpt>(ctx, x =>
+            forger.Fake<Excerpt>(x =>
             {
                 x.Quantity = item.qty;
                 x.Composite = composite;

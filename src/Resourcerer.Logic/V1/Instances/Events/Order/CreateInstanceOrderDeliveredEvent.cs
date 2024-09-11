@@ -50,7 +50,7 @@ public static class CreateInstanceOrderDeliveredEvent
             }
 
             orderEvent.DeliveredEvent = AppDbJsonField
-                .Create(() => new InstanceOrderDeliveredEvent()); ;
+                .Create(() => new InstanceOrderDeliveredEvent());
 
             await _appDbContext.SaveChangesAsync();
 

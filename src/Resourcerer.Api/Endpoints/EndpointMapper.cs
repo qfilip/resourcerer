@@ -13,6 +13,7 @@ public static class EndpointMapper
         
         var group = GetGroup(app, "1.0", "seed");
         SeedFakeDataEndpoint.MapToGroup(group);
+        MemorySeedTestEndpoint.MapToGroup(group);
     }
 
     public static void AddAuthorization(

@@ -6,6 +6,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Fake;
+using SqlForgery;
 using System.Text.Json;
 
 namespace Resourcerer.Logic.Fake;
@@ -15,10 +16,12 @@ public static class Seed
     public class Handler : IAppHandler<Unit, DataSeedDto>
     {
         private readonly AppDbContext _dbContext;
+        private readonly Forger _forger;
 
         public Handler(AppDbContext dbContext)
         {
             _dbContext = dbContext;
+            _forger = new(dbContext, DF.FakingFunctions);
         }
 
         public async Task<HandlerResult<DataSeedDto>> Handle(Unit _)
@@ -26,7 +29,7 @@ public static class Seed
             var allPermissions = Permissions.GetCompressed();
             var adminPermissoins = JsonSerializer.Serialize(allPermissions);
             
-            DF.FakeDatabase(_dbContext, adminPermissoins);
+            DF.FakeDatabase(_forger, adminPermissoins);
 
             await _dbContext.SaveChangesAsync();
 
