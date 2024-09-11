@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
 
 namespace Resourcerer.UnitTests.Logic.V1.Functions.Instances;
@@ -93,6 +92,7 @@ public class GetPendingUnitsCountTests : TestsBase
             .Where(x => x.ItemId == _item.Id)
             .Select(x => new Instance { Id = x.Id, SourceInstanceId = x.SourceInstanceId })
             .ToArray();
+        
         var func = () => _sut(instances);
 
         // assert
