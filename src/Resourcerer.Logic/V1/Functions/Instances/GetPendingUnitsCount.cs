@@ -1,6 +1,6 @@
 ﻿using Resourcerer.DataAccess.Entities;
 
-namespace Resourcerer.Logic.V1.Functions.Instances;
+namespace Resourcerer.Logic.V1.Functions;
 
 public static partial class Instances
 {
@@ -37,7 +37,7 @@ public static partial class Instances
                     .Where(x =>
                         x.DerivedInstanceId == i.Id &&
                         x.CancelledEvent == null &&
-                        x.DeliveredEvent != null)
+                        x.DeliveredEvent == null)
                     .Sum(x => x.Quantity));
     }
 }

@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json;
-
-namespace Resourcerer.DataAccess.Entities;
+﻿namespace Resourcerer.DataAccess.Entities;
 
 public class InstanceOrderedEvent : AppDbEntity
 {

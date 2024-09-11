@@ -19,4 +19,18 @@ public class AppDbJsonField
 
         return t;
     }
+
+    public static T Create<T>(Action<T>? modifier = null) where T : AppDbJsonField, new()
+    {
+        var t = new T();
+        var now = DateTime.UtcNow;
+
+        t.Id = MiniId.Generate();
+        t.CreatedAt = now;
+        t.ModifiedAt = now;
+        
+        modifier?.Invoke(t);
+
+        return t;
+    }
 }
