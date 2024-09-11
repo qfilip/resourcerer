@@ -11,6 +11,7 @@ using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Utilities.Query;
 using System.Text.Json;
+using Resourcerer.Messaging.Emails.Abstractions;
 
 namespace Resourcerer.Logic.V1;
 
@@ -20,18 +21,18 @@ public static class EditUser
     {
         private readonly AppDbContext _dbContext;
         private readonly Validator _validator;
-        private readonly IEmailService _emailService;
+        private readonly IEmailSender _emailSender;
         private readonly IAppIdentityService<AppUser> _identityService;
 
         public Handler(
             AppDbContext dbContext,
             Validator validator,
-            IEmailService emailService,
+            IEmailSender emailSender,
             IAppIdentityService<AppUser> identityService)
         {
             _dbContext = dbContext;
             _validator = validator;
-            _emailService = emailService;
+            _emailSender = emailSender;
             _identityService = identityService;
         }
 
@@ -39,7 +40,7 @@ public static class EditUser
         {
             var errors = Permissions.Validate(request.PermissionsMap);
 
-            if (!_emailService.Validate(request.Email!))
+            if (!_emailSender.Validate(request.Email!))
                 errors.Add("Invalid email address");
 
             if (errors.Any())

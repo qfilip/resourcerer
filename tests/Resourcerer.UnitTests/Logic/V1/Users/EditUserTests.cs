@@ -1,11 +1,12 @@
 ﻿using FakeItEasy;
 using Resourcerer.Application.Abstractions.Services;
-using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.V1;
-using Resourcerer.Dtos;
-using Resourcerer.Logic.V1;
 using Resourcerer.Application.Models;
+using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Utilities.Query;
+using Resourcerer.Logic.V1;
+using Resourcerer.Messaging.Emails.Abstractions;
 using Resourcerer.UnitTests.Utilities;
 
 namespace Resourcerer.UnitTests.Logic.V1.Users;
@@ -13,7 +14,7 @@ namespace Resourcerer.UnitTests.Logic.V1.Users;
 public class EditUserTests : TestsBase
 {
     private readonly EditUser.Handler _sut;
-    private readonly IEmailService _fakeEmailService = A.Fake<IEmailService>();
+    private readonly IEmailSender _fakeEmailService = A.Fake<IEmailSender>();
     private readonly IAppIdentityService<AppUser> _fakeIdentityService = A.Fake<IAppIdentityService<AppUser>>();
     
     public EditUserTests()

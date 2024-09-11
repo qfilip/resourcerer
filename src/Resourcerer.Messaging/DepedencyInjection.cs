@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Resourcerer.Messaging.Abstractions;
 using Resourcerer.Messaging.Channels;
+using Resourcerer.Messaging.Emails;
+using Resourcerer.Messaging.Emails.Abstractions;
 using System.Threading.Channels;
 
 namespace Resourcerer.Messaging;
@@ -27,5 +29,10 @@ public static class DepedencyInjection
         });
 
         services.AddHostedService<THostingService>();
+    }
+
+    public static void AddEmailMessagingServices(this IServiceCollection services)
+    {
+        services.AddSingleton<IEmailSender, EmailService>();
     }
 }

@@ -6,16 +6,16 @@ using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Logic.V1;
+using Resourcerer.Messaging.Emails;
+using Resourcerer.Messaging.Emails.Abstractions;
 using Resourcerer.UnitTests.Utilities;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using System.ComponentModel.Design;
 
 namespace Resourcerer.UnitTests.Logic.V1.Users;
 
 public class RegisterUserTests : TestsBase
 {
     private readonly RegisterUser.Handler _sut;
-    private readonly IEmailService _fakeEmailService = A.Fake<IEmailService>();
+    private readonly IEmailSender _fakeEmailService = A.Fake<IEmailSender>();
     private readonly IAppIdentityService<AppUser> _fakeIdentityService = A.Fake<IAppIdentityService<AppUser>>();
     public RegisterUserTests()
     {
@@ -176,7 +176,7 @@ public class RegisterUserTests : TestsBase
             _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
             .Returns(true);
 
-        A.CallTo(() => _fakeEmailService.Send(A<string>.Ignored, A<string>.That.Matches(x => x == request.Email)))
+        A.CallTo(() => _fakeEmailService.SendAsync(A<Email>.That.Matches(x => x.Address == request.Email)))
             .Throws(new Exception());
 
         // act
@@ -208,7 +208,7 @@ public class RegisterUserTests : TestsBase
             _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
             .Returns(true);
 
-        A.CallTo(() => _fakeEmailService.Send(A<string>.Ignored, A<string>.That.Matches(x => x == request.Email)))
+        A.CallTo(() => _fakeEmailService.SendAsync(A<Email>.That.Matches(x => x.Address == request.Email)))
             .Returns(Task.CompletedTask);
 
 
@@ -224,7 +224,7 @@ public class RegisterUserTests : TestsBase
                 A.CallTo(() => _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
                     .MustHaveHappenedOnceExactly();
 
-                A.CallTo(() => _fakeEmailService.Send(A<string>.Ignored, request.Email!))
+                A.CallTo(() => _fakeEmailService.SendAsync(A<Email>.Ignored))
                     .MustHaveHappenedOnceExactly();
 
                 _ctx.Clear();

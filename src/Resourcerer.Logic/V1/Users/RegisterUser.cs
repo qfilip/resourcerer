@@ -10,6 +10,8 @@ using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Utilities.Query;
+using Resourcerer.Messaging.Emails;
+using Resourcerer.Messaging.Emails.Abstractions;
 using Resourcerer.Utilities;
 using Resourcerer.Utilities.Cryptography;
 using System.Text.Json;
@@ -22,18 +24,18 @@ public static class RegisterUser
     {
         private readonly AppDbContext _dbContext;
         private readonly Validator _validator;
-        private readonly IEmailService _emailService;
+        private readonly IEmailSender _emailSender;
         private readonly IAppIdentityService<AppUser> _identityService;
 
         public Handler(
             AppDbContext dbContext,
             Validator validator,
-            IEmailService emailService,
+            IEmailSender emailSender,
             IAppIdentityService<AppUser> identityService)
         {
             _dbContext = dbContext;
             _validator = validator;
-            _emailService = emailService;
+            _emailSender = emailSender;
             _identityService = identityService;
         }
 
@@ -44,7 +46,7 @@ public static class RegisterUser
             
             var errors = Permissions.Validate(request.PermissionsMap);
             
-            if (!_emailService.Validate(request.Email!))
+            if (!_emailSender.Validate(request.Email!))
                 errors.Add("Invalid email address");
 
             if (errors.Any())
@@ -80,7 +82,7 @@ public static class RegisterUser
 
             var content = $"Hello, you've been added to the system. Username {request.Username}, Password: {temporaryPassword}";
             
-            await _emailService.Send(content, user.Email!);
+            await _emailSender.SendAsync(new(user.Email, "Welcome to Resourcerer", content));
             
             var result = await _dbContext.AppUsers
                 .Where(x => x.Id == user.Id)
