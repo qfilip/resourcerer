@@ -30,7 +30,7 @@ public static partial class ServiceRegistry
 
                 // instance production
                 cfg.Send<V1CreateItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ItemId));
-                cfg.Send<V1CancelItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ProductionOrderEventId));
+                cfg.Send<V1CancelItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ProductionOrderId));
                 cfg.Send<V1StartItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ProductionOrderId));
                 cfg.Send<V1FinishItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ProductionOrderId));
             });

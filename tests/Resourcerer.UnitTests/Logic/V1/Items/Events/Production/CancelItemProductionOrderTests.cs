@@ -23,7 +23,7 @@ public class CancelItemProductionOrderTests : TestsBase
         var order = FakeData();
         var dto = new V1CancelItemProductionOrderCommand
         {
-            ProductionOrderEventId = order.Id,
+            ProductionOrderId = order.Id,
             Reason = "Test"
         };
 
@@ -39,7 +39,7 @@ public class CancelItemProductionOrderTests : TestsBase
             {
                 _ctx.Clear();
                 var data = _ctx.ItemProductionOrders
-                    .Where(x => x.Id == dto.ProductionOrderEventId)
+                    .Where(x => x.Id == dto.ProductionOrderId)
                     .First();
 
                 Assert.NotNull(data.CancelledEvent);
@@ -60,7 +60,7 @@ public class CancelItemProductionOrderTests : TestsBase
         var _ = FakeData();
         var dto = new V1CancelItemProductionOrderCommand
         {
-            ProductionOrderEventId = Guid.NewGuid(),
+            ProductionOrderId = Guid.NewGuid(),
             Reason = "Test"
         };
 
@@ -88,7 +88,7 @@ public class CancelItemProductionOrderTests : TestsBase
         var order = FakeData(x => x.InstancesUsedIds = []);
         var dto = new V1CancelItemProductionOrderCommand
         {
-            ProductionOrderEventId = order.Id,
+            ProductionOrderId = order.Id,
             Reason = "Test"
         };
 
@@ -115,7 +115,7 @@ public class CancelItemProductionOrderTests : TestsBase
         });
         var dto = new V1CancelItemProductionOrderCommand
         {
-            ProductionOrderEventId = order.Id,
+            ProductionOrderId = order.Id,
             Reason = "Test"
         };
 
@@ -146,7 +146,7 @@ public class CancelItemProductionOrderTests : TestsBase
         });
         var dto = new V1CancelItemProductionOrderCommand
         {
-            ProductionOrderEventId = order.Id,
+            ProductionOrderId = order.Id,
             Reason = "Test"
         };
 

@@ -23,7 +23,7 @@ public static class CancelItemProductionOrder
         public async Task<HandlerResult<Unit>> Handle(V1CancelItemProductionOrderCommand request)
         {
             var orderEvent = await _dbContext.ItemProductionOrders
-                .FirstOrDefaultAsync(x => x.Id == request.ProductionOrderEventId);
+                .FirstOrDefaultAsync(x => x.Id == request.ProductionOrderId);
 
             if (orderEvent == null)
             {
@@ -63,7 +63,7 @@ public static class CancelItemProductionOrder
     {
         public Validator()
         {
-            RuleFor(x => x.ProductionOrderEventId)
+            RuleFor(x => x.ProductionOrderId)
                 .NotEmpty().WithMessage("Order event id cannot be empty");
         }
     }

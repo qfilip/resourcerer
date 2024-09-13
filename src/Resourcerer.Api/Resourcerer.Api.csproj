@@ -33,7 +33,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Messaging\V1\MassTransit\Consumers\" />
+    <Folder Include="Services\Messaging\V1\MassTransit\Consumers\Instances\" />
+    <Folder Include="Services\Messaging\V1\MassTransit\Consumers\Items\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
