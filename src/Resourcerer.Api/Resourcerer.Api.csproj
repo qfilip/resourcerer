@@ -12,6 +12,8 @@
     <PackageReference Include="Mapster" Version="7.4.1-pre01" />
     <PackageReference Include="Mapster.Core" Version="1.2.2-pre01" />
     <PackageReference Include="Mapster.DependencyInjection" Version="1.0.2-pre01" />
+    <PackageReference Include="MassTransit" Version="8.2.5" />
+    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
@@ -31,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Services\Messaging\V1\MassTransit\Consumers\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

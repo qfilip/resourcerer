@@ -4,13 +4,13 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Instances.Events.Order;
 
-namespace Resourcerer.Api.Services.V1;
+namespace Resourcerer.Api.Services.Messaging.V1.Channels.Instances;
 
 public class InstanceOrderEventService : ChannelConsumerHostingService<V1InstanceOrderEvent>
 {
     public InstanceOrderEventService(
         IMessageConsumer<V1InstanceOrderEvent> consumer,
-        IServiceProvider serviceProvider) : base(consumer, serviceProvider) {}
+        IServiceProvider serviceProvider) : base(consumer, serviceProvider) { }
 
     protected override Task HandleEvent(V1InstanceOrderEvent message, AppDbContext appDbContext)
     {

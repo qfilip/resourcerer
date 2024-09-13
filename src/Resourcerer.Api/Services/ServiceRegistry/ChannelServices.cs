@@ -1,4 +1,5 @@
-﻿using Resourcerer.Api.Services.V1;
+﻿using Resourcerer.Api.Services.Messaging.V1.Channels.Instances;
+using Resourcerer.Api.Services.Messaging.V1.Channels.Items;
 using Resourcerer.Application.Messaging;
 using Resourcerer.Dtos.V1;
 
