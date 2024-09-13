@@ -1,20 +1,25 @@
-﻿using Resourcerer.Application.Abstractions.Services;
+﻿using Resourcerer.Application.Auth.Abstractions;
 using Resourcerer.DataAccess.Entities;
 using System.Security.Claims;
 
-namespace Resourcerer.Api.Services.Auth;
+namespace Resourcerer.Application.Auth;
 
 public sealed class AppIdentityService : IAppIdentityService<AppUser>
 {
+    public AppIdentityService(bool authEnabled)
+    {
+        _authEnabled = authEnabled;
+    }
     private delegate bool TryParse<T>(string str, out T value);
-    
+
     private AppUser? _user;
-    
+    private readonly bool _authEnabled;
+
     public AppUser Get() => _user is null ? new AppUser() : _user;
     public void Set(AppUser identity) => _user = identity;
     public void Set(IEnumerable<Claim> claims)
     {
-        if (!AppStaticData.Auth.Enabled) return;
+        if (!_authEnabled) return;
 
         var id = GetClaim<Guid>(claims, IAppIdentityService<AppUser>.ClaimId, Guid.TryParse);
         var name = GetClaim<string>(claims, IAppIdentityService<AppUser>.ClaimUsername, Return);
@@ -41,18 +46,18 @@ public sealed class AppIdentityService : IAppIdentityService<AppUser>
     {
         var claim = claims.FirstOrDefault(x => x.Type == type);
 
-        if( claim == null )
+        if (claim == null)
         {
-            if(!optional)
+            if (!optional)
             {
                 throw new Exception($"Couldn't find claim of type {type}");
             }
 
             return default;
         }
-        
+
         var parsed = parser(claim.Value, out var value);
-        if(!parsed)
+        if (!parsed)
         {
             throw new Exception($"Couldn't parse claim of type {type}");
         }

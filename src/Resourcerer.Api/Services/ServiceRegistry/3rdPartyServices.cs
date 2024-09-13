@@ -2,6 +2,7 @@
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Resourcerer.Application.Auth.Abstractions;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
@@ -15,6 +16,18 @@ public static partial class ServiceRegistry
         // database
         services.AddDbContext<AppDbContext>(cfg =>
             cfg.UseSqlite(AppInitializer.GetDbConnection(env)));
+
+        // pass user data from jwt to DBContext
+        services.AddTransient<AppUser>(x =>
+        {
+            var service = x.GetRequiredService<IAppIdentityService<AppUser>>();
+            if(service == null)
+            {
+                throw new InvalidOperationException($"{typeof(IAppIdentityService<AppUser>)} not found");
+            }
+
+            return service.Get();
+        });
 
         AddMapsterLib(services);
         AddSwagger(services);

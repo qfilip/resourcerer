@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.Application.Abstractions.Services;
+using Resourcerer.Application.Auth.Abstractions;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 

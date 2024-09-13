@@ -1,4 +1,4 @@
-﻿using Resourcerer.Application.Abstractions.Services;
+﻿using Resourcerer.Application.Auth.Abstractions;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;
 using System.Text;

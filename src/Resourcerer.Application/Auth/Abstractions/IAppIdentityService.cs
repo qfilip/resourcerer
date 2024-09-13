@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Resourcerer.Application.Abstractions.Services;
+namespace Resourcerer.Application.Auth.Abstractions;
 
 public interface IAppIdentityService<T> where T : class, new()
 {

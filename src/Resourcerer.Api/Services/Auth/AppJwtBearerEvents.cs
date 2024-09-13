@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Resourcerer.Application.Abstractions.Services;
+using Resourcerer.Application.Auth.Abstractions;
 using Resourcerer.DataAccess.Entities;
 
 namespace Resourcerer.Api.Services.Auth;
