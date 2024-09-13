@@ -1,8 +1,8 @@
-﻿using Resourcerer.DataAccess.Contexts;
+﻿using Resourcerer.Application.Messaging.Abstractions;
+using Resourcerer.Application.Messaging.Channels;
+using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Instances.Events.Order;
-using Resourcerer.Messaging.Abstractions;
-using Resourcerer.Messaging.Channels;
 
 namespace Resourcerer.Api.Services.V1;
 

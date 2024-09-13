@@ -9,7 +9,7 @@ public class TestDbContext : AppDbContext
 {
     public TestDbContext(
         DbContextOptions<AppDbContext> options,
-        IAppIdentityService<AppUser> _appIdentityService) : base(options, _appIdentityService)
+        IAppIdentityService<AppUser> _appIdentityService) : base(options, new())
     {
     }
 

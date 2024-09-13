@@ -11,9 +11,7 @@ public class Webapi
 
         AppInitializer.LoadConfiguration(builder.Configuration);
 
-        builder.Services.AddAspNetServices();
-        builder.Services.AddAppServices();
-        builder.Services.Add3rdParyServices(builder.Environment);
+        builder.Services.AddAllAppServices(builder.Environment);
 
         builder.Host.UseDefaultServiceProvider((_, options) =>
         {

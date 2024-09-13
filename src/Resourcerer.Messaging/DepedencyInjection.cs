@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MassTransit;
+using MassTransit.ExtensionsDependencyInjectionIntegration;
+using Microsoft.Extensions.DependencyInjection;
 using Resourcerer.Messaging.Abstractions;
 using Resourcerer.Messaging.Channels;
 using Resourcerer.Messaging.Emails;
@@ -31,7 +33,33 @@ public static class DepedencyInjection
         services.AddHostedService<THostingService>();
     }
 
-    public static void AddEmailMessagingServices(this IServiceCollection services)
+    public static void AddInMemoryMassTransitMessaging(
+        this IServiceCollection services,
+        Action<IServiceCollectionBusConfigurator> addConsumers,
+        Action<IInMemoryReceiveEndpointConfigurator> configureConsumers,
+        Action<IInMemoryBusFactoryConfigurator> addCommandSenders,
+        Action mapCommandEndpoints)
+    {
+        services.AddMassTransit(c =>
+        {
+            addConsumers.Invoke(c);
+            c.UsingInMemory((context, cfg) =>
+            {
+                cfg.ReceiveEndpoint("", q =>
+                {
+                    configureConsumers.Invoke(q);
+                });
+
+                // cfg.Send<CommandMessageType>();
+                addCommandSenders.Invoke(cfg);
+            });
+
+            // EndpointConvention.Map<CommandMessageType>(new Uri("uri"));
+            mapCommandEndpoints();
+        });
+    }
+
+    public static void AddEmailMessagingServices(IServiceCollection services)
     {
         services.AddSingleton<IEmailSender, EmailService>();
     }
