@@ -29,6 +29,7 @@ public static partial class ServiceRegistry
             c.AddConsumer<V1InstanceOrderCreateCommandConsumer>();
             c.AddConsumer<V1InstanceOrderCancelCommandConsumer>();
             c.AddConsumer<V1InstanceOrderDeliverCommandConsumer>();
+            c.AddConsumer<V1InstanceOrderSendCommandConsumer>();
 
             c.UsingInMemory((ctx, cfg) =>
             {
@@ -41,6 +42,7 @@ public static partial class ServiceRegistry
                     q.ConfigureConsumer<V1InstanceOrderCreateCommandConsumer>(ctx);
                     q.ConfigureConsumer<V1InstanceOrderCancelCommandConsumer>(ctx);
                     q.ConfigureConsumer<V1InstanceOrderDeliverCommandConsumer>(ctx);
+                    q.ConfigureConsumer<V1InstanceOrderSendCommandConsumer>(ctx);
                 });
 
                 // instance discard
