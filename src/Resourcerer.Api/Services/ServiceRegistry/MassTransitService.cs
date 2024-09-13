@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using Resourcerer.Api.Services.Messaging.V1.MassTransit.Consumers.Instances;
 using Resourcerer.Dtos.V1;
 
 namespace Resourcerer.Api.Services;
@@ -9,13 +10,25 @@ public static partial class ServiceRegistry
     {
         services.AddMassTransit(c =>
         {
-            //c.AddConsumer<>();
+            // instance discard
+            c.AddConsumer<V1InstanceDiscardCommandConsumer>();
+
+            // instance order
+            c.AddConsumer<V1InstanceOrderCreateCommandConsumer>();
+            c.AddConsumer<V1InstanceOrderCancelCommandConsumer>();
+            c.AddConsumer<V1InstanceOrderDeliverCommandConsumer>();
 
             c.UsingInMemory((ctx, cfg) =>
             {
                 cfg.ReceiveEndpoint("", q =>
                 {
-                    // q.ConfigureConsumer<>(ctx);
+                    // instance discard
+                    q.ConfigureConsumer<V1InstanceDiscardCommandConsumer>(ctx);
+
+                    // instance order
+                    q.ConfigureConsumer<V1InstanceOrderCreateCommandConsumer>(ctx);
+                    q.ConfigureConsumer<V1InstanceOrderCancelCommandConsumer>(ctx);
+                    q.ConfigureConsumer<V1InstanceOrderDeliverCommandConsumer>(ctx);
                 });
 
                 // instance discard
@@ -28,7 +41,7 @@ public static partial class ServiceRegistry
                 cfg.Send<V1InstanceOrderSendCommand>(cmd => cmd.UseCorrelationId(x => x.InstanceId));
                 cfg.Send<V1InstanceDiscardCommand>(cmd => cmd.UseCorrelationId(x => x.InstanceId));
 
-                // instance production
+                // item production
                 cfg.Send<V1CreateItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ItemId));
                 cfg.Send<V1CancelItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ProductionOrderId));
                 cfg.Send<V1StartItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ProductionOrderId));
