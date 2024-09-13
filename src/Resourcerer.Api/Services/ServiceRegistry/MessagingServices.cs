@@ -1,13 +1,25 @@
 ﻿using MassTransit;
+using Resourcerer.Api.Services.Messaging.V1.Channels.Instances;
+using Resourcerer.Api.Services.Messaging.V1.Channels.Items;
 using Resourcerer.Api.Services.Messaging.V1.MassTransit.Consumers.Instances;
+using Resourcerer.Application.Messaging;
 using Resourcerer.Dtos.V1;
 
 namespace Resourcerer.Api.Services;
 
 public static partial class ServiceRegistry
 {
-    public static void AddMassTransit(IServiceCollection services)
+    public static void AddChannelMessagingServices(IServiceCollection services, bool useChannels)
     {
+        if(useChannels)
+        {
+            DependencyInjection.AddChannelMessagingService<V1InstanceOrderCommand, InstanceOrderEventService>(services);
+            DependencyInjection.AddChannelMessagingService<V1InstanceDiscardCommand, InstanceDiscardEventService>(services);
+            DependencyInjection.AddChannelMessagingService<V1ItemProductionCommand, ItemProductionOrderEventService>(services);
+            
+            return;
+        }
+
         services.AddMassTransit(c =>
         {
             // instance discard
@@ -33,7 +45,7 @@ public static partial class ServiceRegistry
 
                 // instance discard
                 cfg.Send<V1InstanceDiscardCommand>(cmd => cmd.UseCorrelationId(x => x.InstanceId));
-                
+
                 // instance order
                 cfg.Send<V1InstanceOrderCreateCommand>(cmd => cmd.UseCorrelationId(x => x.InstanceId));
                 cfg.Send<V1InstanceOrderCancelCommand>(cmd => cmd.UseCorrelationId(x => x.InstanceId));
