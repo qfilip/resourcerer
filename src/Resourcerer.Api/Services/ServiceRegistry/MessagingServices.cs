@@ -53,7 +53,6 @@ public static partial class ServiceRegistry
                 cfg.Send<V1InstanceOrderCancelCommand>(cmd => cmd.UseCorrelationId(x => x.InstanceId));
                 cfg.Send<V1InstanceOrderDeliverCommand>(cmd => cmd.UseCorrelationId(x => x.InstanceId));
                 cfg.Send<V1InstanceOrderSendCommand>(cmd => cmd.UseCorrelationId(x => x.InstanceId));
-                cfg.Send<V1InstanceDiscardCommand>(cmd => cmd.UseCorrelationId(x => x.InstanceId));
 
                 // item production
                 cfg.Send<V1CreateItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ItemId));
@@ -70,7 +69,6 @@ public static partial class ServiceRegistry
             MapCommandEndpoint<V1InstanceOrderCancelCommand>();
             MapCommandEndpoint<V1InstanceOrderDeliverCommand>();
             MapCommandEndpoint<V1InstanceOrderSendCommand>();
-            MapCommandEndpoint<V1InstanceDiscardCommand>();
 
             // instance production
             MapCommandEndpoint<V1CreateItemProductionOrderCommand>();
