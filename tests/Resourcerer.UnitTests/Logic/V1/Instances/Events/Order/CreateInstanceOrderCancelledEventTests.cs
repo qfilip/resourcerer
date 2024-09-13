@@ -24,7 +24,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
         var orderEvent = _forger.Fake<InstanceOrderedEvent>(x => x.Instance = sourceInstance);
         _ctx.SaveChanges();
 
-        var dto = new V1InstanceOrderCancelRequest
+        var dto = new V1InstanceOrderCancelCommand
         {
             OrderEventId = orderEvent.Id,
             InstanceId = sourceInstance.Id,
@@ -52,7 +52,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
     [Fact]
     public void OrderEvent_NotFound__NotFound()
     {
-        var dto = new V1InstanceOrderCancelRequest
+        var dto = new V1InstanceOrderCancelCommand
         {
             OrderEventId = Guid.NewGuid()
         };
@@ -76,7 +76,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
 
         _ctx.SaveChanges();
 
-        var dto = new V1InstanceOrderCancelRequest
+        var dto = new V1InstanceOrderCancelCommand
         {
             OrderEventId = orderEvent.Id,
             InstanceId = sourceInstance.Id,
@@ -102,7 +102,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
 
         _ctx.SaveChanges();
 
-        var dto = new V1InstanceOrderCancelRequest
+        var dto = new V1InstanceOrderCancelCommand
         {
             OrderEventId = orderEvent.Id,
             InstanceId = sourceInstance.Id,
@@ -125,7 +125,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
 
         _ctx.SaveChanges();
 
-        var dto = new V1InstanceOrderCancelRequest
+        var dto = new V1InstanceOrderCancelCommand
         {
             OrderEventId = orderEvent.Id,
             InstanceId = sourceInstance.Id,

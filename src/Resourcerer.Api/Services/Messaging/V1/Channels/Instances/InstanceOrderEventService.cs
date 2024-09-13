@@ -6,30 +6,30 @@ using Resourcerer.Logic.V1.Instances.Events.Order;
 
 namespace Resourcerer.Api.Services.Messaging.V1.Channels.Instances;
 
-public class InstanceOrderEventService : ChannelConsumerHostingService<V1InstanceOrderEvent>
+public class InstanceOrderEventService : ChannelConsumerHostingService<V1InstanceOrderCommand>
 {
     public InstanceOrderEventService(
-        IMessageConsumer<V1InstanceOrderEvent> consumer,
+        IMessageConsumer<V1InstanceOrderCommand> consumer,
         IServiceProvider serviceProvider) : base(consumer, serviceProvider) { }
 
-    protected override Task HandleEvent(V1InstanceOrderEvent message, AppDbContext appDbContext)
+    protected override Task HandleEvent(V1InstanceOrderCommand message, AppDbContext appDbContext)
     {
-        if (message is V1InstanceOrderRequest orderEv)
+        if (message is V1InstanceOrderCreateCommand orderEv)
         {
-            var handler = new CreateInstanceOrderedEvent.Handler(appDbContext);
+            var handler = new V1CreateInstanceOrderedEvent.Handler(appDbContext);
             return handler.Handle(orderEv);
         }
-        else if (message is V1InstanceOrderCancelRequest cancelEv)
+        else if (message is V1InstanceOrderCancelCommand cancelEv)
         {
             var handler = new CreateInstanceOrderCancelledEvent.Handler(appDbContext);
             return handler.Handle(cancelEv);
         }
-        else if (message is V1InstanceOrderDeliveredRequest deliverEv)
+        else if (message is V1InstanceOrderDeliverCommand deliverEv)
         {
             var handler = new CreateInstanceOrderDeliveredEvent.Handler(appDbContext);
             return handler.Handle(deliverEv);
         }
-        else if (message is V1InstanceOrderSentRequest sentEv)
+        else if (message is V1InstanceOrderSendCommand sentEv)
         {
             var handler = new CreateInstanceOrderSentEvent.Handler(appDbContext);
             return handler.Handle(sentEv);

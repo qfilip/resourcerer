@@ -21,7 +21,7 @@ public class CancelItemProductionOrderTests : TestsBase
     {
         // arrange
         var order = FakeData();
-        var dto = new V1CancelItemProductionOrderRequest
+        var dto = new V1CancelItemProductionOrderCommand
         {
             ProductionOrderEventId = order.Id,
             Reason = "Test"
@@ -58,7 +58,7 @@ public class CancelItemProductionOrderTests : TestsBase
     {
         // arrange
         var _ = FakeData();
-        var dto = new V1CancelItemProductionOrderRequest
+        var dto = new V1CancelItemProductionOrderCommand
         {
             ProductionOrderEventId = Guid.NewGuid(),
             Reason = "Test"
@@ -86,7 +86,7 @@ public class CancelItemProductionOrderTests : TestsBase
     {
         // arrange
         var order = FakeData(x => x.InstancesUsedIds = []);
-        var dto = new V1CancelItemProductionOrderRequest
+        var dto = new V1CancelItemProductionOrderCommand
         {
             ProductionOrderEventId = order.Id,
             Reason = "Test"
@@ -113,7 +113,7 @@ public class CancelItemProductionOrderTests : TestsBase
         {
             x.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
         });
-        var dto = new V1CancelItemProductionOrderRequest
+        var dto = new V1CancelItemProductionOrderCommand
         {
             ProductionOrderEventId = order.Id,
             Reason = "Test"
@@ -144,7 +144,7 @@ public class CancelItemProductionOrderTests : TestsBase
         {
             x.InstancesUsedIds = [Guid.NewGuid(), Guid.NewGuid()];
         });
-        var dto = new V1CancelItemProductionOrderRequest
+        var dto = new V1CancelItemProductionOrderCommand
         {
             ProductionOrderEventId = order.Id,
             Reason = "Test"

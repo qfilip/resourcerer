@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.Dtos.V1;
 
-public class V1InstanceOrderCancelRequest : V1InstanceOrderEvent
+public class V1InstanceOrderCancelCommand : V1InstanceOrderCommand
 {
     public Guid InstanceId { get; set; }
     public Guid OrderEventId { get; set; }

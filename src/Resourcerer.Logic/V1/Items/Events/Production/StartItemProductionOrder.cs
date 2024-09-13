@@ -12,7 +12,7 @@ namespace Resourcerer.Logic.V1.Items.Events.Production;
 
 public static class StartItemProductionOrder
 {
-    public class Handler : IAppEventHandler<V1StartItemProductionOrderRequest, Unit>
+    public class Handler : IAppEventHandler<V1StartItemProductionOrderCommand, Unit>
     {
         private readonly AppDbContext _dbContext;
 
@@ -21,7 +21,7 @@ public static class StartItemProductionOrder
             _dbContext = dbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(V1StartItemProductionOrderRequest request)
+        public async Task<HandlerResult<Unit>> Handle(V1StartItemProductionOrderCommand request)
         {
             var order = await _dbContext.ItemProductionOrders
                 .Select(x => new ItemProductionOrder
@@ -84,7 +84,7 @@ public static class StartItemProductionOrder
             return HandlerResult<Unit>.Ok(Unit.New);
         }
     }
-    public class Validator : AbstractValidator<V1StartItemProductionOrderRequest>
+    public class Validator : AbstractValidator<V1StartItemProductionOrderCommand>
     {
         public Validator()
         {

@@ -29,7 +29,7 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
 
         _ctx.SaveChanges();
 
-        var dto = new V1InstanceOrderDeliveredRequest
+        var dto = new V1InstanceOrderDeliverCommand
         {
             InstanceId = sourceInstance.Id,
             OrderEventId = orderEvent.Id
@@ -55,7 +55,7 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
     [Fact]
     public void OrderEvent_NotFound__Rejected()
     {
-        var dto = new V1InstanceOrderDeliveredRequest
+        var dto = new V1InstanceOrderDeliverCommand
         {
             InstanceId = Guid.NewGuid()
         };
@@ -76,7 +76,7 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
             x.Instance = sourceInstance;
             x.CancelledEvent = AppDbJsonField.Create(() => new InstanceOrderCancelledEvent());
         });
-        var dto = new V1InstanceOrderDeliveredRequest
+        var dto = new V1InstanceOrderDeliverCommand
         {
             InstanceId = sourceInstance.Id,
             OrderEventId = orderEvent.Id
@@ -101,7 +101,7 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
         });
         _ctx.SaveChanges();
 
-        var dto = new V1InstanceOrderDeliveredRequest
+        var dto = new V1InstanceOrderDeliverCommand
         {
             InstanceId = sourceInstance.Id,
             OrderEventId = orderEvent.Id
@@ -126,7 +126,7 @@ public class CreateInstanceOrderDeliveredEventTests : TestsBase
         });
         _ctx.SaveChanges();
 
-        var dto = new V1InstanceOrderDeliveredRequest
+        var dto = new V1InstanceOrderDeliverCommand
         {
             InstanceId = sourceInstance.Id,
             OrderEventId = orderEvent.Id

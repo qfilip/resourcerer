@@ -25,7 +25,7 @@ public class FinishItemProductionOrderTests : TestsBase
             x.Quantity = 2;
             x.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
         });
-        var dto = new V1FinishItemProductionOrderRequest
+        var dto = new V1FinishItemProductionOrderCommand
         {
             ProductionOrderId = order.Id
         };
@@ -50,7 +50,7 @@ public class FinishItemProductionOrderTests : TestsBase
     public void Order_NotFound__NotFound()
     {
         // arrange
-        var dto = new V1FinishItemProductionOrderRequest
+        var dto = new V1FinishItemProductionOrderCommand
         {
             ProductionOrderId = Guid.NewGuid()
         };
@@ -71,7 +71,7 @@ public class FinishItemProductionOrderTests : TestsBase
         {
             x.CancelledEvent = AppDbJsonField.Create(() => new ItemProductionOrderCancelledEvent());
         });
-        var dto = new V1FinishItemProductionOrderRequest
+        var dto = new V1FinishItemProductionOrderCommand
         {
             ProductionOrderId = order.Id
         };
@@ -91,7 +91,7 @@ public class FinishItemProductionOrderTests : TestsBase
         // arrange
         var fd = Faking.FakeData(_forger, 2, 2);
         var order = Faking.FakeOrder(_forger, fd);
-        var dto = new V1FinishItemProductionOrderRequest
+        var dto = new V1FinishItemProductionOrderCommand
         {
             ProductionOrderId = order.Id
         };
@@ -115,7 +115,7 @@ public class FinishItemProductionOrderTests : TestsBase
             x.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
             x.FinishedEvent = AppDbJsonField.Create(() => new ItemProductionFinishedEvent());
         });
-        var dto = new V1FinishItemProductionOrderRequest
+        var dto = new V1FinishItemProductionOrderCommand
         {
             ProductionOrderId = order.Id
         };

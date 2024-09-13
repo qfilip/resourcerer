@@ -11,7 +11,7 @@ namespace Resourcerer.Logic.V1.Instances.Events;
 
 public static class CreateInstanceDiscardedEvent
 {
-    public class Handler : IAppEventHandler<V1InstanceDiscardedRequest, Unit>
+    public class Handler : IAppEventHandler<V1InstanceDiscardCommand, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
@@ -19,7 +19,7 @@ public static class CreateInstanceDiscardedEvent
             _appDbContext = appDbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(V1InstanceDiscardedRequest request)
+        public async Task<HandlerResult<Unit>> Handle(V1InstanceDiscardCommand request)
         {
             var instance = await _appDbContext.Instances
                 .Select(x => new
@@ -82,7 +82,7 @@ public static class CreateInstanceDiscardedEvent
             }
         }
     }
-    public class Validator : AbstractValidator<V1InstanceDiscardedRequest>
+    public class Validator : AbstractValidator<V1InstanceDiscardCommand>
     {
         public Validator()
         {

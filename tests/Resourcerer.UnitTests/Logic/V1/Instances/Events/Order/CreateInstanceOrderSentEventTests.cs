@@ -25,7 +25,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
 
         _ctx.SaveChanges();
 
-        var dto = new V1InstanceOrderSentRequest
+        var dto = new V1InstanceOrderSendCommand
         {
             OrderEventId = orderEvent.Id,
             InstanceId = sourceInstance.Id
@@ -53,7 +53,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
 
         _ctx.SaveChanges();
 
-        var dto = new V1InstanceOrderSentRequest
+        var dto = new V1InstanceOrderSendCommand
         {
             OrderEventId = orderEvent.Id,
             InstanceId = Guid.NewGuid()
@@ -74,7 +74,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
 
         _ctx.SaveChanges();
 
-        var dto = new V1InstanceOrderSentRequest
+        var dto = new V1InstanceOrderSendCommand
         {
             OrderEventId = Guid.NewGuid(),
             InstanceId = sourceInstance.Id
@@ -100,7 +100,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
 
         _ctx.SaveChanges();
 
-        var dto = new V1InstanceOrderSentRequest
+        var dto = new V1InstanceOrderSendCommand
         {
             OrderEventId = orderEvent.Id,
             InstanceId = sourceInstance.Id
@@ -126,7 +126,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
 
         _ctx.SaveChanges();
 
-        var dto = new V1InstanceOrderSentRequest
+        var dto = new V1InstanceOrderSendCommand
         {
             OrderEventId = orderEvent.Id,
             InstanceId = sourceInstance.Id
@@ -152,7 +152,7 @@ public class CreateInstanceOrderSentEventTests : TestsBase
 
         _ctx.SaveChanges();
 
-        var dto = new V1InstanceOrderSentRequest
+        var dto = new V1InstanceOrderSendCommand
         {
             OrderEventId = orderEvent.Id,
             InstanceId = sourceInstance.Id

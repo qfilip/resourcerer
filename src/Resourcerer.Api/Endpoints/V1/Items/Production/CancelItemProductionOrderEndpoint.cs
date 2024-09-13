@@ -10,9 +10,9 @@ namespace Resourcerer.Api.Endpoints.V1;
 public static class CancelItemProductionOrderEndpoint
 {
     public static async Task<IResult> Action(
-       [FromBody] V1CancelItemProductionOrderRequest dto,
+       [FromBody] V1CancelItemProductionOrderCommand dto,
        [FromServices] CancelItemProductionOrder.Validator validator,
-       [FromServices] IMessageSender<V1ItemProductionEvent> sender,
+       [FromServices] IMessageSender<V1ItemProductionCommand> sender,
        [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeMessage(

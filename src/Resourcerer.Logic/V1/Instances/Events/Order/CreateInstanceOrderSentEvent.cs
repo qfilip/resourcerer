@@ -11,7 +11,7 @@ namespace Resourcerer.Logic.V1.Instances.Events.Order;
 
 public static class CreateInstanceOrderSentEvent
 {
-    public class Handler : IAppEventHandler<V1InstanceOrderSentRequest, Unit>
+    public class Handler : IAppEventHandler<V1InstanceOrderSendCommand, Unit>
     {
         private readonly AppDbContext _appDbContext;
 
@@ -19,7 +19,7 @@ public static class CreateInstanceOrderSentEvent
         {
             _appDbContext = appDbContext;
         }
-        public async Task<HandlerResult<Unit>> Handle(V1InstanceOrderSentRequest request)
+        public async Task<HandlerResult<Unit>> Handle(V1InstanceOrderSendCommand request)
         {
             var orderEvent = await _appDbContext.InstanceOrderedEvents
                 .FirstOrDefaultAsync(x =>
@@ -54,7 +54,7 @@ public static class CreateInstanceOrderSentEvent
             return HandlerResult<Unit>.Ok(Unit.New);
         }
     }
-    public class Validator : AbstractValidator<V1InstanceOrderSentRequest>
+    public class Validator : AbstractValidator<V1InstanceOrderSendCommand>
     {
         public Validator()
         {

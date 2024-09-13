@@ -10,16 +10,16 @@ namespace Resourcerer.Api.Endpoints.V1;
 public class CreateInstanceOrderedEventEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] V1InstanceOrderRequest dto,
-        [FromServices] CreateInstanceOrderedEvent.Validator validator,
-        [FromServices] IMessageSender<V1InstanceOrderEvent> sender,
+        [FromBody] V1InstanceOrderCreateCommand dto,
+        [FromServices] V1CreateInstanceOrderedEvent.Validator validator,
+        [FromServices] IMessageSender<V1InstanceOrderCommand> sender,
         [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeMessage(
             dto,
             validator,
             sender,
-            nameof(CreateInstanceOrderedEvent));
+            nameof(V1CreateInstanceOrderedEvent));
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

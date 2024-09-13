@@ -1,5 +1,5 @@
 ﻿namespace Resourcerer.Dtos.V1;
-public class V1CreateItemProductionOrderRequest : V1ItemProductionEvent
+public class V1CreateItemProductionOrderCommand : V1ItemProductionCommand
 {
     public Guid ItemId { get; set; }
     public Guid CompanyId { get; set; }

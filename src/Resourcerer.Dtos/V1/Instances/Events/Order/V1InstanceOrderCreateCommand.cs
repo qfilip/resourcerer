@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.Dtos.V1;
 
-public class V1InstanceOrderRequest : V1InstanceOrderEvent
+public class V1InstanceOrderCreateCommand : V1InstanceOrderCommand
 {
     public Guid InstanceId { get; set; }
     public Guid SellerCompanyId { get; set; }

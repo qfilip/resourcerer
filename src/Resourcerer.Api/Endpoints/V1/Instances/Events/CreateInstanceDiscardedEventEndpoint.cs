@@ -10,9 +10,9 @@ namespace Resourcerer.Api.Endpoints.V1;
 public class CreateInstanceDiscardedEventEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] V1InstanceDiscardedRequest dto,
+        [FromBody] V1InstanceDiscardCommand dto,
         [FromServices] CreateInstanceDiscardedEvent.Validator validator,
-        [FromServices] IMessageSender<V1InstanceDiscardedRequest> sender,
+        [FromServices] IMessageSender<V1InstanceDiscardCommand> sender,
         [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeMessage(

@@ -10,9 +10,9 @@ namespace Resourcerer.Api.Endpoints.V1;
 public class CreateInstanceDeliveredEventEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] V1InstanceOrderDeliveredRequest dto,
+        [FromBody] V1InstanceOrderDeliverCommand dto,
         [FromServices] CreateInstanceOrderDeliveredEvent.Validator validator,
-        [FromServices] IMessageSender<V1InstanceOrderEvent> sender,
+        [FromServices] IMessageSender<V1InstanceOrderCommand> sender,
         [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeMessage(

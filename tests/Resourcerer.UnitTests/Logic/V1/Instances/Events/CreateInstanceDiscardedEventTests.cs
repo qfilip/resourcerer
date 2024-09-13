@@ -24,7 +24,7 @@ public class CreateInstanceDiscardedEventTests : TestsBase
         var sourceInstance = _forger.Fake<Instance>();
         var orderEvent = _forger.Fake<InstanceOrderedEvent>(x => x.Instance = sourceInstance);
 
-        var dto = new V1InstanceDiscardedRequest
+        var dto = new V1InstanceDiscardCommand
         {
             InstanceId = sourceInstance.Id,
             Quantity = orderEvent.Quantity
@@ -58,7 +58,7 @@ public class CreateInstanceDiscardedEventTests : TestsBase
         var sourceInstance = _forger.Fake<Instance>();
         var orderEvent = _forger.Fake<InstanceOrderedEvent>(x => x.Instance = sourceInstance);
 
-        var dto = new V1InstanceDiscardedRequest
+        var dto = new V1InstanceDiscardCommand
         {
             InstanceId = Guid.NewGuid()
         };
@@ -85,7 +85,7 @@ public class CreateInstanceDiscardedEventTests : TestsBase
         _forger.Fake<InstanceReservedEvent>(x => x.Instance = sourceInstance);
         _forger.Fake<InstanceDiscardedEvent>(x => x.Instance = sourceInstance);
 
-        var dto = new V1InstanceDiscardedRequest
+        var dto = new V1InstanceDiscardCommand
         {
             InstanceId = sourceInstance.Id
         };
@@ -110,7 +110,7 @@ public class CreateInstanceDiscardedEventTests : TestsBase
             x.Quantity = sourceInstance.Quantity;
         });
 
-        var dto = new V1InstanceDiscardedRequest
+        var dto = new V1InstanceDiscardCommand
         {
             InstanceId = sourceInstance.Id
         };
@@ -135,7 +135,7 @@ public class CreateInstanceDiscardedEventTests : TestsBase
             x.Quantity = sourceInstance.Quantity;
         });
 
-        var dto = new V1InstanceDiscardedRequest
+        var dto = new V1InstanceDiscardCommand
         {
             InstanceId = sourceInstance.Id,
             Quantity = 2

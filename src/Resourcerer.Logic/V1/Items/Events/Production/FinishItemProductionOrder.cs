@@ -10,7 +10,7 @@ using Resourcerer.Dtos.V1;
 namespace Resourcerer.Logic.V1.Items.Events.Production;
 public static class FinishItemProductionOrder
 {
-    public class Handler : IAppEventHandler<V1FinishItemProductionOrderRequest, Unit>
+    public class Handler : IAppEventHandler<V1FinishItemProductionOrderCommand, Unit>
     {
         private readonly AppDbContext _dbContext;
 
@@ -19,7 +19,7 @@ public static class FinishItemProductionOrder
             _dbContext = dbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(V1FinishItemProductionOrderRequest request)
+        public async Task<HandlerResult<Unit>> Handle(V1FinishItemProductionOrderCommand request)
         {
             var order = await _dbContext.ItemProductionOrders
                 .Select(x => new ItemProductionOrder
@@ -86,7 +86,7 @@ public static class FinishItemProductionOrder
             return HandlerResult<Unit>.Ok(Unit.New);
         }
     }
-    public class Validator : AbstractValidator<V1FinishItemProductionOrderRequest>
+    public class Validator : AbstractValidator<V1FinishItemProductionOrderCommand>
     {
         public Validator()
         {

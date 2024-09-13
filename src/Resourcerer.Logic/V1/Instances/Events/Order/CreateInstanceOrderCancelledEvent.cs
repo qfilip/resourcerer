@@ -11,14 +11,14 @@ namespace Resourcerer.Logic.V1.Instances.Events.Order;
 
 public static class CreateInstanceOrderCancelledEvent
 {
-    public class Handler : IAppEventHandler<V1InstanceOrderCancelRequest, Unit>
+    public class Handler : IAppEventHandler<V1InstanceOrderCancelCommand, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
-        public async Task<HandlerResult<Unit>> Handle(V1InstanceOrderCancelRequest request)
+        public async Task<HandlerResult<Unit>> Handle(V1InstanceOrderCancelCommand request)
         {
             var orderEvent = await _appDbContext.InstanceOrderedEvents
                 .FirstOrDefaultAsync(x =>
@@ -65,7 +65,7 @@ public static class CreateInstanceOrderCancelledEvent
         }
     }
 
-    public class Validator : AbstractValidator<V1InstanceOrderCancelRequest>
+    public class Validator : AbstractValidator<V1InstanceOrderCancelCommand>
     {
         public Validator()
         {

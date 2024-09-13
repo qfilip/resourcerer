@@ -9,8 +9,8 @@ public static partial class ServiceRegistry
 {
     public static void AddChannelMessagingServices(IServiceCollection services)
     {
-        DependencyInjection.AddChannelMessagingService<V1InstanceOrderEvent, InstanceOrderEventService>(services);
-        DependencyInjection.AddChannelMessagingService<V1InstanceDiscardedRequest, InstanceDiscardEventService>(services);
-        DependencyInjection.AddChannelMessagingService<V1ItemProductionEvent, ItemProductionOrderEventService>(services);
+        DependencyInjection.AddChannelMessagingService<V1InstanceOrderCommand, InstanceOrderEventService>(services);
+        DependencyInjection.AddChannelMessagingService<V1InstanceDiscardCommand, InstanceDiscardEventService>(services);
+        DependencyInjection.AddChannelMessagingService<V1ItemProductionCommand, ItemProductionOrderEventService>(services);
     }
 }

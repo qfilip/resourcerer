@@ -35,7 +35,7 @@ public class StartItemProductionOrderTests : TestsBase
             });
         });
 
-        var dto = new V1StartItemProductionOrderRequest
+        var dto = new V1StartItemProductionOrderCommand
         {
             ProductionOrderId = order.Id
         };
@@ -75,7 +75,7 @@ public class StartItemProductionOrderTests : TestsBase
     [Fact]
     public void Order_NotFound__NotFound()
     {
-        var dto = new V1StartItemProductionOrderRequest
+        var dto = new V1StartItemProductionOrderCommand
         {
             ProductionOrderId = Guid.NewGuid()
         };
@@ -98,7 +98,7 @@ public class StartItemProductionOrderTests : TestsBase
             x.Quantity = 2;
             x.CancelledEvent = AppDbJsonField.Create(() => new ItemProductionOrderCancelledEvent());
         });
-        var dto = new V1StartItemProductionOrderRequest
+        var dto = new V1StartItemProductionOrderCommand
         {
             ProductionOrderId = order.Id
         };
@@ -121,7 +121,7 @@ public class StartItemProductionOrderTests : TestsBase
             x.Quantity = 2;
             x.FinishedEvent = AppDbJsonField.Create(() => new ItemProductionFinishedEvent());
         });
-        var dto = new V1StartItemProductionOrderRequest
+        var dto = new V1StartItemProductionOrderCommand
         {
             ProductionOrderId = order.Id
         };
@@ -144,7 +144,7 @@ public class StartItemProductionOrderTests : TestsBase
             x.Quantity = 2;
             x.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
         });
-        var dto = new V1StartItemProductionOrderRequest
+        var dto = new V1StartItemProductionOrderCommand
         {
             ProductionOrderId = order.Id
         };

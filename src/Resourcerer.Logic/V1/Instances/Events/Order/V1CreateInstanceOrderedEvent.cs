@@ -8,16 +8,16 @@ using Resourcerer.Dtos.V1;
 
 namespace Resourcerer.Logic.V1.Instances.Events.Order;
 
-public static class CreateInstanceOrderedEvent
+public static class V1CreateInstanceOrderedEvent
 {
-    public class Handler : IAppEventHandler<V1InstanceOrderRequest, Unit>
+    public class Handler : IAppEventHandler<V1InstanceOrderCreateCommand, Unit>
     {
         private readonly AppDbContext _appDbContext;
         public Handler(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
-        public async Task<HandlerResult<Unit>> Handle(V1InstanceOrderRequest request)
+        public async Task<HandlerResult<Unit>> Handle(V1InstanceOrderCreateCommand request)
         {
             var companies = await _appDbContext.Companies
                 .Where(x =>
@@ -131,7 +131,7 @@ public static class CreateInstanceOrderedEvent
             return HandlerResult<Unit>.Ok(new Unit());
         }
     }
-    public class Validator : AbstractValidator<V1InstanceOrderRequest>
+    public class Validator : AbstractValidator<V1InstanceOrderCreateCommand>
     {
         public Validator()
         {

@@ -10,9 +10,9 @@ namespace Resourcerer.Api.Endpoints.V1;
 public class CreateInstanceOrderCancelledEventEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] V1InstanceOrderCancelRequest dto,
+        [FromBody] V1InstanceOrderCancelCommand dto,
         [FromServices] CreateInstanceOrderCancelledEvent.Validator validator,
-        [FromServices] IMessageSender<V1InstanceOrderEvent> sender,
+        [FromServices] IMessageSender<V1InstanceOrderCommand> sender,
         [FromServices] Pipeline pipeline)
     {
         return await pipeline.PipeMessage(

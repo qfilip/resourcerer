@@ -10,7 +10,7 @@ namespace Resourcerer.UnitTests.Logic.V1.Instances.Events.Order;
 
 public class CreateInstanceOrderedEventTests : TestsBase
 {
-    private readonly CreateInstanceOrderedEvent.Handler _handler;
+    private readonly V1CreateInstanceOrderedEvent.Handler _handler;
     public CreateInstanceOrderedEventTests()
     {
         _handler = new(_ctx);
@@ -98,7 +98,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
     public void RequestDto_IsInvalid__ValidationError()
     {
         // arrange
-        var dto = new V1InstanceOrderRequest
+        var dto = new V1InstanceOrderCreateCommand
         {
             InstanceId = Guid.Empty,
             SellerCompanyId = Guid.Empty,
@@ -109,7 +109,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
         };
 
         // act
-        var validator = new CreateInstanceOrderedEvent.Validator();
+        var validator = new V1CreateInstanceOrderedEvent.Validator();
         var result = validator.Validate(dto);
 
         // assert
@@ -364,9 +364,9 @@ public class CreateInstanceOrderedEventTests : TestsBase
         Assert.Equal(eHandlerResultStatus.Ok, result.Status);
     }
 
-    private V1InstanceOrderRequest GetDto(Instance sourceInstance, Action<V1InstanceOrderRequest>? modifier = null)
+    private V1InstanceOrderCreateCommand GetDto(Instance sourceInstance, Action<V1InstanceOrderCreateCommand>? modifier = null)
     {
-        var dto = new V1InstanceOrderRequest()
+        var dto = new V1InstanceOrderCreateCommand()
         {
             InstanceId = sourceInstance.Id,
             ExpectedDeliveryDate = DateTime.UtcNow.AddDays(1),
