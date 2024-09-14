@@ -17,7 +17,7 @@ public static partial class ServiceRegistry
 {
     // private const string EVENT_CONSUMER_ENDPOINT = "resourcerer";
     private const string COMMAND_CONSUMER_ENDPOINT = "resourcerer";
-    public static void AddChannelMessagingServices(IServiceCollection services, IConfiguration configuration)
+    public static void AddMessagingServices(IServiceCollection services, IConfiguration configuration)
     {
         var messaging = configuration.GetSection("Messaging");
 

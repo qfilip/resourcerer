@@ -10,7 +10,7 @@ public static partial class ServiceRegistry
         AddAppHandlersAndValidators(services);
         Add3rdParyServices(services, environment);
         AddAuth(services, AppStaticData.Auth.Enabled);
-        AddChannelMessagingServices(services, configuration);
+        AddMessagingServices(services, configuration);
         AddEmailServices(services);
     }
 }
