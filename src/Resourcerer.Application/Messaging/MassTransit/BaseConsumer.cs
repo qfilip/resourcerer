@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 
-namespace Resourcerer.Api.Services.Messaging.V1.MassTransit.Consumers;
+namespace Resourcerer.Application.Messaging.MassTransit;
 
 public class BaseConsumer<TMessage> : IConsumer<TMessage> where TMessage : class
 {

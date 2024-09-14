@@ -4,7 +4,9 @@ using Resourcerer.Api.Services.Messaging.Fake.MassTransit.Consumers;
 using Resourcerer.Api.Services.Messaging.Fake.MassTransit.Senders;
 using Resourcerer.Api.Services.Messaging.V1.Channels.Instances;
 using Resourcerer.Api.Services.Messaging.V1.Channels.Items;
-using Resourcerer.Api.Services.Messaging.V1.MassTransit.Consumers.Instances;
+using Resourcerer.Api.Services.Messaging.V1.MassTransit.Consumers.Instances.Discard;
+using Resourcerer.Api.Services.Messaging.V1.MassTransit.Consumers.Instances.Production;
+using Resourcerer.Api.Services.Messaging.V1.MassTransit.Consumers.Items.Production;
 using Resourcerer.Api.Services.Messaging.V1.MassTransit.Senders;
 using Resourcerer.Application.Messaging;
 using Resourcerer.Application.Messaging.Abstractions;
@@ -49,7 +51,15 @@ public static partial class ServiceRegistry
             c.AddConsumer<V1InstanceOrderDeliverCommandConsumer>();
             c.AddConsumer<V1InstanceOrderSendCommandConsumer>();
 
-            if(mapFakes)
+            // items production
+            c.AddConsumer<V1CancelCompositeItemProductionOrderCommandConsumer>();
+            c.AddConsumer<V1CancelElementItemProductionOrderCommandConsumer>();
+            c.AddConsumer<V1CreateCompositeItemProductionOrderCommandConsumer>();
+            c.AddConsumer<V1CreateElementItemProductionOrderCommandConsumer>();
+            c.AddConsumer<V1FinishItemProductionOrderCommandConsumer>();
+            c.AddConsumer<V1StartItemProductionOrderCommandConsumer>();
+
+            if (mapFakes)
                 c.AddConsumer<FakeCommandConsumer>();
 
             c.UsingInMemory((ctx, cfg) =>
@@ -65,6 +75,14 @@ public static partial class ServiceRegistry
                     q.ConfigureConsumer<V1InstanceOrderDeliverCommandConsumer>(ctx);
                     q.ConfigureConsumer<V1InstanceOrderSendCommandConsumer>(ctx);
 
+                    // items production
+                    q.ConfigureConsumer<V1CancelCompositeItemProductionOrderCommandConsumer>(ctx);
+                    q.ConfigureConsumer<V1CancelElementItemProductionOrderCommandConsumer>(ctx);
+                    q.ConfigureConsumer<V1CreateCompositeItemProductionOrderCommandConsumer>(ctx);
+                    q.ConfigureConsumer<V1CreateElementItemProductionOrderCommandConsumer>(ctx);
+                    q.ConfigureConsumer<V1FinishItemProductionOrderCommandConsumer>(ctx);
+                    q.ConfigureConsumer<V1StartItemProductionOrderCommandConsumer>(ctx);
+
                     if (mapFakes)
                         q.ConfigureConsumer<FakeCommandConsumer>(ctx);
                 });
@@ -79,10 +97,12 @@ public static partial class ServiceRegistry
                 cfg.Send<V1InstanceOrderSendCommand>(cmd => cmd.UseCorrelationId(x => x.InstanceId));
 
                 // item production
-                cfg.Send<V1CreateCompositeItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ItemId));
                 cfg.Send<V1CancelCompositeItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ProductionOrderId));
-                cfg.Send<V1StartItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ProductionOrderId));
+                cfg.Send<V1CancelElementItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ProductionOrderId));
+                cfg.Send<V1CreateCompositeItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ItemId));
+                cfg.Send<V1CreateElementItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ItemId));
                 cfg.Send<V1FinishItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ProductionOrderId));
+                cfg.Send<V1StartItemProductionOrderCommand>(cmd => cmd.UseCorrelationId(x => x.ProductionOrderId));
 
                 if (mapFakes)
                     cfg.Send<FakeCommandDto>(cmd => cmd.UseCorrelationId(_ => Guid.NewGuid()));
@@ -97,11 +117,13 @@ public static partial class ServiceRegistry
             MapCommandEndpoint<V1InstanceOrderDeliverCommand>();
             MapCommandEndpoint<V1InstanceOrderSendCommand>();
 
-            // instance production
-            MapCommandEndpoint<V1CreateCompositeItemProductionOrderCommand>();
+            // item production
             MapCommandEndpoint<V1CancelCompositeItemProductionOrderCommand>();
-            MapCommandEndpoint<V1StartItemProductionOrderCommand>();
+            MapCommandEndpoint<V1CancelElementItemProductionOrderCommand>();
+            MapCommandEndpoint<V1CreateCompositeItemProductionOrderCommand>();
+            MapCommandEndpoint<V1CreateElementItemProductionOrderCommand>();
             MapCommandEndpoint<V1FinishItemProductionOrderCommand>();
+            MapCommandEndpoint<V1StartItemProductionOrderCommand>();
 
             if (mapFakes)
                 MapCommandEndpoint<FakeCommandDto>();
