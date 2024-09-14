@@ -1,7 +1,7 @@
 ﻿namespace Resourcerer.Application.Messaging.Abstractions;
 
-public interface IMessageConsumer<TMessage>
+public interface IMessageReader<TMessage>
 {
     bool IsCompleted();
-    Task<TMessage> ConsumeAsync();
+    Task<TMessage> ReadAsync();
 }

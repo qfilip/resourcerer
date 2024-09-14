@@ -3,7 +3,7 @@ using System.Threading.Channels;
 
 namespace Resourcerer.Application.Messaging.Channels;
 
-public class ChannelConsumerService<TMessage> : IMessageConsumer<TMessage>
+public class ChannelConsumerService<TMessage> : IMessageReader<TMessage>
 {
     private readonly ChannelReader<TMessage> _reader;
     public ChannelConsumerService(ChannelReader<TMessage> reader)
@@ -13,5 +13,5 @@ public class ChannelConsumerService<TMessage> : IMessageConsumer<TMessage>
 
     public bool IsCompleted() => _reader.Completion.IsCompleted;
 
-    public Task<TMessage> ConsumeAsync() => _reader.ReadAsync().AsTask();
+    public Task<TMessage> ReadAsync() => _reader.ReadAsync().AsTask();
 }

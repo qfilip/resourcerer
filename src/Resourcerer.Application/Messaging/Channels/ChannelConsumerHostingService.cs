@@ -8,9 +8,9 @@ namespace Resourcerer.Application.Messaging.Channels;
 
 public abstract class ChannelConsumerHostingService<TMessage> : BackgroundService
 {
-    private readonly IMessageConsumer<TMessage> _consumer;
+    private readonly IMessageReader<TMessage> _consumer;
     private readonly IServiceProvider _serviceProvider;
-    public ChannelConsumerHostingService(IMessageConsumer<TMessage> consumer, IServiceProvider serviceProvider)
+    public ChannelConsumerHostingService(IMessageReader<TMessage> consumer, IServiceProvider serviceProvider)
     {
         _consumer = consumer;
         _serviceProvider = serviceProvider;
@@ -19,7 +19,7 @@ public abstract class ChannelConsumerHostingService<TMessage> : BackgroundServic
     {
         while (!_consumer.IsCompleted())
         {
-            var message = await _consumer.ConsumeAsync();
+            var message = await _consumer.ReadAsync();
             using (var scope = _serviceProvider.CreateScope())
             {
                 var database = scope.ServiceProvider.GetRequiredService<AppDbContext>();

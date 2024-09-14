@@ -20,7 +20,7 @@ public class DependencyInjection
             return new ChannelSenderService<TMessage>(sender);
         });
 
-        services.AddSingleton<IMessageConsumer<TMessage>, ChannelConsumerService<TMessage>>(sp =>
+        services.AddSingleton<IMessageReader<TMessage>, ChannelConsumerService<TMessage>>(sp =>
         {
             var consumer = sp.GetRequiredService<Channel<TMessage>>().Reader;
             return new ChannelConsumerService<TMessage>(consumer);

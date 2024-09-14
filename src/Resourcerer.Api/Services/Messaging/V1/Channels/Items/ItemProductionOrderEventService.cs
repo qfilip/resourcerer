@@ -9,7 +9,7 @@ namespace Resourcerer.Api.Services.Messaging.V1.Channels.Items;
 public class ItemProductionOrderEventService : ChannelConsumerHostingService<V1ItemProductionCommand>
 {
     public ItemProductionOrderEventService(
-        IMessageConsumer<V1ItemProductionCommand> consumer,
+        IMessageReader<V1ItemProductionCommand> consumer,
         IServiceProvider serviceProvider) : base(consumer, serviceProvider) { }
 
     protected override Task HandleEvent(V1ItemProductionCommand message, AppDbContext appDbContext)

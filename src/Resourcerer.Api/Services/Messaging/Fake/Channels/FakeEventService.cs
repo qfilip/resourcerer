@@ -9,7 +9,7 @@ namespace Resourcerer.Api.Services.Messaging.Fake.Channels;
 public class FakeEventService : ChannelConsumerHostingService<FakeCommandDto>
 {
     public FakeEventService(
-        IMessageConsumer<FakeCommandDto> consumer,
+        IMessageReader<FakeCommandDto> consumer,
         IServiceProvider serviceProvider) : base(consumer, serviceProvider) { }
     protected override async Task HandleEvent(FakeCommandDto message, AppDbContext appDbContext)
     {
