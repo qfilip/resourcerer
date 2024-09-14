@@ -9,7 +9,7 @@ public class Webapi
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        AppInitializer.LoadConfiguration(builder.Configuration);
+        AppInitializer.LoadAuthConfiguration(builder.Configuration);
 
         builder.Services.AddAllAppServices(builder.Environment, builder.Configuration);
 

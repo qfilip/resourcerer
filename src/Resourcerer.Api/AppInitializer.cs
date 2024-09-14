@@ -8,21 +8,27 @@ public class AppInitializer
         return $"Datasource={dbPath}";
     }
     
-    public static void LoadConfiguration(IConfiguration configuration)
+    public static void LoadAuthConfiguration(IConfiguration configuration)
     {
         AppStaticData.Auth.Load(Load<bool>(configuration, "Auth", "Enabled"));
         
-        var secretKey = Load<string>(configuration, "Auth", "JwtSecret");
-        var issuer = Load<string>(configuration, "Auth", "Issuer");
-        var audience = Load<string>(configuration, "Auth", "Audience");
+        var issuer = LoadRequired<string>(configuration, "Auth", "Issuer");
+        var audience = LoadRequired<string>(configuration, "Auth", "Audience");
+        var secretKey = LoadRequired<string>(configuration, "Auth", "JwtSecret");
 
         AppStaticData.Auth.Jwt.Configure(secretKey, issuer, audience); 
     }
 
-    private static T Load<T>(IConfiguration configuration, string section, string key)
+    public static T LoadRequired<T>(IConfiguration configuration, string section, string key)
+    {
+        var value = Load<T>(configuration, section, key, true);
+        return value!;
+    }
+
+    public static T? Load<T>(IConfiguration configuration, string section, string key, bool required = false)
     {
         var value = configuration.GetSection(section).GetValue<T>(key);
-        if(value == null)
+        if(value == null && required)
         {
             throw new InvalidOperationException($"Secret {section}:{key} wasn't found");
         }

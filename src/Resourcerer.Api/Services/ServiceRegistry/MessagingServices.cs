@@ -15,8 +15,8 @@ namespace Resourcerer.Api.Services;
 
 public static partial class ServiceRegistry
 {
-    private const string EVENT_ENDPOINT = "resourcerer";
-    private const string COMMAND_ENDPOINT = "resourcerer";
+    // private const string EVENT_CONSUMER_ENDPOINT = "resourcerer";
+    private const string COMMAND_CONSUMER_ENDPOINT = "resourcerer";
     public static void AddChannelMessagingServices(IServiceCollection services, IConfiguration configuration)
     {
         var messaging = configuration.GetSection("Messaging");
@@ -31,9 +31,7 @@ public static partial class ServiceRegistry
             DependencyInjection.AddChannelMessagingService<V1ItemProductionCommand, ItemProductionOrderEventService>(services);
             
             if(mapFakes)
-            {
                 DependencyInjection.AddChannelMessagingService<FakeCommandDto, FakeEventService>(services);
-            }
 
             return;
         }
@@ -56,7 +54,7 @@ public static partial class ServiceRegistry
 
             c.UsingInMemory((ctx, cfg) =>
             {
-                cfg.ReceiveEndpoint(COMMAND_ENDPOINT, q =>
+                cfg.ReceiveEndpoint(COMMAND_CONSUMER_ENDPOINT, q =>
                 {
                     // instance discard
                     q.ConfigureConsumer<V1InstanceDiscardCommandConsumer>(ctx);
@@ -112,11 +110,11 @@ public static partial class ServiceRegistry
 
     private static void RegisterSenders(IServiceCollection services, bool mapFakes)
     {
-        // instance discard
+        // instance
         RegisterSender<V1InstanceDiscardCommand, InstanceDiscardCommandSender>(services);
-
-        // instance order
         RegisterSender<V1InstanceOrderCommand, InstanceOrderCommandSender>(services);
+
+        // item
         RegisterSender<V1ItemProductionCommand, ItemProductionOrderCommandSender>(services);
 
         if (mapFakes)
@@ -131,7 +129,6 @@ public static partial class ServiceRegistry
 
     private static void MapCommandEndpoint<T>() where T : class
     {
-        var name = typeof(T).Name.ToLower();
-        EndpointConvention.Map<T>(new Uri($"queue:{COMMAND_ENDPOINT}"));
+        EndpointConvention.Map<T>(new Uri($"queue:{COMMAND_CONSUMER_ENDPOINT}"));
     }
 }
