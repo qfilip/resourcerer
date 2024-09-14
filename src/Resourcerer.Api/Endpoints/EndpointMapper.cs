@@ -1,5 +1,6 @@
 ﻿using Resourcerer.Api.Endpoints.Fake;
 using Resourcerer.Api.Endpoints.V1;
+using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.Dtos;
 using System.Text.RegularExpressions;
 

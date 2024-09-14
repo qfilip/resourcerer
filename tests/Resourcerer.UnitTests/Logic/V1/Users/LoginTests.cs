@@ -1,5 +1,4 @@
-﻿using Resourcerer.Api;
-using Resourcerer.Api.Services;
+﻿using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
+using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1;
 

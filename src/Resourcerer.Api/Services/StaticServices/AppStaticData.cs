@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Resourcerer.Api;
+namespace Resourcerer.Api.Services.StaticServices;
 
 public static class AppStaticData
 {

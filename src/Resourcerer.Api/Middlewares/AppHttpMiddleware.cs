@@ -1,6 +1,7 @@
-﻿using System.Net;
+﻿using Resourcerer.Api.Middlewares.Errors;
+using System.Net;
 
-namespace Resourcerer.Api;
+namespace Resourcerer.Api.Middlewares;
 
 public class AppHttpMiddleware
 {

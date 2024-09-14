@@ -1,7 +1,7 @@
 ﻿using Resourcerer.Api.Endpoints;
-using Resourcerer.Api.Services;
+using Resourcerer.Api.Middlewares;
 
-namespace Resourcerer.Api;
+namespace Resourcerer.Api.Services.StaticServices;
 
 public class Webapi
 {

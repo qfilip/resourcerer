@@ -6,7 +6,7 @@ using Resourcerer.Dtos.Entity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace Resourcerer.Api.Services;
+namespace Resourcerer.Api.Services.StaticServices;
 
 public class JwtService
 {

@@ -1,4 +1,6 @@
-﻿namespace Resourcerer.Api.Services;
+﻿using Resourcerer.Api.Services.StaticServices;
+
+namespace Resourcerer.Api.Services;
 
 public static partial class ServiceRegistry
 {

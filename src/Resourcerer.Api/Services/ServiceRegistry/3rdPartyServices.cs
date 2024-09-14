@@ -2,6 +2,7 @@
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.Application.Auth.Abstractions;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;

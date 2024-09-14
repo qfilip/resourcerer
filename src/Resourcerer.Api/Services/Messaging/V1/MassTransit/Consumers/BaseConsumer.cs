@@ -1,5 +1,4 @@
 ﻿using MassTransit;
-using Resourcerer.Application.Messaging.Abstractions;
 
 namespace Resourcerer.Api.Services.Messaging.V1.MassTransit.Consumers;
 

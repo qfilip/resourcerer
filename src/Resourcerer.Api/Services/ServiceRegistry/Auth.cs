@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Resourcerer.Api.Services.Auth;
+using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.Application.Auth;
 using Resourcerer.Application.Auth.Abstractions;
 using Resourcerer.DataAccess.Entities;

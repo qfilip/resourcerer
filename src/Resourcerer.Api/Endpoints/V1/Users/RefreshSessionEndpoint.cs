@@ -1,4 +1,4 @@
-﻿using Resourcerer.Api.Services;
+﻿using Resourcerer.Api.Services.StaticServices;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
