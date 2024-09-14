@@ -7,9 +7,9 @@ using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.V1;
 
 namespace Resourcerer.Logic.V1.Items.Events.Production;
-public static class CreateItemProductionOrder
+public static class CreateCompositeItemProductionOrder
 {
-    public class Handler : IAppEventHandler<V1CreateItemProductionOrderCommand, Unit>
+    public class Handler : IAppEventHandler<V1CreateCompositeItemProductionOrderCommand, Unit>
     {
         private readonly AppDbContext _dbContext;
 
@@ -18,7 +18,7 @@ public static class CreateItemProductionOrder
             _dbContext = dbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(V1CreateItemProductionOrderCommand request)
+        public async Task<HandlerResult<Unit>> Handle(V1CreateCompositeItemProductionOrderCommand request)
         {
             var item = _dbContext.Items
                 .Select(x => new
@@ -166,7 +166,7 @@ public static class CreateItemProductionOrder
             return HandlerResult<Unit>.Ok(Unit.New);
         }
     }
-    public class Validator : AbstractValidator<V1CreateItemProductionOrderCommand>
+    public class Validator : AbstractValidator<V1CreateCompositeItemProductionOrderCommand>
     {
         public Validator()
         {

@@ -14,9 +14,9 @@ public class ItemProductionOrderEventService : ChannelConsumerHostingService<V1I
 
     protected override Task HandleEvent(V1ItemProductionCommand message, AppDbContext appDbContext)
     {
-        if (message is V1CreateItemProductionOrderCommand create)
+        if (message is V1CreateCompositeItemProductionOrderCommand create)
         {
-            var handler = new CreateItemProductionOrder.Handler(appDbContext);
+            var handler = new CreateCompositeItemProductionOrder.Handler(appDbContext);
             return handler.Handle(create);
         }
         else if (message is V1CancelItemProductionOrderCommand cancel)

@@ -14,7 +14,7 @@ public class ItemProductionOrderCommandSender : IMessageSender<V1ItemProductionC
 
     public Task SendAsync(V1ItemProductionCommand message)
     {
-        if (message is V1CreateItemProductionOrderCommand create)
+        if (message is V1CreateCompositeItemProductionOrderCommand create)
         {
             return _bus.Send(create);
         }
