@@ -9,9 +9,9 @@ using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Exceptions;
 
 namespace Resourcerer.Logic.V1.Items.Events.Production;
-public static class CancelItemProductionOrder
+public static class CancelCompositeItemProductionOrder
 {
-    public class Handler : IAppEventHandler<V1CancelItemProductionOrderCommand, Unit>
+    public class Handler : IAppEventHandler<V1CancelCompositeItemProductionOrderCommand, Unit>
     {
         private readonly AppDbContext _dbContext;
 
@@ -20,7 +20,7 @@ public static class CancelItemProductionOrder
             _dbContext = dbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(V1CancelItemProductionOrderCommand request)
+        public async Task<HandlerResult<Unit>> Handle(V1CancelCompositeItemProductionOrderCommand request)
         {
             var orderEvent = await _dbContext.ItemProductionOrders
                 .FirstOrDefaultAsync(x => x.Id == request.ProductionOrderId);
@@ -59,7 +59,7 @@ public static class CancelItemProductionOrder
             return HandlerResult<Unit>.Ok(Unit.New);
         }
     }
-    public class Validator : AbstractValidator<V1CancelItemProductionOrderCommand>
+    public class Validator : AbstractValidator<V1CancelCompositeItemProductionOrderCommand>
     {
         public Validator()
         {

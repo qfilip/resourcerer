@@ -6,10 +6,10 @@ using Resourcerer.UnitTests.Utilities;
 
 namespace Resourcerer.UnitTests.Logic.V1.Items.Events.Production;
 
-public class CreateItemProductionOrderTests : TestsBase
+public class CreateCompositeItemProductionOrderTests : TestsBase
 {
     private readonly CreateCompositeItemProductionOrder.Handler _sut;
-    public CreateItemProductionOrderTests()
+    public CreateCompositeItemProductionOrderTests()
     {
         _sut = new CreateCompositeItemProductionOrder.Handler(_ctx);
     }
@@ -198,7 +198,9 @@ public class CreateItemProductionOrderTests : TestsBase
 
         if (instantProductionChecks)
         {
+            Assert.NotNull(orderEvent.StartedEvent);
             Assert.NotNull(orderEvent.FinishedEvent);
+            
             var newInstance = _ctx.Instances
                 .Single(x =>
                     x.OwnerCompanyId == orderEvent.CompanyId &&

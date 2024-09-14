@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Application.Messaging.Abstractions;
-using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Dtos;
 using Resourcerer.Logic.V1.Items.Events.Production;
 
-namespace Resourcerer.Api.Endpoints.V1;
+namespace Resourcerer.Api.Endpoints.V1.Items.Production;
 
-public static class CancelItemProductionOrderEndpoint
+public class CreateElementItemProductionOrderEndpoint
 {
     public static async Task<IResult> Action(
-       [FromBody] V1CancelItemProductionOrderCommand dto,
-       [FromServices] CancelItemProductionOrder.Validator validator,
+       [FromBody] V1CreateElementItemProductionOrderCommand dto,
+       [FromServices] CreateElementItemProductionOrder.Validator validator,
        [FromServices] IMessageSender<V1ItemProductionCommand> sender,
        [FromServices] Pipeline pipeline)
     {
@@ -19,12 +19,12 @@ public static class CancelItemProductionOrderEndpoint
             dto,
             validator,
             sender,
-            nameof(CancelItemProductionOrder));
+            nameof(CreateElementItemProductionOrder));
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/production_order/cancel", Action);
+        var endpoint = group.MapPost("/production_order/element", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

@@ -48,7 +48,8 @@ public class EndpointMapperV1_0
 
         // production
         CreateCompositeItemProductionOrderEndpoint.MapToGroup(g);
-        CancelItemProductionOrderEndpoint.MapToGroup(g);
+        CreateElementItemProductionOrderEndpoint.MapToGroup(g);
+        CancelCompositeItemProductionOrderEndpoint.MapToGroup(g);
         FinishItemProductionOrderEndpoint.MapToGroup(g);
         StartItemProductionEndpoint.MapToGroup(g);
         

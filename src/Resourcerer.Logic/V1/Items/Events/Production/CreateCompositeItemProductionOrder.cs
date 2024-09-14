@@ -163,6 +163,7 @@ public static class CreateCompositeItemProductionOrder
 
             if(request.InstantProduction)
             {
+                order.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
                 order.FinishedEvent = AppDbJsonField.Create(() => new ItemProductionFinishedEvent());
 
                 var expiration = item.ExpirationTimeSeconds;

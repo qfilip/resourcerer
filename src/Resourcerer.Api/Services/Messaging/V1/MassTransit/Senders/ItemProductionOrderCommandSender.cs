@@ -14,11 +14,15 @@ public class ItemProductionOrderCommandSender : IMessageSender<V1ItemProductionC
 
     public Task SendAsync(V1ItemProductionCommand message)
     {
-        if (message is V1CreateCompositeItemProductionOrderCommand create)
+        if (message is V1CreateCompositeItemProductionOrderCommand createComposite)
         {
-            return _bus.Send(create);
+            return _bus.Send(createComposite);
         }
-        else if (message is V1CancelItemProductionOrderCommand cancel)
+        else if (message is V1CreateElementItemProductionOrderCommand createElement)
+        {
+            return _bus.Send(createElement);
+        }
+        else if (message is V1CancelCompositeItemProductionOrderCommand cancel)
         {
             return _bus.Send(cancel);
         }

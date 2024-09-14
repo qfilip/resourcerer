@@ -1,3 +1,4 @@
 # Todo
 
-- Make Fluent validators to be singleton services
+- Map MassTransit consumers and senders
+- Try refactor Endpoint versioning

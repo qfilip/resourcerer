@@ -8,12 +8,12 @@ using Resourcerer.UnitTests.Utilities;
 
 namespace Resourcerer.UnitTests.Logic.V1.Items.Events.Production;
 
-public class CancelItemProductionOrderTests : TestsBase
+public class CancelCompositeItemProductionOrderTests : TestsBase
 {
-    private readonly CancelItemProductionOrder.Handler _sut;
-    public CancelItemProductionOrderTests()
+    private readonly CancelCompositeItemProductionOrder.Handler _sut;
+    public CancelCompositeItemProductionOrderTests()
     {
-        _sut = new CancelItemProductionOrder.Handler(_ctx);
+        _sut = new CancelCompositeItemProductionOrder.Handler(_ctx);
     }
 
     [Fact]
@@ -21,7 +21,7 @@ public class CancelItemProductionOrderTests : TestsBase
     {
         // arrange
         var order = FakeData();
-        var dto = new V1CancelItemProductionOrderCommand
+        var dto = new V1CancelCompositeItemProductionOrderCommand
         {
             ProductionOrderId = order.Id,
             Reason = "Test"
@@ -58,7 +58,7 @@ public class CancelItemProductionOrderTests : TestsBase
     {
         // arrange
         var _ = FakeData();
-        var dto = new V1CancelItemProductionOrderCommand
+        var dto = new V1CancelCompositeItemProductionOrderCommand
         {
             ProductionOrderId = Guid.NewGuid(),
             Reason = "Test"
@@ -86,7 +86,7 @@ public class CancelItemProductionOrderTests : TestsBase
     {
         // arrange
         var order = FakeData(x => x.InstancesUsedIds = []);
-        var dto = new V1CancelItemProductionOrderCommand
+        var dto = new V1CancelCompositeItemProductionOrderCommand
         {
             ProductionOrderId = order.Id,
             Reason = "Test"
@@ -113,7 +113,7 @@ public class CancelItemProductionOrderTests : TestsBase
         {
             x.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
         });
-        var dto = new V1CancelItemProductionOrderCommand
+        var dto = new V1CancelCompositeItemProductionOrderCommand
         {
             ProductionOrderId = order.Id,
             Reason = "Test"
@@ -144,7 +144,7 @@ public class CancelItemProductionOrderTests : TestsBase
         {
             x.InstancesUsedIds = [Guid.NewGuid(), Guid.NewGuid()];
         });
-        var dto = new V1CancelItemProductionOrderCommand
+        var dto = new V1CancelCompositeItemProductionOrderCommand
         {
             ProductionOrderId = order.Id,
             Reason = "Test"

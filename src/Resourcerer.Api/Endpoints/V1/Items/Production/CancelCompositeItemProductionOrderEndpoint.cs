@@ -7,11 +7,11 @@ using Resourcerer.Logic.V1.Items.Events.Production;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public class CreateCompositeItemProductionOrderEndpoint
+public static class CancelCompositeItemProductionOrderEndpoint
 {
     public static async Task<IResult> Action(
-       [FromBody] V1CreateCompositeItemProductionOrderCommand dto,
-       [FromServices] CreateCompositeItemProductionOrder.Validator validator,
+       [FromBody] V1CancelCompositeItemProductionOrderCommand dto,
+       [FromServices] CancelCompositeItemProductionOrder.Validator validator,
        [FromServices] IMessageSender<V1ItemProductionCommand> sender,
        [FromServices] Pipeline pipeline)
     {
@@ -19,12 +19,12 @@ public class CreateCompositeItemProductionOrderEndpoint
             dto,
             validator,
             sender,
-            nameof(CreateCompositeItemProductionOrder));
+            nameof(CancelCompositeItemProductionOrder));
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)
     {
-        var endpoint = group.MapPost("/production_order/composite", Action);
+        var endpoint = group.MapPost("/production_order/cancel", Action);
 
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {

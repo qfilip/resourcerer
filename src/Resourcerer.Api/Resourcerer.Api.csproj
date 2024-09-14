@@ -7,6 +7,13 @@
   </PropertyGroup>
   
   <Target Name="CompileTypeScript" />
+  
+  <ItemGroup>
+    <Compile Remove="Services\Messaging\V1\MassTransit\Consumers\Items\**" />
+    <Content Remove="Services\Messaging\V1\MassTransit\Consumers\Items\**" />
+    <EmbeddedResource Remove="Services\Messaging\V1\MassTransit\Consumers\Items\**" />
+    <None Remove="Services\Messaging\V1\MassTransit\Consumers\Items\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Mapster" Version="7.4.1-pre01" />
@@ -33,7 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Messaging\V1\MassTransit\Consumers\Items\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
