@@ -39,6 +39,31 @@ public class CreateItemProductionOrderTests : TestsBase
     }
 
     [Fact]
+    public void InstantProduction_CreatesInstanceAndEvents()
+    {
+        // arrange
+        var fd = Faking.FakeData(_forger, 2, 2);
+
+        var dto = new V1CreateCompositeItemProductionOrderCommand
+        {
+            ItemId = fd.Composite!.Id,
+            CompanyId = fd.Composite!.Category!.Company!.Id,
+            Quantity = 2,
+            InstantProduction = true,
+            InstancesToUse = Faking.MapInstancesToUse(fd)
+        };
+
+        _ctx.SaveChanges();
+
+        // act
+        var result = _sut.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
+        AssertCorrectEventsCreated(dto, true);
+    }
+
+    [Fact]
     public void When_ItemNotFound_Then_NotFound()
     {
         // arrange
@@ -152,7 +177,7 @@ public class CreateItemProductionOrderTests : TestsBase
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
     }
 
-    private void AssertCorrectEventsCreated(V1CreateCompositeItemProductionOrderCommand dto)
+    private void AssertCorrectEventsCreated(V1CreateCompositeItemProductionOrderCommand dto, bool instantProductionChecks = false)
     {
         var ids = dto.InstancesToUse.Keys.ToArray();
 
@@ -169,6 +194,17 @@ public class CreateItemProductionOrderTests : TestsBase
         {
             var qty = dto.InstancesToUse[i.Id];
             i.ReservedEvents.First(ev => ev.Quantity == qty);
+        }
+
+        if (instantProductionChecks)
+        {
+            Assert.NotNull(orderEvent.FinishedEvent);
+            var newInstance = _ctx.Instances
+                .Single(x =>
+                    x.OwnerCompanyId == orderEvent.CompanyId &&
+                    x.ItemId == dto.ItemId &&
+                    x.Quantity == dto.Quantity
+                );
         }
     }
 }

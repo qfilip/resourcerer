@@ -5,6 +5,7 @@ public class V1CreateCompositeItemProductionOrderCommand : V1ItemProductionComma
     public Guid CompanyId { get; set; }
     public double Quantity { get; set; }
     public string? Reason { get; set; }
+    public bool InstantProduction { get; set; }
     public DateTime DesiredProductionStartTime { get; set; }
     public Dictionary<Guid, double> InstancesToUse { get; set; } = [];
 }

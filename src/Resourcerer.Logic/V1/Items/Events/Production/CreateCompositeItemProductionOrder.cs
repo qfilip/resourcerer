@@ -4,6 +4,7 @@ using Resourcerer.Application.Abstractions.Handlers;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
 
 namespace Resourcerer.Logic.V1.Items.Events.Production;
@@ -25,7 +26,8 @@ public static class CreateCompositeItemProductionOrder
                 {
                     x.Id,
                     x.Name,
-                    x.Category!.CompanyId
+                    x.Category!.CompanyId,
+                    x.ExpirationTimeSeconds
                 })
                 .FirstOrDefault(x =>
                     x.Id == request.ItemId &&
@@ -134,7 +136,7 @@ public static class CreateCompositeItemProductionOrder
                 .Where(x => instanceToUpdateIds.Contains(x.Id))
                 .ToArrayAsync();
 
-            var productionOrder = new ItemProductionOrder
+            var order = new ItemProductionOrder
             {
                 Id = Guid.NewGuid(),
                 ItemId = item.Id,
@@ -150,7 +152,7 @@ public static class CreateCompositeItemProductionOrder
 
                 var reservedEvent = new InstanceReservedEvent
                 {
-                    ItemProductionOrderId = productionOrder.Id,
+                    ItemProductionOrderId = order.Id,
                     InstanceId = instance.Id,
                     Quantity = reserveQuantity,
                     Reason = $"Production of item: {item.Id}-{item.Name}"
@@ -159,7 +161,24 @@ public static class CreateCompositeItemProductionOrder
                 _dbContext.InstanceReservedEvents.Add(reservedEvent);
             }
 
-            _dbContext.ItemProductionOrders.Add(productionOrder);
+            if(request.InstantProduction)
+            {
+                order.FinishedEvent = AppDbJsonField.Create(() => new ItemProductionFinishedEvent());
+
+                var expiration = item.ExpirationTimeSeconds;
+                var newInstance = new Instance
+                {
+                    Quantity = order.Quantity,
+                    ExpiryDate = Functions.Instances.GetExpirationDate(expiration, DateTime.UtcNow),
+
+                    ItemId = item.Id,
+                    OwnerCompanyId = order.CompanyId
+                };
+
+                _dbContext.Instances.Add(newInstance);
+            }
+
+            _dbContext.ItemProductionOrders.Add(order);
 
             await _dbContext.SaveChangesAsync();
 
