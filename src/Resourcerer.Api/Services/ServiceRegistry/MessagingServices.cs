@@ -15,6 +15,8 @@ namespace Resourcerer.Api.Services;
 
 public static partial class ServiceRegistry
 {
+    private const string EVENT_ENDPOINT = "resourcerer";
+    private const string COMMAND_ENDPOINT = "resourcerer";
     public static void AddChannelMessagingServices(IServiceCollection services, IConfiguration configuration)
     {
         var messaging = configuration.GetSection("Messaging");
@@ -54,7 +56,7 @@ public static partial class ServiceRegistry
 
             c.UsingInMemory((ctx, cfg) =>
             {
-                cfg.ReceiveEndpoint("resourcerer", q =>
+                cfg.ReceiveEndpoint(COMMAND_ENDPOINT, q =>
                 {
                     // instance discard
                     q.ConfigureConsumer<V1InstanceDiscardCommandConsumer>(ctx);
@@ -130,6 +132,6 @@ public static partial class ServiceRegistry
     private static void MapCommandEndpoint<T>() where T : class
     {
         var name = typeof(T).Name.ToLower();
-        EndpointConvention.Map<T>(new Uri($"queue:{name}"));
+        EndpointConvention.Map<T>(new Uri($"queue:{COMMAND_ENDPOINT}"));
     }
 }
