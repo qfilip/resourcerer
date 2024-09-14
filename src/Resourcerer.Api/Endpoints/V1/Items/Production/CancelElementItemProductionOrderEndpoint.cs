@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Application.Messaging.Abstractions;
-using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Dtos;
 using Resourcerer.Logic.V1.Items.Events.Production;
 
-namespace Resourcerer.Api.Endpoints.V1;
+namespace Resourcerer.Api.Endpoints.V1.Items.Production;
 
-public static class CancelCompositeItemProductionOrderEndpoint
+public class CancelElementItemProductionOrderEndpoint
 {
     public static async Task<IResult> Action(
-       [FromBody] V1CancelCompositeItemProductionOrderCommand dto,
-       [FromServices] CancelCompositeItemProductionOrder.Validator validator,
+       [FromBody] V1CancelElementItemProductionOrderCommand dto,
+       [FromServices] CancelElementItemProductionOrder.Validator validator,
        [FromServices] IMessageSender<V1ItemProductionCommand> sender,
        [FromServices] Pipeline pipeline)
     {
@@ -19,7 +19,7 @@ public static class CancelCompositeItemProductionOrderEndpoint
             dto,
             validator,
             sender,
-            nameof(CancelCompositeItemProductionOrder));
+            nameof(CancelElementItemProductionOrder));
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

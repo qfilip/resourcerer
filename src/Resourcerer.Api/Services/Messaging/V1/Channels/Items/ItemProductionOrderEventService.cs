@@ -19,15 +19,20 @@ public class ItemProductionOrderEventService : ChannelConsumerHostingService<V1I
             var handler = new CreateCompositeItemProductionOrder.Handler(appDbContext);
             return handler.Handle(createComposite);
         }
+        else if (message is V1CancelCompositeItemProductionOrderCommand cancel)
+        {
+            var handler = new CancelCompositeItemProductionOrder.Handler(appDbContext);
+            return handler.Handle(cancel);
+        }
         else if (message is V1CreateElementItemProductionOrderCommand createElement)
         {
             var handler = new CreateElementItemProductionOrder.Handler(appDbContext);
             return handler.Handle(createElement);
         }
-        else if (message is V1CancelCompositeItemProductionOrderCommand cancel)
+        else if (message is V1CancelElementItemProductionOrderCommand cancelElement)
         {
-            var handler = new CancelCompositeItemProductionOrder.Handler(appDbContext);
-            return handler.Handle(cancel);
+            var handler = new CancelElementItemProductionOrder.Handler(appDbContext);
+            return handler.Handle(cancelElement);
         }
         else if (message is V1StartItemProductionOrderCommand start)
         {

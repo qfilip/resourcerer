@@ -6,57 +6,45 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
-using Resourcerer.Logic.Exceptions;
 
 namespace Resourcerer.Logic.V1.Items.Events.Production;
-public static class CancelCompositeItemProductionOrder
+
+public static class CancelElementItemProductionOrder
 {
-    public class Handler : IAppEventHandler<V1CancelCompositeItemProductionOrderCommand, Unit>
+    public class Handler : IAppEventHandler<V1CancelElementItemProductionOrderCommand, Unit>
     {
         private readonly AppDbContext _dbContext;
-
         public Handler(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(V1CancelCompositeItemProductionOrderCommand request)
+        public async Task<HandlerResult<Unit>> Handle(V1CancelElementItemProductionOrderCommand request)
         {
-            var orderEvent = await _dbContext.ItemProductionOrders
+            var order = await _dbContext.ItemProductionOrders
                 .FirstOrDefaultAsync(x => x.Id == request.ProductionOrderId);
 
-            if (orderEvent == null)
+            if (order == null)
             {
                 return HandlerResult<Unit>.NotFound("Order event not found");
             }
 
-            if (orderEvent.InstancesUsedIds.Length == 0)
-            {
-                var message = $"{nameof(orderEvent.InstancesUsedIds)} is empty for {nameof(ItemProductionOrder)} {orderEvent.Id}";
-                throw new DataCorruptionException(message);
-            }
-
-            if (orderEvent.StartedEvent != null)
+            if (order.StartedEvent != null)
             {
                 return HandlerResult<Unit>.Rejected("Production already started");
             }
 
-            if (orderEvent.FinishedEvent != null)
+            if (order.FinishedEvent != null)
             {
                 return HandlerResult<Unit>.Rejected("Production already finished");
             }
 
-            var reservedEvents = await _dbContext.InstanceReservedEvents
-                .Where(x => orderEvent.InstancesUsedIds.Contains(x.InstanceId))
-                .ToArrayAsync();
-
-            foreach (var ev in reservedEvents)
+            if(order.CancelledEvent != null)
             {
-                ev.CancelledEvent = AppDbJsonField.Create(() =>
-                    new InstanceReserveCancelledEvent() { Reason = request.Reason });
+                return HandlerResult<Unit>.Ok(Unit.New);
             }
 
-            orderEvent.CancelledEvent = AppDbJsonField.Create(() =>
+            order.CancelledEvent = AppDbJsonField.Create(() =>
                 new ItemProductionOrderCancelledEvent() { Reason = request.Reason });
 
             await _dbContext.SaveChangesAsync();
@@ -64,7 +52,8 @@ public static class CancelCompositeItemProductionOrder
             return HandlerResult<Unit>.Ok(Unit.New);
         }
     }
-    public class Validator : AbstractValidator<V1CancelCompositeItemProductionOrderCommand>
+
+    public class Validator : AbstractValidator<V1CancelElementItemProductionOrderCommand>
     {
         public Validator()
         {
