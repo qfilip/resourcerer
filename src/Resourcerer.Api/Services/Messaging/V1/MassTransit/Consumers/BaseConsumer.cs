@@ -11,7 +11,7 @@ public class BaseConsumer<TMessage> : IConsumer<TMessage> where TMessage : class
         _handleMethod = handleMethod;
     }
 
-    public async Task Consume(ConsumeContext<TMessage> context)
+    public virtual async Task Consume(ConsumeContext<TMessage> context)
     {
         await _handleMethod(context.Message);
     }

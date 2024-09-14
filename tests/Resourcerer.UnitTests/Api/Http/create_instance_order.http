@@ -1,0 +1,20 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+
+// companyId  f0c2a99b-07db-48e8-b6f7-4cb159d909ad
+// itemId     a66932ba-a350-46f0-bc92-1efc8bea616a
+GET http://localhost:24822/api/1.0/seed
+
+###
+
+POST http://localhost:24822/api/1.0/items/production_order
+Content-Type: application/json
+
+{
+  "itemId": "F5654199-755B-4E29-977A-034EBA88A122",
+  "companyId": "f0c2a99b-07db-48e8-b6f7-4cb159d909ad",
+  "quantity": 3,
+  "desiredProductionStartTime": "2030-09-13T23:29:45.694Z",
+  "instancesToUse": {
+    "F5654199-755B-4E29-977A-034EBA88A122"
+  }
+}

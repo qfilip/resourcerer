@@ -6,15 +6,11 @@ public static partial class ServiceRegistry
         this IServiceCollection services,
         IWebHostEnvironment environment,
         IConfiguration configuration)
-    {
-        var useChannelsForMessaging = configuration
-            .GetSection("Messaging")
-            .GetValue<bool>("UseChannels");
-        
+    {   
         AddAppHandlersAndValidators(services);
         Add3rdParyServices(services, environment);
         AddAuth(services, AppStaticData.Auth.Enabled);
-        AddChannelMessagingServices(services, useChannelsForMessaging);
+        AddChannelMessagingServices(services, configuration);
         AddEmailServices(services);
     }
 }
