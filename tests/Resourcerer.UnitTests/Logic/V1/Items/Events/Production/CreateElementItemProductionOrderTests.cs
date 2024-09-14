@@ -100,4 +100,24 @@ public class CreateElementItemProductionOrderTests : TestsBase
         // assert
         Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
     }
+
+    [Fact]
+    public void CompanyNotFound__NotFound()
+    {
+        // arrange
+        var item = _forger.Fake<Item>();
+        var command = new V1CreateElementItemProductionOrderCommand
+        {
+            ItemId = item.Id,
+            CompanyId = Guid.NewGuid(),
+            Quantity = 2
+        };
+        _ctx.SaveChanges();
+
+        // act
+        var result = _sut.Handle(command).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
+    }
 }
