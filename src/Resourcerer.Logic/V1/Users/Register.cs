@@ -32,18 +32,9 @@ public static class Register
                 .Select(x => x.Name)
                 .FirstOrDefaultAsync(x => x == request.CompanyName);
 
-            var user = await _appDbContext.AppUsers
-                .Select(x => x.Name)
-                .FirstOrDefaultAsync(x => x == request.Username);
-
-            var errors = new List<string>();
-            
-            if (company != null) errors.Add("Company with the same name already exists");
-            if (user != null) errors.Add("Errors with the same name already exists");
-
-            if(errors.Count > 0)
+            if(company != null)
             {
-                return HandlerResult<AppUserDto>.Rejected(errors);
+                return HandlerResult<AppUserDto>.Rejected("Company with the same name already exists");
             }
 
             var adminUser = new AppUser

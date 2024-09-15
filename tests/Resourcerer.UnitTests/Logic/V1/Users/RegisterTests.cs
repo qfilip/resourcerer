@@ -1,4 +1,5 @@
-﻿using Resourcerer.Api.Services.StaticServices;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
@@ -68,14 +69,14 @@ public class RegisterTests : TestsBase
     }
 
     [Fact]
-    public void CompanyOrUserExists__Rejected()
+    public void CompanyExists__Rejected()
     {
         // arrange
         var company = _forger.Fake<Company>(x => x.Name = "island_trade_inc");
-        var user = _forger.Fake<AppUser>(x => x.Name = "vaas");
+
         var request = new V1Register
         {
-            Username = user.Name,
+            Username = "vaas",
             Password = "montenegro",
             Email = "vaas.montenegro@notmail.com",
             CompanyName = company.Name
@@ -87,9 +88,33 @@ public class RegisterTests : TestsBase
         var result = _sut.Handle(request).Await();
 
         // assert
-        Assert.Multiple(
-            () => Assert.Equal(eHandlerResultStatus.Rejected, result.Status),
-            () => Assert.True(result.Errors.Length == 2)
-        );
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
+    public void EmailExists__Exception()
+    {
+        // arrange
+        var email = "vaas.montenegro@notmail.com";
+        var company = _forger.Fake<AppUser>(x => x.Email = email);
+
+        var request = new V1Register
+        {
+            Username = "vaas",
+            Password = "montenegro",
+            Email = email,
+            CompanyName = company.Name
+        };
+
+        _ctx.SaveChanges();
+
+        var action = async () =>
+        {
+            await _sut.Handle(request);
+            return Task.CompletedTask;
+        };
+
+        // assert
+        Assert.ThrowsAsync<DbUpdateException>(action);
     }
 }
