@@ -18,4 +18,6 @@ public class MemorySeedTestEndpoint
     {
         var endpoint = group.MapGet("memory_seed", Action);
     }
+
+    //public AppEndpoint GetEndpointInfo() => new AppEndpoint(1, 0, EndpointMapper.SeedGroup)
 }

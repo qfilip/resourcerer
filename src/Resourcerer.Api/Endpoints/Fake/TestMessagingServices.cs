@@ -3,10 +3,11 @@ using Resourcerer.Api.Services;
 using Resourcerer.Application.Messaging.Abstractions;
 using Resourcerer.Dtos.Fake;
 using Resourcerer.Logic.Fake;
+using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.Fake;
 
-public class TestMessagingServices
+public class TestMessagingServices : IAppEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] FakeCommandDto dto,
@@ -25,4 +26,7 @@ public class TestMessagingServices
     {
         var endpoint = group.MapPost("messaging_test", Action);
     }
+
+    public AppEndpoint GetEndpointInfo() => 
+        new AppEndpoint(1, 0, EndpointGroups.Fake("messaging_test"), HttpMethod.Post, Action, null);
 }

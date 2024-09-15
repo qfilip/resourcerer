@@ -8,6 +8,7 @@ namespace Resourcerer.Api.Endpoints;
 
 public static class EndpointMapper
 {
+    public const string SeedGroup = "seed";
     public static void Map(WebApplication app)
     {
         EndpointMapperV1_0.Map(app);
