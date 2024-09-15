@@ -6,6 +6,6 @@ namespace Resourcerer.Api.Services.Messaging.V1.MassTransit.Consumers.Instances.
 
 public class V1InstanceOrderCreateCommandConsumer : BaseConsumer<V1InstanceOrderCreateCommand>
 {
-    public V1InstanceOrderCreateCommandConsumer(V1CreateInstanceOrderedEvent.Handler handler)
+    public V1InstanceOrderCreateCommandConsumer(CreateInstanceOrderedEvent.Handler handler)
         : base(handler.Handle) { }
 }

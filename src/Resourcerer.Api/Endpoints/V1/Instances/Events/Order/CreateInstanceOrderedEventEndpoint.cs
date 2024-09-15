@@ -11,7 +11,7 @@ public class CreateInstanceOrderedEventEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] V1InstanceOrderCreateCommand dto,
-        [FromServices] V1CreateInstanceOrderedEvent.Validator validator,
+        [FromServices] CreateInstanceOrderedEvent.Validator validator,
         [FromServices] IMessageSender<V1InstanceOrderCommand> sender,
         [FromServices] Pipeline pipeline)
     {
@@ -19,7 +19,7 @@ public class CreateInstanceOrderedEventEndpoint
             dto,
             validator,
             sender,
-            nameof(V1CreateInstanceOrderedEvent));
+            nameof(CreateInstanceOrderedEvent));
     }
 
     internal static void MapToGroup(RouteGroupBuilder group)

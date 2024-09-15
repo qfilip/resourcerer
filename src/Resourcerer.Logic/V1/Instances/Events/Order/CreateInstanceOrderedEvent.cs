@@ -8,7 +8,7 @@ using Resourcerer.Dtos.V1;
 
 namespace Resourcerer.Logic.V1.Instances.Events.Order;
 
-public static class V1CreateInstanceOrderedEvent
+public static class CreateInstanceOrderedEvent
 {
     public class Handler : IAppEventHandler<V1InstanceOrderCreateCommand, Unit>
     {

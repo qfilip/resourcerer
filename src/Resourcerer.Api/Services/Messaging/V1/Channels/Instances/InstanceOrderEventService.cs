@@ -16,7 +16,7 @@ public class InstanceOrderEventService : ChannelConsumerHostingService<V1Instanc
     {
         if (message is V1InstanceOrderCreateCommand orderEv)
         {
-            var handler = new V1CreateInstanceOrderedEvent.Handler(appDbContext);
+            var handler = new CreateInstanceOrderedEvent.Handler(appDbContext);
             return handler.Handle(orderEv);
         }
         else if (message is V1InstanceOrderCancelCommand cancelEv)

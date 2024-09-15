@@ -10,7 +10,7 @@ namespace Resourcerer.UnitTests.Logic.V1.Instances.Events.Order;
 
 public class CreateInstanceOrderedEventTests : TestsBase
 {
-    private readonly V1CreateInstanceOrderedEvent.Handler _handler;
+    private readonly CreateInstanceOrderedEvent.Handler _handler;
     public CreateInstanceOrderedEventTests()
     {
         _handler = new(_ctx);
@@ -109,7 +109,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
         };
 
         // act
-        var validator = new V1CreateInstanceOrderedEvent.Validator();
+        var validator = new CreateInstanceOrderedEvent.Validator();
         var result = validator.Validate(dto);
 
         // assert
