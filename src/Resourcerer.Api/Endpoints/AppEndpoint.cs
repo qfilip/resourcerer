@@ -81,7 +81,10 @@ public record AppEndpoint(
             var endpoint = e.Method switch
             {
                 HttpMethod.Get => app.MapGet(fullPath, e.EndpointAction),
+                HttpMethod.Put => app.MapPut(fullPath, e.EndpointAction),
+                HttpMethod.Patch => app.MapPatch(fullPath, e.EndpointAction),
                 HttpMethod.Post => app.MapPost(fullPath, e.EndpointAction),
+                HttpMethod.Delete => app.MapDelete(fullPath, e.EndpointAction),
                 _ => throw new InvalidOperationException($"HttpMethod {e.Method} not supported")
             };
 
