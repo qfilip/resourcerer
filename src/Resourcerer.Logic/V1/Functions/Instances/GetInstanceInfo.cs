@@ -22,10 +22,10 @@ public static partial class Instances
                 UnitPrice = x.UnitPrice,
                 Quantity = x.Quantity
             })
-            .Sum(x => x.RefundedAmount - (x.UnitPrice * x.Quantity));
+            .Sum(x => x.RefundedAmount - (x.UnitPrice * (decimal)x.Quantity));
 
         var sellProfits = soldEvents
-            .Sum(x => Maths.Discount(x.Quantity * x.UnitPrice, x.TotalDiscountPercent));
+            .Sum(x => Maths.Discount((decimal)x.Quantity * x.UnitPrice, x.TotalDiscountPercent));
 
         var discards = i.DiscardedEvents
             .Select(x => new V1DiscardInfo
@@ -47,11 +47,11 @@ public static partial class Instances
             ExpiryDate = i.ExpiryDate,
             QuantityLeft = quantityLeft,
             SellProfit = sellProfits,
-            SellCancellationsPenaltyDifference = (float)sellCancellationsPenaltyDifference
+            SellCancellationsPenaltyDifference = sellCancellationsPenaltyDifference
         };
     }
 
-    private static double ComputePurchaseCost(Instance i)
+    private static decimal ComputePurchaseCost(Instance i)
     {
         if(!i.SourceInstanceId.HasValue)
         {
@@ -61,6 +61,6 @@ public static partial class Instances
         var orderEvent = i.SourceInstance!.OrderedEvents
             .First(x => x.DerivedInstanceId == i.Id);
 
-        return Maths.Discount(orderEvent.Quantity * orderEvent.UnitPrice, orderEvent.TotalDiscountPercent);
+        return Maths.Discount((decimal)orderEvent.Quantity * orderEvent.UnitPrice, orderEvent.TotalDiscountPercent);
     }
 }

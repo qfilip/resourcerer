@@ -5,5 +5,5 @@ public class V1InstanceOrderCancelCommand : V1InstanceOrderCommand
     public Guid InstanceId { get; set; }
     public Guid OrderEventId { get; set; }
     public string? Reason { get; set; }
-    public double RefundedAmount { get; set; }
+    public decimal RefundedAmount { get; set; }
 }

@@ -3,7 +3,7 @@
 public class ItemDto : EntityDto<ItemDto>
 {
     public string? Name { get; set; }
-    public double ProductionPrice { get; set; }
+    public decimal ProductionPrice { get; set; }
     public double ProductionTimeSeconds { get; set; }
     public double? ExpirationTimeSeconds { get; set; }
 

@@ -7,7 +7,7 @@ public class InstanceOrderedEvent : AppDbEntity
     public Guid BuyerCompanyId { get; set; }
     public Guid? DerivedInstanceItemId { get; set; }
     public double Quantity { get; set; }
-    public double UnitPrice { get; set; }
+    public decimal UnitPrice { get; set; }
     public int TotalDiscountPercent { get; set; }
     public DateTime? ExpectedDeliveryDate { get; set; }
     

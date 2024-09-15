@@ -2,7 +2,7 @@
 
 public class Maths
 {
-    public static double Discount(double fullPrice, int totalDiscountPercent)
+    public static decimal Discount(decimal fullPrice, int totalDiscountPercent)
     {
         if (totalDiscountPercent > 0 && totalDiscountPercent <= 100)
         {
