@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Logic.Fake;
+using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.Fake;
 
-public class MemorySeedTestEndpoint
+public class MemorySeedTestEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
         [FromQuery] int excerpts,
@@ -14,10 +15,6 @@ public class MemorySeedTestEndpoint
         return await pipeline.Pipe(handler, excerpts);
     }
 
-    internal static void MapToGroup(RouteGroupBuilder group)
-    {
-        var endpoint = group.MapGet("memory_seed", Action);
-    }
-
-    //public AppEndpoint GetEndpointInfo() => new AppEndpoint(1, 0, EndpointMapper.SeedGroup)
+    public AppEndpoint GetEndpointInfo() =>
+        new AppEndpoint(1, 0, EndpointMapper.Fake("memory"), HttpMethod.Get, Action, null);
 }

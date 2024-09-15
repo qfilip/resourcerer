@@ -27,7 +27,17 @@ public class Webapi
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(o =>
+            {
+                var descriptions = app.DescribeApiVersions();
+                foreach(var description in descriptions)
+                {
+                    string url = $"/swagger/{description.GroupName}/swagger.json";
+                    string name = description.GroupName.ToUpperInvariant();
+
+                    o.SwaggerEndpoint(url, name);
+                }
+            });
         }
 
         app.UseHttpsRedirection();

@@ -2,10 +2,11 @@
 using Resourcerer.Api.Services;
 using Resourcerer.Application.Models;
 using Resourcerer.Logic.Fake;
+using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.Fake;
 
-public class SeedFakeDataEndpoint
+public class SeedFakeDataEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
         [FromServices] Pipeline pipeline,
@@ -18,4 +19,7 @@ public class SeedFakeDataEndpoint
     {
         var endpoint = group.MapGet("", Action);
     }
+
+    public AppEndpoint GetEndpointInfo() =>
+        new AppEndpoint(1, 0, EndpointMapper.Fake("seed"), HttpMethod.Get, Action, null);
 }

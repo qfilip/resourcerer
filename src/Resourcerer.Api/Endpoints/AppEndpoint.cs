@@ -17,23 +17,15 @@ public record AppEndpoint(
         var minMajor = endpoints.Min(x => x.Major);
         var maxMajor = endpoints.Max(x => x.Major);
 
-        lookup.Add(minMajor, (
-            endpoints.Where(x => x.Major == minMajor).Min(x => x.Minor),
-            endpoints.Where(x => x.Major == minMajor).Max(x => x.Minor)
-        ));
-
         var major = minMajor;
-        while (major < maxMajor)
-        {
-            major++;
-            
+        while (major <= maxMajor)
+        {   
             var minMinor = endpoints.Where(x => x.Major == major).Min(x => x.Minor);
             var maxMinor = endpoints.Where(x => x.Major == major).Max(x => x.Minor);
             
-            lookup.Add(minMajor, (
-                minMinor,
-                maxMinor
-            ));
+            lookup.Add(major, (minMinor,maxMinor));
+
+            major++;
         }
 
         major = endpoints.Min(x => x.Major);
@@ -63,7 +55,24 @@ public record AppEndpoint(
             .DistinctBy(x => new { x.Major, x.Minor, x.Path, x.Method })
             .ToArray();
 
-        foreach(var e in endpointsToMap)
+        var apiVersions = app.NewApiVersionSet();
+
+        foreach(var key in lookup.Keys)
+        {
+            var min = lookup[key].min;
+            var max = lookup[key].max;
+            var current = min;
+            
+            while(current <= max)
+            {
+                apiVersions.HasApiVersion(new Asp.Versioning.ApiVersion(key, current));
+                current++;
+            }
+        }
+
+        var apiVersionSet = apiVersions.ReportApiVersions().Build();
+
+        foreach (var e in endpointsToMap)
         {
             var fullPath = $"api/v{e.Major}.{e.Minor}/{e.Path}";
             var endpoint = e.Method switch
@@ -72,7 +81,11 @@ public record AppEndpoint(
                 HttpMethod.Post => app.MapPost(fullPath, e.EndpointAction),
                 _ => throw new InvalidOperationException($"HttpMethod {e.Method} not supported")
             };
-
+            
+            endpoint
+                //.MapToApiVersion(e.Major, e.Minor)
+                .WithApiVersionSet(apiVersionSet);
+            
             e.MapAuth?.Invoke(endpoint);
         }
     }
