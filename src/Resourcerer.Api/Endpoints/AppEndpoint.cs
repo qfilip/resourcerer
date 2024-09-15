@@ -1,4 +1,6 @@
-﻿using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
+﻿using Resourcerer.Api.Services.StaticServices;
+using System.Text.Json;
+using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints;
 
@@ -74,19 +76,22 @@ public record AppEndpoint(
 
         foreach (var e in endpointsToMap)
         {
-            var fullPath = $"api/v{e.Major}.{e.Minor}/{e.Path}";
+            // var fullPath = $"api/v{e.Major}.{e.Minor}/{e.Path}";
+            var fullPath = $"v{e.Major}.{e.Minor}/{e.Path}";
             var endpoint = e.Method switch
             {
                 HttpMethod.Get => app.MapGet(fullPath, e.EndpointAction),
                 HttpMethod.Post => app.MapPost(fullPath, e.EndpointAction),
                 _ => throw new InvalidOperationException($"HttpMethod {e.Method} not supported")
             };
-            
-            endpoint
-                //.MapToApiVersion(e.Major, e.Minor)
-                .WithApiVersionSet(apiVersionSet);
-            
-            e.MapAuth?.Invoke(endpoint);
+
+            // adding this results with returning 404, but it is required
+            //endpoint
+            //    .WithApiVersionSet(apiVersionSet)
+            //    .MapToApiVersion(e.Major, e.Minor);
+
+            if (AppStaticData.Auth.Enabled)
+                e.MapAuth?.Invoke(endpoint);
         }
     }
 }

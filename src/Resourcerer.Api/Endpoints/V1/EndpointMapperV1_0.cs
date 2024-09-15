@@ -28,7 +28,7 @@ public class EndpointMapperV1_0
         var g = EndpointMapper.GetGroup(app, Version, "Categories");
 
         GetAllCompanyCategoriesEndpoint.MapToGroup(g);
-        CreateCategoryEndpoint.MapToGroup(g);
+        // CreateCategoryEndpoint.MapToGroup(g);
         RemoveCategoryEndpoint.MapToGroup(g);
     }
 

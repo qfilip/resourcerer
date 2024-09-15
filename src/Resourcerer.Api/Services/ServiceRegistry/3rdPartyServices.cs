@@ -69,14 +69,15 @@ public static partial class ServiceRegistry
         services.ConfigureOptions<ConfigureSwaggerGenOptions>();
         services.AddApiVersioning(o =>
         {
-            o.DefaultApiVersion = new Asp.Versioning.ApiVersion(1, 0);
+            //o.DefaultApiVersion = new Asp.Versioning.ApiVersion(1, 0);
             o.ReportApiVersions = true;
             o.ApiVersionReader = new UrlSegmentApiVersionReader();
         }).AddApiExplorer(o =>
         {
-            o.GroupNameFormat = "'v'VVV";
-            o.FormatGroupName = (group, version) => $"{group} - {version}";
+            o.GroupNameFormat = "'v'VV";
+            //o.FormatGroupName = (group, version) => $"{group} - {version}";
             o.SubstituteApiVersionInUrl = true;
+            //o.AddApiVersionParametersWhenVersionNeutral = true;
         });
 
         services.AddEndpointsApiExplorer();
