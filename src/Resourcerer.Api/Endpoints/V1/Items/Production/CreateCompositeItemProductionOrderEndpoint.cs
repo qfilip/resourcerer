@@ -32,5 +32,5 @@ public class CreateCompositeItemProductionOrderEndpoint : IAppEndpoint
     }
 
     public AppEndpoint GetEndpointInfo() =>
-        new AppEndpoint(1, 0, EndpointMapper.Instances("production_order/composite/create"), HttpMethod.Post, Action, MapAuth);
+        new AppEndpoint(1, 0, EndpointMapper.Items("production_order/composite/create"), HttpMethod.Post, Action, MapAuth);
 }
