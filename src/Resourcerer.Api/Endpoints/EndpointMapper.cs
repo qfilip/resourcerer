@@ -121,17 +121,34 @@ public static class EndpointMapper
 
         var apiVersionSet = apiVersions.ReportApiVersions().Build();
 
+        string MapPath(int major, int minor, string path) => $"v{major}.{minor}/{path.Split('/')[0]}";
+
+        var groups = endpointsToMap
+            .Select(x => MapPath(x.Major, x.Minor, x.Path))
+            .Distinct()
+            .Select(x => new { Prefix = x, Builder = app.MapGroup(x) })
+            .ToArray();
+
         foreach (var e in endpointsToMap)
         {
-            // var fullPath = $"api/v{e.Major}.{e.Minor}/{e.Path}";
-            var fullPath = $"v{e.Major}.{e.Minor}/{e.Path}";
+            var endpointPathParts = e.Path
+                .Split('/')
+                .Skip(1);
+
+            var endpointPath = string.Join("/", endpointPathParts);
+
+            var group = groups
+                .Where(x => x.Prefix == MapPath(e.Major, e.Minor, e.Path))
+                .Single();
+
+            var fullPath = $"{group.Prefix}/{endpointPath}";
             var endpoint = e.Method switch
             {
-                HttpMethod.Get => app.MapGet(fullPath, e.EndpointAction),
-                HttpMethod.Put => app.MapPut(fullPath, e.EndpointAction),
-                HttpMethod.Patch => app.MapPatch(fullPath, e.EndpointAction),
-                HttpMethod.Post => app.MapPost(fullPath, e.EndpointAction),
-                HttpMethod.Delete => app.MapDelete(fullPath, e.EndpointAction),
+                HttpMethod.Get => group.Builder.MapGet(endpointPath, e.EndpointAction),
+                HttpMethod.Put => group.Builder.MapPut(endpointPath, e.EndpointAction),
+                HttpMethod.Patch => group.Builder.MapPatch(endpointPath, e.EndpointAction),
+                HttpMethod.Post => group.Builder.MapPost(endpointPath, e.EndpointAction),
+                HttpMethod.Delete => group.Builder.MapDelete(endpointPath, e.EndpointAction),
                 _ => throw new InvalidOperationException($"HttpMethod {e.Method} not supported")
             };
 
