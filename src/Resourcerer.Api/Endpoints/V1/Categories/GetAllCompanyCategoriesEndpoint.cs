@@ -6,7 +6,7 @@ using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMe
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public class GetAllCompanyCategoriesEndpoint
+public class GetAllCompanyCategoriesEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
         [FromQuery] Guid companyId,
@@ -16,13 +16,14 @@ public class GetAllCompanyCategoriesEndpoint
         return await pipeline.Pipe(handler, companyId);
     }
 
-    internal static void MapToGroup(RouteGroupBuilder group)
+    internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        var endpoint = group.MapGet("", Action);
-
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
             (ePermissionSection.Category, new[] { ePermission.Read })
         });
     }
+
+    public AppEndpoint GetEndpointInfo() =>
+        new AppEndpoint(1, 0, EndpointMapper.Categories(""), HttpMethod.Get, Action, MapAuth);
 }

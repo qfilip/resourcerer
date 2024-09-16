@@ -7,7 +7,7 @@ using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMe
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public class RemoveCategoryEndpoint
+public class RemoveCategoryEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] CategoryDto categoryDto,
@@ -17,13 +17,14 @@ public class RemoveCategoryEndpoint
         return await pipeline.Pipe(handler, categoryDto);
     }
 
-    internal static void MapToGroup(RouteGroupBuilder group)
+    internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        var endpoint = group.MapDelete("", Action);
-
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
             (ePermissionSection.Category, new[] { ePermission.Remove })
         });
     }
+
+    public AppEndpoint GetEndpointInfo() =>
+        new AppEndpoint(1, 0, EndpointMapper.Categories(""), HttpMethod.Delete, Action, MapAuth);
 }

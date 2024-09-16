@@ -4,10 +4,11 @@ using Resourcerer.Application.Messaging.Abstractions;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Items.Events.Production;
+using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public class StartItemProductionEndpoint
+public class StartItemProductionEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
        [FromBody] V1StartItemProductionOrderCommand dto,
@@ -22,13 +23,14 @@ public class StartItemProductionEndpoint
             nameof(StartItemProductionOrder));
     }
 
-    internal static void MapToGroup(RouteGroupBuilder group)
+    internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        var endpoint = group.MapPost("/production_order/start", Action);
-
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
             (ePermissionSection.Event, new[] { ePermission.Write })
         });
     }
+
+    public AppEndpoint GetEndpointInfo() =>
+        new AppEndpoint(1, 0, EndpointMapper.Instances("production_order/start"), HttpMethod.Post, Action, MapAuth);
 }

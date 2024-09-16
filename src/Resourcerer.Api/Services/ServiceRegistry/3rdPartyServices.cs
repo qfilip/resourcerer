@@ -74,9 +74,9 @@ public static partial class ServiceRegistry
             o.ApiVersionReader = new UrlSegmentApiVersionReader();
         }).AddApiExplorer(o =>
         {
-            o.GroupNameFormat = "'v'VV";
-            //o.FormatGroupName = (group, version) => $"{group} - {version}";
-            o.SubstituteApiVersionInUrl = true;
+            o.GroupNameFormat = "'v'VVVV";
+            //o.FormatGroupName = (group, version) => $"{group}{version}";
+            //o.SubstituteApiVersionInUrl = true;
             //o.AddApiVersionParametersWhenVersionNeutral = true;
         });
 

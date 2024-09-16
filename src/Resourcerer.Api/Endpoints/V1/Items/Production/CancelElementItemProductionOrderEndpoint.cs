@@ -4,10 +4,11 @@ using Resourcerer.Application.Messaging.Abstractions;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.V1.Items.Events.Production;
+using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1.Items.Production;
 
-public class CancelElementItemProductionOrderEndpoint
+public class CancelElementItemProductionOrderEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
        [FromBody] V1CancelElementItemProductionOrderCommand dto,
@@ -22,13 +23,14 @@ public class CancelElementItemProductionOrderEndpoint
             nameof(CancelElementItemProductionOrder));
     }
 
-    internal static void MapToGroup(RouteGroupBuilder group)
+    internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        var endpoint = group.MapPost("/production_order/element/cancel", Action);
-
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
             (ePermissionSection.Event, new[] { ePermission.Write })
         });
     }
+
+    public AppEndpoint GetEndpointInfo() =>
+        new AppEndpoint(1, 0, EndpointMapper.Instances("production_order/element/cancel"), HttpMethod.Post, Action, MapAuth);
 }

@@ -1,5 +1,4 @@
 ﻿using Resourcerer.Api.Services.StaticServices;
-using System.Text.Json;
 using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints;
@@ -10,7 +9,7 @@ public record AppEndpoint(
     string Path,
     HttpMethod Method,
     Delegate EndpointAction,
-    Action<RouteHandlerBuilder>? MapAuth)
+    Action<RouteHandlerBuilder>? MapAuth = null)
 {
     public static void MapAllVersions(List<AppEndpoint> endpoints, WebApplication app)
     {

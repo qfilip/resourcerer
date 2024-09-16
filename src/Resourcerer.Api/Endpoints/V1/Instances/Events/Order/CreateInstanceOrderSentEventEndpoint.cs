@@ -4,10 +4,11 @@ using Resourcerer.Application.Messaging.Abstractions;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Instances.Events.Order;
+using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public class CreateInstanceOrderSentEventEndpoint
+public class CreateInstanceOrderSentEventEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] V1InstanceOrderSendCommand dto,
@@ -22,13 +23,14 @@ public class CreateInstanceOrderSentEventEndpoint
             nameof(CreateInstanceOrderSentEvent));
     }
 
-    internal static void MapToGroup(RouteGroupBuilder group)
+    internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        var endpoint = group.MapPost("/order/send", Action);
-
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
             (ePermissionSection.Event, new[] { ePermission.Write })
         });
     }
+
+    public AppEndpoint GetEndpointInfo() =>
+        new AppEndpoint(1, 0, EndpointMapper.Instances("order/send"), HttpMethod.Post, Action, MapAuth);
 }
