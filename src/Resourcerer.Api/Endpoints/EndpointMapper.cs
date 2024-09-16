@@ -61,6 +61,23 @@ public static class EndpointMapper
 
     private static void MapAllVersions(List<AppEndpoint> endpoints, WebApplication app)
     {
+        // check name duplicates
+        endpoints.ForEach(e =>
+        {
+            var count = endpoints.Where(x =>
+                x.Path == e.Path &&
+                x.Major == e.Major &&
+                x.Minor == e.Minor &&
+                x.Method == e.Method
+            ).Count();
+
+            if(count > 1)
+            {
+                var message = $"More than one endpoint found with path {e.Path} and method {e.Method}";
+                throw new InvalidOperationException(message);
+            }
+        });
+
         var lookup = new Dictionary<int, (int min, int max)>();
 
         var minMajor = endpoints.Min(x => x.Major);
