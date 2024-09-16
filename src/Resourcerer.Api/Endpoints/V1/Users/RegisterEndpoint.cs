@@ -3,10 +3,11 @@ using Resourcerer.Api.Services;
 using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1;
+using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public static class RegisterEndpoint
+public class RegisterEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
         [FromBody] V1Register dto,
@@ -20,8 +21,7 @@ public static class RegisterEndpoint
         });
     }
 
-    internal static void MapToGroup(RouteGroupBuilder group)
-    {
-        group.MapPost("/register", Action);
-    }
+    public AppEndpoint GetEndpointInfo() =>
+        new AppEndpoint(1, 0,
+            EndpointMapper.Users("register"), HttpMethod.Post, Action);
 }

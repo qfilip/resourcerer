@@ -3,10 +3,11 @@ using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1;
+using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public class SetPermissionsEndpoint
+public class SetPermissionsEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
        [FromBody] V1SetUserPermissions dto,
@@ -16,13 +17,15 @@ public class SetPermissionsEndpoint
         return await pipeline.Pipe(handler, dto);
     }
 
-    internal static void MapToGroup(RouteGroupBuilder group)
+    internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        var endpoint = group.MapPost("/permissions", Action);
-
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
             (ePermissionSection.User, new[] { ePermission.Modify })
         });
     }
+
+    public AppEndpoint GetEndpointInfo() =>
+        new AppEndpoint(1, 0,
+            EndpointMapper.Users("permissions"), HttpMethod.Post, Action, MapAuth);
 }

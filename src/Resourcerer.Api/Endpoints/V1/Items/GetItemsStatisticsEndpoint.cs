@@ -1,10 +1,11 @@
 ﻿using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.V1.Items;
+using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public class GetItemsStatisticsEndpoint
+public class GetItemsStatisticsEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
         Guid itemId,
@@ -14,13 +15,15 @@ public class GetItemsStatisticsEndpoint
         return await pipeline.Pipe(handler, (itemId, DateTime.UtcNow));
     }
 
-    internal static void MapToGroup(RouteGroupBuilder group)
+    internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        var endpoint = group.MapGet("/statistics", Action);
-
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
             (ePermissionSection.Item, new[] { ePermission.Read })
         });
     }
+
+    public AppEndpoint GetEndpointInfo() =>
+        new AppEndpoint(1, 0,
+            EndpointMapper.Items("statistics"), HttpMethod.Get, Action, MapAuth);
 }

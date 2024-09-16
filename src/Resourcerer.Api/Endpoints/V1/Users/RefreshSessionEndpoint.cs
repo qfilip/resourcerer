@@ -1,8 +1,9 @@
 ﻿using Resourcerer.Api.Services.StaticServices;
+using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public static class RefreshSessionEndpoint
+public class RefreshSessionEndpoint : IAppEndpoint
 {
     public static IResult Action(HttpContext context)
     {
@@ -12,9 +13,12 @@ public static class RefreshSessionEndpoint
         return Results.Ok(token);
     }
 
-    internal static void MapToGroup(RouteGroupBuilder group)
+    internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        var endpoint = group.MapGet("/refresh_session", Action);
         EndpointMapper.AddAuthorization(endpoint);
     }
+
+    public AppEndpoint GetEndpointInfo() =>
+        new AppEndpoint(1, 0,
+            EndpointMapper.Users("refresh_session"), HttpMethod.Get, Action, MapAuth);
 }

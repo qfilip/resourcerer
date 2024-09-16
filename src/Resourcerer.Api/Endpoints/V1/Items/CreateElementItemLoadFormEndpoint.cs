@@ -4,8 +4,9 @@ using Resourcerer.Dtos;
 using Resourcerer.Logic.V1;
 
 namespace Resourcerer.Api.Endpoints;
+using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
-public static class CreateElementItemLoadFormEndpoint
+public class CreateElementItemLoadFormEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
        Guid companyId,
@@ -15,13 +16,15 @@ public static class CreateElementItemLoadFormEndpoint
         return await pipeline.Pipe(handler, companyId);
     }
 
-    internal static void MapToGroup(RouteGroupBuilder group)
+    internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        var endpoint = group.MapGet("/create/element/form", Action);
-
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
             (ePermissionSection.Item, new[] { ePermission.Write })
         });
     }
+
+    public AppEndpoint GetEndpointInfo() =>
+        new AppEndpoint(1, 0,
+            EndpointMapper.Items("create/element/form"), HttpMethod.Get, Action, MapAuth);
 }

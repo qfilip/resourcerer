@@ -2,10 +2,11 @@
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.V1;
+using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public class GetElementItemForEditEndpoint
+public class GetElementItemForEditEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
         [FromQuery] Guid itemId,
@@ -16,13 +17,15 @@ public class GetElementItemForEditEndpoint
         return await pipeline.Pipe(handler, (itemId, companyId));
     }
 
-    internal static void MapToGroup(RouteGroupBuilder group)
+    internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        var endpoint = group.MapGet("/edit/element/form", Action);
-
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
             (ePermissionSection.Item, new[] { ePermission.Read })
         });
     }
+
+    public AppEndpoint GetEndpointInfo() =>
+        new AppEndpoint(1, 0,
+            EndpointMapper.Items("edit/element/form"), HttpMethod.Get, Action, MapAuth);
 }

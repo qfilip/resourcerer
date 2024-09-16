@@ -3,10 +3,11 @@ using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Items;
+using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public class CreateElementItemEndpoint
+public class CreateElementItemEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
        [FromBody] V1CreateElementItem dto,
@@ -16,13 +17,15 @@ public class CreateElementItemEndpoint
         return await pipeline.Pipe(handler, dto);
     }
 
-    internal static void MapToGroup(RouteGroupBuilder group)
+    internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        var endpoint = group.MapPost("/create/element", Action);
-
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
             (ePermissionSection.Item, new[] { ePermission.Write })
         });
     }
+
+    public AppEndpoint GetEndpointInfo() =>
+        new AppEndpoint(1, 0,
+            EndpointMapper.Items("create/element"), HttpMethod.Post, Action, MapAuth);
 }

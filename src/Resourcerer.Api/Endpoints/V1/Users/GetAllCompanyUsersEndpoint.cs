@@ -2,10 +2,11 @@
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.V1;
+using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public static class GetAllCompanyUsersEndpoint
+public class GetAllCompanyUsersEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
         [FromQuery] Guid companyId,
@@ -15,13 +16,15 @@ public static class GetAllCompanyUsersEndpoint
         return await pipeline.Pipe(handler, companyId);
     }
 
-    internal static void MapToGroup(RouteGroupBuilder group)
+    internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        var endpoint = group.MapGet("/company-all", Action);
-
         EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
         {
             (ePermissionSection.User, new[] { ePermission.Read })
         });
     }
+
+    public AppEndpoint GetEndpointInfo() =>
+        new AppEndpoint(1, 0,
+            EndpointMapper.Users("company-all"), HttpMethod.Get, Action, MapAuth);
 }
