@@ -22,7 +22,7 @@ public class Webapi
         return builder.Build();
     }
 
-    public static void Run(WebApplication app)
+    public static async void Run(WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {
@@ -53,5 +53,12 @@ public class Webapi
         app.UseMiddleware<AppHttpMiddleware>();
 
         app.Run();
+        // var task = app.RunAsync();
+
+        //var services = app.Services.GetServices<EndpointDataSource>()
+        //    .SelectMany(e => e.Endpoints)
+        //    .ToArray();
+
+        //await task;
     }
 }

@@ -1,5 +1,4 @@
-﻿using Asp.Versioning;
-using Asp.Versioning.Builder;
+﻿using Asp.Versioning.Builder;
 using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.Dtos;
 using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
@@ -89,41 +88,52 @@ public static class EndpointMapper
         string MapPath(int major, int minor, string path) => $"v{major}.{minor}/{path.Split('/')[0]}";
 
         var groups = endpoints
-            .Select(x => MapPath(x.Major, x.Minor, x.Path))
-            .Distinct()
-            .Select(x => new { Prefix = x, Builder = app.MapGroup(x) })
+            .Select(x => new { x.Major, x.Minor, x.Path, Prefix = MapPath(x.Major, x.Minor, x.Path) })
+            .DistinctBy(x => x.Prefix)
             .ToArray();
 
-        foreach (var e in endpoints)
+        foreach(var g in groups)
         {
-            var endpointPathParts = e.Path
+            var group = app
+                .MapGroup(g.Prefix)
+                .WithApiVersionSet(apiVersionSet)
+                .MapToApiVersion(g.Major, g.Minor);
+
+            var groupEndpoints = endpoints
+                .Where(x =>
+                    x.Major == g.Major &&
+                    x.Minor == g.Minor &&
+                    x.Path.Split('/')[0] == g.Path.Split('/')[0])
+                .ToArray();
+
+            if(groupEndpoints.Length == 0)
+                throw new InvalidOperationException($"No endpoints found for group {g.Prefix}");
+
+            foreach(var e in  groupEndpoints)
+            {
+                var endpointPathParts = e.Path
                 .Split('/')
                 .Skip(1);
 
-            var endpointPath = string.Join("/", endpointPathParts);
+                var endpointPath = string.Join("/", endpointPathParts);
 
-            var group = groups
-                .Where(x => x.Prefix == MapPath(e.Major, e.Minor, e.Path))
-                .Single();
+                var endpoint = e.Method switch
+                {
+                    HttpMethod.Get => group.MapGet(endpointPath, e.EndpointAction),
+                    HttpMethod.Put => group.MapPut(endpointPath, e.EndpointAction),
+                    HttpMethod.Patch => group.MapPatch(endpointPath, e.EndpointAction),
+                    HttpMethod.Post => group.MapPost(endpointPath, e.EndpointAction),
+                    HttpMethod.Delete => group.MapDelete(endpointPath, e.EndpointAction),
+                    _ => throw new InvalidOperationException($"HttpMethod {e.Method} not supported")
+                };
 
-            var fullPath = $"{group.Prefix}/{endpointPath}";
-            var endpoint = e.Method switch
-            {
-                HttpMethod.Get => group.Builder.MapGet(endpointPath, e.EndpointAction),
-                HttpMethod.Put => group.Builder.MapPut(endpointPath, e.EndpointAction),
-                HttpMethod.Patch => group.Builder.MapPatch(endpointPath, e.EndpointAction),
-                HttpMethod.Post => group.Builder.MapPost(endpointPath, e.EndpointAction),
-                HttpMethod.Delete => group.Builder.MapDelete(endpointPath, e.EndpointAction),
-                _ => throw new InvalidOperationException($"HttpMethod {e.Method} not supported")
-            };
+                // adding this returns 404 on every call
+                endpoint
+                    .MapToApiVersion(e.Major, e.Minor);
 
-            // adding this results with returning 404, but it is required
-            //endpoint
-            //    .WithApiVersionSet(apiVersionSet)
-            //    .MapToApiVersion(e.Major, e.Minor);
-
-            if (AppStaticData.Auth.Enabled)
-                e.MapAuth?.Invoke(endpoint);
+                if (AppStaticData.Auth.Enabled)
+                    e.MapAuth?.Invoke(endpoint);
+            }
         }
     }
 
