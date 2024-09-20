@@ -98,10 +98,7 @@ public static class EndpointMapper
                 .WithApiVersionSet(apiVersionSet);
 
             var groupEndpoints = endpoints
-                .Where(x =>
-                    x.Major == g.Major &&
-                    x.Minor == g.Minor &&
-                    x.Path.Split('/')[0] == g.Path.Split('/')[0])
+                .Where(x => x.Path.Split('/')[0] == g.Prefix)
                 .ToArray();
 
             if(groupEndpoints.Length == 0)
@@ -125,7 +122,6 @@ public static class EndpointMapper
                     _ => throw new InvalidOperationException($"HttpMethod {e.Method} not supported")
                 };
 
-                // adding this returns 404 on every call
                 endpoint
                     .MapToApiVersion(e.Major, e.Minor);
 
