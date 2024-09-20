@@ -7,6 +7,7 @@ namespace Resourcerer.Api.Endpoints;
 
 public static class EndpointMapper
 {
+    // versioning sample at the bottom
     public static string Fake(string path) => $"fake/{path}";
     public static string Categories(string path) => $"categories/{path}";
     public static string Companies(string path) => $"companies/{path}";
@@ -81,23 +82,20 @@ public static class EndpointMapper
 
         var apiVersions = app.NewApiVersionSet();
 
-        endpoints = MapWithAutomaticVersionUpdate(endpoints, apiVersions);
+        endpoints = MapAllEndpointVersions(endpoints, apiVersions);
 
         var apiVersionSet = apiVersions.ReportApiVersions().Build();
 
-        string MapPath(int major, int minor, string path) => $"v{major}.{minor}/{path.Split('/')[0]}";
-
         var groups = endpoints
-            .Select(x => new { x.Major, x.Minor, x.Path, Prefix = MapPath(x.Major, x.Minor, x.Path) })
+            .Select(x => new { x.Major, x.Minor, x.Path, Prefix = x.Path.Split('/')[0] })
             .DistinctBy(x => x.Prefix)
             .ToArray();
 
         foreach(var g in groups)
         {
             var group = app
-                .MapGroup(g.Prefix)
-                .WithApiVersionSet(apiVersionSet)
-                .MapToApiVersion(g.Major, g.Minor);
+                .MapGroup("v{version:apiVersion}" + $"/{g.Prefix}") // important, otherwise not working
+                .WithApiVersionSet(apiVersionSet);
 
             var groupEndpoints = endpoints
                 .Where(x =>
@@ -109,7 +107,7 @@ public static class EndpointMapper
             if(groupEndpoints.Length == 0)
                 throw new InvalidOperationException($"No endpoints found for group {g.Prefix}");
 
-            foreach(var e in  groupEndpoints)
+            foreach(var e in groupEndpoints)
             {
                 var endpointPathParts = e.Path
                 .Split('/')
@@ -143,7 +141,7 @@ public static class EndpointMapper
     /// <param name="endpoints">Endpoints to use.</param>
     /// <param name="apiVersionSetBuilder">ApiVersionSetBuilder to map versions to.</param>
     /// <returns></returns>
-    private static List<AppEndpoint> MapWithAutomaticVersionUpdate(List<AppEndpoint> endpoints, ApiVersionSetBuilder apiVersionSetBuilder)
+    private static List<AppEndpoint> MapAllEndpointVersions(List<AppEndpoint> endpoints, ApiVersionSetBuilder apiVersionSetBuilder)
     {
         var lookup = new Dictionary<int, (int min, int max)>();
 
@@ -177,6 +175,7 @@ public static class EndpointMapper
                 while (minor <= maxMinor)
                 {
                     collection.Add(new AppEndpoint(major, minor, x.Path, x.Method, x.EndpointAction, x.MapAuth));
+                    apiVersionSetBuilder.HasApiVersion(new Asp.Versioning.ApiVersion(major, minor));
                     minor++;
                 }
 
@@ -184,23 +183,22 @@ public static class EndpointMapper
             }
         });
 
-        var endpointsToMap = collection
+        return collection
             .DistinctBy(x => new { x.Major, x.Minor, x.Path, x.Method })
             .ToList();
-
-        foreach (var key in lookup.Keys)
-        {
-            var min = lookup[key].min;
-            var max = lookup[key].max;
-            var current = min;
-
-            while (current <= max)
-            {
-                apiVersionSetBuilder.HasApiVersion(new Asp.Versioning.ApiVersion(key, current));
-                current++;
-            }
-        }
-
-        return endpointsToMap;
     }
+
+    //var apiVersions = app
+    //    .NewApiVersionSet()
+    //    .HasApiVersion(new Asp.Versioning.ApiVersion(1, 0))
+    //    .HasApiVersion(new Asp.Versioning.ApiVersion(2, 0))
+    //    .ReportApiVersions().Build();
+
+    //var g = app.MapGroup("v{version:apiVersion}").WithApiVersionSet(apiVersions);
+
+    //g.MapGet("/get", () => Results.Ok())
+    //    .MapToApiVersion(1, 0);
+
+    //g.MapGet("/get", () => Results.Ok())
+    //    .MapToApiVersion(2, 0);
 }
