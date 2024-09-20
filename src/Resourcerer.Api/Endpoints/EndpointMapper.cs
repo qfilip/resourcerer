@@ -1,4 +1,6 @@
-﻿using Resourcerer.Api.Services.StaticServices;
+﻿using Asp.Versioning;
+using Asp.Versioning.Builder;
+using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.Dtos;
 using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
@@ -78,6 +80,61 @@ public static class EndpointMapper
             }
         });
 
+        var apiVersions = app.NewApiVersionSet();
+
+        endpoints = MapWithAutomaticVersionUpdate(endpoints, apiVersions);
+
+        var apiVersionSet = apiVersions.ReportApiVersions().Build();
+
+        string MapPath(int major, int minor, string path) => $"v{major}.{minor}/{path.Split('/')[0]}";
+
+        var groups = endpoints
+            .Select(x => MapPath(x.Major, x.Minor, x.Path))
+            .Distinct()
+            .Select(x => new { Prefix = x, Builder = app.MapGroup(x) })
+            .ToArray();
+
+        foreach (var e in endpoints)
+        {
+            var endpointPathParts = e.Path
+                .Split('/')
+                .Skip(1);
+
+            var endpointPath = string.Join("/", endpointPathParts);
+
+            var group = groups
+                .Where(x => x.Prefix == MapPath(e.Major, e.Minor, e.Path))
+                .Single();
+
+            var fullPath = $"{group.Prefix}/{endpointPath}";
+            var endpoint = e.Method switch
+            {
+                HttpMethod.Get => group.Builder.MapGet(endpointPath, e.EndpointAction),
+                HttpMethod.Put => group.Builder.MapPut(endpointPath, e.EndpointAction),
+                HttpMethod.Patch => group.Builder.MapPatch(endpointPath, e.EndpointAction),
+                HttpMethod.Post => group.Builder.MapPost(endpointPath, e.EndpointAction),
+                HttpMethod.Delete => group.Builder.MapDelete(endpointPath, e.EndpointAction),
+                _ => throw new InvalidOperationException($"HttpMethod {e.Method} not supported")
+            };
+
+            // adding this results with returning 404, but it is required
+            //endpoint
+            //    .WithApiVersionSet(apiVersionSet)
+            //    .MapToApiVersion(e.Major, e.Minor);
+
+            if (AppStaticData.Auth.Enabled)
+                e.MapAuth?.Invoke(endpoint);
+        }
+    }
+
+    /// <summary>
+    /// Auto generate newer versions for endpoints that haven't changed.
+    /// </summary>
+    /// <param name="endpoints">Endpoints to use.</param>
+    /// <param name="apiVersionSetBuilder">ApiVersionSetBuilder to map versions to.</param>
+    /// <returns></returns>
+    private static List<AppEndpoint> MapWithAutomaticVersionUpdate(List<AppEndpoint> endpoints, ApiVersionSetBuilder apiVersionSetBuilder)
+    {
         var lookup = new Dictionary<int, (int min, int max)>();
 
         var minMajor = endpoints.Min(x => x.Major);
@@ -119,9 +176,7 @@ public static class EndpointMapper
 
         var endpointsToMap = collection
             .DistinctBy(x => new { x.Major, x.Minor, x.Path, x.Method })
-            .ToArray();
-
-        var apiVersions = app.NewApiVersionSet();
+            .ToList();
 
         foreach (var key in lookup.Keys)
         {
@@ -131,51 +186,11 @@ public static class EndpointMapper
 
             while (current <= max)
             {
-                apiVersions.HasApiVersion(new Asp.Versioning.ApiVersion(key, current));
+                apiVersionSetBuilder.HasApiVersion(new Asp.Versioning.ApiVersion(key, current));
                 current++;
             }
         }
 
-        var apiVersionSet = apiVersions.ReportApiVersions().Build();
-
-        string MapPath(int major, int minor, string path) => $"v{major}.{minor}/{path.Split('/')[0]}";
-
-        var groups = endpointsToMap
-            .Select(x => MapPath(x.Major, x.Minor, x.Path))
-            .Distinct()
-            .Select(x => new { Prefix = x, Builder = app.MapGroup(x) })
-            .ToArray();
-
-        foreach (var e in endpointsToMap)
-        {
-            var endpointPathParts = e.Path
-                .Split('/')
-                .Skip(1);
-
-            var endpointPath = string.Join("/", endpointPathParts);
-
-            var group = groups
-                .Where(x => x.Prefix == MapPath(e.Major, e.Minor, e.Path))
-                .Single();
-
-            var fullPath = $"{group.Prefix}/{endpointPath}";
-            var endpoint = e.Method switch
-            {
-                HttpMethod.Get => group.Builder.MapGet(endpointPath, e.EndpointAction),
-                HttpMethod.Put => group.Builder.MapPut(endpointPath, e.EndpointAction),
-                HttpMethod.Patch => group.Builder.MapPatch(endpointPath, e.EndpointAction),
-                HttpMethod.Post => group.Builder.MapPost(endpointPath, e.EndpointAction),
-                HttpMethod.Delete => group.Builder.MapDelete(endpointPath, e.EndpointAction),
-                _ => throw new InvalidOperationException($"HttpMethod {e.Method} not supported")
-            };
-
-            // adding this results with returning 404, but it is required
-            //endpoint
-            //    .WithApiVersionSet(apiVersionSet)
-            //    .MapToApiVersion(e.Major, e.Minor);
-
-            if (AppStaticData.Auth.Enabled)
-                e.MapAuth?.Invoke(endpoint);
-        }
+        return endpointsToMap;
     }
 }
