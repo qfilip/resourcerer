@@ -23,12 +23,12 @@ public static class EndpointMapper
         var serviceTypes = assembly
         .GetTypes()
         .Where(x =>
-            x.GetInterface(typeof(IAppEndpoint).Name) != null &&
+            x.GetInterface(typeof(IAppTestEndpoint).Name) != null &&
             !x.IsAbstract &&
             !x.IsInterface)
         .Select(x =>
         {
-            var endpoint = Activator.CreateInstance(x) as IAppEndpoint;
+            var endpoint = Activator.CreateInstance(x) as IAppTestEndpoint;
             return endpoint!.GetEndpointInfo();
         })
         .ToList();
@@ -158,26 +158,68 @@ public static class EndpointMapper
         major = endpoints.Min(x => x.Major);
 
         var collection = new List<AppEndpoint>();
-        endpoints.ForEach(x =>
+        Console.WriteLine("Mapping");
+        foreach (var e in endpoints)
         {
-            major = endpoints.Min(x => x.Major);
+            var nextMinor = endpoints
+                .Where(x =>
+                    x.Path == e.Path &&
+                    x.Major == e.Major &&
+                    x.Minor > e.Minor)
+                .OrderBy(x => x.Minor)
+                .FirstOrDefault();
 
-            while (major <= maxMajor)
+            var nextMajor = endpoints
+                .Where(x =>
+                    x.Path == e.Path &&
+                    x.Major > e.Major)
+                .OrderBy(x => x.Minor)
+                .FirstOrDefault();
+
+            if(nextMinor == null)
             {
-                var maxMinor = lookup[major].max;
 
-                var minor = lookup[major].min;
+            }
 
-                while (minor <= maxMinor)
+            var toMajor = maxMajor;
+            var toMinor = lookup[maxMajor].max;
+
+            if(nextMinor != null)
+            {
+                toMajor = nextMinor.Major;
+                toMinor = nextMinor.Minor;
+            }
+            else if(nextMajor != null)
+            {
+                toMajor = nextMajor.Major;
+                toMinor = nextMajor.Minor;
+            }
+            
+            var eMajor = e.Major;
+            var eMinor = e.Minor;
+
+            while (eMajor <= toMajor)
+            {
+                if(nextMinor == null)
                 {
-                    collection.Add(new AppEndpoint(major, minor, x.Path, x.Method, x.EndpointAction, x.MapAuth));
-                    apiVersionSetBuilder.HasApiVersion(new Asp.Versioning.ApiVersion(major, minor));
-                    minor++;
+                    Console.WriteLine($"{eMajor}.{eMinor}");
+
+                    collection.Add(new AppEndpoint(eMajor, eMinor, e.Path, e.Method, e.EndpointAction, e.MapAuth));
+                    apiVersionSetBuilder.HasApiVersion(new Asp.Versioning.ApiVersion(eMajor, eMinor));
+                }
+                while (eMinor < toMinor)
+                {   
+                    Console.WriteLine($"{eMajor}.{eMinor}");
+
+                    collection.Add(new AppEndpoint(eMajor, eMinor, e.Path, e.Method, e.EndpointAction, e.MapAuth));
+                    apiVersionSetBuilder.HasApiVersion(new Asp.Versioning.ApiVersion(eMajor, eMinor));
+                    
+                    eMinor++;
                 }
 
-                major++;
+                eMajor++;
             }
-        });
+        }
 
         return collection
             .DistinctBy(x => new { x.Major, x.Minor, x.Path, x.Method })
