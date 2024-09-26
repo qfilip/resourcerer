@@ -2,7 +2,6 @@
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.V1;
-using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
@@ -27,5 +26,5 @@ public class GetElementItemForEditEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.Items("edit/element/form"), HttpMethod.Get, Action, MapAuth);
+            EndpointMapper.Items("edit/element/form"), eHttpMethod.Get, Action, MapAuth);
 }

@@ -3,7 +3,6 @@ using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Logic.V1;
-using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
@@ -26,5 +25,5 @@ public class RemoveCategoryEndpoint : IAppEndpoint
     }
 
     public AppEndpoint GetEndpointInfo() =>
-        new AppEndpoint(1, 0, EndpointMapper.Categories(""), HttpMethod.Delete, Action, MapAuth);
+        new AppEndpoint(1, 0, EndpointMapper.Categories(""), eHttpMethod.Delete, Action, MapAuth);
 }

@@ -2,7 +2,6 @@
 using Resourcerer.Api.Services;
 using Resourcerer.Application.Models;
 using Resourcerer.Logic.Fake;
-using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.Fake;
 
@@ -21,5 +20,5 @@ public class SeedFakeDataEndpoint : IAppEndpoint
     }
 
     public AppEndpoint GetEndpointInfo() =>
-        new AppEndpoint(1, 0, EndpointMapper.Fake("seed"), HttpMethod.Get, Action, null);
+        new AppEndpoint(1, 0, EndpointMapper.Fake("seed"), eHttpMethod.Get, Action, null);
 }

@@ -1,7 +1,6 @@
 ﻿using Asp.Versioning.Builder;
 using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.Dtos;
-using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints;
 
@@ -113,11 +112,11 @@ public static class EndpointMapper
 
                 var endpoint = e.Method switch
                 {
-                    HttpMethod.Get => group.MapGet(endpointPath, e.EndpointAction),
-                    HttpMethod.Put => group.MapPut(endpointPath, e.EndpointAction),
-                    HttpMethod.Patch => group.MapPatch(endpointPath, e.EndpointAction),
-                    HttpMethod.Post => group.MapPost(endpointPath, e.EndpointAction),
-                    HttpMethod.Delete => group.MapDelete(endpointPath, e.EndpointAction),
+                    eHttpMethod.Get => group.MapGet(endpointPath, e.EndpointAction),
+                    eHttpMethod.Put => group.MapPut(endpointPath, e.EndpointAction),
+                    eHttpMethod.Patch => group.MapPatch(endpointPath, e.EndpointAction),
+                    eHttpMethod.Post => group.MapPost(endpointPath, e.EndpointAction),
+                    eHttpMethod.Delete => group.MapDelete(endpointPath, e.EndpointAction),
                     _ => throw new InvalidOperationException($"HttpMethod {e.Method} not supported")
                 };
 

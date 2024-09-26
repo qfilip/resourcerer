@@ -3,7 +3,6 @@ using Resourcerer.Api.Services;
 using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Logic.V1;
-using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
@@ -23,5 +22,5 @@ public class LoginEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.Users("login"), HttpMethod.Post, Action);
+            EndpointMapper.Users("login"), eHttpMethod.Post, Action);
 }

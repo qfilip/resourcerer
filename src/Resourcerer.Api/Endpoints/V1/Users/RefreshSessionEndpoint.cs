@@ -1,5 +1,4 @@
 ﻿using Resourcerer.Api.Services.StaticServices;
-using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
@@ -20,5 +19,5 @@ public class RefreshSessionEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.Users("refresh_session"), HttpMethod.Get, Action, MapAuth);
+            EndpointMapper.Users("refresh_session"), eHttpMethod.Get, Action, MapAuth);
 }

@@ -4,7 +4,6 @@ using Resourcerer.Application.Messaging.Abstractions;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Instances.Events.Order;
-using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
@@ -32,5 +31,5 @@ public class CreateInstanceOrderCancelledEventEndpoint : IAppEndpoint
     }
 
     public AppEndpoint GetEndpointInfo() =>
-        new AppEndpoint(1, 0, EndpointMapper.Instances("order/cancel"), HttpMethod.Post, Action, MapAuth);
+        new AppEndpoint(1, 0, EndpointMapper.Instances("order/cancel"), eHttpMethod.Post, Action, MapAuth);
 }

@@ -3,7 +3,6 @@ using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1;
-using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
@@ -27,5 +26,5 @@ public class EditUnitOfMeasureEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.UnitsOfMeasure("edit"), HttpMethod.Post, Action, MapAuth);
+            EndpointMapper.UnitsOfMeasure("edit"), eHttpMethod.Post, Action, MapAuth);
 }

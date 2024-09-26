@@ -1,7 +1,6 @@
 ﻿using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.V1.Items;
-using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
@@ -25,5 +24,5 @@ public class GetItemsStatisticsEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.Items("statistics"), HttpMethod.Get, Action, MapAuth);
+            EndpointMapper.Items("statistics"), eHttpMethod.Get, Action, MapAuth);
 }

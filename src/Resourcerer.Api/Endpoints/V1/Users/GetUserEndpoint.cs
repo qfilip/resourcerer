@@ -2,7 +2,6 @@
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.V1;
-using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
@@ -26,5 +25,5 @@ public class GetUserEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.Users("one"), HttpMethod.Get, Action, MapAuth);
+            EndpointMapper.Users("one"), eHttpMethod.Get, Action, MapAuth);
 }

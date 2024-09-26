@@ -3,7 +3,6 @@ using Resourcerer.Api.Services;
 using Resourcerer.Application.Messaging.Abstractions;
 using Resourcerer.Dtos.Fake;
 using Resourcerer.Logic.Fake;
-using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.Fake;
 
@@ -23,7 +22,7 @@ public class TestMessagingServices : IAppEndpoint
     }
 
     public AppEndpoint GetEndpointInfo() => 
-        new AppEndpoint(1, 0, EndpointMapper.Fake("messaging_test"), HttpMethod.Post, Action, null);
+        new AppEndpoint(1, 0, EndpointMapper.Fake("messaging_test"), eHttpMethod.Post, Action, null);
 }
 
 // USED FOR TESTING ENDPOINT MAPPING

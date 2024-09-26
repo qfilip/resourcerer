@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Application.Messaging.Abstractions;
-using Resourcerer.Dtos.V1;
 using Resourcerer.Dtos;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Items.Events.Production;
-using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
@@ -32,5 +31,5 @@ public class CancelElementItemProductionOrderEndpoint : IAppEndpoint
     }
 
     public AppEndpoint GetEndpointInfo() =>
-        new AppEndpoint(1, 0, EndpointMapper.Items("production_order/element/cancel"), HttpMethod.Post, Action, MapAuth);
+        new AppEndpoint(1, 0, EndpointMapper.Items("production_order/element/cancel"), eHttpMethod.Post, Action, MapAuth);
 }

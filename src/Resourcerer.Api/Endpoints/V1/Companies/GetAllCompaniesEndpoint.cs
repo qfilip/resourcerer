@@ -2,7 +2,6 @@
 using Resourcerer.Api.Services;
 using Resourcerer.Application.Models;
 using Resourcerer.Logic.V1;
-using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
@@ -16,5 +15,5 @@ public class GetAllCompaniesEndpoint : IAppEndpoint
     }
 
     public AppEndpoint GetEndpointInfo() =>
-        new AppEndpoint(1, 0, EndpointMapper.Companies(""), HttpMethod.Get, Action);
+        new AppEndpoint(1, 0, EndpointMapper.Companies(""), eHttpMethod.Get, Action);
 }

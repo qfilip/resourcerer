@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Logic.Fake;
-using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.Fake;
 
@@ -16,5 +15,5 @@ public class MemorySeedTestEndpoint : IAppEndpoint
     }
 
     public AppEndpoint GetEndpointInfo() =>
-        new AppEndpoint(1, 0, EndpointMapper.Fake("memory"), HttpMethod.Get, Action, null);
+        new AppEndpoint(1, 0, EndpointMapper.Fake("memory"), eHttpMethod.Get, Action, null);
 }

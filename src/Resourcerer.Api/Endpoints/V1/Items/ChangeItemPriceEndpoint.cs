@@ -3,7 +3,6 @@ using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Items;
-using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
@@ -27,5 +26,5 @@ public class ChangeItemPriceEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.Items("price"), HttpMethod.Post, Action, MapAuth);
+            EndpointMapper.Items("price"), eHttpMethod.Post, Action, MapAuth);
 }

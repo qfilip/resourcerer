@@ -4,8 +4,6 @@ using Resourcerer.Dtos;
 using Resourcerer.Logic.V1;
 
 namespace Resourcerer.Api.Endpoints.V1;
-using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
-
 public class CreateElementItemLoadFormEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
@@ -26,5 +24,5 @@ public class CreateElementItemLoadFormEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.Items("create/element/form"), HttpMethod.Get, Action, MapAuth);
+            EndpointMapper.Items("create/element/form"), eHttpMethod.Get, Action, MapAuth);
 }
