@@ -85,23 +85,23 @@ public static class EndpointMapper
 
         var apiVersionSet = apiVersions.ReportApiVersions().Build();
 
-        var groups = endpoints
-            .Select(x => new { x.Major, x.Minor, x.Path, Prefix = x.Path.Split('/')[0] })
-            .DistinctBy(x => x.Prefix)
+        var groupPrefixes = endpoints
+            .Select(x => x.Path.Split('/')[0])
+            .DistinctBy(x => x)
             .ToArray();
 
-        foreach(var g in groups)
+        foreach(var groupPrefix in groupPrefixes)
         {
             var group = app
-                .MapGroup("v{version:apiVersion}" + $"/{g.Prefix}") // important, otherwise not working
+                .MapGroup("v{version:apiVersion}" + $"/{groupPrefix}") // important, otherwise not working
                 .WithApiVersionSet(apiVersionSet);
 
             var groupEndpoints = endpoints
-                .Where(x => x.Path.Split('/')[0] == g.Prefix)
+                .Where(x => x.Path.Split('/')[0] == groupPrefix)
                 .ToArray();
 
             if(groupEndpoints.Length == 0)
-                throw new InvalidOperationException($"No endpoints found for group {g.Prefix}");
+                throw new InvalidOperationException($"No endpoints found for group {groupPrefix}");
 
             foreach(var e in groupEndpoints)
             {
@@ -157,7 +157,7 @@ public static class EndpointMapper
         major = endpoints.Min(x => x.Major);
 
         var collection = new List<AppEndpoint>();
-        Console.WriteLine("Mapping");
+        
         foreach (var e in endpoints)
         {
             var nextMinor = endpoints
@@ -174,11 +174,6 @@ public static class EndpointMapper
                     x.Major > e.Major)
                 .OrderBy(x => x.Minor)
                 .FirstOrDefault();
-
-            if(nextMinor == null)
-            {
-
-            }
 
             var toMajor = maxMajor;
             var toMinor = lookup[maxMajor].max;
