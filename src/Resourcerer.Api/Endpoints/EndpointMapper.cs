@@ -23,12 +23,12 @@ public static class EndpointMapper
         var serviceTypes = assembly
         .GetTypes()
         .Where(x =>
-            x.GetInterface(typeof(IAppTestEndpoint).Name) != null &&
+            x.GetInterface(typeof(IAppEndpoint).Name) != null &&
             !x.IsAbstract &&
             !x.IsInterface)
         .Select(x =>
         {
-            var endpoint = Activator.CreateInstance(x) as IAppTestEndpoint;
+            var endpoint = Activator.CreateInstance(x) as IAppEndpoint;
             return endpoint!.GetEndpointInfo();
         })
         .ToList();
@@ -66,12 +66,11 @@ public static class EndpointMapper
         // check name duplicates
         endpoints.ForEach(e =>
         {
-            var count = endpoints.Where(x =>
+            var count = endpoints.Count(x =>
                 x.Path == e.Path &&
                 x.Major == e.Major &&
                 x.Minor == e.Minor &&
-                x.Method == e.Method
-            ).Count();
+                x.Method == e.Method);
 
             if(count > 1)
             {
@@ -132,7 +131,7 @@ public static class EndpointMapper
     }
 
     /// <summary>
-    /// Auto generate newer versions for endpoints that haven't changed.
+    /// Auto generate newer versions of endpoints that haven't changed.
     /// </summary>
     /// <param name="endpoints">Endpoints to use.</param>
     /// <param name="apiVersionSetBuilder">ApiVersionSetBuilder to map versions to.</param>

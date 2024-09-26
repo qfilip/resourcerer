@@ -1,7 +1,7 @@
 ﻿namespace Resourcerer.Api.Endpoints.Fake;
 using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
-public class ApiVersionTestingEndpoint : IAppTestEndpoint
+public class ApiVersionTestingEndpoint : IAppEndpoint
 {
     public static IResult Action() => Results.Ok("v1.0");
     public AppEndpoint GetEndpointInfo()
@@ -10,7 +10,7 @@ public class ApiVersionTestingEndpoint : IAppTestEndpoint
     }
 }
 
-public class ApiVersionTestingEndpoint1 : IAppTestEndpoint
+public class ApiVersionTestingEndpoint1 : IAppEndpoint
 {
     public static IResult Action() => Results.Ok("v1.1");
     public AppEndpoint GetEndpointInfo()
@@ -19,7 +19,7 @@ public class ApiVersionTestingEndpoint1 : IAppTestEndpoint
     }
 }
 
-public class ApiVersionTestingEndpoint2 : IAppTestEndpoint
+public class ApiVersionTestingEndpoint2 : IAppEndpoint
 {
     public static IResult Action() => Results.Ok("v1.3");
     public AppEndpoint GetEndpointInfo()
@@ -28,7 +28,7 @@ public class ApiVersionTestingEndpoint2 : IAppTestEndpoint
     }
 }
 
-public class ApiVersionTestingEndpoint3 : IAppTestEndpoint
+public class ApiVersionTestingEndpoint3 : IAppEndpoint
 {
     public static IResult Action() => Results.Ok("v2.0");
     public AppEndpoint GetEndpointInfo()
@@ -37,7 +37,7 @@ public class ApiVersionTestingEndpoint3 : IAppTestEndpoint
     }
 }
 
-public class ApiVersionTestingEndpoint4 : IAppTestEndpoint
+public class ApiVersionTestingEndpoint4 : IAppEndpoint
 {
     public static IResult Action() => Results.Ok("v2.5");
     public AppEndpoint GetEndpointInfo()
