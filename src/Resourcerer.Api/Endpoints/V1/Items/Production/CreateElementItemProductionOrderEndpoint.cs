@@ -6,7 +6,7 @@ using Resourcerer.Dtos;
 using Resourcerer.Logic.V1.Items.Events.Production;
 using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
-namespace Resourcerer.Api.Endpoints.V1.Items.Production;
+namespace Resourcerer.Api.Endpoints.V1;
 
 public class CreateElementItemProductionOrderEndpoint : IAppEndpoint
 {

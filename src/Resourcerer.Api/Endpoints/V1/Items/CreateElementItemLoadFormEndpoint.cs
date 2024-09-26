@@ -3,7 +3,7 @@ using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Logic.V1;
 
-namespace Resourcerer.Api.Endpoints;
+namespace Resourcerer.Api.Endpoints.V1;
 using HttpMethod = Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod;
 
 public class CreateElementItemLoadFormEndpoint : IAppEndpoint
