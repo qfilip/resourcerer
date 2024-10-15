@@ -23,10 +23,14 @@ public static class DeleteUnitOfMeasure
         public async Task<HandlerResult<UnitOfMeasureDto>> Handle(Guid request)
         {
             var entity = await _dbContext.UnitsOfMeasure
+                .Include(x => x.Items)
                 .FirstOrDefaultAsync(x => x.Id == request);
 
             if (entity == null)
                 return HandlerResult<UnitOfMeasureDto>.NotFound();
+
+            if(entity.Items.Count > 0)
+                return HandlerResult<UnitOfMeasureDto>.Rejected("Some items still exist associated with this unit of measure");
 
             entity.EntityStatus = eEntityStatus.Deleted;
 

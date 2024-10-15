@@ -51,4 +51,50 @@ public class DeleteUnitOfMeasureTests : TestsBase
         // assert
         Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
     }
+
+    [Fact]
+    public void HasNonDeletedItems__Rejected()
+    {
+        // arrange
+        var uom = _forger.Fake<UnitOfMeasure>(x =>
+        {
+            x.Items = Enumerable.Range(0, 3)
+                .Select(iter => _forger.Fake<Item>(i =>
+                {
+                    i.UnitOfMeasure = x;
+                    i.EntityStatus = iter % 2 == 0 ? eEntityStatus.Deleted : eEntityStatus.Active;
+                }))
+                .ToList();
+        });
+        _ctx.SaveChanges();
+
+        // act
+        var result = _sut.Handle(uom.Id).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
+    public void AllItsItemsDeleted__Ok()
+    {
+        // arrange
+        var uom = _forger.Fake<UnitOfMeasure>(x =>
+        {
+            x.Items = Enumerable.Range(0, 3)
+                .Select(_ => _forger.Fake<Item>(i =>
+                {
+                    i.UnitOfMeasure = x;
+                    i.EntityStatus = eEntityStatus.Deleted;
+                }))
+                .ToList();
+        });
+        _ctx.SaveChanges();
+
+        // act
+        var result = _sut.Handle(uom.Id).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Ok, result.Status);
+    }
 }
