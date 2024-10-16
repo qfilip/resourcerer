@@ -11,7 +11,7 @@ public class ChangeItemCategoryTests : TestsBase
     private readonly ChangeItemCategory.Handler _sut;
     public ChangeItemCategoryTests()
     {
-        _sut = new(_ctx, new());
+        _sut = new(_ctx, new(), GetMapster());
     }
 
     [Fact]

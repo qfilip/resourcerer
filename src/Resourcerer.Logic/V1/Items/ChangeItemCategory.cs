@@ -13,17 +13,19 @@ namespace Resourcerer.Logic.V1;
 
 public class ChangeItemCategory
 {
-    public class Handler : IAppHandler<V1ChangeItemCategory, Unit>
+    public class Handler : IAppHandler<V1ChangeItemCategory, ItemDto>
     {
         private readonly AppDbContext _dbContext;
         private readonly Validator _validatior;
+        private readonly IMapper _mapper;
 
-        public Handler(AppDbContext dbContext, Validator validatior)
+        public Handler(AppDbContext dbContext, Validator validatior, IMapper mapper)
         {
             _dbContext = dbContext;
             _validatior = validatior;
+            _mapper = mapper;
         }
-        public async Task<HandlerResult<Unit>> Handle(V1ChangeItemCategory request)
+        public async Task<HandlerResult<ItemDto>> Handle(V1ChangeItemCategory request)
         {
             var item = await _dbContext.Items
                 .Select(x => new Item
@@ -34,21 +36,21 @@ public class ChangeItemCategory
                 .FirstOrDefaultAsync(x => x.Id == request.ItemId);
 
             if (item == null)
-                return HandlerResult<Unit>.NotFound("Item not found");
+                return HandlerResult<ItemDto>.NotFound("Item not found");
 
             _dbContext.Attach(item);
-            
+
             var newItemCategory = await _dbContext.Categories
                 .FirstOrDefaultAsync(x => x.Id == request.NewCategoryId);
 
             if (newItemCategory == null)
-                return HandlerResult<Unit>.Rejected("Category not found");
+                return HandlerResult<ItemDto>.Rejected("Category not found");
 
             item.CategoryId = newItemCategory.Id;
 
             await _dbContext.SaveChangesAsync();
 
-            return HandlerResult<Unit>.Ok(Unit.New);
+            return HandlerResult<ItemDto>.Ok(_mapper.Map<ItemDto>(item));
         }
 
         public ValidationResult Validate(V1ChangeItemCategory request) => _validatior.Validate(request);

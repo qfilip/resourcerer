@@ -46,8 +46,9 @@ public static partial class ServiceRegistry
         var mapsterConfig = new TypeAdapterConfig();
         void TwoWayMap<TSource, TTarget>()
         {
-            mapsterConfig!.NewConfig<TSource, TTarget>();
-            mapsterConfig!.NewConfig<TTarget, TSource>();
+            // PreserveReference (prevent stack overflow on recursive nodes)
+            mapsterConfig!.NewConfig<TSource, TTarget>().PreserveReference(true); ;
+            mapsterConfig!.NewConfig<TTarget, TSource>().PreserveReference(true); ;
         }
 
         TwoWayMap<AppUser, AppUserDto>();
