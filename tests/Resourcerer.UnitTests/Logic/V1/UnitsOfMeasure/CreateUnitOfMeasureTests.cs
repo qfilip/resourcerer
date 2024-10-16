@@ -12,7 +12,7 @@ public class CreateUnitOfMeasureTests : TestsBase
 
     public CreateUnitOfMeasureTests()
     {
-        _handler = new(_ctx, new());
+        _handler = new(_ctx, new(), GetMapster());
     }
 
     [Fact]

@@ -39,7 +39,7 @@ public static partial class ServiceRegistry
         AddSwagger(services);
     }
 
-    private static void AddMapsterLib(IServiceCollection services)
+    public static TypeAdapterConfig GetMapsterConfig()
     {
         // mapster
         // check Mapster.Tool package
@@ -61,6 +61,13 @@ public static partial class ServiceRegistry
         TwoWayMap<UnitOfMeasure, UnitOfMeasureDto>();
 
         mapsterConfig.Compile(failFast: true);
+
+        return mapsterConfig;
+    }
+
+    private static void AddMapsterLib(IServiceCollection services)
+    {
+        var mapsterConfig = GetMapsterConfig();
         services.AddSingleton(mapsterConfig);
         services.AddScoped<IMapper, ServiceMapper>();
     }

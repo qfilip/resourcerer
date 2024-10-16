@@ -1,9 +1,11 @@
 ﻿using FluentValidation.Results;
+using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Abstractions.Handlers;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Utilities;
 
@@ -14,10 +16,12 @@ public static class GetElementItemForEdit
     public class Handler : IAppHandler<(Guid ItemId, Guid CompanyId), V1EditElementItemFormData>
     {
         private readonly AppDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public Handler(AppDbContext dbContext)
+        public Handler(AppDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public async Task<HandlerResult<V1EditElementItemFormData>> Handle((Guid ItemId, Guid CompanyId) request)
@@ -47,9 +51,9 @@ public static class GetElementItemForEdit
 
             return HandlerResult<V1EditElementItemFormData>.Ok(new V1EditElementItemFormData
             {
-                Item = Mapper.Map(item),
-                Categories = categories.Select(Mapper.Map).ToArray(),
-                UnitsOfMeasure = unitsOfMeasure.Select(Mapper.Map).ToArray(),
+                Item = _mapper.Map<ItemDto>(item),
+                Categories = categories.Select(_mapper.Map<CategoryDto>).ToArray(),
+                UnitsOfMeasure = unitsOfMeasure.Select(_mapper.Map<UnitOfMeasureDto>).ToArray(),
             });
         }
 

@@ -1,4 +1,5 @@
 ﻿using FluentValidation.Results;
+using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Abstractions.Handlers;
 using Resourcerer.Application.Models;
@@ -14,10 +15,12 @@ public static class GetCompanyItems
     public class Handler : IAppHandler<Guid, ItemDto[]>
     {
         private readonly AppDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public Handler(AppDbContext dbContext)
+        public Handler(AppDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public async Task<HandlerResult<ItemDto[]>> Handle(Guid request)
@@ -31,7 +34,7 @@ public static class GetCompanyItems
                 .ToArrayAsync();
 
             var result = entities
-                .Select(Mapper.Map)
+                .Select(_mapper.Map<ItemDto>)
                 .ToArray();
 
             return HandlerResult<ItemDto[]>.Ok(result);

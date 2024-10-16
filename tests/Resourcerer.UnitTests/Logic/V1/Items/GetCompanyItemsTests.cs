@@ -9,7 +9,7 @@ namespace Resourcerer.UnitTests.Logic.V1.Items;
 public class GetCompanyItemsTests : TestsBase
 {
     private readonly GetCompanyItems.Handler _sut;
-    public GetCompanyItemsTests() => _sut = new(_ctx);
+    public GetCompanyItemsTests() => _sut = new(_ctx, GetMapster());
 
     [Fact]
     public void HappyPath__Ok()

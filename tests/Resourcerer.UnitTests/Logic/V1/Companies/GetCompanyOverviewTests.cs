@@ -10,7 +10,7 @@ public class GetCompanyOverviewTests : TestsBase
     private readonly GetCompanyOverview.Handler _sut;
     public GetCompanyOverviewTests()
     {
-        _sut = new(_ctx);
+        _sut = new(_ctx, GetMapster());
     }
 
     [Fact]

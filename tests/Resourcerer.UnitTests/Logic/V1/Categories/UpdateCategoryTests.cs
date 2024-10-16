@@ -16,7 +16,7 @@ public class UpdateCategoryTests : TestsBase
 
     public UpdateCategoryTests()
     {
-        _sut = new(_ctx, new(), _fakeIdentityService);
+        _sut = new(_ctx, new(), _fakeIdentityService, GetMapster());
     }
 
     [Fact]

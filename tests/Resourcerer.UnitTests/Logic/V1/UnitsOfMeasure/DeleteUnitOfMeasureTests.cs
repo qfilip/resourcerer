@@ -10,7 +10,7 @@ namespace Resourcerer.UnitTests.Logic.V1.UnitsOfMeasure;
 public class DeleteUnitOfMeasureTests : TestsBase
 {
     private readonly DeleteUnitOfMeasure.Handler _sut;
-    public DeleteUnitOfMeasureTests() => _sut = new(_ctx);
+    public DeleteUnitOfMeasureTests() => _sut = new(_ctx, GetMapster());
 
     [Fact]
     public void HappyPath__Ok()

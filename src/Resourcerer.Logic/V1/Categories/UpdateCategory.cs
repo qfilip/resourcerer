@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Abstractions.Handlers;
 using Resourcerer.Application.Auth.Abstractions;
@@ -18,12 +19,18 @@ public class UpdateCategory
         private readonly AppDbContext _dbContext;
         private readonly Validator _validator;
         private readonly IAppIdentityService<AppUser> _identity;
+        private readonly IMapper _mapper;
 
-        public Handler(AppDbContext dbContext, Validator validator, IAppIdentityService<AppUser> identity)
+        public Handler(
+            AppDbContext dbContext,
+            Validator validator,
+            IAppIdentityService<AppUser> identity,
+            IMapper mapper)
         {
             _dbContext = dbContext;
             _validator = validator;
             _identity = identity;
+            _mapper = mapper;
         }
 
         public async Task<HandlerResult<CategoryDto>> Handle(V1UpdateCategory request)
@@ -55,13 +62,13 @@ public class UpdateCategory
             }
 
             if (category.Name == request.NewName)
-                return HandlerResult<CategoryDto>.Ok(Mapper.Map(category));
+                return HandlerResult<CategoryDto>.Ok(_mapper.Map<CategoryDto>(category));
 
             category.Name = request.NewName;
 
             await _dbContext.SaveChangesAsync();
 
-            return HandlerResult<CategoryDto>.Ok(Mapper.Map(category));
+            return HandlerResult<CategoryDto>.Ok(_mapper.Map<CategoryDto>(category));
         }
 
         public ValidationResult Validate(V1UpdateCategory request) => _validator.Validate(request);

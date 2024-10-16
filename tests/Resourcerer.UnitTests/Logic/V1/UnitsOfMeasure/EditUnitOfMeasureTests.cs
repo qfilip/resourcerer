@@ -9,7 +9,7 @@ namespace Resourcerer.UnitTests.Logic.V1.UnitsOfMeasure;
 public class EditUnitOfMeasureTests : TestsBase
 {
     private readonly EditUnitOfMeasure.Handler _sut;
-    public EditUnitOfMeasureTests() => _sut = new(_ctx, new());
+    public EditUnitOfMeasureTests() => _sut = new(_ctx, new(), GetMapster());
 
     [Fact]
     public void HappyPath__Ok()

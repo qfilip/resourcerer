@@ -1,4 +1,5 @@
 ﻿using FluentValidation.Results;
+using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Abstractions.Handlers;
 using Resourcerer.Application.Models;
@@ -15,10 +16,12 @@ public static class DeleteUnitOfMeasure
     public class Handler : IAppHandler<Guid, UnitOfMeasureDto>
     {
         private readonly AppDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public Handler(AppDbContext dbContext)
+        public Handler(AppDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public async Task<HandlerResult<UnitOfMeasureDto>> Handle(Guid request)
@@ -43,7 +46,7 @@ public static class DeleteUnitOfMeasure
             
             await _dbContext.SaveChangesAsync();
 
-            return HandlerResult<UnitOfMeasureDto>.Ok(Mapper.Map(entity));
+            return HandlerResult<UnitOfMeasureDto>.Ok(_mapper.Map<UnitOfMeasureDto>(entity));
         }
 
         public ValidationResult Validate(Guid _) => Validation.Empty;

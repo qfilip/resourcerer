@@ -1,9 +1,6 @@
 ﻿using FakeItEasy;
-using Mapster;
 using MapsterMapper;
 using Microsoft.Extensions.Logging;
-using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Entity;
 using Resourcerer.UnitTests.Utilities;
 using SqlForgery;
 using System.Text.Json;
@@ -32,24 +29,7 @@ public class TestsBase
 
     protected static Mapper GetMapster()
     {
-        var mapsterConfig = new TypeAdapterConfig();
-        void TwoWayMap<TSource, TTarget>()
-        {
-            mapsterConfig!.NewConfig<TSource, TTarget>().PreserveReference(true);
-            mapsterConfig!.NewConfig<TTarget, TSource>().PreserveReference(true);
-        }
-
-        TwoWayMap<AppUser, AppUserDto>();
-        TwoWayMap<Category, CategoryDto>();
-        TwoWayMap<Company, CompanyDto>();
-        TwoWayMap<Excerpt, ExcerptDto>();
-        TwoWayMap<Instance, InstanceDto>();
-        TwoWayMap<Item, ItemDto>();
-        TwoWayMap<Price, PriceDto>();
-        TwoWayMap<UnitOfMeasure, UnitOfMeasureDto>();
-
-        mapsterConfig.Compile(failFast: true);
-
-        return new(mapsterConfig);
+        var mapsterConfig = Resourcerer.Api.Services.ServiceRegistry.GetMapsterConfig();
+        return new Mapper(mapsterConfig);
     }
 }

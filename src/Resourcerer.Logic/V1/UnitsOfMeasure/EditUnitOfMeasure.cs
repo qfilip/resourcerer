@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Abstractions.Handlers;
 using Resourcerer.Application.Models;
@@ -15,11 +16,13 @@ public static class EditUnitOfMeasure
     {
         private readonly AppDbContext _dbContext;
         private readonly Validator _validator;
+        private readonly IMapper _mapper;
 
-        public Handler(AppDbContext dbContext, Validator validator)
+        public Handler(AppDbContext dbContext, Validator validator, IMapper mapper)
         {
             _dbContext = dbContext;
             _validator = validator;
+            _mapper = mapper;
         }
 
         public async Task<HandlerResult<UnitOfMeasureDto>> Handle(V1EditUnitOfMeasure request)
@@ -35,9 +38,7 @@ public static class EditUnitOfMeasure
 
             await _dbContext.SaveChangesAsync();
 
-            var dto = Mapper.Map(entity);
-
-            return HandlerResult<UnitOfMeasureDto>.Ok(dto);
+            return HandlerResult<UnitOfMeasureDto>.Ok(_mapper.Map<UnitOfMeasureDto>(entity));
         }
 
         public ValidationResult Validate(V1EditUnitOfMeasure request) => _validator.Validate(request);
