@@ -293,17 +293,4 @@ public class EditUserTests : TestsBase
             }
         );
     }
-
-    private AppUser GetIdentity(Action<AppUser>? modifier = null)
-    {
-        var identityUser = new AppUser
-        {
-            CompanyId = Guid.NewGuid(),
-            IsAdmin = true
-        };
-
-        modifier?.Invoke(identityUser);
-
-        return identityUser;
-    }
 }
