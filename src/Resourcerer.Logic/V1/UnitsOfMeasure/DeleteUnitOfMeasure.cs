@@ -39,8 +39,7 @@ public static class DeleteUnitOfMeasure
             if(entity.Items.Count > 0)
                 return HandlerResult<UnitOfMeasureDto>.Rejected("Some items still exist associated with this unit of measure");
 
-            entity.EntityStatus = eEntityStatus.Deleted;
-            _dbContext.Entry(entity).Property(x => x.EntityStatus).IsModified = true;
+            _dbContext.MarkAsDeleted(entity);
             
             await _dbContext.SaveChangesAsync();
 
