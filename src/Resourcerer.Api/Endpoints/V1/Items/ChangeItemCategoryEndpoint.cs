@@ -2,16 +2,17 @@
 using Resourcerer.Api.Services;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Logic.V1;
 using Resourcerer.Logic.V1.Items;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public class ChangeItemPriceEndpoint : IAppEndpoint
+public class ChangeItemCategoryEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
-       [FromBody] V1ChangeItemPrice dto,
+       [FromBody] V1ChangeItemCategory dto,
        [FromServices] Pipeline pipeline,
-       [FromServices] ChangeItemPrice.Handler handler)
+       [FromServices] ChangeItemCategory.Handler handler)
     {
         return await pipeline.Pipe(handler, dto);
     }
@@ -26,5 +27,5 @@ public class ChangeItemPriceEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.Items("price"), eHttpMethod.Post, Action, MapAuth);
+            EndpointMapper.Items("category"), eHttpMethod.Post, Action, MapAuth);
 }

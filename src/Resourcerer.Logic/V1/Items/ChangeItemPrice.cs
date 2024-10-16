@@ -13,7 +13,7 @@ namespace Resourcerer.Logic.V1.Items;
 
 public class ChangeItemPrice
 {
-    public class Handler : IAppHandler<V1ChangePrice, Unit>
+    public class Handler : IAppHandler<V1ChangeItemPrice, Unit>
     {
         private readonly AppDbContext _appDbContext;
         private readonly Validator _validator;
@@ -26,7 +26,7 @@ public class ChangeItemPrice
             _logger = logger;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(V1ChangePrice request)
+        public async Task<HandlerResult<Unit>> Handle(V1ChangeItemPrice request)
         {
             var element = await _appDbContext.Items
                 .Where(x => x.Id == request.ItemId)
@@ -58,10 +58,10 @@ public class ChangeItemPrice
             return HandlerResult<Unit>.Ok(new Unit());
         }
 
-        public ValidationResult Validate(V1ChangePrice request) => _validator.Validate(request);
+        public ValidationResult Validate(V1ChangeItemPrice request) => _validator.Validate(request);
 
     }
-    public class Validator : AbstractValidator<V1ChangePrice>
+    public class Validator : AbstractValidator<V1ChangeItemPrice>
     {
         public Validator()
         {

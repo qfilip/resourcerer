@@ -32,7 +32,7 @@ public class ChangeItemPriceTests : TestsBase
             x.EntityStatus = eEntityStatus.Deleted;
         });
 
-        var dto = new V1ChangePrice
+        var dto = new V1ChangeItemPrice
         {
             ItemId = item.Id,
             UnitPrice = 20
@@ -69,7 +69,7 @@ public class ChangeItemPriceTests : TestsBase
     public void Element_NotExist_Then__NotFound()
     {
         // arrange
-        var dto = new V1ChangePrice
+        var dto = new V1ChangeItemPrice
         {
             ItemId = Guid.NewGuid(),
             UnitPrice = 20
@@ -91,7 +91,7 @@ public class ChangeItemPriceTests : TestsBase
             .Select(_ => _forger.Fake<Price>(x => x.Item = item))
             .ToArray();
 
-        var dto = new V1ChangePrice
+        var dto = new V1ChangeItemPrice
         {
             ItemId = item.Id,
             UnitPrice = 20
