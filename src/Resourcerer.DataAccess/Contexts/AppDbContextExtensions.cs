@@ -1,7 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
-using System.Runtime.CompilerServices;
 
 namespace Resourcerer.DataAccess.Contexts;
 
