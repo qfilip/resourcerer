@@ -16,8 +16,4 @@
     <ProjectReference Include="..\Resourcerer.DataAccess\Resourcerer.DataAccess.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Abstractions\Services\" />
-  </ItemGroup>
-
 </Project>
