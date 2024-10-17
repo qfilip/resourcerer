@@ -196,8 +196,8 @@ public static class EndpointMapper
                 if(nextMinor != null)
                 {
                     while (eMinor < toMinor)
-                    {   
-                        Console.WriteLine($"{eMajor}.{eMinor}");
+                    {
+                        Console.WriteLine($"Mapped [{e.Method}] v{eMajor}.{eMinor}/{e.Path}");
 
                         collection.Add(new AppEndpoint(eMajor, eMinor, e.Path, e.Method, e.EndpointAction, e.MapAuth));
                         apiVersionSetBuilder.HasApiVersion(new Asp.Versioning.ApiVersion(eMajor, eMinor));
@@ -207,7 +207,7 @@ public static class EndpointMapper
                 }
                 else
                 {
-                    Console.WriteLine($"{eMajor}.{eMinor}");
+                    Console.WriteLine($"Mapped [{e.Method}] v{eMajor}.{eMinor}/{e.Path}");
                     collection.Add(new AppEndpoint(eMajor, eMinor, e.Path, e.Method, e.EndpointAction, e.MapAuth));
                     apiVersionSetBuilder.HasApiVersion(new Asp.Versioning.ApiVersion(eMajor, eMinor));
                     break;

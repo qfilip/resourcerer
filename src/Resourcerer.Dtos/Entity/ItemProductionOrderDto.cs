@@ -16,6 +16,6 @@ public class ItemProductionOrderDto : EntityDto<ItemProductionOrderDto>
     // json
     public Guid[] InstancesUsedIds { get; set; } = Array.Empty<Guid>();
     public ItemProductionStartedEvent? StartedEvent { get; set; }
-    public ItemProductionOrderCancelledEvent? CanceledEvent { get; set; }
+    public ItemProductionOrderCancelledEvent? CancelledEvent { get; set; }
     public ItemProductionFinishedEvent? FinishedEvent { get; set; }
 }

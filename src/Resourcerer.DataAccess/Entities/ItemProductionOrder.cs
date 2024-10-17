@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
 
 namespace Resourcerer.DataAccess.Entities;
 
@@ -13,6 +14,7 @@ public class ItemProductionOrder : AppDbEntity
     public virtual Item? Item { get; set; }
 
     // json
+    [NotMapped]
     public Guid[] InstancesUsedIds { get; set; } = Array.Empty<Guid>();
     public ItemProductionStartedEvent? StartedEvent { get; set; }
     public ItemProductionOrderCancelledEvent? CancelledEvent { get; set; }

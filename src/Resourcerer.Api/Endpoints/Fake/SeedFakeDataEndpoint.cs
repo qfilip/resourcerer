@@ -14,11 +14,6 @@ public class SeedFakeDataEndpoint : IAppEndpoint
         return await pipeline.Pipe(handler, Unit.New);
     }
 
-    internal static void MapToGroup(RouteGroupBuilder group)
-    {
-        var endpoint = group.MapGet("", Action);
-    }
-
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0, EndpointMapper.Fake("seed"), eHttpMethod.Get, Action, null);
 }

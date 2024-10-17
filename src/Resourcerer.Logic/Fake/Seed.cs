@@ -28,10 +28,12 @@ public static class Seed
         {
             var allPermissions = Permissions.GetCompressed();
             var adminPermissoins = JsonSerializer.Serialize(allPermissions);
-            
+
             DF.FakeDatabase(_forger, adminPermissoins);
 
             await _dbContext.SaveChangesAsync();
+
+            Console.WriteLine("DATABASE SEEDED");
 
             var result = new DataSeedDto
             {
