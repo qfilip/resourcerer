@@ -1,3 +1,9 @@
 <article class="page">
-    
+    <ul>
+        @for(isd of (itemShoppingDetails$ | async); track isd.id) {
+            <li>
+                {{ isd.name }}
+            </li>
+        }
+    </ul>
 </article>
