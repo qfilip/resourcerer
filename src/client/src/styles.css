@@ -29,3 +29,7 @@ article.page > section {
     width: 30%;
     margin-right: var(--rem-xs);
 }
+
+ul {
+    margin: 0;
+}

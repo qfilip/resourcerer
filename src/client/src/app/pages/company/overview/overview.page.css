@@ -2,12 +2,8 @@ h3 {
     margin: var(--rem) 0rem;
 }
 
-section {
-    margin: var(--rem) 0rem;
-}
-
-table {
-    width: 25%;
+.data-view-select {
+    font-size: var(--rem);
 }
 
 tr > th:nth-child(1), tr > td:nth-child(1) {

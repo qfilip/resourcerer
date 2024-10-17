@@ -1,14 +1,12 @@
 .datalist {
     margin: var(--rem) 0rem;
     font-size: var(--rem);
+    /* border: var(--rem-xxxs) solid var(--c-black);
+    box-shadow: 1px 1px 5px black; */
 }
 
 dt, dd {
     margin: 0;
-}
-
-.kv-block {
-    width: 20%;
 }
 
 .kv-block > div {
