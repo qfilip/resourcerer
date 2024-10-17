@@ -1,0 +1,24 @@
+form > fieldset > button {
+    width: 100%;
+}
+
+label > div.error {
+    color: var(--c-red);
+    text-align: center;
+    min-height: var(--rem-s);
+    font-size: var(--rem-s);
+}
+
+label.disabled > * {
+    color: var(--c-white-d3);
+}
+
+input[readonly] {
+    background-color: var(--c-white-d1);
+}
+
+.form-fields > label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--rem-xxs);
+}

@@ -1,4 +1,5 @@
 @import "./assets/css/buttons.css";
+@import "./assets/css/forms.css";
 @import "./assets/css/icons.css";
 @import "./assets/css/scrollbar.css";
 @import "./assets/css/tables.css";
@@ -27,30 +28,4 @@ article.page {
 article.page > section {
     width: 30%;
     margin-right: var(--rem-xs);
-}
-
-/* form convention */
-form > button {
-    width: 100%;
-}
-
-label > div.input {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-label > div.error {
-    color: var(--c-red);
-    text-align: center;
-    min-height: var(--rem-s);
-    font-size: var(--rem-s);
-}
-
-label.disabled > * {
-    color: var(--c-white-d3);
-}
-
-input[readonly] {
-    background-color: var(--c-white-d1);
 }
