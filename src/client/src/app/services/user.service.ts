@@ -36,7 +36,9 @@ export class UserService {
                 if (!jwt) return false;
                 
                 const jwtData = parseJwt(jwt);
-                
+                this._user$.set(jwtData.dto);
+                this._jwt$.set(jwt);
+
                 return !jwtData.expired;
             })
         );
