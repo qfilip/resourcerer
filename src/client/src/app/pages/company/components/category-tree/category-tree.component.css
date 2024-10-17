@@ -1,19 +1,20 @@
 .datalist {
     margin: var(--rem) 0rem;
+    padding: var(--rem-xxs);
     font-size: var(--rem);
-    /* border: var(--rem-xxxs) solid var(--c-black);
-    box-shadow: 1px 1px 5px black; */
+    box-shadow: 1px 1px 5px var(--c-black-l2);
 }
 
 dt, dd {
     margin: 0;
 }
 
-.kv-block > div {
+.kv-block {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+  
 
 ul {
     padding: 0;

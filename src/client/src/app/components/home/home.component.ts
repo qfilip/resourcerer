@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { HomepageNav } from '../../models/components/HomepageNav';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { Observable, Subject, filter, map, takeUntil } from 'rxjs';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Subject, filter, map, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.page$.set(route[0].pageName);
           }
           else {
-            this.page$.set('Company');
+            this.page$.set('Browse items');
           }
         }
       });
@@ -46,8 +46,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   page$ = signal<HomepageNav>('Company');
 
   pages: { pageName: HomepageNav, route: string, icon: string }[] = [
+    { pageName: 'Browse items', route: 'browse-items', icon: 'ra ra-telescope'},
     { pageName: 'Company', route: 'company', icon: 'ra ra-castle-emblem' },
-    // { pageName: 'Companies', route: 'companies', icon: 'ra ra-hydra' },
     { pageName: 'Units of Measure', route: 'unitsofmeasure', icon: 'ra ra-suits' },
     { pageName: 'Items', route: 'items', icon: 'ra ra-bone-knife' },
     // { pageName: 'Events', route: 'events', icon: 'ra ra-lightning' },

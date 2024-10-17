@@ -1,24 +1,21 @@
 @if(category) {
 <dl class="datalist">
     <div class="kv-block">
-        <div>
-            <dt>Name:</dt>
-            <dd>{{ category.name }}</dd>
-        </div>
-        <div>
-            <dt>Subcategory count:</dt>
-            <dd>{{ category.childCategories.length }}</dd>
-        </div>
+        <dt>Name:</dt>
+        <dd>{{ category.name }}</dd>
+        <button>View</button>
     </div>
     <details>
-        <summary>Children</summary>
+        <summary>
+            Subcategories: {{ category.childCategories.length }}
+        </summary>
         <div class="children-block">
             <dd>
                 <ul>
                     @for(child of category.childCategories; track $index) {
-                    <li>
-                        <category-tree [category]="child"></category-tree>
-                    </li>
+                        <li>
+                            <category-tree [category]="child"></category-tree>
+                        </li>
                     }
                 </ul>
             </dd>

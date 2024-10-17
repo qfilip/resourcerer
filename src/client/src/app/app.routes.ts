@@ -6,6 +6,7 @@ import { UomOverviewPage } from './pages/unitOfMeasure/uom-overview/uom-overview
 import { ItemsOverviewPage } from './pages/item/items-overview/items-overview.page';
 import { UserManagementPage } from './pages/user/user-management/user-management.page';
 import { AccountPage } from './pages/user/account/account.page';
+import { BrowseItemsPage } from './pages/browse-item/browse-item/browse-items.page';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -14,6 +15,7 @@ export const routes: Routes = [
         path: 'home',
         component: HomeComponent,
         children: [
+            { path: 'browse-items', component: BrowseItemsPage },
             { path: 'company', component: CompanyOverviewPage },
             // { path: 'companies', component: CompanyOverviewPage },
             { path: 'unitsofmeasure', component: UomOverviewPage },
