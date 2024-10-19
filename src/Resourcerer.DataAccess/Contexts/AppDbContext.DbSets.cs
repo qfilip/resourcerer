@@ -50,7 +50,6 @@ public partial class AppDbContext : DbContext
             else if (entry.State == EntityState.Modified && entry.Entity is AppDbEntity modded)
             {
                 modded.ModifiedAt = now;
-                modded.CreatedBy = _currentUser.Id;
                 modded.ModifiedBy = _currentUser.Id;
             }
         }
