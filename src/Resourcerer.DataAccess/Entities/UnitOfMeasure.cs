@@ -4,7 +4,7 @@ using Resourcerer.DataAccess.Records;
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class UnitOfMeasure : IPkey<Guid>, IAuditedEntity, ISoftDeletable
+public class UnitOfMeasure : IId<Guid>, IAuditedEntity, ISoftDeletable
 {
     public UnitOfMeasure()
     {

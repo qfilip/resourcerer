@@ -118,7 +118,7 @@ public class GetAvailableUnitsInStockTests : TestsBase
         return new AppEvents(orders, ordersSent, ordersDelivered, reservations, reservationsUsed, discards);
     }
 
-    private TEvent[] FakeEvent<TEvent>(int count, Action<TEvent> modifier) where TEvent : class, IPkey<Guid>, IAuditedEntity =>
+    private TEvent[] FakeEvent<TEvent>(int count, Action<TEvent> modifier) where TEvent : class, IId<Guid>, IAuditedEntity =>
         Enumerable.Range(0, count)
             .Select(_ => _forger.Fake(modifier))
             .ToArray();

@@ -5,7 +5,7 @@ using Resourcerer.DataAccess.Records;
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class InstanceReservedEvent : IPkey<Guid>, IAuditedEntity, ISoftDeletable
+public class InstanceReservedEvent : IId<Guid>, IAuditedEntity, ISoftDeletable
 {
     public Guid ItemProductionOrderId { get; set; }
     public double Quantity { get; set; }

@@ -41,7 +41,7 @@ public partial class AppDbContext : DbContext
         {
             if (entry.State == EntityState.Added && entry.Entity is IAuditedEntity added)
             {
-                if(entry.Entity is IPkey<Guid> keyed)
+                if(entry.Entity is IId<Guid> keyed)
                     keyed.Id = keyed.Id == Guid.Empty ? Guid.NewGuid() : keyed.Id;
 
                 added.AuditRecord.CreatedAt = now;

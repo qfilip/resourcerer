@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.DataAccess.Abstractions;
 
-public interface IPkey<T> where T : struct
+public interface IId<T>
 {
     public T Id { get; set; }
 }

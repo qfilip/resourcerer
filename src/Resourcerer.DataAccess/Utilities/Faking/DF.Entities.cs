@@ -16,7 +16,7 @@ public static partial class DF
         {
             jeb.Id = jeb.Id ?? MiniId.Generate();
         }
-        else if(e is IPkey<Guid> epk)
+        else if(e is IId<Guid> epk)
         {
             epk.Id = epk.Id != Guid.Empty ? epk.Id : Guid.NewGuid();
         }

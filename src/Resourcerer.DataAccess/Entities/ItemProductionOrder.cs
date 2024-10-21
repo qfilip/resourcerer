@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class ItemProductionOrder : IPkey<Guid>, IAuditedEntity, ISoftDeletable
+public class ItemProductionOrder : IId<Guid>, IAuditedEntity, ISoftDeletable
 {
     public double Quantity { get; set; }
     public string? Reason { get; set; }

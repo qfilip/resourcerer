@@ -4,7 +4,7 @@ using Resourcerer.DataAccess.Records;
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class Item : IPkey<Guid>, IAuditedEntity, ISoftDeletable
+public class Item : IId<Guid>, IAuditedEntity, ISoftDeletable
 {
     public Item()
     {

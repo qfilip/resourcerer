@@ -4,7 +4,7 @@ using Resourcerer.DataAccess.Records;
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class InstanceDiscardedEvent : IPkey<Guid>, IAuditedEntity, ISoftDeletable
+public class InstanceDiscardedEvent : IId<Guid>, IAuditedEntity, ISoftDeletable
 {
     public double Quantity { get; set; }
     public string? Reason { get; set; }

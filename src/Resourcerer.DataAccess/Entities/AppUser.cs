@@ -3,7 +3,7 @@ using Resourcerer.DataAccess.Enums;
 using Resourcerer.DataAccess.Records;
 
 namespace Resourcerer.DataAccess.Entities;
-public class AppUser : IPkey<Guid>, IAuditedEntity, ISoftDeletable
+public class AppUser : IId<Guid>, IAuditedEntity, ISoftDeletable
 {
     public string? Name { get; set; }
     public string? DisplayName { get; set; }

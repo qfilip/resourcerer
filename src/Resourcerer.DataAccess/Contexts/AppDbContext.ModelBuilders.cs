@@ -177,8 +177,8 @@ public partial class AppDbContext
         {
             e.ToTable(type.Name);
 
-            if (typeof(IPkey<TPKey>).IsAssignableFrom(type))
-                e.HasKey(x => ((IPkey<TPKey>)x).Id);
+            if (typeof(IId<TPKey>).IsAssignableFrom(type))
+                e.HasKey(x => ((IId<TPKey>)x).Id);
 
             if (typeof(ISoftDeletable).IsAssignableFrom(type))
                 e.HasQueryFilter(x => ((ISoftDeletable)x).EntityStatus == eEntityStatus.Active);
