@@ -7,15 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="AuthService\**" />
-    <Compile Remove="Entities\JsonEntities\Item\**" />
-    <EmbeddedResource Remove="AuthService\**" />
-    <EmbeddedResource Remove="Entities\JsonEntities\Item\**" />
-    <None Remove="AuthService\**" />
-    <None Remove="Entities\JsonEntities\Item\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
