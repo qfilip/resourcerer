@@ -1,4 +1,4 @@
-﻿using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Abstractions;
 using Resourcerer.Dtos.Entity;
 using System.Linq.Expressions;
 
@@ -14,7 +14,7 @@ internal sealed class ExpressionUtils
      */
 
     public static Expression<Func<T, T>> Combine<T>(params Expression<Func<T, T>>[] selectors)
-        where T : AppDbEntity
+        where T : IPkey<Guid>, IAuditedEntity, ISoftDeletable, new()
     {
         var zeroth = ((MemberInitExpression)selectors[0].Body);
         var param = selectors[0].Parameters[0];
@@ -36,7 +36,7 @@ internal sealed class ExpressionUtils
     }
 
     public static Expression<Func<T, TDto>> CombineDto<T, TDto>(params Expression<Func<T, TDto>>[] selectors)
-        where T : AppDbEntity
+        where T : IPkey<Guid>, IAuditedEntity, ISoftDeletable, new()
         where TDto: EntityDto<TDto>
     {
         var zeroth = ((MemberInitExpression)selectors[0].Body);
@@ -52,7 +52,6 @@ internal sealed class ExpressionUtils
                     replace.VisitAndConvert(binding.Expression, "Combine")));
             }
         }
-
 
         return Expression.Lambda<Func<T, TDto>>(
             Expression.MemberInit(zeroth.NewExpression, bindings), param);

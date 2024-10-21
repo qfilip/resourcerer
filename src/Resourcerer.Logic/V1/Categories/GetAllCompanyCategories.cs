@@ -49,8 +49,7 @@ public static class GetAllCompanyCategories
                 Name = current.Name,
                 ParentCategoryId = current.ParentCategoryId,
                 ChildCategories = children.Select(x => MapDto(x, all)).ToArray(),
-                CreatedAt = current.CreatedAt,
-                ModifiedAt = current.ModifiedAt
+                AuditRecord = current.AuditRecord
             };
         }
 

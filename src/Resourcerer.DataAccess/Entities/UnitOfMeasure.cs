@@ -1,6 +1,10 @@
-﻿namespace Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Abstractions;
+using Resourcerer.DataAccess.Enums;
+using Resourcerer.DataAccess.Records;
 
-public class UnitOfMeasure : AppDbEntity
+namespace Resourcerer.DataAccess.Entities;
+
+public class UnitOfMeasure : IPkey<Guid>, IAuditedEntity, ISoftDeletable
 {
     public UnitOfMeasure()
     {
@@ -14,5 +18,11 @@ public class UnitOfMeasure : AppDbEntity
     public virtual Company? Company { get; set; }
 
     public ICollection<Item> Items { get; set; }
+
+
+    // entity definition
+    public Guid Id { get; set; }
+    public AuditRecord AuditRecord { get; set; } = new();
+    public eEntityStatus EntityStatus { get; set; }
 }
 

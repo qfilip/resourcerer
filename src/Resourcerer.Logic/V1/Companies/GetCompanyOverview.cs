@@ -41,7 +41,7 @@ public static class GetCompanyOverview
                 {
                     Name = x.Name,
                     IsAdmin = x.IsAdmin,
-                    CreatedAt = x.CreatedAt
+                    AuditRecord = x.AuditRecord
                 })
                 .AsNoTracking()
                 .ToArrayAsync();

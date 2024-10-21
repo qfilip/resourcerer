@@ -1,11 +1,12 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Abstractions.Handlers;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos.Entity;
-using Resourcerer.Logic.Functions.V1;
 
 namespace Resourcerer.Logic.V1;
 
@@ -24,8 +25,16 @@ public static class RemoveCategory
 
         public async Task<HandlerResult<Guid>> Handle(CategoryDto request)
         {
-            return await EntityAction
-                .Remove<Category>(_dbContext, request.Id, $"Category with id {request.Id} doesn't exist");
+            var entity = await _dbContext.Categories
+                .FirstOrDefaultAsync(x => x.Id == request.Id);
+
+            if (entity == null)
+                return HandlerResult<Guid>.NotFound();
+
+            entity.EntityStatus = eEntityStatus.Deleted;
+            await _dbContext.SaveChangesAsync();
+
+            return HandlerResult<Guid>.Ok(entity.Id);
         }
 
         public ValidationResult Validate(CategoryDto request) => _validator.Validate(request);

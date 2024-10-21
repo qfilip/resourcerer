@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Resourcerer.DataAccess.Abstractions;
+using Resourcerer.DataAccess.Enums;
+using Resourcerer.DataAccess.Records;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class ItemProductionOrder : AppDbEntity
+public class ItemProductionOrder : IPkey<Guid>, IAuditedEntity, ISoftDeletable
 {
     public double Quantity { get; set; }
     public string? Reason { get; set; }
@@ -31,5 +34,10 @@ public class ItemProductionOrder : AppDbEntity
             InstancesUsedIds = JsonSerializer.Deserialize<Guid[]>(value)!;
         }
     }
+
+    // entity definition
+    public Guid Id { get; set; }
+    public AuditRecord AuditRecord { get; set; } = new();
+    public eEntityStatus EntityStatus { get; set; }
 }
 

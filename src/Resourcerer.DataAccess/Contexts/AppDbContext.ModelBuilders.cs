@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Resourcerer.DataAccess.Abstractions;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
+using Resourcerer.DataAccess.Records;
 using System.Linq.Expressions;
 
 namespace Resourcerer.DataAccess.Contexts;
@@ -51,7 +53,7 @@ public partial class AppDbContext
             e.HasOne(x => x.Element).WithMany(x => x.ElementExcerpts)
                 .HasForeignKey(x => x.ElementId).IsRequired()
                 .HasConstraintName($"FK_Element{nameof(Item)}_{nameof(Excerpt)}");
-        }, customKey: true);
+        });
 
         ConfigureEntity<UnitOfMeasure>(modelBuilder, (e) =>
         {
@@ -143,10 +145,10 @@ public partial class AppDbContext
 
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
-            if(typeof(AppDbEntity).IsAssignableFrom(entityType.ClrType))
+            if(entityType.ClrType.IsAssignableFrom(typeof(ISoftDeletable)))
             {
                 var param = Expression.Parameter(entityType.ClrType, "i");
-                var prop = Expression.PropertyOrField(param, nameof(AppDbEntity.EntityStatus));
+                var prop = Expression.PropertyOrField(param, nameof(ISoftDeletable.EntityStatus));
                 var expression = Expression.NotEqual(prop, Expression.Constant(eEntityStatus.Deleted));
 
                 entityType.SetQueryFilter(Expression.Lambda(expression, param));
@@ -156,17 +158,34 @@ public partial class AppDbContext
         base.OnModelCreating(modelBuilder);
     }
 
-    private void ConfigureEntity<T>(ModelBuilder mb, Action<EntityTypeBuilder<T>>? customConfiguration = null, bool customKey = false) where T : AppDbEntity
+    private void ConfigureEntity<TEntity>(
+        ModelBuilder mb,
+        Action<EntityTypeBuilder<TEntity>>? customConfiguration = null)
+        where TEntity : class
     {
-        var name = typeof(T).Name;
-        mb.Entity<T>(e =>
+        ConfigureEntity<TEntity, Guid>(mb, customConfiguration);
+    }
+
+    private void ConfigureEntity<TEntity, TPKey>(
+        ModelBuilder mb,
+        Action<EntityTypeBuilder<TEntity>>? customConfiguration = null)
+        where TEntity : class
+        where TPKey : struct
+    {
+        var type = typeof(TEntity);
+        mb.Entity<TEntity>(e =>
         {
-            e.ToTable(name);
-            if(!customKey)
-            {
-                e.HasKey(x => x.Id);
-            }
-            e.HasQueryFilter(x => x.EntityStatus == eEntityStatus.Active);
+            e.ToTable(type.Name);
+
+            if (typeof(IPkey<TPKey>).IsAssignableFrom(type))
+                e.HasKey(x => ((IPkey<TPKey>)x).Id);
+
+            if (typeof(ISoftDeletable).IsAssignableFrom(type))
+                e.HasQueryFilter(x => ((ISoftDeletable)x).EntityStatus == eEntityStatus.Active);
+
+            if (typeof(IAuditedEntity).IsAssignableFrom(type))
+                e.OwnsOne(x => ((IAuditedEntity)x).AuditRecord);
+
             customConfiguration?.Invoke(e);
         });
     }

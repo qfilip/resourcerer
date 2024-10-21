@@ -1,5 +1,5 @@
-﻿using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Abstractions;
+using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Utilities;
 
 namespace Resourcerer.DataAccess.Utilities.Faking;
@@ -9,19 +9,23 @@ public static partial class DF
     public static DateTime Now = new DateTime(2000, 1, 1);
     public static string MakeName() => $"test-{Guid.NewGuid()}";
     public static string MakeEmail() => $"{MiniId.Generate(5)}@notmail.com";
-    public static T MakeEntity<T>(Func<T> retn) where T : AppDbEntity
+    public static T MakeEntity<T>(Func<T> retn) where T : class, IAuditedEntity, ISoftDeletable
     {
         var e = retn();
         if (e is AppDbJsonField jeb)
         {
             jeb.Id = jeb.Id ?? MiniId.Generate();
         }
-        else
+        else if(e is IPkey<Guid> epk)
         {
-            e.Id = e.Id != Guid.Empty ? e.Id : Guid.NewGuid();
+            epk.Id = epk.Id != Guid.Empty ? epk.Id : Guid.NewGuid();
         }
-        e.CreatedAt = Now;
-        e.ModifiedAt = Now;
+
+        e.AuditRecord = new()
+        {
+            CreatedAt = Now,
+            ModifiedAt = Now
+        };
 
         return e;
     }

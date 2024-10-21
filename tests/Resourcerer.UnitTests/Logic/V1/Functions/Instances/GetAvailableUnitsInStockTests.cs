@@ -1,4 +1,5 @@
-﻿using Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Abstractions;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
 
 namespace Resourcerer.UnitTests.Logic.V1.Functions.Instances;
@@ -117,7 +118,7 @@ public class GetAvailableUnitsInStockTests : TestsBase
         return new AppEvents(orders, ordersSent, ordersDelivered, reservations, reservationsUsed, discards);
     }
 
-    private TEvent[] FakeEvent<TEvent>(int count, Action<TEvent> modifier) where TEvent : AppDbEntity =>
+    private TEvent[] FakeEvent<TEvent>(int count, Action<TEvent> modifier) where TEvent : class, IPkey<Guid>, IAuditedEntity =>
         Enumerable.Range(0, count)
             .Select(_ => _forger.Fake(modifier))
             .ToArray();

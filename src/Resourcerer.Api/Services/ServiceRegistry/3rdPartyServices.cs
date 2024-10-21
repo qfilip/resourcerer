@@ -2,7 +2,6 @@
 using Asp.Versioning.ApiExplorer;
 using Mapster;
 using MapsterMapper;
-using MassTransit.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;

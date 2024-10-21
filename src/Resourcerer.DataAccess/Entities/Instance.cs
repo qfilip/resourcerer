@@ -1,6 +1,10 @@
-﻿namespace Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Abstractions;
+using Resourcerer.DataAccess.Enums;
+using Resourcerer.DataAccess.Records;
 
-public class Instance : AppDbEntity
+namespace Resourcerer.DataAccess.Entities;
+
+public class Instance : IPkey<Guid>, IAuditedEntity, ISoftDeletable
 {
     public Instance()
     {
@@ -28,4 +32,9 @@ public class Instance : AppDbEntity
     public ICollection<InstanceOrderedEvent> OrderedEvents { get; set; }
     public ICollection<InstanceReservedEvent> ReservedEvents { get; set; }
     public ICollection<InstanceDiscardedEvent> DiscardedEvents { get; set; }
+
+    // entity definition
+    public Guid Id { get; set; }
+    public AuditRecord AuditRecord { get; set; } = new();
+    public eEntityStatus EntityStatus { get; set; }
 }

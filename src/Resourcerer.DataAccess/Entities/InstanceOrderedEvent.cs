@@ -1,6 +1,10 @@
-﻿namespace Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Abstractions;
+using Resourcerer.DataAccess.Enums;
+using Resourcerer.DataAccess.Records;
 
-public class InstanceOrderedEvent : AppDbEntity
+namespace Resourcerer.DataAccess.Entities;
+
+public class InstanceOrderedEvent : IPkey<Guid>, IAuditedEntity, ISoftDeletable
 {
     public Guid DerivedInstanceId { get; set; }
     public Guid SellerCompanyId { get; set; }
@@ -19,4 +23,9 @@ public class InstanceOrderedEvent : AppDbEntity
     public InstanceOrderCancelledEvent? CancelledEvent { get; set; }
     public InstanceOrderSentEvent? SentEvent { get; set; }
     public InstanceOrderDeliveredEvent? DeliveredEvent { get; set; }
+
+    // entity definition
+    public Guid Id { get; set; }
+    public AuditRecord AuditRecord { get; set; } = new();
+    public eEntityStatus EntityStatus { get; set; }
 }

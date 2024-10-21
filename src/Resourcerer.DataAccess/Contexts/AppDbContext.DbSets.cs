@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Abstractions;
 using Resourcerer.DataAccess.Entities;
 
 namespace Resourcerer.DataAccess.Contexts;
@@ -38,19 +39,21 @@ public partial class AppDbContext : DbContext
 
         foreach (var entry in entries)
         {
-            if (entry.State == EntityState.Added && entry.Entity is AppDbEntity added)
+            if (entry.State == EntityState.Added && entry.Entity is IAuditedEntity added)
             {
-                added.Id = added.Id == Guid.Empty ? Guid.NewGuid() : added.Id;
-                added.CreatedAt = now;
-                added.ModifiedAt = now;
-                added.CreatedBy = _currentUser.Id;
-                added.ModifiedBy = _currentUser.Id;
+                if(entry.Entity is IPkey<Guid> keyed)
+                    keyed.Id = keyed.Id == Guid.Empty ? Guid.NewGuid() : keyed.Id;
+
+                added.AuditRecord.CreatedAt = now;
+                added.AuditRecord.ModifiedAt = now;
+                added.AuditRecord.CreatedBy = _currentUser.Id;
+                added.AuditRecord.ModifiedBy = _currentUser.Id;
 
             }
-            else if (entry.State == EntityState.Modified && entry.Entity is AppDbEntity modded)
+            else if (entry.State == EntityState.Modified && entry.Entity is IAuditedEntity modded)
             {
-                modded.ModifiedAt = now;
-                modded.ModifiedBy = _currentUser.Id;
+                modded.AuditRecord.ModifiedAt = now;
+                modded.AuditRecord.ModifiedBy = _currentUser.Id;
             }
         }
 

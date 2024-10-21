@@ -1,6 +1,10 @@
-﻿namespace Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Abstractions;
+using Resourcerer.DataAccess.Enums;
+using Resourcerer.DataAccess.Records;
 
-public class Item : AppDbEntity
+namespace Resourcerer.DataAccess.Entities;
+
+public class Item : IPkey<Guid>, IAuditedEntity, ISoftDeletable
 {
     public Item()
     {
@@ -29,5 +33,10 @@ public class Item : AppDbEntity
     public ICollection<Price> Prices { get; set; }
     public ICollection<Instance> Instances { get; set; }
     public ICollection<ItemProductionOrder> ProductionOrders { get; set; }
+
+    // entity definition
+    public Guid Id { get; set; }
+    public AuditRecord AuditRecord { get; set; } = new();
+    public eEntityStatus EntityStatus { get; set; }
 }
 

@@ -1,6 +1,10 @@
-﻿namespace Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Abstractions;
+using Resourcerer.DataAccess.Enums;
+using Resourcerer.DataAccess.Records;
 
-public class Excerpt : AppDbEntity
+namespace Resourcerer.DataAccess.Entities;
+
+public class Excerpt : IAuditedEntity, ISoftDeletable
 {
     public double Quantity { get; set; }
 
@@ -11,5 +15,8 @@ public class Excerpt : AppDbEntity
     public  Guid ElementId { get; set; }
     public Item? Element { get; set; }
 
+    // entity definition
+    public AuditRecord AuditRecord { get; set; } = new();
+    public eEntityStatus EntityStatus { get; set; }
 }
 

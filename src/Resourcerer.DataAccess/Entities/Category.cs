@@ -1,6 +1,10 @@
-﻿namespace Resourcerer.DataAccess.Entities;
+﻿using Resourcerer.DataAccess.Abstractions;
+using Resourcerer.DataAccess.Enums;
+using Resourcerer.DataAccess.Records;
 
-public class Category : AppDbEntity
+namespace Resourcerer.DataAccess.Entities;
+
+public class Category : IPkey<Guid>, IAuditedEntity, ISoftDeletable
 {
     public Category()
     {
@@ -10,6 +14,7 @@ public class Category : AppDbEntity
 
     public string? Name { get; set; }
 
+    // relational
     public Guid CompanyId { get; set; }
     public virtual Company? Company { get; set; }
 
@@ -18,4 +23,9 @@ public class Category : AppDbEntity
     
     public ICollection<Category> ChildCategories { get; set; }
     public ICollection<Item> Items { get; set; }
+
+    // entity definition
+    public Guid Id { get; set; }
+    public AuditRecord AuditRecord { get; set; } = new();
+    public eEntityStatus EntityStatus { get; set; }
 }
