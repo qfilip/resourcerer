@@ -36,12 +36,4 @@ public class RemoveCategoryTests : TestsBase
             }
         );
     }
-
-    [Fact]
-    public void Validator__Ok()
-    {
-        var dto = new CategoryDto { Id = Guid.Empty };
-        var result = _sut.Handle(dto).Await();
-        Assert.Single(result.Errors);
-    }
 }

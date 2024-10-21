@@ -23,7 +23,14 @@ public class ChangeCompanyNameTests : TestsBase
         // arrange
         var company = _forger.Fake<Company>(c =>
         {
-            c.Employees = new List<AppUser> { _forger.Fake<AppUser>(u => u.IsAdmin = true) };
+            c.Employees = new List<AppUser>
+            {
+                _forger.Fake<AppUser>(u =>
+                {
+                    u.IsAdmin = true;
+                    u.Company = c;
+                })
+            };
         });
 
         var dto = new V1ChangeCompanyName
