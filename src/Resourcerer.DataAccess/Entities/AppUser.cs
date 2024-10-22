@@ -3,7 +3,7 @@ using Resourcerer.DataAccess.Enums;
 using Resourcerer.DataAccess.Records;
 
 namespace Resourcerer.DataAccess.Entities;
-public class AppUser : IId<Guid>, IAuditedEntity, ISoftDeletable
+public class AppUser : IId<Guid>, IAuditedEntity<Audit>, ISoftDeletable
 {
     public string? Name { get; set; }
     public string? DisplayName { get; set; }
@@ -18,6 +18,6 @@ public class AppUser : IId<Guid>, IAuditedEntity, ISoftDeletable
 
     // entity definition
     public Guid Id { get; set; }
-    public AuditRecord AuditRecord { get; set; } = new();
+    public Audit AuditRecord { get; set; } = new();
     public eEntityStatus EntityStatus { get; set; }
 }

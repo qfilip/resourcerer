@@ -1,8 +1,6 @@
-﻿using Resourcerer.DataAccess.Records;
+﻿namespace Resourcerer.DataAccess.Abstractions;
 
-namespace Resourcerer.DataAccess.Abstractions;
-
-public interface IAuditedEntity
+public interface IAuditedEntity<T>
 {
-    public AuditRecord AuditRecord { get; set; }
+    public T AuditRecord { get; set; }
 }

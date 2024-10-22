@@ -52,11 +52,11 @@ public static class CancelCompositeItemProductionOrder
 
             foreach (var ev in reservedEvents)
             {
-                ev.CancelledEvent = AppDbJsonField.Create(() =>
+                ev.CancelledEvent = AppDbJsonField.CreateKeyless(() =>
                     new InstanceReserveCancelledEvent() { Reason = request.Reason });
             }
 
-            orderEvent.CancelledEvent = AppDbJsonField.Create(() =>
+            orderEvent.CancelledEvent = AppDbJsonField.CreateKeyless(() =>
                 new ItemProductionOrderCancelledEvent() { Reason = request.Reason });
 
             await _dbContext.SaveChangesAsync();

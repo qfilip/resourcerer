@@ -40,7 +40,7 @@ public static partial class DF
         },
         {
             typeof(Excerpt),
-            () => MakeEntity(() => new Excerpt { Quantity = 1 })
+            () => MakeEntityWithCustomKey(() => new Excerpt { Quantity = 1 })
         },
         {
             typeof(Item),

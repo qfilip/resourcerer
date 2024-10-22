@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class ItemProductionOrder : IId<Guid>, IAuditedEntity, ISoftDeletable
+public class ItemProductionOrder : IId<Guid>, IAuditedEntity<Audit>, ISoftDeletable
 {
     public double Quantity { get; set; }
     public string? Reason { get; set; }
@@ -37,7 +37,7 @@ public class ItemProductionOrder : IId<Guid>, IAuditedEntity, ISoftDeletable
 
     // entity definition
     public Guid Id { get; set; }
-    public AuditRecord AuditRecord { get; set; } = new();
+    public Audit AuditRecord { get; set; } = new();
     public eEntityStatus EntityStatus { get; set; }
 }
 

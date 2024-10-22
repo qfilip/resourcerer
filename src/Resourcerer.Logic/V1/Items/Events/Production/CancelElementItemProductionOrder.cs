@@ -44,7 +44,7 @@ public static class CancelElementItemProductionOrder
                 return HandlerResult<Unit>.Ok(Unit.New);
             }
 
-            order.CancelledEvent = AppDbJsonField.Create(() =>
+            order.CancelledEvent = AppDbJsonField.CreateKeyless(() =>
                 new ItemProductionOrderCancelledEvent() { Reason = request.Reason });
 
             await _dbContext.SaveChangesAsync();

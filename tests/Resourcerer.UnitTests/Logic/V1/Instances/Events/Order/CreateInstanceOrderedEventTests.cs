@@ -342,7 +342,7 @@ public class CreateInstanceOrderedEventTests : TestsBase
         var orderEvent = _forger.Fake<InstanceOrderedEvent>(x =>
         {
             x.Instance = sourceInstance;
-            x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
+            x.SentEvent = AppDbJsonField.CreateKeyless(() => new InstanceOrderSentEvent());
         });
         var discardEvent = _forger.Fake<InstanceDiscardedEvent>(x => x.Instance = sourceInstance);
 

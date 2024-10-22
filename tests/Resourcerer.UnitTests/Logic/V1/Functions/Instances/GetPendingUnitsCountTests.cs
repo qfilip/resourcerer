@@ -30,12 +30,12 @@ public class GetPendingUnitsCountTests : TestsBase
                 FakeEvent(x),
                 FakeEvent(x, ev =>
                 {
-                    ev.SentEvent = AppDbJsonField.Create<InstanceOrderSentEvent>();
+                    ev.SentEvent = AppDbJsonField.CreateKeyless<InstanceOrderSentEvent>();
                 }),
                 FakeEvent(x, ev =>
                 {
-                    ev.SentEvent = AppDbJsonField.Create<InstanceOrderSentEvent>();
-                    ev.DeliveredEvent = AppDbJsonField.Create<InstanceOrderDeliveredEvent>();
+                    ev.SentEvent = AppDbJsonField.CreateKeyless<InstanceOrderSentEvent>();
+                    ev.DeliveredEvent = AppDbJsonField.CreateKeyless<InstanceOrderDeliveredEvent>();
                 })
             };
         });

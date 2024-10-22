@@ -48,8 +48,8 @@ public static class CreateElementItemProductionOrder
 
             if(request.InstantProduction)
             {
-                order.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
-                order.FinishedEvent = AppDbJsonField.Create(() => new ItemProductionFinishedEvent());
+                order.StartedEvent = AppDbJsonField.CreateKeyless(() => new ItemProductionStartedEvent());
+                order.FinishedEvent = AppDbJsonField.CreateKeyless(() => new ItemProductionFinishedEvent());
 
                 var expiration = item.ExpirationTimeSeconds;
                 var newInstance = new Instance

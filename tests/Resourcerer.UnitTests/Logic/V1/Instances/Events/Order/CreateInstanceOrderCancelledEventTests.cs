@@ -71,7 +71,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
         var orderEvent = _forger.Fake<InstanceOrderedEvent>(x =>
         {
             x.Instance = sourceInstance;
-            x.DeliveredEvent = AppDbJsonField.Create(() => new InstanceOrderDeliveredEvent());
+            x.DeliveredEvent = AppDbJsonField.CreateKeyless(() => new InstanceOrderDeliveredEvent());
         });
 
         _ctx.SaveChanges();
@@ -97,7 +97,7 @@ public class CreateInstanceOrderCancelledEventTests : TestsBase
         var orderEvent = _forger.Fake<InstanceOrderedEvent>(x =>
         {
             x.Instance = sourceInstance;
-            x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
+            x.SentEvent = AppDbJsonField.CreateKeyless(() => new InstanceOrderSentEvent());
         });
 
         _ctx.SaveChanges();

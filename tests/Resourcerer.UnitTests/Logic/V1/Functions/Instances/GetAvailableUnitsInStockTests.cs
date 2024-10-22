@@ -1,6 +1,7 @@
 ﻿using Resourcerer.DataAccess.Abstractions;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
+using Resourcerer.DataAccess.Records;
 
 namespace Resourcerer.UnitTests.Logic.V1.Functions.Instances;
 
@@ -74,21 +75,21 @@ public class GetAvailableUnitsInStockTests : TestsBase
 
         var ordersSent = FakeEvent<InstanceOrderedEvent>(eventCount, x =>
         {
-            x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
+            x.SentEvent = AppDbJsonField.CreateKeyless(() => new InstanceOrderSentEvent());
             x.Instance = instance;
             orderModifier?.Invoke(x);
         });
 
         var ordersDelivered = FakeEvent<InstanceOrderedEvent>(eventCount, x =>
         {
-            x.DeliveredEvent = AppDbJsonField.Create(() => new InstanceOrderDeliveredEvent());
+            x.DeliveredEvent = AppDbJsonField.CreateKeyless(() => new InstanceOrderDeliveredEvent());
             x.Instance = instance;
             orderModifier?.Invoke(x);
         });
 
         _ = FakeEvent<InstanceOrderedEvent>(eventCount, x =>
         {
-            x.CancelledEvent = AppDbJsonField.Create(() => new InstanceOrderCancelledEvent());
+            x.CancelledEvent = AppDbJsonField.CreateKeyless(() => new InstanceOrderCancelledEvent());
             x.Instance = instance;
         });
 
@@ -99,14 +100,14 @@ public class GetAvailableUnitsInStockTests : TestsBase
 
         var reservationsUsed = FakeEvent<InstanceReservedEvent>(eventCount, x =>
         {
-            x.UsedEvent = AppDbJsonField.Create(() => new InstanceReserveUsedEvent());
+            x.UsedEvent = AppDbJsonField.CreateKeyless(() => new InstanceReserveUsedEvent());
             x.Instance = instance;
         });
 
         _ = FakeEvent<InstanceReservedEvent>(eventCount, x =>
         {
             x.Instance = instance;
-            x.CancelledEvent = AppDbJsonField.Create(() => new InstanceReserveCancelledEvent());
+            x.CancelledEvent = AppDbJsonField.CreateKeyless(() => new InstanceReserveCancelledEvent());
         });
 
         var discards = FakeEvent<InstanceDiscardedEvent>(eventCount, x =>
@@ -118,7 +119,8 @@ public class GetAvailableUnitsInStockTests : TestsBase
         return new AppEvents(orders, ordersSent, ordersDelivered, reservations, reservationsUsed, discards);
     }
 
-    private TEvent[] FakeEvent<TEvent>(int count, Action<TEvent> modifier) where TEvent : class, IId<Guid>, IAuditedEntity =>
+    private TEvent[] FakeEvent<TEvent>(int count, Action<TEvent> modifier)
+        where TEvent : class, IId<Guid>, IAuditedEntity<Audit> =>
         Enumerable.Range(0, count)
             .Select(_ => _forger.Fake(modifier))
             .ToArray();

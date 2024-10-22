@@ -94,9 +94,21 @@ public partial class AppDbContext
                 .HasForeignKey(x => x.ItemId).IsRequired()
                 .HasConstraintName($"FK_{nameof(Item)}_{nameof(ItemProductionOrder)}");
 
-            e.OwnsOne(x => x.StartedEvent, nav => nav.ToJson());
-            e.OwnsOne(x => x.CancelledEvent, nav => nav.ToJson());
-            e.OwnsOne(x => x.FinishedEvent, nav => nav.ToJson());
+            e.OwnsOne(x => x.StartedEvent, nav =>
+            {
+                nav.OwnsOne(n => n.AuditRecord, nb => nb.ToJson());
+                nav.ToJson();
+            });
+            e.OwnsOne(x => x.CancelledEvent, nav =>
+            {
+                nav.OwnsOne(n => n.AuditRecord, nb => nb.ToJson());
+                nav.ToJson();
+            });
+            e.OwnsOne(x => x.FinishedEvent, nav =>
+            {
+                nav.OwnsOne(n => n.AuditRecord, nb => nb.ToJson());
+                nav.ToJson();
+            });
         });
 
         ConfigureEntity<Instance>(modelBuilder, (e) =>
@@ -120,9 +132,21 @@ public partial class AppDbContext
                 .HasForeignKey(x => x.InstanceId)
                 .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceOrderedEvent)}");
 
-            e.OwnsOne(x => x.CancelledEvent, nav => nav.ToJson());
-            e.OwnsOne(x => x.SentEvent, nav => nav.ToJson());
-            e.OwnsOne(x => x.DeliveredEvent, nav => nav.ToJson());
+            e.OwnsOne(x => x.CancelledEvent, nav =>
+            {
+                nav.OwnsOne(n => n.AuditRecord, nb => nb.ToJson());
+                nav.ToJson();
+            });
+            e.OwnsOne(x => x.SentEvent, nav =>
+            {
+                nav.OwnsOne(n => n.AuditRecord, nb => nb.ToJson());
+                nav.ToJson();
+            });
+            e.OwnsOne(x => x.DeliveredEvent, nav =>
+            {
+                nav.OwnsOne(n => n.AuditRecord, nb => nb.ToJson());
+                nav.ToJson();
+            });
         });
 
 
@@ -132,8 +156,16 @@ public partial class AppDbContext
                 .HasForeignKey(x => x.InstanceId)
                 .HasConstraintName($"FK_{nameof(Instance)}_{nameof(InstanceReservedEvent)}");
 
-            e.OwnsOne(x => x.CancelledEvent, nav => nav.ToJson());
-            e.OwnsOne(x => x.UsedEvent, nav => nav.ToJson());
+            e.OwnsOne(x => x.CancelledEvent, nav =>
+            {
+                nav.OwnsOne(n => n.AuditRecord, nb => nb.ToJson());
+                nav.ToJson();
+            });
+            e.OwnsOne(x => x.UsedEvent, nav =>
+            {
+                nav.OwnsOne(n => n.AuditRecord, nb => nb.ToJson());
+                nav.ToJson();
+            });
         });
         
         ConfigureEntity<InstanceDiscardedEvent>(modelBuilder, (e) =>
@@ -163,14 +195,15 @@ public partial class AppDbContext
         Action<EntityTypeBuilder<TEntity>>? customConfiguration = null)
         where TEntity : class
     {
-        ConfigureEntity<TEntity, Guid>(mb, customConfiguration);
+        ConfigureEntity<TEntity, Guid, Audit>(mb, customConfiguration);
     }
 
-    private void ConfigureEntity<TEntity, TPKey>(
+    private void ConfigureEntity<TEntity, TPKey, TAudit>(
         ModelBuilder mb,
         Action<EntityTypeBuilder<TEntity>>? customConfiguration = null)
         where TEntity : class
         where TPKey : struct
+        where TAudit : class
     {
         var type = typeof(TEntity);
         mb.Entity<TEntity>(e =>
@@ -183,8 +216,8 @@ public partial class AppDbContext
             if (typeof(ISoftDeletable).IsAssignableFrom(type))
                 e.HasQueryFilter(x => ((ISoftDeletable)x).EntityStatus == eEntityStatus.Active);
 
-            if (typeof(IAuditedEntity).IsAssignableFrom(type))
-                e.OwnsOne(x => ((IAuditedEntity)x).AuditRecord);
+            if (typeof(IAuditedEntity<TAudit>).IsAssignableFrom(type))
+                e.OwnsOne(x => ((IAuditedEntity<TAudit>)x).AuditRecord);
 
             customConfiguration?.Invoke(e);
         });

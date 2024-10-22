@@ -72,11 +72,11 @@ public static class StartItemProductionOrder
 
             _dbContext.ItemProductionOrders.Attach(order);
 
-            order.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
+            order.StartedEvent = AppDbJsonField.CreateKeyless(() => new ItemProductionStartedEvent());
 
             foreach (var ev in reservedEvents)
             {
-                ev.UsedEvent = AppDbJsonField.Create(() => new InstanceReserveUsedEvent());
+                ev.UsedEvent = AppDbJsonField.CreateKeyless(() => new InstanceReserveUsedEvent());
             }
 
             await _dbContext.SaveChangesAsync();

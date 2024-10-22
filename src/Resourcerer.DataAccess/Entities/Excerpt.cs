@@ -4,7 +4,7 @@ using Resourcerer.DataAccess.Records;
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class Excerpt : IAuditedEntity, ISoftDeletable
+public class Excerpt : IAuditedEntity<Audit>, ISoftDeletable
 {
     public double Quantity { get; set; }
 
@@ -16,7 +16,7 @@ public class Excerpt : IAuditedEntity, ISoftDeletable
     public Item? Element { get; set; }
 
     // entity definition
-    public AuditRecord AuditRecord { get; set; } = new();
+    public Audit AuditRecord { get; set; } = new();
     public eEntityStatus EntityStatus { get; set; }
 }
 

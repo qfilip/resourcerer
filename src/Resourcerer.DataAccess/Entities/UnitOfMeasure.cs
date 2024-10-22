@@ -4,7 +4,7 @@ using Resourcerer.DataAccess.Records;
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class UnitOfMeasure : IId<Guid>, IAuditedEntity, ISoftDeletable
+public class UnitOfMeasure : IId<Guid>, IAuditedEntity<Audit>, ISoftDeletable
 {
     public UnitOfMeasure()
     {
@@ -22,7 +22,7 @@ public class UnitOfMeasure : IId<Guid>, IAuditedEntity, ISoftDeletable
 
     // entity definition
     public Guid Id { get; set; }
-    public AuditRecord AuditRecord { get; set; } = new();
+    public Audit AuditRecord { get; set; } = new();
     public eEntityStatus EntityStatus { get; set; }
 }
 

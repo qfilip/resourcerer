@@ -80,7 +80,7 @@ public class CreateInstanceDiscardedEventTests : TestsBase
         _forger.Fake<InstanceOrderedEvent>(x =>
         {
             x.Instance = sourceInstance;
-            x.SentEvent = AppDbJsonField.Create(() => new InstanceOrderSentEvent());
+            x.SentEvent = AppDbJsonField.CreateKeyless(() => new InstanceOrderSentEvent());
         });
         _forger.Fake<InstanceReservedEvent>(x => x.Instance = sourceInstance);
         _forger.Fake<InstanceDiscardedEvent>(x => x.Instance = sourceInstance);

@@ -96,7 +96,7 @@ public class StartItemProductionOrderTests : TestsBase
         var order = Faking.FakeOrder(_forger, fd, x =>
         {
             x.Quantity = 2;
-            x.CancelledEvent = AppDbJsonField.Create(() => new ItemProductionOrderCancelledEvent());
+            x.CancelledEvent = AppDbJsonField.CreateKeyless(() => new ItemProductionOrderCancelledEvent());
         });
         var dto = new V1StartItemProductionOrderCommand
         {
@@ -119,7 +119,7 @@ public class StartItemProductionOrderTests : TestsBase
         var order = Faking.FakeOrder(_forger, fd, x =>
         {
             x.Quantity = 2;
-            x.FinishedEvent = AppDbJsonField.Create(() => new ItemProductionFinishedEvent());
+            x.FinishedEvent = AppDbJsonField.CreateKeyless(() => new ItemProductionFinishedEvent());
         });
         var dto = new V1StartItemProductionOrderCommand
         {
@@ -142,7 +142,7 @@ public class StartItemProductionOrderTests : TestsBase
         var order = Faking.FakeOrder(_forger, fd, x =>
         {
             x.Quantity = 2;
-            x.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
+            x.StartedEvent = AppDbJsonField.CreateKeyless(() => new ItemProductionStartedEvent());
         });
         var dto = new V1StartItemProductionOrderCommand
         {

@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Resourcerer.DataAccess.Abstractions;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Records;
 
 namespace Resourcerer.DataAccess.Contexts;
 
@@ -39,21 +41,26 @@ public partial class AppDbContext : DbContext
 
         foreach (var entry in entries)
         {
-            if (entry.State == EntityState.Added && entry.Entity is IAuditedEntity added)
-            {
-                if(entry.Entity is IId<Guid> keyed)
-                    keyed.Id = keyed.Id == Guid.Empty ? Guid.NewGuid() : keyed.Id;
+            var entryKey = entry.Entity as IId<Guid>;
+            var entryAudit = entry.Entity as IAuditedEntity<Audit>;
 
-                added.AuditRecord.CreatedAt = now;
-                added.AuditRecord.ModifiedAt = now;
-                added.AuditRecord.CreatedBy = _currentUser.Id;
-                added.AuditRecord.ModifiedBy = _currentUser.Id;
+            if (entryKey == null || entryAudit == null)
+                continue;
+            
+            if (entry.State == EntityState.Added)
+            {
+                entryKey.Id = entryKey.Id == Guid.Empty ? Guid.NewGuid() : entryKey.Id;
+
+                entryAudit.AuditRecord.CreatedAt = now;
+                entryAudit.AuditRecord.ModifiedAt = now;
+                entryAudit.AuditRecord.CreatedBy = _currentUser.Id;
+                entryAudit.AuditRecord.ModifiedBy = _currentUser.Id;
 
             }
-            else if (entry.State == EntityState.Modified && entry.Entity is IAuditedEntity modded)
+            else if (entry.State == EntityState.Modified)
             {
-                modded.AuditRecord.ModifiedAt = now;
-                modded.AuditRecord.ModifiedBy = _currentUser.Id;
+                entryAudit.AuditRecord.ModifiedAt = now;
+                entryAudit.AuditRecord.ModifiedBy = _currentUser.Id;
             }
         }
 

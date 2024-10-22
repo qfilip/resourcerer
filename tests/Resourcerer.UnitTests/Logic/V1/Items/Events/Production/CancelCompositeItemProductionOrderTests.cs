@@ -111,7 +111,7 @@ public class CancelCompositeItemProductionOrderTests : TestsBase
         // arrange
         var order = FakeData(x =>
         {
-            x.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
+            x.StartedEvent = AppDbJsonField.CreateKeyless(() => new ItemProductionStartedEvent());
         });
         var dto = new V1CancelCompositeItemProductionOrderCommand
         {

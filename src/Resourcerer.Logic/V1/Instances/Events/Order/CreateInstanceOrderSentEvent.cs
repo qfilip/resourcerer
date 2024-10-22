@@ -47,7 +47,7 @@ public static class CreateInstanceOrderSentEvent
             }
 
             orderEvent.SentEvent = AppDbJsonField
-                .Create(() => new InstanceOrderSentEvent());
+                .CreateKeyless(() => new InstanceOrderSentEvent());
 
             await _appDbContext.SaveChangesAsync();
 

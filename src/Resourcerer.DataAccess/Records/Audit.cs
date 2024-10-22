@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.DataAccess.Records;
 
-public class AuditRecord
+public class Audit
 {
     public DateTime CreatedAt { get; set; }
     public DateTime ModifiedAt { get; set; }

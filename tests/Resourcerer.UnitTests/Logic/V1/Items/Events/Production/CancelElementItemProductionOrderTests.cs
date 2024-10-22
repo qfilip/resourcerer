@@ -107,7 +107,7 @@ public class CancelElementItemProductionOrderTests : TestsBase
             [
                 _forger.Fake<ItemProductionOrder>(o =>
                 {
-                    o.StartedEvent = AppDbJsonField.Create(() => new ItemProductionStartedEvent());
+                    o.StartedEvent = AppDbJsonField.CreateKeyless(() => new ItemProductionStartedEvent());
                 })
             ];
         }).ProductionOrders.First().Id;
@@ -137,7 +137,7 @@ public class CancelElementItemProductionOrderTests : TestsBase
             [
                 _forger.Fake<ItemProductionOrder>(o =>
                 {
-                    o.FinishedEvent = AppDbJsonField.Create(() => new ItemProductionFinishedEvent());
+                    o.FinishedEvent = AppDbJsonField.CreateKeyless(() => new ItemProductionFinishedEvent());
                 })
             ];
         }).ProductionOrders.First().Id;
