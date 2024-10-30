@@ -11,13 +11,13 @@ public class InstanceReservedEvent : IId<Guid>, IAuditedEntity<Audit>, ISoftDele
     public double Quantity { get; set; }
     public string? Reason { get; set; }
 
-    // relational
-    public Guid InstanceId { get; set; }
-    public virtual Instance? Instance { get; set; }
-
     // json
     public InstanceReserveCancelledEvent? CancelledEvent { get; set; }
     public InstanceReserveUsedEvent? UsedEvent { get; set; }
+
+    // relational
+    public Guid InstanceId { get; set; }
+    public virtual Instance? Instance { get; set; }
 
     // entity definition
     public Guid Id { get; set; }

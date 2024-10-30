@@ -14,15 +14,15 @@ public class InstanceOrderedEvent : IId<Guid>, IAuditedEntity<Audit>, ISoftDelet
     public decimal UnitPrice { get; set; }
     public int TotalDiscountPercent { get; set; }
     public DateTime? ExpectedDeliveryDate { get; set; }
-    
-    // relational
-    public Guid InstanceId { get; set; }
-    public virtual Instance? Instance { get; set; }
 
     // json
     public InstanceOrderCancelledEvent? CancelledEvent { get; set; }
     public InstanceOrderSentEvent? SentEvent { get; set; }
     public InstanceOrderDeliveredEvent? DeliveredEvent { get; set; }
+
+    // relational
+    public Guid InstanceId { get; set; }
+    public virtual Instance? Instance { get; set; }
 
     // entity definition
     public Guid Id { get; set; }
