@@ -3,12 +3,12 @@ using FluentValidation.Results;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Abstractions.Handlers;
-using Resourcerer.Application.Auth.Abstractions;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Identity.Abstractions;
+using Resourcerer.Identity.Models;
 
 namespace Resourcerer.Logic.V1;
 
@@ -18,13 +18,13 @@ public class UpdateCategory
     {
         private readonly AppDbContext _dbContext;
         private readonly Validator _validator;
-        private readonly IAppIdentityService<AppUser> _identity;
+        private readonly IAppIdentityService<AppIdentity> _identity;
         private readonly IMapper _mapper;
 
         public Handler(
             AppDbContext dbContext,
             Validator validator,
-            IAppIdentityService<AppUser> identity,
+            IAppIdentityService<AppIdentity> identity,
             IMapper mapper)
         {
             _dbContext = dbContext;

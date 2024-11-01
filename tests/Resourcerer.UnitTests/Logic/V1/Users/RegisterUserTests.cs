@@ -1,11 +1,13 @@
 ﻿using FakeItEasy;
-using Resourcerer.Application.Auth.Abstractions;
 using Resourcerer.Application.Messaging.Emails.Abstractions;
 using Resourcerer.Application.Messaging.Emails.Models;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Identity.Abstractions;
+using Resourcerer.Identity.Enums;
+using Resourcerer.Identity.Models;
+using Resourcerer.Identity.Utils;
 using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
@@ -16,7 +18,7 @@ public class RegisterUserTests : TestsBase
 {
     private readonly RegisterUser.Handler _sut;
     private readonly IEmailSender _fakeEmailService = A.Fake<IEmailSender>();
-    private readonly IAppIdentityService<AppUser> _fakeIdentityService = A.Fake<IAppIdentityService<AppUser>>();
+    private readonly IAppIdentityService<AppIdentity> _fakeIdentityService = A.Fake<IAppIdentityService<AppIdentity>>();
     public RegisterUserTests()
     {
         _sut = new(_ctx, new(), _fakeEmailService, _fakeIdentityService);
@@ -34,7 +36,7 @@ public class RegisterUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = true });
+            .Returns(DataFaking.Identity(true, Guid.NewGuid()));
 
         HappyPathActAssert(request);
     }
@@ -51,7 +53,7 @@ public class RegisterUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = true });
+            .Returns(DataFaking.Identity(true, Guid.NewGuid()));
 
         HappyPathActAssert(request);
     }
@@ -68,7 +70,7 @@ public class RegisterUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = false });
+            .Returns(DataFaking.Identity(false, Guid.NewGuid()));
 
         HappyPathActAssert(request);
     }
@@ -85,7 +87,7 @@ public class RegisterUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = false });
+            .Returns(DataFaking.Identity(false, Guid.NewGuid()));
 
         // act
         var result = _sut.Handle(request).Await();
@@ -105,7 +107,7 @@ public class RegisterUserTests : TestsBase
             x.PermissionsMap = new Dictionary<string, string[]>
             {
                 {
-                    ePermissionSection.User.ToString(), ["one", "two"]
+                    eSection.User.ToString(), ["one", "two"]
                 }
             };
         });
@@ -114,7 +116,7 @@ public class RegisterUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = true });
+            .Returns(DataFaking.Identity(true, Guid.NewGuid()));
 
         A.CallTo(() =>
             _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
@@ -142,7 +144,7 @@ public class RegisterUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = true });
+            .Returns(DataFaking.Identity(true, Guid.NewGuid()));
 
         A.CallTo(() =>
             _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
@@ -170,7 +172,7 @@ public class RegisterUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = true });
+            .Returns(DataFaking.Identity(true, Guid.NewGuid()));
 
         A.CallTo(() =>
             _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))

@@ -1,6 +1,7 @@
 ﻿using Resourcerer.DataAccess.Abstractions;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Records;
+using Resourcerer.Identity.Models;
 using Resourcerer.Utilities;
 using Resourcerer.Utilities.Cryptography;
 
@@ -8,6 +9,9 @@ namespace Resourcerer.UnitTests.Utilities;
 
 internal static class DataFaking
 {
+    public static AppIdentity Identity(bool admin, Guid companyId) => 
+        new(Guid.NewGuid(), "oo", "a@a.com", admin, companyId);
+
     public static DateTime Now = new DateTime(2000, 1, 1);
     public static string MakeName() => $"test-{Guid.NewGuid().ToString("n").Substring(0, 6)}";
     public static string MakeEmail() => $"{MiniId.Generate(5)}@notmail.com";

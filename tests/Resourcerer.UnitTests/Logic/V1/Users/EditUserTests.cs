@@ -1,10 +1,11 @@
 ﻿using FakeItEasy;
-using Resourcerer.Application.Auth.Abstractions;
 using Resourcerer.Application.Messaging.Emails.Abstractions;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Identity.Abstractions;
+using Resourcerer.Identity.Models;
+using Resourcerer.Identity.Utils;
 using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
@@ -15,7 +16,7 @@ public class EditUserTests : TestsBase
 {
     private readonly EditUser.Handler _sut;
     private readonly IEmailSender _fakeEmailService = A.Fake<IEmailSender>();
-    private readonly IAppIdentityService<AppUser> _fakeIdentityService = A.Fake<IAppIdentityService<AppUser>>();
+    private readonly IAppIdentityService<AppIdentity> _fakeIdentityService = A.Fake<IAppIdentityService<AppIdentity>>();
     
     public EditUserTests()
     {
@@ -40,7 +41,7 @@ public class EditUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = true, CompanyId = oldUser.Company!.Id});
+            .Returns(DataFaking.Identity(true,oldUser.Company!.Id));
 
         A.CallTo(() =>
             _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
@@ -69,7 +70,7 @@ public class EditUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = true, CompanyId = oldUser.Company!.Id });
+            .Returns(DataFaking.Identity(true, oldUser.Company!.Id));
 
         A.CallTo(() =>
             _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
@@ -98,7 +99,7 @@ public class EditUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = false, CompanyId = oldUser.Company!.Id });
+            .Returns(DataFaking.Identity(false, oldUser.Company!.Id));
 
         A.CallTo(() =>
             _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
@@ -126,7 +127,7 @@ public class EditUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = false, CompanyId = oldUser.Company!.Id });
+            .Returns(DataFaking.Identity(false, oldUser.Company!.Id));
 
         A.CallTo(() =>
             _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
@@ -157,7 +158,7 @@ public class EditUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = true, CompanyId = oldUser.Company!.Id });
+            .Returns(DataFaking.Identity(true, oldUser.Company!.Id));
 
         A.CallTo(() =>
             _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
@@ -188,7 +189,7 @@ public class EditUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = true, CompanyId = oldUser.Company!.Id });
+            .Returns(DataFaking.Identity(true, oldUser.Company!.Id));
 
         A.CallTo(() =>
             _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
@@ -219,7 +220,7 @@ public class EditUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = true, CompanyId = oldUser.Company!.Id });
+            .Returns(DataFaking.Identity(true, oldUser.Company!.Id));
 
         A.CallTo(() =>
             _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))
@@ -250,7 +251,7 @@ public class EditUserTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(new AppUser { IsAdmin = true, CompanyId = Guid.NewGuid() });
+            .Returns(DataFaking.Identity(true, Guid.NewGuid()));
 
         A.CallTo(() =>
             _fakeEmailService.Validate(A<string>.That.Matches(x => x == request.Email)))

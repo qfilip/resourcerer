@@ -6,10 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Resourcerer.Api.Services.StaticServices;
-using Resourcerer.Application.Auth.Abstractions;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
+using Resourcerer.Identity.Abstractions;
+using Resourcerer.Identity.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Resourcerer.Api.Services;
@@ -22,13 +23,13 @@ public static partial class ServiceRegistry
         services.AddDbContext<AppDbContext>(cfg =>
             cfg.UseSqlite(AppInitializer.GetDbConnection(env)));
 
-        // pass user data from jwt to DBContext
-        services.AddTransient<AppUser>(x =>
+        // pass identity data from jwt to DBContext
+        services.AddTransient(x =>
         {
-            var service = x.GetRequiredService<IAppIdentityService<AppUser>>();
+            var service = x.GetRequiredService<IAppIdentityService<AppIdentity>>();
             if(service == null)
             {
-                throw new InvalidOperationException($"{typeof(IAppIdentityService<AppUser>)} not found");
+                throw new InvalidOperationException($"{typeof(IAppIdentityService<AppIdentity>)} not found");
             }
 
             return service.Get();

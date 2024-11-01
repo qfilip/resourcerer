@@ -11,15 +11,13 @@ public static class AppStaticData
         public static bool Enabled { get; private set; }
         public static class Jwt
         {
-            public static SymmetricSecurityKey? Key { get; private set; }
-
             public static void Configure(string secretKey, string issuer, string audience)
             {
                 Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
                 Issuer = issuer;
                 Audience = audience;
             }
-
+            public static SymmetricSecurityKey? Key { get; private set; }
             public static string Issuer { get; private set; } = string.Empty;
             public static string Audience { get; private set; } = string.Empty;
         }

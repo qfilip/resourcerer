@@ -1,6 +1,6 @@
 ﻿using Asp.Versioning.Builder;
 using Resourcerer.Api.Services.StaticServices;
-using Resourcerer.Dtos;
+using Resourcerer.Identity.Enums;
 
 namespace Resourcerer.Api.Endpoints;
 
@@ -37,7 +37,7 @@ public static class EndpointMapper
 
     public static void AddAuthorization(
         RouteHandlerBuilder route,
-        List<(ePermissionSection claimType, ePermission[] claimValues)>? claims = null)
+        List<(eSection claimType, ePermission[] claimValues)>? claims = null)
     {
         if(!AppStaticData.Auth.Enabled) // set in appsetting.json
         {

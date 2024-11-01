@@ -1,8 +1,8 @@
 ﻿using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Identity.Enums;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 using System.Text.Json;
@@ -20,7 +20,7 @@ public class SetPermissionsTest : TestsBase
         // arrange
         var permissions = new Dictionary<string, string[]>()
         {
-            { ePermissionSection.User.ToString(), [ePermission.Read.ToString()] }
+            { eSection.User.ToString(), [ePermission.View.ToString()] }
         };
 
         var user = _forger.Fake<AppUser>(x => x.Permissions = JsonSerializer.Serialize(permissions));
@@ -31,9 +31,9 @@ public class SetPermissionsTest : TestsBase
             UserId = user.Id,
             Permissions = new Dictionary<string, string[]>()
             {
-                { 
-                    ePermissionSection.User.ToString(),
-                    [ePermission.Read.ToString(), ePermission.Write.ToString()]
+                {
+                    eSection.User.ToString(),
+                    [ePermission.View.ToString(), ePermission.Create.ToString()]
                 }
             }
         };
@@ -71,12 +71,12 @@ public class SetPermissionsTest : TestsBase
             Permissions = new Dictionary<string, string[]>()
             {
                 {
-                    ePermissionSection.User.ToString().ToLower(),
-                    [ePermission.Read.ToString(), ePermission.Write.ToString()]
+                    eSection.User.ToString().ToLower(),
+                    [ePermission.View.ToString(), ePermission.Create.ToString()]
                 },
                 {
-                    ePermissionSection.User.ToString(),
-                    [ePermission.Read.ToString().ToLower(), ePermission.Write.ToString().ToLower()]
+                    eSection.User.ToString(),
+                    [ePermission.View.ToString().ToLower(), ePermission.Create.ToString().ToLower()]
                 }
             }
         };
@@ -104,7 +104,7 @@ public class SetPermissionsTest : TestsBase
             Permissions = new Dictionary<string, string[]>()
             {
                 {
-                    ePermissionSection.User.ToString(), [ePermission.Read.ToString()]
+                    eSection.User.ToString(), [ePermission.View.ToString()]
                 }
             }
         };

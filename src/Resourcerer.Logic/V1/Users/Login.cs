@@ -5,8 +5,8 @@ using Resourcerer.Application.Abstractions.Handlers;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
+using Resourcerer.Identity.Utils;
 using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Utilities.Cryptography;
 

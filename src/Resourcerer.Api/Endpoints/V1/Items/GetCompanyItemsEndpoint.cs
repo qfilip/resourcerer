@@ -1,5 +1,5 @@
 ﻿using Resourcerer.Api.Services;
-using Resourcerer.Dtos;
+using Resourcerer.Identity.Enums;
 using Resourcerer.Logic.V1;
 
 namespace Resourcerer.Api.Endpoints.V1;
@@ -16,9 +16,9 @@ public class GetCompanyItemsEndpoint : IAppEndpoint
 
     internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {
-            (ePermissionSection.Item, new[] { ePermission.Read })
+            (eSection.Item, new[] { ePermission.View })
         });
     }
 

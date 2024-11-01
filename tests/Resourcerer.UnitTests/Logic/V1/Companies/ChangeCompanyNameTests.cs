@@ -1,8 +1,9 @@
 ﻿using FakeItEasy;
-using Resourcerer.Application.Auth.Abstractions;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Identity.Abstractions;
+using Resourcerer.Identity.Models;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 
@@ -11,7 +12,7 @@ namespace Resourcerer.UnitTests.Logic.V1.Companies;
 public class ChangeCompanyNameTests : TestsBase
 {
     private readonly ChangeCompanyName.Handler _sut;
-    private readonly IAppIdentityService<AppUser> _fakeIdentityService = A.Fake<IAppIdentityService<AppUser>>();
+    private readonly IAppIdentityService<AppIdentity> _fakeIdentityService = A.Fake<IAppIdentityService<AppIdentity>>();
     public ChangeCompanyNameTests()
     {
         _sut = new(_ctx, new(), _fakeIdentityService, GetMapster());
@@ -41,7 +42,7 @@ public class ChangeCompanyNameTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(company.Employees.First());
+            .Returns(Mapping.Of(company.Employees.First()));
 
         _ctx.SaveChanges();
 
@@ -77,7 +78,7 @@ public class ChangeCompanyNameTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(company.Employees.First());
+            .Returns(Mapping.Of(company.Employees.First()));
 
         _ctx.SaveChanges();
 
@@ -103,7 +104,7 @@ public class ChangeCompanyNameTests : TestsBase
 
         A.CallTo(() =>
             _fakeIdentityService.Get())
-            .Returns(user);
+            .Returns(Mapping.Of(user));
 
         _ctx.SaveChanges();
 

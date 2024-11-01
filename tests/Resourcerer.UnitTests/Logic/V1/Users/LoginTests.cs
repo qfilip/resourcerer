@@ -1,8 +1,9 @@
 ﻿using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
+using Resourcerer.Identity.Services;
+using Resourcerer.Identity.Utils;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.Utilities.Cryptography;
@@ -21,6 +22,10 @@ public class LoginTests : TestsBase
     {
         // arrange
         AppStaticData.Auth.Jwt.Configure(Guid.Empty.ToString(), "issuer", "audience");
+        var jwtService = new JwtTokenService(
+            AppStaticData.Auth.Jwt.Key!,
+            AppStaticData.Auth.Jwt.Issuer,
+            AppStaticData.Auth.Jwt.Audience);
         var (user, password) = ArrangeDb(_ctx, _forger);
         var request = new AppUserDto { Name = user.Name, Password = password };
 
@@ -31,7 +36,7 @@ public class LoginTests : TestsBase
         Assert.Multiple(
             () => Assert.Equal(eHandlerResultStatus.Ok, result.Status),
             () => Assert.NotNull(result.Object),
-            () => Assert.NotNull(JwtService.GenerateToken(result.Object!)),
+            () => Assert.NotNull(jwtService.GenerateToken(Mapping.Of(result.Object!)!, result.Object!.PermissionsMap!, result.Object!.DisplayName!, result.Object!.Company!.Name!)),
             () => Assert.True(string.IsNullOrEmpty(result.Object!.Password))
         );
     }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
-using Resourcerer.Dtos;
+using Resourcerer.Identity.Enums;
 using Resourcerer.Logic.V1;
 
 namespace Resourcerer.Api.Endpoints.V1;
@@ -17,9 +17,9 @@ public class GetAllCompanyUsersEndpoint : IAppEndpoint
 
     internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {
-            (ePermissionSection.User, new[] { ePermission.Read })
+            (eSection.User, new[] { ePermission.View })
         });
     }
 

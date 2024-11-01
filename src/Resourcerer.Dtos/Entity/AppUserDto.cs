@@ -1,4 +1,5 @@
 ﻿using Resourcerer.DataAccess.Entities;
+using Resourcerer.Identity.Utils;
 
 namespace Resourcerer.Dtos.Entity;
 public class AppUserDto : EntityDto<AppUserDto>

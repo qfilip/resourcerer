@@ -3,18 +3,19 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Resourcerer.DataAccess.Abstractions;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Records;
+using Resourcerer.Identity.Models;
 
 namespace Resourcerer.DataAccess.Contexts;
 
 public partial class AppDbContext : DbContext
 {
-    private readonly AppUser _currentUser;
+    private readonly AppIdentity _identity;
 
     public AppDbContext(
         DbContextOptions<AppDbContext> options,
-        AppUser currentUser) : base(options)
+        AppIdentity identity) : base(options)
 	{
-        _currentUser = currentUser ?? new AppUser();
+        _identity = identity;
     }
 
 	public virtual DbSet<AppUser> AppUsers { get; set; }
@@ -53,14 +54,14 @@ public partial class AppDbContext : DbContext
 
                 entryAudit.AuditRecord.CreatedAt = now;
                 entryAudit.AuditRecord.ModifiedAt = now;
-                entryAudit.AuditRecord.CreatedBy = _currentUser.Id;
-                entryAudit.AuditRecord.ModifiedBy = _currentUser.Id;
+                entryAudit.AuditRecord.CreatedBy = _identity.Id;
+                entryAudit.AuditRecord.ModifiedBy = _identity.Id;
 
             }
             else if (entry.State == EntityState.Modified)
             {
                 entryAudit.AuditRecord.ModifiedAt = now;
-                entryAudit.AuditRecord.ModifiedBy = _currentUser.Id;
+                entryAudit.AuditRecord.ModifiedBy = _identity.Id;
             }
         }
 

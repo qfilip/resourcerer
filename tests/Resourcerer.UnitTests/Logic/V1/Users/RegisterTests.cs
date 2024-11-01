@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit.JobService;
+using Microsoft.EntityFrameworkCore;
 using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Identity.Services;
 using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
@@ -21,6 +23,10 @@ public class RegisterTests : TestsBase
     {
         // arrange
         AppStaticData.Auth.Jwt.Configure(Guid.Empty.ToString(), "issuer", "audience");
+        var jwtService = new JwtTokenService(
+            AppStaticData.Auth.Jwt.Key!,
+            AppStaticData.Auth.Jwt.Issuer,
+            AppStaticData.Auth.Jwt.Audience);
         var request = new V1Register
         {
             Username = "vaas",
@@ -35,7 +41,7 @@ public class RegisterTests : TestsBase
         // assert
         Assert.Multiple(
             () => Assert.Equal(eHandlerResultStatus.Ok, result.Status),
-            () => Assert.NotNull(JwtService.GenerateToken(result.Object!)),
+            () => Assert.NotNull(jwtService.GenerateToken(Mapping.Of(result.Object!)!, result.Object!.PermissionsMap!, result.Object!.DisplayName!, result.Object!.Company!.Name!)),
             () => Assert.True(string.IsNullOrEmpty(result.Object!.Password)),
             () =>
             {

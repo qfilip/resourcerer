@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
 using Resourcerer.Application.Messaging.Abstractions;
-using Resourcerer.Dtos;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Identity.Enums;
 using Resourcerer.Logic.V1.Items.Events.Production;
 
 namespace Resourcerer.Api.Endpoints.V1;
@@ -24,9 +24,9 @@ public class StartItemProductionEndpoint : IAppEndpoint
 
     internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        EndpointMapper.AddAuthorization(endpoint, new List<(ePermissionSection claimType, ePermission[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
         {
-            (ePermissionSection.Event, new[] { ePermission.Write })
+            (eSection.ItemEvent, new[] { ePermission.Create })
         });
     }
 

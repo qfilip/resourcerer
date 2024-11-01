@@ -3,12 +3,12 @@ using FluentValidation.Results;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Abstractions.Handlers;
-using Resourcerer.Application.Auth.Abstractions;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Identity.Abstractions;
+using Resourcerer.Identity.Models;
 
 namespace Resourcerer.Logic.V1;
 
@@ -18,13 +18,13 @@ public class ChangeCompanyName
     {
         private readonly AppDbContext _dbContext;
         private readonly Validator _validatior;
-        private readonly IAppIdentityService<AppUser> _identityService;
+        private readonly IAppIdentityService<AppIdentity> _identityService;
         private readonly IMapper _mapper;
 
         public Handler(
             AppDbContext dbContext,
             Validator validatior,
-            IAppIdentityService<AppUser> identityService,
+            IAppIdentityService<AppIdentity> identityService,
             IMapper mapper)
         {
             _dbContext = dbContext;
@@ -36,7 +36,7 @@ public class ChangeCompanyName
         public async Task<HandlerResult<CompanyDto>> Handle(V1ChangeCompanyName request)
         {
             var userHasPermissions =
-                _identityService.Get().IsAdmin &&
+                _identityService.Get().Admin &&
                 _identityService.Get().CompanyId == request.CompanyId;
 
             if (!userHasPermissions)

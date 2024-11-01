@@ -2,14 +2,14 @@
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Abstractions.Handlers;
-using Resourcerer.Application.Auth.Abstractions;
 using Resourcerer.Application.Messaging.Emails.Abstractions;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Identity.Abstractions;
+using Resourcerer.Identity.Models;
+using Resourcerer.Identity.Utils;
 using Resourcerer.Logic.Utilities.Query;
 using System.Text.Json;
 
@@ -22,13 +22,13 @@ public static class EditUser
         private readonly AppDbContext _dbContext;
         private readonly Validator _validator;
         private readonly IEmailSender _emailSender;
-        private readonly IAppIdentityService<AppUser> _identityService;
+        private readonly IAppIdentityService<AppIdentity> _identityService;
 
         public Handler(
             AppDbContext dbContext,
             Validator validator,
             IEmailSender emailSender,
-            IAppIdentityService<AppUser> identityService)
+            IAppIdentityService<AppIdentity> identityService)
         {
             _dbContext = dbContext;
             _validator = validator;
@@ -56,7 +56,7 @@ public static class EditUser
             if (entity == null)
                 return HandlerResult<AppUserDto>.NotFound($"User with id {request.UserId} not found");
 
-            if (!_identityService.Get().IsAdmin && entity.IsAdmin)
+            if (!_identityService.Get().Admin && entity.IsAdmin)
                 return HandlerResult<AppUserDto>.Rejected("Only admin can add another admin user");
 
             if (entity.Company!.Id != _identityService.Get().CompanyId)

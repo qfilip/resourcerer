@@ -1,13 +1,14 @@
-﻿using Resourcerer.Api.Services.StaticServices;
+﻿using Microsoft.AspNetCore.Mvc;
+using Resourcerer.Identity.Services;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
 public class RefreshSessionEndpoint : IAppEndpoint
 {
-    public static IResult Action(HttpContext context)
+    public static IResult Action(HttpContext context, [FromServices] JwtTokenService jwtTokenService)
     {
         var claims = context.User.Claims;
-        var token = JwtService.RefreshToken(claims);
+        var token = jwtTokenService.RefreshToken(claims);
 
         return Results.Ok(token);
     }

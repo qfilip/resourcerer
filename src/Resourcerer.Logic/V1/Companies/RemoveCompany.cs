@@ -2,12 +2,12 @@
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Abstractions.Handlers;
-using Resourcerer.Application.Auth.Abstractions;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
-using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Identity.Abstractions;
+using Resourcerer.Identity.Models;
 
 namespace Resourcerer.Logic.V1;
 
@@ -17,9 +17,9 @@ public class RemoveCompany
     {
         private readonly AppDbContext _dbContext;
         private readonly Validator _validatior;
-        private readonly IAppIdentityService<AppUser> _identityService;
+        private readonly IAppIdentityService<AppIdentity> _identityService;
 
-        public Handler(AppDbContext dbContext, Validator validatior, IAppIdentityService<AppUser> identityService)
+        public Handler(AppDbContext dbContext, Validator validatior, IAppIdentityService<AppIdentity> identityService)
         {
             _dbContext = dbContext;
             _validatior = validatior;
@@ -29,7 +29,7 @@ public class RemoveCompany
         public async Task<HandlerResult<Unit>> Handle(V1RemoveCompany request)
         {
             var userHasPermissions =
-                _identityService.Get().IsAdmin &&
+                _identityService.Get().Admin &&
                 _identityService.Get().CompanyId == request.CompanyId;
 
             if (!userHasPermissions)

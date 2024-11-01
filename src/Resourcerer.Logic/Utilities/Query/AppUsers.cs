@@ -1,6 +1,6 @@
 ﻿using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
+using Resourcerer.Identity.Utils;
 using System.Linq.Expressions;
 
 namespace Resourcerer.Logic.Utilities.Query;

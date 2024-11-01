@@ -1,6 +1,6 @@
-﻿using Resourcerer.Application.Auth.Abstractions;
-using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos;
+﻿using Resourcerer.Dtos;
+using Resourcerer.Identity.Constants;
+using Resourcerer.Identity.Utils;
 using System.Text;
 
 namespace Resourcerer.Api.TsExport;
@@ -29,13 +29,13 @@ public static class CustomExports
         sb.Append(Environment.NewLine);
         var xs = new List<(string Key, string Value)>()
         {
-            ("id", IAppIdentityService<AppUser>.ClaimId),
-            ("name", IAppIdentityService<AppUser>.ClaimUsername),
-            ("displayName", IAppIdentityService<AppUser>.ClaimUsername),
-            ("email", IAppIdentityService<AppUser>.ClaimEmail),
-            ("isAdmin", IAppIdentityService<AppUser>.ClaimIsAdmin),
-            ("companyId", IAppIdentityService<AppUser>.ClaimCompanyId),
-            ("companyName", IAppIdentityService<AppUser>.ClaimCompanyName)
+            ("id", Claims.ClaimId),
+            ("name", Claims.ClaimUsername),
+            ("displayName", Claims.ClaimUsername),
+            ("email", Claims.ClaimEmail),
+            ("isAdmin", Claims.ClaimIsAdmin),
+            ("companyId", Claims.ClaimCompanyId),
+            ("companyName", Claims.ClaimCompanyName)
         };
 
         xs.ForEach(x =>

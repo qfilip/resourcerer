@@ -5,6 +5,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos;
+using Resourcerer.Identity.Utils;
 using SqlForgery;
 using System.Text.Json;
 
