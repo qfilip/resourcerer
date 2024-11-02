@@ -4,16 +4,14 @@ using Resourcerer.Api.Services.Messaging.Fake.MassTransit.Consumers;
 using Resourcerer.Api.Services.Messaging.Fake.MassTransit.Senders;
 using Resourcerer.Api.Services.Messaging.V1.Channels.Instances;
 using Resourcerer.Api.Services.Messaging.V1.Channels.Items;
-using Resourcerer.Api.Services.Messaging.V1.MassTransit.Consumers.Instances;
 using Resourcerer.Api.Services.Messaging.V1.MassTransit.Consumers.Instances.Discard;
 using Resourcerer.Api.Services.Messaging.V1.MassTransit.Consumers.Instances.Production;
-using Resourcerer.Api.Services.Messaging.V1.MassTransit.Consumers.Items;
 using Resourcerer.Api.Services.Messaging.V1.MassTransit.Consumers.Items.Production;
 using Resourcerer.Api.Services.Messaging.V1.MassTransit.Senders;
 using Resourcerer.Dtos.Fake;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Messaging;
-using Resourcerer.Messaging.Abstractions;
+using DI = Resourcerer.Messaging.DependencyInjection;
 
 namespace Resourcerer.Api.Services;
 
@@ -22,6 +20,10 @@ public static partial class ServiceRegistry
     public static void AddMessagingServices(IServiceCollection services, IConfiguration configuration)
     {
         var messaging = configuration.GetSection("Messaging");
+        
+        if (messaging == null)
+            throw new InvalidOperationException("Messaging configuration not found");
+
         var mapFakes = messaging.GetValue<bool>("MapFakes");
         var useChannels = messaging.GetValue<bool>("UseChannels");
 
@@ -30,39 +32,30 @@ public static partial class ServiceRegistry
         else
             RegisterMassTransit(services, mapFakes);
 
-        DependencyInjection.AddEmailService(services);
+        DI.AddEmailService(services);
     }
 
     private static void RegisterChannels(IServiceCollection services, bool mapFakes)
     {
         // instance
-        DependencyInjection.AddChannelMessagingService<V1InstanceOrderCommand, InstanceOrderEventService>(services);
-        RegisterSender<V1InstanceOrderCommand, InstanceOrderCommandSender>(services);
-
-        DependencyInjection.AddChannelMessagingService<V1InstanceDiscardCommand, InstanceDiscardEventService>(services);
-        RegisterSender<V1InstanceDiscardCommand, InstanceDiscardCommandSender>(services);
-        
-        // item
-        DependencyInjection.AddChannelMessagingService<V1ItemProductionCommand, ItemProductionOrderEventService>(services);
-        RegisterSender<V1ItemProductionCommand, ItemProductionOrderCommandSender>(services);
+        DI.AddChannelMessagingService<V1InstanceOrderCommand, InstanceOrderEventService>(services);
+        DI.AddChannelMessagingService<V1InstanceDiscardCommand, InstanceDiscardEventService>(services);
+        DI.AddChannelMessagingService<V1ItemProductionCommand, ItemProductionOrderEventService>(services);
 
         if(mapFakes)
-        {
-            DependencyInjection.AddChannelMessagingService<FakeCommandDto, FakeEventService>(services);
-            RegisterSender<FakeCommandDto, FakeCommandSender>(services);
-        }
+            DI.AddChannelMessagingService<FakeCommandDto, FakeEventService>(services);
     }
     private static void RegisterMassTransit(IServiceCollection services, bool mapFakes)
     {
-        RegisterSender<V1InstanceDiscardCommand, InstanceDiscardCommandSender>(services);
-        RegisterSender<V1InstanceOrderCommand, InstanceOrderCommandSender> (services);
-        RegisterSender<V1ItemProductionCommand, ItemProductionOrderCommandSender>(services);
+        DI.AddMassTransitSenderService<V1InstanceDiscardCommand, InstanceDiscardCommandSender>(services);
+        DI.AddMassTransitSenderService<V1InstanceOrderCommand, InstanceOrderCommandSender> (services);
+        DI.AddMassTransitSenderService<V1ItemProductionCommand, ItemProductionOrderCommandSender>(services);
 
         if(mapFakes)
-            RegisterSender<FakeCommandDto, FakeCommandSender>(services);
+            DI.AddMassTransitSenderService<FakeCommandDto, FakeCommandSender>(services);
 
         var consumerRegistryFunctions = GetConsumerRegistryFunctions(mapFakes);
-        DependencyInjection.AddMassTransit(services, consumerRegistryFunctions);
+        DI.AddMassTransit(services, consumerRegistryFunctions);
     }
 
     private static MassTransitConsumersRegistryFunctions[] GetConsumerRegistryFunctions(bool mapFakes)
@@ -98,12 +91,12 @@ public static partial class ServiceRegistry
             },
             () =>
             {
-                DependencyInjection.MapCommandEndpoint<V1CancelCompositeItemProductionOrderCommand>();
-                DependencyInjection.MapCommandEndpoint<V1CancelElementItemProductionOrderCommand>();
-                DependencyInjection.MapCommandEndpoint<V1CreateCompositeItemProductionOrderCommand>();
-                DependencyInjection.MapCommandEndpoint<V1CreateElementItemProductionOrderCommand>();
-                DependencyInjection.MapCommandEndpoint<V1FinishItemProductionOrderCommand>();
-                DependencyInjection.MapCommandEndpoint<V1StartItemProductionOrderCommand>();
+                DI.MapCommandEndpoint<V1CancelCompositeItemProductionOrderCommand>();
+                DI.MapCommandEndpoint<V1CancelElementItemProductionOrderCommand>();
+                DI.MapCommandEndpoint<V1CreateCompositeItemProductionOrderCommand>();
+                DI.MapCommandEndpoint<V1CreateElementItemProductionOrderCommand>();
+                DI.MapCommandEndpoint<V1FinishItemProductionOrderCommand>();
+                DI.MapCommandEndpoint<V1StartItemProductionOrderCommand>();
             }
         );
 
@@ -132,10 +125,10 @@ public static partial class ServiceRegistry
             },
             () =>
             {
-                DependencyInjection.MapCommandEndpoint<V1InstanceOrderCreateCommand>();
-                DependencyInjection.MapCommandEndpoint<V1InstanceOrderCancelCommand>();
-                DependencyInjection.MapCommandEndpoint<V1InstanceOrderDeliverCommand>();
-                DependencyInjection.MapCommandEndpoint<V1InstanceOrderSendCommand>();
+                DI.MapCommandEndpoint<V1InstanceOrderCreateCommand>();
+                DI.MapCommandEndpoint<V1InstanceOrderCancelCommand>();
+                DI.MapCommandEndpoint<V1InstanceOrderDeliverCommand>();
+                DI.MapCommandEndpoint<V1InstanceOrderSendCommand>();
             }
         );
 
@@ -152,7 +145,7 @@ public static partial class ServiceRegistry
             {
                 cfg.Send<V1InstanceDiscardCommand>(cmd => cmd.UseCorrelationId(x => x.InstanceId));
             },
-            DependencyInjection.MapCommandEndpoint<V1InstanceDiscardCommand>
+            DI.MapCommandEndpoint<V1InstanceDiscardCommand>
         );
 
         // fakes
@@ -169,7 +162,7 @@ public static partial class ServiceRegistry
             {
                 cfg.Send<FakeCommandDto>(cmd => cmd.UseCorrelationId(_ => Guid.NewGuid()));
             },
-            DependencyInjection.MapCommandEndpoint<FakeCommandDto>
+            DI.MapCommandEndpoint<FakeCommandDto>
         );
 
         var functions = new List<MassTransitConsumersRegistryFunctions>
@@ -183,10 +176,5 @@ public static partial class ServiceRegistry
             functions.Add(fakes);
         
         return functions.ToArray();
-    }
-
-    private static void RegisterSender<TMessage, TSender>(IServiceCollection serives) where TSender : class, IMessageSender<TMessage>
-    {
-        serives.AddScoped<IMessageSender<TMessage>, TSender>();
     }
 }

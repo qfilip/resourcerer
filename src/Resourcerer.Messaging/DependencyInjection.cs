@@ -39,6 +39,12 @@ public class DependencyInjection
             Loop(x => x.MapCommandEndpoints());
         });
     }
+
+    public static void AddMassTransitSenderService<TMessage, TSender>(IServiceCollection serives) where TSender : class, IMessageSender<TMessage>
+    {
+        serives.AddSingleton<IMessageSender<TMessage>, TSender>();
+    }
+
     public static void MapCommandEndpoint<T>() where T : class
     {
         EndpointConvention.Map<T>(new Uri($"queue:{COMMAND_CONSUMER_ENDPOINT}"));
