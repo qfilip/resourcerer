@@ -16,4 +16,3 @@ public abstract class ChannelConsumerHostingService<TMessage, TRepository> : Bac
 
     protected abstract Task HandleEvent(TMessage message, TRepository repository);
 }
-

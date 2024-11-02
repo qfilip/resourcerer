@@ -7,6 +7,7 @@ using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Logic.Utilities;
 
 namespace Resourcerer.Logic.V1;
 
@@ -51,8 +52,8 @@ public class ChangeItemName
                 .NotEmpty().WithMessage("Item id cannot be default value");
 
             RuleFor(x => x.NewName)
-                .NotEmpty().WithMessage("Element name cannot be empty")
-                .Length(min: 3, max: 50).WithMessage("Element name must be between 3 and 50 characters long");
+                .Must(Validation.Item.Name)
+                .WithMessage(Validation.Item.NameError);
         }
     }
 }

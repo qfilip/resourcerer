@@ -8,6 +8,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Logic.Utilities;
 
 namespace Resourcerer.Logic.V1;
 
@@ -83,12 +84,12 @@ public class CreateUnitOfMeasure
                 .NotEmpty().WithMessage("Company id cannot be empty");
 
             RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("Unit of measure name cannot be empty")
-                .Length(min: 2, max: 50).WithMessage("Unit of measure name must be between 2 and 50 characters long");
+                .Must(Validation.UnitOfMeasure.Name)
+                .WithMessage(Validation.UnitOfMeasure.NameError);
 
             RuleFor(x => x.Symbol)
-                .NotEmpty().WithMessage("Unit of measure symbol cannot be empty")
-                .Length(min: 1, max: 12).WithMessage("Unit of measure symbol must be between 1 and 12 characters long");
+                .Must(Validation.UnitOfMeasure.Symbol)
+                .WithMessage(Validation.UnitOfMeasure.SymbolError);
         }
     }
 }

@@ -8,6 +8,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Logic.Utilities;
 
 namespace Resourcerer.Logic.V1.Items;
 
@@ -69,7 +70,8 @@ public class ChangeItemPrice
                 .NotEmpty().WithMessage("Item id cannot be default value");
 
             RuleFor(x => x.UnitPrice)
-                .GreaterThan(0).WithMessage("Item price must be greater than 0");
+                .Must(Validation.Item.Price)
+                .WithMessage(Validation.Item.PriceError);
         }
     }
 }

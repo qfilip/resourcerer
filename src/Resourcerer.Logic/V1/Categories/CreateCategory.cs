@@ -6,6 +6,7 @@ using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Logic.Utilities;
 
 namespace Resourcerer.Logic.V1;
 
@@ -64,8 +65,8 @@ public class CreateCategory
         public Validator()
         {
             RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("Category name cannot be empty")
-                .Length(min: 3, max: 50).WithMessage("Category name must be between 3 and 50 characters long");
+                .Must(Validation.Category.Name)
+                .WithMessage(Validation.Category.NameError);
 
             RuleFor(x => x.CompanyId)
                 .NotEmpty().WithMessage("Company Id name cannot be empty");

@@ -5,6 +5,7 @@ using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
+using Resourcerer.Logic.Utilities;
 
 namespace Resourcerer.Logic.V1;
 
@@ -48,6 +49,6 @@ public class CreateElementItemLoadForm
             });
         }
 
-        public ValidationResult Validate(Guid request) => new ValidationResult();
+        public ValidationResult Validate(Guid request) => Validation.Empty;
     }
 }

@@ -7,6 +7,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Identity.Utils;
+using Resourcerer.Logic.Utilities;
 using System.Text.Json;
 
 namespace Resourcerer.Logic.V1;
@@ -65,8 +66,8 @@ public static class SetPermissions
                 .WithMessage("User id cannot be empty");
 
             RuleFor(x => x.Permissions)
-                .NotNull()
-                .WithMessage("Permissions cannot be null");
+                .Must(Validation.AppUser.Permissions)
+                .WithMessage(Validation.AppUser.PermissionsError);
         }
     }
 }

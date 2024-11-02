@@ -9,6 +9,7 @@ using Resourcerer.Dtos.V1;
 using Resourcerer.Identity.Abstractions;
 using Resourcerer.Identity.Models;
 using Resourcerer.Identity.Utils;
+using Resourcerer.Logic.Utilities;
 using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Messaging.Emails.Abstractions;
 using System.Text.Json;
@@ -92,7 +93,8 @@ public static class EditUser
                 .NotEmpty().WithMessage("Email cannot be empty");
 
             RuleFor(x => x.PermissionsMap)
-                .NotEmpty().WithMessage("At least one permission must be assigned");
+                .Must(Validation.AppUser.Permissions)
+                .WithMessage(Validation.AppUser.PermissionsError);
         }
     }
 }

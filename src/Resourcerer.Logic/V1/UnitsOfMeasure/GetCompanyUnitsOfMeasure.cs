@@ -5,7 +5,6 @@ using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Logic.Utilities;
-using Resourcerer.Logic.Utilities.Query;
 
 namespace Resourcerer.Logic.V1;
 

@@ -8,6 +8,7 @@ using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Identity.Utils;
+using Resourcerer.Logic.Utilities;
 using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Utilities.Cryptography;
 using System.Text.Json;
@@ -70,8 +71,8 @@ public static class Register
         public Validator()
         {
             RuleFor(x => x.Username)
-                .NotEmpty()
-                .WithMessage("User name cannot be empty");
+                .Must(Validation.AppUser.Name)
+                .WithMessage(Validation.AppUser.NameError);
 
             RuleFor(x => x.Email)
                 .NotEmpty()
@@ -79,12 +80,12 @@ public static class Register
                 .WithMessage("Email invalid");
 
             RuleFor(x => x.Password)
-                .NotEmpty()
-                .WithMessage("User password cannot be empty");
+                .Must(Validation.AppUser.Password)
+                .WithMessage(Validation.AppUser.PasswordError);
 
             RuleFor(x => x.CompanyName)
-                .NotEmpty()
-                .WithMessage("Company name cannot be empty");
+                .Must(Validation.Company.Name)
+                .WithMessage(Validation.Company.NameError);
         }
     }
 }

@@ -6,6 +6,7 @@ using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Logic.Utilities;
 
 namespace Resourcerer.Logic.V1.Items;
 
@@ -89,18 +90,16 @@ public static class CreateElementItem
         public Validator()
         {
             RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("Element name cannot be empty")
-                .Length(min: 3, max: 50).WithMessage("Element name must be between 3 and 50 characters long");
+                .Must(Validation.Item.Name)
+                .WithMessage(Validation.Item.NameError);
 
             RuleFor(x => x.ProductionTimeSeconds)
-                .GreaterThanOrEqualTo(0).WithMessage("ProductionTimeSeconds cannot be negative");
+                .Must(Validation.Item.ProductionTimeSeconds)
+                .WithMessage(Validation.Item.ProductionTimeSecondsError);
 
             RuleFor(x => x.ExpirationTimeSeconds)
-                .Must(x =>
-                {
-                    if (x == null) return true;
-                    else return x < 0;
-                }).WithMessage("ExpirationTimeSeconds cannot be negative");
+                .Must(Validation.Item.ExpirationTimeSeconds)
+                .WithMessage(Validation.Item.ExpirationTimeSecondsError);
 
             RuleFor(x => x.CategoryId)
                 .NotEmpty().WithMessage("Element's category cannot be empty");
@@ -109,7 +108,8 @@ public static class CreateElementItem
                 .NotEmpty().WithMessage("Element's unit of measure cannot be empty");
 
             RuleFor(x => x.UnitPrice)
-                .GreaterThanOrEqualTo(0).WithMessage("Element's price must be greater than 0");
+                .Must(Validation.Item.Price)
+                .WithMessage(Validation.Item.PriceError);
         }
     }
 }
