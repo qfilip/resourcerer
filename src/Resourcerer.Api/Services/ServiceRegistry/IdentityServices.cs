@@ -4,7 +4,7 @@ namespace Resourcerer.Api.Services;
 
 public static partial class ServiceRegistry
 {
-    public static void AddAuth(IServiceCollection services, bool authEnabled)
+    public static void AddAppIdentity(IServiceCollection services)
     {
         services.AddCors(o => o.AddDefaultPolicy(b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
 

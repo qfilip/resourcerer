@@ -11,7 +11,14 @@ public class Webapi
 
         AppInitializer.LoadAuthConfiguration(builder.Configuration);
 
-        builder.Services.AddAllAppServices(builder.Environment, builder.Configuration);
+        var services = builder.Services;
+        var environment = builder.Environment;
+        var configuration = builder.Configuration;
+
+        ServiceRegistry.AddAppHandlersAndValidators(services);
+        ServiceRegistry.Add3rdParyServices(services, environment);
+        ServiceRegistry.AddAppIdentity(services);
+        ServiceRegistry.AddMessagingServices(services, configuration);
 
         builder.Host.UseDefaultServiceProvider((_, options) =>
         {
