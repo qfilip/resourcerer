@@ -26,25 +26,15 @@ public static partial class ServiceRegistry
         var useChannels = messaging.GetValue<bool>("UseChannels");
 
         if (useChannels)
-        {
             RegisterChannels(services, mapFakes);
-        }
         else
-        {
-            var consumerRegistryFunctions = GetConsumerRegistryFunctions(mapFakes);
-            DependencyInjection.AddMassTransit(services, consumerRegistryFunctions);
-        }
+            RegisterMassTransit(services, mapFakes);
 
         DependencyInjection.AddEmailService(services);
     }
 
     private static void RegisterChannels(IServiceCollection services, bool mapFakes)
     {
-        void RegisterSender<TMessage, TSender>(IServiceCollection serives) where TSender : class, IMessageSender<TMessage>
-        {
-            serives.AddScoped<IMessageSender<TMessage>, TSender>();
-        }
-
         // instance
         DependencyInjection.AddChannelMessagingService<V1InstanceOrderCommand, InstanceOrderEventService>(services);
         RegisterSender<V1InstanceOrderCommand, InstanceOrderCommandSender>(services);
@@ -61,6 +51,18 @@ public static partial class ServiceRegistry
             DependencyInjection.AddChannelMessagingService<FakeCommandDto, FakeEventService>(services);
             RegisterSender<FakeCommandDto, FakeCommandSender>(services);
         }
+    }
+    private static void RegisterMassTransit(IServiceCollection services, bool mapFakes)
+    {
+        RegisterSender<V1InstanceDiscardCommand, InstanceDiscardCommandSender>(services);
+        RegisterSender<V1InstanceOrderCommand, InstanceOrderCommandSender> (services);
+        RegisterSender<V1ItemProductionCommand, ItemProductionOrderCommandSender>(services);
+
+        if(mapFakes)
+            RegisterSender<FakeCommandDto, FakeCommandSender>(services);
+
+        var consumerRegistryFunctions = GetConsumerRegistryFunctions(mapFakes);
+        DependencyInjection.AddMassTransit(services, consumerRegistryFunctions);
     }
 
     private static MassTransitConsumersRegistryFunctions[] GetConsumerRegistryFunctions(bool mapFakes)
@@ -181,5 +183,10 @@ public static partial class ServiceRegistry
             functions.Add(fakes);
         
         return functions.ToArray();
+    }
+
+    private static void RegisterSender<TMessage, TSender>(IServiceCollection serives) where TSender : class, IMessageSender<TMessage>
+    {
+        serives.AddScoped<IMessageSender<TMessage>, TSender>();
     }
 }
