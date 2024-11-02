@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Resourcerer.Application\Resourcerer.Application.csproj" />
     <ProjectReference Include="..\Resourcerer.DataAccess\Resourcerer.DataAccess.csproj" />
     <ProjectReference Include="..\Resourcerer.Dtos\Resourcerer.Dtos.csproj" />
     <ProjectReference Include="..\Resourcerer.Identity\Resourcerer.Identity.csproj" />

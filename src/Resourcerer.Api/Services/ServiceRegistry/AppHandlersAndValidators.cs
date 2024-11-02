@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Resourcerer.Application.Abstractions.Handlers;
+using Resourcerer.Application.Logic.Handlers;
 
 namespace Resourcerer.Api.Services;
 

@@ -1,4 +1,4 @@
-﻿namespace Resourcerer.Application.Models;
+﻿namespace Resourcerer.Logic.Models;
 
 public struct Unit
 {

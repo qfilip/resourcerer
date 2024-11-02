@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
-using Resourcerer.Application.Models;
+using Resourcerer.Logic.Models;
 using Resourcerer.Identity.Enums;
 using Resourcerer.Logic.V1;
 
