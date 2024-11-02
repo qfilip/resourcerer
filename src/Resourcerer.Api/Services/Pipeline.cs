@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Resourcerer.Application.Abstractions.Handlers;
-using Resourcerer.Application.Messaging.Abstractions;
 using Resourcerer.Application.Models;
+using Resourcerer.Messaging.Abstractions;
 
 namespace Resourcerer.Api.Services;
 

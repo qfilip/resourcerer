@@ -1,4 +1,4 @@
-﻿namespace Resourcerer.Application.Messaging.Emails.Models;
+﻿namespace Resourcerer.Messaging.Emails.Models;
 
 public class Email
 {

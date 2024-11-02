@@ -1,7 +1,7 @@
 ﻿using MassTransit;
-using Resourcerer.Application.Messaging.MassTransit;
 using Resourcerer.Dtos.Fake;
 using Resourcerer.Logic.Fake;
+using Resourcerer.Messaging.MassTransit;
 
 namespace Resourcerer.Api.Services.Messaging.Fake.MassTransit.Consumers;
 

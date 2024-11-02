@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
-using Resourcerer.Application.Messaging.Abstractions;
 using Resourcerer.Dtos.Fake;
 using Resourcerer.Logic.Fake;
+using Resourcerer.Messaging.Abstractions;
 
 namespace Resourcerer.Api.Endpoints.Fake;
 

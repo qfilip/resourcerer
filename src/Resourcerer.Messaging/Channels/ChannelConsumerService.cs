@@ -1,7 +1,7 @@
-﻿using Resourcerer.Application.Messaging.Abstractions;
+﻿using Resourcerer.Messaging.Abstractions;
 using System.Threading.Channels;
 
-namespace Resourcerer.Application.Messaging.Channels;
+namespace Resourcerer.Messaging.Channels;
 
 public class ChannelConsumerService<TMessage> : IMessageReader<TMessage>
 {

@@ -1,6 +1,4 @@
 ﻿using FakeItEasy;
-using Resourcerer.Application.Messaging.Emails.Abstractions;
-using Resourcerer.Application.Messaging.Emails.Models;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.V1;
@@ -10,6 +8,8 @@ using Resourcerer.Identity.Models;
 using Resourcerer.Identity.Utils;
 using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Logic.V1;
+using Resourcerer.Messaging.Emails.Abstractions;
+using Resourcerer.Messaging.Emails.Models;
 using Resourcerer.UnitTests.Utilities;
 
 namespace Resourcerer.UnitTests.Logic.V1.Users;

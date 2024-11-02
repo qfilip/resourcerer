@@ -1,6 +1,6 @@
 ﻿using MassTransit;
-using Resourcerer.Application.Messaging.Abstractions;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Messaging.Abstractions;
 
 namespace Resourcerer.Api.Services.Messaging.V1.MassTransit.Senders;
 

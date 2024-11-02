@@ -1,8 +1,8 @@
-﻿using Resourcerer.Application.Messaging.Abstractions;
-using Resourcerer.Application.Messaging.Channels;
-using Resourcerer.DataAccess.Contexts;
+﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.Fake;
 using Resourcerer.Logic.Fake;
+using Resourcerer.Messaging.Abstractions;
+using Resourcerer.Messaging.Channels;
 
 namespace Resourcerer.Api.Services.Messaging.Fake.Channels;
 

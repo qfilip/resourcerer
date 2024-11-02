@@ -2,7 +2,6 @@
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Abstractions.Handlers;
-using Resourcerer.Application.Messaging.Emails.Abstractions;
 using Resourcerer.Application.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
@@ -12,6 +11,7 @@ using Resourcerer.Identity.Abstractions;
 using Resourcerer.Identity.Models;
 using Resourcerer.Identity.Utils;
 using Resourcerer.Logic.Utilities.Query;
+using Resourcerer.Messaging.Emails.Abstractions;
 using Resourcerer.Utilities;
 using Resourcerer.Utilities.Cryptography;
 using System.Text.Json;

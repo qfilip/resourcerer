@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Resourcerer.Application.Messaging.Abstractions;
 using Resourcerer.DataAccess.Contexts;
+using Resourcerer.Messaging.Abstractions;
 
-namespace Resourcerer.Application.Messaging.Channels;
+namespace Resourcerer.Messaging.Channels;
 
 
 public abstract class ChannelConsumerHostingService<TMessage> : BackgroundService

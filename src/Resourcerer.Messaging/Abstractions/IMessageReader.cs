@@ -1,4 +1,4 @@
-﻿namespace Resourcerer.Application.Messaging.Abstractions;
+﻿namespace Resourcerer.Messaging.Abstractions;
 
 public interface IMessageReader<TMessage>
 {

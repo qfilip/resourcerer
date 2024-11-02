@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
-using Resourcerer.Application.Messaging.Abstractions;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Identity.Enums;
 using Resourcerer.Logic.V1.Instances.Events.Order;
+using Resourcerer.Messaging.Abstractions;
 
 namespace Resourcerer.Api.Endpoints.V1;
 

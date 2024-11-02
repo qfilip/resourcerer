@@ -1,6 +1,6 @@
-﻿using Resourcerer.Application.Messaging.MassTransit;
-using Resourcerer.Dtos.V1;
+﻿using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Instances.Events;
+using Resourcerer.Messaging.MassTransit;
 
 namespace Resourcerer.Api.Services.Messaging.V1.MassTransit.Consumers.Instances.Discard;
 

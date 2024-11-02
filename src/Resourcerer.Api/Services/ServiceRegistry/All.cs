@@ -13,6 +13,5 @@ public static partial class ServiceRegistry
         Add3rdParyServices(services, environment);
         AddAuth(services, AppStaticData.Auth.Enabled);
         AddMessagingServices(services, configuration);
-        AddEmailServices(services);
     }
 }
