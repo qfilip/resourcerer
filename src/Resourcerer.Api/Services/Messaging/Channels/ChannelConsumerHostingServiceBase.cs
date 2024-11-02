@@ -4,7 +4,7 @@ using Resourcerer.Messaging.Channels;
 
 namespace Resourcerer.Api.Services.Messaging.Channels;
 
-public abstract class ChannelConsumerHostingServiceBase<TMessage> : ChannelConsumerHostingService<TMessage>
+public abstract class ChannelConsumerHostingServiceBase<TMessage> : ChannelConsumerHostingService<TMessage, AppDbContext>
 {
     public ChannelConsumerHostingServiceBase(
         IMessageReader<TMessage> consumer,

@@ -8,6 +8,7 @@ using Resourcerer.Api.Services.Messaging.MassTransit.Consumers.V1.Instances.Prod
 using Resourcerer.Api.Services.Messaging.MassTransit.Consumers.V1.Items.Production;
 using Resourcerer.Api.Services.Messaging.MassTransit.Senders.Fake;
 using Resourcerer.Api.Services.Messaging.MassTransit.Senders.V1;
+using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.Fake;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Messaging;
@@ -38,13 +39,19 @@ public static partial class ServiceRegistry
     private static void RegisterChannels(IServiceCollection services, bool mapFakes)
     {
         // instance
-        DI.AddChannelMessagingService<V1InstanceOrderCommand, InstanceOrderEventService>(services);
-        DI.AddChannelMessagingService<V1InstanceDiscardCommand, InstanceDiscardEventService>(services);
-        DI.AddChannelMessagingService<V1ItemProductionCommand, ItemProductionOrderEventService>(services);
+        DI.AddChannelMessagingService<
+            V1InstanceOrderCommand, InstanceOrderEventService, AppDbContext>(services);
+        
+        DI.AddChannelMessagingService<
+            V1InstanceDiscardCommand, InstanceDiscardEventService, AppDbContext>(services);
+        
+        DI.AddChannelMessagingService<
+            V1ItemProductionCommand, ItemProductionOrderEventService, AppDbContext>(services);
 
         if(mapFakes)
-            DI.AddChannelMessagingService<FakeCommandDto, FakeEventService>(services);
+            DI.AddChannelMessagingService<FakeCommandDto, FakeEventService, AppDbContext>(services);
     }
+
     private static void RegisterMassTransit(IServiceCollection services, bool mapFakes)
     {
         DI.AddMassTransitSenderService<V1InstanceDiscardCommand, InstanceDiscardCommandSender>(services);

@@ -1,12 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Resourcerer.DataAccess.Contexts;
+﻿using Microsoft.Extensions.Hosting;
 using Resourcerer.Messaging.Abstractions;
 
 namespace Resourcerer.Messaging.Channels;
 
 
-public abstract class ChannelConsumerHostingService<TMessage> : BackgroundService
+public abstract class ChannelConsumerHostingService<TMessage, TRepository> : BackgroundService
 {
     protected readonly IMessageReader<TMessage> _consumer;
     protected readonly IServiceProvider _serviceProvider;
@@ -16,6 +14,6 @@ public abstract class ChannelConsumerHostingService<TMessage> : BackgroundServic
         _serviceProvider = serviceProvider;
     }
 
-    protected abstract Task HandleEvent(TMessage message, AppDbContext appDbContext);
+    protected abstract Task HandleEvent(TMessage message, TRepository repository);
 }
 

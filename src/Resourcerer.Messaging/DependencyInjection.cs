@@ -50,8 +50,8 @@ public class DependencyInjection
         EndpointConvention.Map<T>(new Uri($"queue:{COMMAND_CONSUMER_ENDPOINT}"));
     }
 
-    public static void AddChannelMessagingService<TMessage, THostingService>(IServiceCollection services)
-        where THostingService : ChannelConsumerHostingService<TMessage>
+    public static void AddChannelMessagingService<TMessage, THostingService, TRepository>(IServiceCollection services)
+        where THostingService : ChannelConsumerHostingService<TMessage, TRepository>
     {
         services.AddSingleton(_ => Channel.CreateUnbounded<TMessage>());
         services.AddSingleton(sp => sp.GetRequiredService<Channel<TMessage>>().Writer);
