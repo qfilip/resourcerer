@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Resourcerer.DataAccess.Contexts;
+﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Messaging.Abstractions;
 using Resourcerer.Messaging.Channels;
 
