@@ -1,5 +1,5 @@
 ﻿using FakeItEasy;
-using Resourcerer.Application.Models;
+using Resourcerer.Logic.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;

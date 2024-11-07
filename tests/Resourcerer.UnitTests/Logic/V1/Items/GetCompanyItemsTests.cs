@@ -1,4 +1,4 @@
-﻿using Resourcerer.Application.Models;
+﻿using Resourcerer.Logic.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
 using Resourcerer.Logic.V1;

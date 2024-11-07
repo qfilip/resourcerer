@@ -1,4 +1,5 @@
-﻿using Resourcerer.DataAccess.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Instances.Events.Order;
 using Resourcerer.Messaging.Abstractions;

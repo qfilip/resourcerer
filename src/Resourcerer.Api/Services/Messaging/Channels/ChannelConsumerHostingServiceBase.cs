@@ -1,4 +1,5 @@
-﻿using Resourcerer.DataAccess.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Messaging.Abstractions;
 using Resourcerer.Messaging.Channels;
 
@@ -16,17 +17,18 @@ public abstract class ChannelConsumerHostingServiceBase<TMessage> : ChannelConsu
         while (!_consumer.IsCompleted())
         {
             var message = await _consumer.ReadAsync();
-            using (var scope = _serviceProvider.CreateScope())
+            using var scope = _serviceProvider.CreateScope();
+            
+            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            
+            if (dbContext == null)
             {
-                var database = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                if (database == null)
-                {
-                    throw new InvalidOperationException("Failed to resolve database service");
-                }
-
-                // TODO: map to signalR hub
-                await HandleEvent(message, database);
+                throw new InvalidOperationException("Failed to resolve database service");
             }
+
+            // TODO: map to signalR hub
+            await HandleEvent(message, dbContext);
+            
         }
     }
 }

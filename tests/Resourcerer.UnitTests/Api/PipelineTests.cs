@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Logging;
 using Resourcerer.Api.Services;
-using Resourcerer.Application.Models;
+using Resourcerer.Logic.Models;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.UnitTests.Utilities.TestClasses;
 

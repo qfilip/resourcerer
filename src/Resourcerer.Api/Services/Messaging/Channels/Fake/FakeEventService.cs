@@ -1,4 +1,5 @@
-﻿using Resourcerer.DataAccess.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.Fake;
 using Resourcerer.Logic.Fake;
 using Resourcerer.Messaging.Abstractions;

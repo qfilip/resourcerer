@@ -8,7 +8,10 @@ public abstract class ChannelConsumerHostingService<TMessage, TRepository> : Bac
 {
     protected readonly IMessageReader<TMessage> _consumer;
     protected readonly IServiceProvider _serviceProvider;
-    public ChannelConsumerHostingService(IMessageReader<TMessage> consumer, IServiceProvider serviceProvider)
+
+    public ChannelConsumerHostingService(
+        IMessageReader<TMessage> consumer,
+        IServiceProvider serviceProvider)
     {
         _consumer = consumer;
         _serviceProvider = serviceProvider;

@@ -1,7 +1,7 @@
 ﻿using FakeItEasy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Resourcerer.Application.Models;
+using Resourcerer.Logic.Models;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos.V1;

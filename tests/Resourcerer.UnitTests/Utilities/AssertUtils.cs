@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Resourcerer.Application.Models;
+using Resourcerer.Logic.Models;
 
 namespace Resourcerer.UnitTests.Utilities;
 
