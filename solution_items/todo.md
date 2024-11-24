@@ -1,23 +1,41 @@
 <style>
+    .pending {
+        --color: green;
+    }
+    .done {
+        --color: grey;
+    }
     section {
-        border: 2px solid grey;
-        padding: .5rem
+        border-color: var(--color);
+        border-style: solid;
+        border-width: 2px;
+        padding: .5rem;
+        margin-bottom: .5rem;
     }
 </style>
 
 # Ideas to implement
 
-<section>
+<section class="pending">
+
+## Recipe table utilization
+
+### Reason
+Set recipe version in `CreateCompositeItemProductionOrder` to enable proper tracking of element items usage for producing composite ones.
+
+### Tasks
+- Add an endpoint, handler and tests to update composite's recipe.
+- Add `RecipeId` in `CreateCompositeItemProductionOrder`
+</section>
+
+<section class="done">
 
 ## Recipe versioning
-
-### Title
-Implement Recipe versioning.
 
 ### Reason
 Currently, `CompositeItem` only have `RecipeExcerpt[]`. If composite elements are changed (added, removed or changed in quantity), the history of change is lost.
 
-### Task
+### Tasks
 - Add `Recipe` table.
 - Remove `RecipeExcerpt.CompositeId` property.
 
