@@ -97,10 +97,10 @@ public class ChangeCompositeItemRecipeTests : TestsBase
 
         _ctx.SaveChanges();
 
-        var handler = () => _sut.Handle(request);
+        var handler = () => _sut.Handle(request).Await();
         
         // act, assert
-        Assert.ThrowsAsync<DataCorruptionException>(handler);
+        Assert.Throws<DataCorruptionException>(handler);
     }
 
     [Fact]

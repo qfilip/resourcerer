@@ -3,6 +3,8 @@ using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.V1.Items.Events.Production;
 using Resourcerer.UnitTests.Utilities;
+using Resourcerer.Logic.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Resourcerer.UnitTests.Logic.V1.Items.Events.Production;
 
@@ -77,6 +79,28 @@ public class CreateCompositeItemProductionOrderTests : TestsBase
 
         // assert
         Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
+    }
+
+    [Fact]
+    public void RecipeNotFound___Exception()
+    {
+        // arrange
+        var fd = Faking.FakeData(_forger, 2, 2, fakeRecipe: false);
+
+        var dto = new V1CreateCompositeItemProductionOrderCommand
+        {
+            ItemId = fd.Composite!.Id,
+            CompanyId = fd.Composite!.Category!.Company!.Id,
+            Quantity = 2,
+            InstancesToUse = Faking.MapInstancesToUse(fd)
+        };
+
+        _ctx.SaveChanges();
+
+        var handler = () => _sut.Handle(dto).Await();
+        
+        // act, assert
+        Assert.Throws<DataCorruptionException>(handler);
     }
 
     [Fact]
@@ -179,18 +203,27 @@ public class CreateCompositeItemProductionOrderTests : TestsBase
 
     private void AssertCorrectEventsCreated(V1CreateCompositeItemProductionOrderCommand dto, bool instantProductionChecks = false)
     {
-        var ids = dto.InstancesToUse.Keys.ToArray();
+        var instanceIds = dto.InstancesToUse.Keys.ToArray();
 
         var instances = _ctx.Instances
-            .Where(x => ids.Contains(x.Id))
+            .Where(x => instanceIds.Contains(x.Id))
             .ToArray();
+
+        var composite = _ctx.Items
+            .Include(x => x.Recipes)
+            .First(x => x.Id == dto.ItemId);
+
+        var recipe = composite.Recipes
+            .OrderByDescending(x => x.Version)
+            .First();
 
         var orderEvent = _ctx.ItemProductionOrders
             .First(x => x.ItemId == dto.ItemId);
 
         Assert.True(orderEvent.InstancesUsedIds.All(dto.InstancesToUse.Keys.Contains));
-
-        foreach (var i in instances)
+        Assert.Equal(recipe.Version, orderEvent.ItemRecipeVersion);
+        
+            foreach (var i in instances)
         {
             var qty = dto.InstancesToUse[i.Id];
             i.ReservedEvents.First(ev => ev.Quantity == qty);

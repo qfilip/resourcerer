@@ -8,6 +8,7 @@ public class ItemProductionOrderDto : EntityDto<ItemProductionOrderDto>
     public double Quantity { get; set; }
     public string? Reason { get; set; }
     public Guid CompanyId { get; set; }
+    public int ItemRecipeVersion { get; set; }
 
     // relational
     public Guid ItemId { get; set; }

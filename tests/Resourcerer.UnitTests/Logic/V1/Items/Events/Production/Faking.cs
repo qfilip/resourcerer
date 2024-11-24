@@ -5,7 +5,7 @@ namespace Resourcerer.UnitTests.Logic.V1.Items.Events.Production;
 
 internal class Faking
 {
-    internal static FakedData FakeData(Forger forger, int elementCount, int instanceCount)
+    internal static FakedData FakeData(Forger forger, int elementCount, int instanceCount, bool fakeRecipe = true)
     {
         var company = forger.Fake<Company>();
         var composite = forger.Fake<Item>(x =>
@@ -43,18 +43,25 @@ internal class Faking
             }
         }
 
-        forger.Fake<Recipe>(r =>
+        if(fakeRecipe)
         {
-            r.CompositeItem = composite;
-            r.RecipeExcerpts = elements.Select(el =>
-                forger.Fake<RecipeExcerpt>(re =>
+            for (int i = 0; i < 3; i++)
+            {
+                forger.Fake<Recipe>(r =>
                 {
-                    re.Element = el.Item1;
-                    re.Quantity = el.Item2;
-                    re.Recipe = r;
-                })
-            ).ToList();
-        });
+                    r.CompositeItem = composite;
+                    r.Version = i;
+                    r.RecipeExcerpts = elements.Select(el =>
+                        forger.Fake<RecipeExcerpt>(re =>
+                        {
+                            re.Element = el.Item1;
+                            re.Quantity = el.Item2;
+                            re.Recipe = r;
+                        })
+                    ).ToList();
+                });
+            }
+        }
 
         return fd;
     }

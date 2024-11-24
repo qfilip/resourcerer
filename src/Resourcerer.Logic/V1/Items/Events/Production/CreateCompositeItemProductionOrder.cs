@@ -6,6 +6,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Entities.JsonEntities;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Logic.Exceptions;
 
 namespace Resourcerer.Logic.V1.Items.Events.Production;
 public static class CreateCompositeItemProductionOrder
@@ -54,7 +55,10 @@ public static class CreateCompositeItemProductionOrder
                             .ThenInclude(x => x!.Instances)
                                 .ThenInclude(x => x.DiscardedEvents)
                 .AsNoTracking()
-                .FirstAsync();
+                .FirstOrDefaultAsync();
+
+            if (recipe == null)
+                throw new DataCorruptionException($"No recipes found for composite item {item.Id}");
 
             var excerpts = recipe.RecipeExcerpts;
 
@@ -149,6 +153,7 @@ public static class CreateCompositeItemProductionOrder
                 CompanyId = request.CompanyId,
                 Quantity = request.Quantity,
                 Reason = request.Reason,
+                ItemRecipeVersion = recipe.Version,
                 InstancesUsedIds = instanceToUpdateIds
             };
 

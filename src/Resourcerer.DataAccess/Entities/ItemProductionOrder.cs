@@ -11,6 +11,7 @@ public class ItemProductionOrder : IId<Guid>, IAuditedEntity<Audit>, ISoftDeleta
     public double Quantity { get; set; }
     public string? Reason { get; set; }
     public Guid CompanyId { get; set; }
+    public int ItemRecipeVersion { get; set; }
 
     // json
     public ItemProductionStartedEvent? StartedEvent { get; set; }
