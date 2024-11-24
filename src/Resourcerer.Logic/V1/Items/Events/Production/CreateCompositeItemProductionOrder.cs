@@ -38,19 +38,25 @@ public static class CreateCompositeItemProductionOrder
                 return HandlerResult<Unit>.NotFound("Item not found");
             }
 
-            var excerpts = await _dbContext.Excerpts
-                .Where(x => x.CompositeId == request.ItemId)
-                    .Include(x => x.Element)
-                        .ThenInclude(x => x!.Instances)
-                            .ThenInclude(x => x.OrderedEvents)
-                     .Include(x => x.Element)
-                        .ThenInclude(x => x!.Instances)
-                            .ThenInclude(x => x.ReservedEvents)
-                    .Include(x => x.Element)
-                        .ThenInclude(x => x!.Instances)
-                            .ThenInclude(x => x.DiscardedEvents)
+            var recipe = await _dbContext.Recipes
+                .Where(x => x.CompositeItemId == item.Id)
+                .OrderByDescending(x => x.Version)
+                    .Include(x => x.RecipeExcerpts)
+                        .ThenInclude(x => x.Element)
+                            .ThenInclude(x => x!.Instances)
+                                .ThenInclude(x => x.OrderedEvents)
+                    .Include(x => x.RecipeExcerpts)
+                        .ThenInclude(x => x.Element)
+                            .ThenInclude(x => x!.Instances)
+                                .ThenInclude(x => x.ReservedEvents)
+                    .Include(x => x.RecipeExcerpts)
+                        .ThenInclude(x => x.Element)
+                            .ThenInclude(x => x!.Instances)
+                                .ThenInclude(x => x.DiscardedEvents)
                 .AsNoTracking()
-                .ToArrayAsync();
+                .FirstAsync();
+
+            var excerpts = recipe.RecipeExcerpts;
 
             var elementQuantityMap = excerpts
                 .Select(x => new

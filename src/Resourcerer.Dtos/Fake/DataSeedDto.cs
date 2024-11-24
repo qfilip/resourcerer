@@ -7,7 +7,7 @@ public class DataSeedDto : IDto
     public AppUser[] AppUsers { get; set; } = Array.Empty<AppUser>();
     public Company[] Companies { get; set; } = Array.Empty<Company>();
     public Category[] Categories { get; set; } = Array.Empty<Category>();
-    public Excerpt[] Excerpts { get; set; } = Array.Empty<Excerpt>();
+    public RecipeExcerpt[] Excerpts { get; set; } = Array.Empty<RecipeExcerpt>();
     public UnitOfMeasure[] UnitsOfMeasure { get; set; } = Array.Empty<UnitOfMeasure>();
     public Price[] Prices { get; set; } = Array.Empty<Price>();
     public Item[] Items { get; set; } = Array.Empty<Item>();

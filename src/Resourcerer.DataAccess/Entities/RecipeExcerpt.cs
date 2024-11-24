@@ -4,13 +4,13 @@ using Resourcerer.DataAccess.Records;
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class Excerpt : IAuditedEntity<Audit>, ISoftDeletable
+public class RecipeExcerpt : IAuditedEntity<Audit>, ISoftDeletable
 {
     public double Quantity { get; set; }
 
     // relational
-    public Guid CompositeId { get; set; }
-    public Item? Composite { get; set; }
+    public Guid RecipeId { get; set; }
+    public Recipe? Recipe { get; set; }
     
     public  Guid ElementId { get; set; }
     public Item? Element { get; set; }

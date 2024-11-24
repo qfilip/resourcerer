@@ -45,16 +45,18 @@ internal class Faking
             }
         }
 
-        foreach (var element in elements)
+        forger.Fake<Recipe>(r =>
         {
-            forger.Fake<Excerpt>(x =>
-            {
-                x.Composite = composite;
-                x.Element = element.Item1;
-
-                x.Quantity = element.Item2;
-            });
-        }
+            r.CompositeItem = composite;
+            r.RecipeExcerpts = elements.Select(el =>
+                forger.Fake<RecipeExcerpt>(re =>
+                {
+                    re.Element = el.Item1;
+                    re.Quantity = el.Item2;
+                    re.Recipe = r;
+                })
+            ).ToList();
+        });
 
         return fd;
     }

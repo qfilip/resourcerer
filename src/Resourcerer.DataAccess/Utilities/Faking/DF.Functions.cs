@@ -39,8 +39,12 @@ public static partial class DF
             () => MakeEntity(() => new Price { UnitValue = 1 })
         },
         {
-            typeof(Excerpt),
-            () => MakeEntityWithCustomKey(() => new Excerpt { Quantity = 1 })
+            typeof(Recipe),
+            () => MakeEntity(() => new Recipe())
+        },
+        {
+            typeof(RecipeExcerpt),
+            () => MakeEntityWithCustomKey(() => new RecipeExcerpt { Quantity = 1 })
         },
         {
             typeof(Item),

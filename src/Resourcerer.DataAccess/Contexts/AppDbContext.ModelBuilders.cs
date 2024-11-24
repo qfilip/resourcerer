@@ -42,17 +42,27 @@ public partial class AppDbContext
                 .HasConstraintName($"FK_{nameof(Category)}_{nameof(Category)}");
         });
 
-        ConfigureEntity<Excerpt>(modelBuilder, (e) =>
+        ConfigureEntity<Recipe>(modelBuilder, (e) =>
         {
-            e.HasKey(x => new { x.CompositeId, x.ElementId });
+            e.HasOne(x => x.CompositeItem).WithMany(x => x.Recipes)
+                .HasForeignKey(x => x.CompositeItemId)
+                .IsRequired(true)
+                .HasConstraintName($"FK_{nameof(Item)}_{nameof(Recipe)}");
+        });
 
-            e.HasOne(x => x.Composite).WithMany(x => x.CompositeExcerpts)
-                .HasForeignKey(x => x.CompositeId).IsRequired()
-                .HasConstraintName($"FK_Composite{nameof(Item)}_{nameof(Excerpt)}");
+        ConfigureEntity<RecipeExcerpt>(modelBuilder, (e) =>
+        {
+            e.HasKey(x => new { x.RecipeId, x.ElementId });
 
-            e.HasOne(x => x.Element).WithMany(x => x.ElementExcerpts)
-                .HasForeignKey(x => x.ElementId).IsRequired()
-                .HasConstraintName($"FK_Element{nameof(Item)}_{nameof(Excerpt)}");
+            e.HasOne(x => x.Recipe).WithMany(x => x.RecipeExcerpts)
+                .HasForeignKey(x => x.RecipeId)
+                .IsRequired()
+                .HasConstraintName($"FK_Composite{nameof(Recipe)}_{nameof(RecipeExcerpt)}");
+
+            e.HasOne(x => x.Element).WithMany(x => x.ElementRecipeExcerpts)
+                .HasForeignKey(x => x.ElementId)
+                .IsRequired()
+                .HasConstraintName($"FK_Element{nameof(Item)}_{nameof(RecipeExcerpt)}");
         });
 
         ConfigureEntity<UnitOfMeasure>(modelBuilder, (e) =>

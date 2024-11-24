@@ -79,8 +79,8 @@ internal static class DataFaking
             () => MakeEntity(() => new Price { UnitValue = 1 })
         },
         {
-            typeof(Excerpt),
-            () => MakeEntityWithCustomKey(() => new Excerpt { Quantity = 1 })
+            typeof(RecipeExcerpt),
+            () => MakeEntityWithCustomKey(() => new RecipeExcerpt { Quantity = 1 })
         },
         {
             typeof(Item),

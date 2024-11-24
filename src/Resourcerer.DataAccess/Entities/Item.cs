@@ -8,8 +8,8 @@ public class Item : IId<Guid>, IAuditedEntity<Audit>, ISoftDeletable
 {
     public Item()
     {
-        CompositeExcerpts = new HashSet<Excerpt>();
-        ElementExcerpts = new HashSet<Excerpt>();
+        Recipes = new HashSet<Recipe>();
+        ElementRecipeExcerpts = new HashSet<RecipeExcerpt>();
         Prices = new HashSet<Price>();
         Instances = new HashSet<Instance>();
         ProductionOrders = new HashSet<ItemProductionOrder>();
@@ -28,8 +28,8 @@ public class Item : IId<Guid>, IAuditedEntity<Audit>, ISoftDeletable
     public Guid UnitOfMeasureId { get; set; }
     public virtual UnitOfMeasure? UnitOfMeasure { get; set; }
 
-    public ICollection<Excerpt> ElementExcerpts { get; set; }
-    public ICollection<Excerpt> CompositeExcerpts { get; set; }
+    public ICollection<Recipe> Recipes { get; set; }
+    public ICollection<RecipeExcerpt> ElementRecipeExcerpts { get; set; }
     public ICollection<Price> Prices { get; set; }
     public ICollection<Instance> Instances { get; set; }
     public ICollection<ItemProductionOrder> ProductionOrders { get; set; }

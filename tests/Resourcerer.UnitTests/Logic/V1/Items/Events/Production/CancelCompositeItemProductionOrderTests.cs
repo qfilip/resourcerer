@@ -175,12 +175,19 @@ public class CancelCompositeItemProductionOrderTests : TestsBase
             _forger.Fake<Item>()
         };
 
-        items.ForEach(i => _forger.Fake<Excerpt>(x =>
+        _forger.Fake<Recipe>(x =>
         {
-            x.Composite = composite;
-            x.Element = i;
-            x.Quantity = 1;
-        }));
+            x.CompositeItem = composite;
+            x.RecipeExcerpts = items.Select(i =>
+                _forger.Fake<RecipeExcerpt>(re =>
+                {
+                    re.Element = i;
+                    re.Quantity = 1;
+                    re.Recipe = x;
+                })
+
+            ).ToList();
+        });
 
         var instances = items
             .Select(x =>

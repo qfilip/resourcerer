@@ -29,7 +29,7 @@ public static class MemorySeedTest
             var adminPermissoins = JsonSerializer.Serialize(allPermissions);
 
             var _ = Enumerable.Range(0, excerpts)
-                .Select(_ => _forger.Fake<Excerpt>())
+                .Select(_ => _forger.Fake<RecipeExcerpt>())
                 .ToArray();
 
             await _dbContext.SaveChangesAsync();

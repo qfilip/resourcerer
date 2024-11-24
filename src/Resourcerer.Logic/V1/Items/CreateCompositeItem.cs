@@ -88,16 +88,23 @@ public static class CreateCompositeItem
                 UnitValue = request.UnitPrice
             };
 
+            var recipe = new Recipe()
+            {
+                Id = Guid.NewGuid(),
+                CompositeItemId = composite.Id,
+            };
+
             var excerpts = request.ExcerptMap!
-                .Select(x => new Excerpt
+                .Select(x => new RecipeExcerpt
                 {
-                    CompositeId = composite.Id,
+                    RecipeId = recipe.Id,
                     ElementId = x.Key,
                     Quantity = x.Value
                 }).ToArray();
 
             _appDbContext.Items.Add(composite);
             _appDbContext.Prices.Add(price);
+            _appDbContext.Recipes.Add(recipe);
             _appDbContext.Excerpts.AddRange(excerpts);
 
             await _appDbContext.SaveChangesAsync();

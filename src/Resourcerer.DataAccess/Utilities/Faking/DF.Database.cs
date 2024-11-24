@@ -71,23 +71,25 @@ public static partial class DF
 
         (Item element, double qty)[] elements = [(cWood, 0.2d), (cIron, 1d)];
 
-        FakeExcerpts(forger, cSword, elements);
+        FakeRecipe(forger, cSword, elements);
 
         forger.Fake<Price>(x => { x.Item = cSword; x.UnitValue = 2d; });
         forger.Fake<Price>(x => { x.Item = cWood; x.UnitValue = 0.2d; });
         forger.Fake<Price>(x => { x.Item = cIron; x.UnitValue = 1d; });
     }
 
-    private static void FakeExcerpts(Forger forger, Item composite, (Item element, double qty)[] elements)
+    private static void FakeRecipe(Forger forger, Item composite, (Item element, double qty)[] elements)
     {
-        foreach (var item in elements)
+        forger.Fake<Recipe>(x =>
         {
-            forger.Fake<Excerpt>(x =>
-            {
-                x.Quantity = item.qty;
-                x.Composite = composite;
-                x.Element = item.element;
-            });
-        }
+            x.RecipeExcerpts = elements.Select(e =>
+                forger.Fake<RecipeExcerpt>(re =>
+                {
+                    re.Quantity = e.qty;
+                    re.Element = e.element;
+                    re.Recipe = x;
+                })
+            ).ToList();
+        });
     }
 }
