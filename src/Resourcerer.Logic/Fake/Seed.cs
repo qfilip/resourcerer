@@ -42,7 +42,7 @@ public static class Seed
                 Categories = _dbContext.Categories.AsNoTracking().ToArray(),
                 UnitsOfMeasure = _dbContext.UnitsOfMeasure.AsNoTracking().ToArray(),
                 Recipes = _dbContext.Recipes.AsNoTracking().ToArray(),
-                Excerpts = _dbContext.Excerpts.AsNoTracking().ToArray(),
+                Excerpts = _dbContext.RecipeExcerpts.AsNoTracking().ToArray(),
                 Prices = _dbContext.Prices.AsNoTracking().ToArray(),
                 Items = _dbContext.Items.AsNoTracking().ToArray(),
                 ItemProductionOrders = _dbContext.ItemProductionOrders.AsNoTracking().ToArray(),

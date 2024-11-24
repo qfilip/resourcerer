@@ -21,7 +21,7 @@ public static class FakeCommandEventHandler
         {
             Console.WriteLine($"Command number: {request.Number}");
             
-            var excerpts = await _appDbContext.Excerpts
+            var excerpts = await _appDbContext.RecipeExcerpts
                 .ToArrayAsync();
             
             Console.WriteLine($"Excerpt count: {excerpts.Length}");

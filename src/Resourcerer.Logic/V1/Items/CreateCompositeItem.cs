@@ -105,7 +105,7 @@ public static class CreateCompositeItem
             _appDbContext.Items.Add(composite);
             _appDbContext.Prices.Add(price);
             _appDbContext.Recipes.Add(recipe);
-            _appDbContext.Excerpts.AddRange(excerpts);
+            _appDbContext.RecipeExcerpts.AddRange(excerpts);
 
             await _appDbContext.SaveChangesAsync();
 
