@@ -1,6 +1,4 @@
 ﻿using Resourcerer.DataAccess.Entities;
-using Resourcerer.DataAccess.Utilities.Faking;
-using Resourcerer.UnitTests.Utilities;
 using SqlForgery;
 
 namespace Resourcerer.UnitTests.Logic.V1.Items.Events.Production;
