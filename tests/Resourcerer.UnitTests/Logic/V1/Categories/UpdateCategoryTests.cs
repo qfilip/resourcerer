@@ -6,6 +6,7 @@ using Resourcerer.Identity.Abstractions;
 using Resourcerer.Identity.Models;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
+using Resourcerer.DataAccess.Utilities.Faking;
 
 namespace Resourcerer.UnitTests.Logic.V1.Categories;
 

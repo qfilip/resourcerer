@@ -9,6 +9,7 @@ using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Logic.V1;
 using Resourcerer.Messaging.Emails.Abstractions;
 using Resourcerer.UnitTests.Utilities;
+using Resourcerer.DataAccess.Utilities.Faking;
 
 namespace Resourcerer.UnitTests.Logic.V1.Users;
 
@@ -32,7 +33,7 @@ public class EditUserTests : TestsBase
         var request = new V1EditUser
         {
             UserId = oldUser.Id,
-            Email = DataFaking.MakeEmail(),
+            Email = DF.MakeEmail(),
             IsAdmin = false,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
         };
@@ -61,7 +62,7 @@ public class EditUserTests : TestsBase
         var request = new V1EditUser
         {
             UserId = oldUser.Id,
-            Email = DataFaking.MakeEmail(),
+            Email = DF.MakeEmail(),
             IsAdmin = true,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
         };
@@ -90,7 +91,7 @@ public class EditUserTests : TestsBase
         var request = new V1EditUser
         {
             UserId = oldUser.Id,
-            Email = DataFaking.MakeEmail(),
+            Email = DF.MakeEmail(),
             IsAdmin = false,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
         };
@@ -118,7 +119,7 @@ public class EditUserTests : TestsBase
         var request = new V1EditUser
         {
             UserId = oldUser.Id,
-            Email = DataFaking.MakeEmail(),
+            Email = DF.MakeEmail(),
             IsAdmin = false,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
         };
@@ -149,7 +150,7 @@ public class EditUserTests : TestsBase
         var request = new V1EditUser
         {
             UserId = oldUser.Id,
-            Email = DataFaking.MakeEmail(),
+            Email = DF.MakeEmail(),
             IsAdmin = false,
             PermissionsMap = new Dictionary<string, string[]> { { "one", ["two"] } }
         };
@@ -180,7 +181,7 @@ public class EditUserTests : TestsBase
         var request = new V1EditUser
         {
             UserId = oldUser.Id,
-            Email = DataFaking.MakeEmail(),
+            Email = DF.MakeEmail(),
             IsAdmin = false,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
         };
@@ -211,7 +212,7 @@ public class EditUserTests : TestsBase
         var request = new V1EditUser
         {
             UserId = Guid.NewGuid(),
-            Email = DataFaking.MakeEmail(),
+            Email = DF.MakeEmail(),
             IsAdmin = true,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
         };
@@ -242,7 +243,7 @@ public class EditUserTests : TestsBase
         var request = new V1EditUser
         {
             UserId = oldUser.Id,
-            Email = DataFaking.MakeEmail(),
+            Email = DF.MakeEmail(),
             IsAdmin = true,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
         };

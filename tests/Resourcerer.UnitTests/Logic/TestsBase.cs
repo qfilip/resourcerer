@@ -1,6 +1,7 @@
 ﻿using FakeItEasy;
 using MapsterMapper;
 using Microsoft.Extensions.Logging;
+using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.UnitTests.Utilities;
 using SqlForgery;
 using System.Text.Json;
@@ -22,7 +23,7 @@ public class TestsBase
             WriteIndented = true
         };
 
-        _forger = new Forger(_ctx, DataFaking.FakingFunctions);
+        _forger = new Forger(_ctx, DF.FakingFunctions);
     }
 
     protected ILogger<T> MockLogger<T>() => A.Fake<ILogger<T>>();

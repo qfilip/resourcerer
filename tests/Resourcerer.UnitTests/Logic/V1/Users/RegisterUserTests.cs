@@ -1,11 +1,12 @@
 ﻿using FakeItEasy;
-using Resourcerer.Logic.Models;
 using Resourcerer.DataAccess.Entities;
+using Resourcerer.DataAccess.Utilities.Faking;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Identity.Abstractions;
 using Resourcerer.Identity.Enums;
 using Resourcerer.Identity.Models;
 using Resourcerer.Identity.Utils;
+using Resourcerer.Logic.Models;
 using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Logic.V1;
 using Resourcerer.Messaging.Emails.Abstractions;
@@ -193,8 +194,8 @@ public class RegisterUserTests : TestsBase
         var request = new V1RegisterUser
         {
             CompanyId = company.Id,
-            Username = DataFaking.MakeName(),
-            Email = DataFaking.MakeEmail(),
+            Username = DF.MakeName(),
+            Email = DF.MakeEmail(),
             IsAdmin = true,
             PermissionsMap = Permissions.GetPermissionsMap(Permissions.GetCompressed())
         };
