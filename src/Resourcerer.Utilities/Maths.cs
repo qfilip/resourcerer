@@ -8,18 +8,12 @@ public class Maths
         {
             return fullPrice - fullPrice * totalDiscountPercent / 100;
         }
+
         else return fullPrice;
     }
 
     public static double SafeAverage<T>(IEnumerable<T> items, Func<T, double> selector)
     {
-        if(items.Any())
-        {
-            return items.Average(selector);
-        }
-        else
-        {
-            return 0;
-        }
+        return items.Any() ? items.Average(selector) : 0;
     }
 }

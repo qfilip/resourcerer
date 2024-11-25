@@ -9,11 +9,7 @@ public class RsaFunctions
     
     public static RSA GenerateRsaKey()
     {
-        if (_rsa == null)
-        {
-            _rsa = RSA.Create();
-        }
-
+        _rsa ??= RSA.Create();
         return _rsa;
     }
     
@@ -32,13 +28,11 @@ public class RsaFunctions
     public static string Decrypt(string cypherText, RSAParameters privateKey)
     {
         var dataBytes = Convert.FromBase64String(cypherText);
-        using (var rsa = new RSACryptoServiceProvider())
-        {
-            rsa.ImportParameters(privateKey);
-            var plainText = rsa.Decrypt(dataBytes, false);
+        using var rsa = new RSACryptoServiceProvider();
+        rsa.ImportParameters(privateKey);
+        var plainText = rsa.Decrypt(dataBytes, false);
 
-            return Encoding.UTF8.GetString(plainText);
-        }
+        return Encoding.UTF8.GetString(plainText);
     }
 
     public static string? Sign(string message, RSAParameters privateKey)

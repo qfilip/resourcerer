@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.UnitTests.Logic;
 
