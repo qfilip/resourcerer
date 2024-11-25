@@ -48,6 +48,9 @@ public partial class AppDbContext
                 .HasForeignKey(x => x.CompositeItemId)
                 .IsRequired(true)
                 .HasConstraintName($"FK_{nameof(Item)}_{nameof(Recipe)}");
+
+            e.HasIndex(x => new { x.CompositeItemId, x.Version })
+                .IsUnique();
         });
 
         ConfigureEntity<RecipeExcerpt>(modelBuilder, (e) =>
