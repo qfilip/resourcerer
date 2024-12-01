@@ -10,9 +10,9 @@ public class FakeEventService : ChannelConsumerHostingServiceBase<FakeCommandDto
     public FakeEventService(
         IMessageReader<FakeCommandDto> consumer,
         IServiceProvider serviceProvider) : base(consumer, serviceProvider) { }
-    protected override async Task HandleEvent(FakeCommandDto message, AppDbContext appDbContext)
+    protected override Task HandleEvent(FakeCommandDto message, AppDbContext appDbContext)
     {
         var handler = new FakeCommandEventHandler.Handler(appDbContext);
-        await handler.Handle(message);
+        return handler.Handle(message);
     }
 }

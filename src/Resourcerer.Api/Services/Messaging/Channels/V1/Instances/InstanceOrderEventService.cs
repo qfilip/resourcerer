@@ -1,5 +1,6 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Logic.Models;
 using Resourcerer.Logic.V1.Instances.Events.Order;
 using Resourcerer.Messaging.Abstractions;
 
@@ -13,29 +14,23 @@ public class InstanceOrderEventService : ChannelConsumerHostingServiceBase<V1Ins
 
     protected override Task HandleEvent(V1InstanceOrderCommand message, AppDbContext appDbContext)
     {
-        if (message is V1InstanceOrderCreateCommand orderEv)
+        Func<Task<HandlerResult<Unit>>> handler = message switch
         {
-            var handler = new CreateInstanceOrderedEvent.Handler(appDbContext);
-            return handler.Handle(orderEv);
-        }
-        else if (message is V1InstanceOrderCancelCommand cancelEv)
-        {
-            var handler = new CreateInstanceOrderCancelledEvent.Handler(appDbContext);
-            return handler.Handle(cancelEv);
-        }
-        else if (message is V1InstanceOrderDeliverCommand deliverEv)
-        {
-            var handler = new CreateInstanceOrderDeliveredEvent.Handler(appDbContext);
-            return handler.Handle(deliverEv);
-        }
-        else if (message is V1InstanceOrderSendCommand sentEv)
-        {
-            var handler = new CreateInstanceOrderSentEvent.Handler(appDbContext);
-            return handler.Handle(sentEv);
-        }
-        else
-        {
-            throw new InvalidOperationException("Unsupported event type");
-        }
+            V1InstanceOrderCreateCommand create =>
+                () => new CreateInstanceOrderedEvent.Handler(appDbContext).Handle(create),
+
+            V1InstanceOrderCancelCommand cancel =>
+                () => new CreateInstanceOrderCancelledEvent.Handler(appDbContext).Handle(cancel),
+
+            V1InstanceOrderDeliverCommand deliver =>
+                () => new CreateInstanceOrderDeliveredEvent.Handler(appDbContext).Handle(deliver),
+
+            V1InstanceOrderSendCommand send =>
+                () => new CreateInstanceOrderSentEvent.Handler(appDbContext).Handle(send),
+
+            _ => throw new InvalidOperationException("Unsupported event type")
+        };
+
+        return handler();
     }
 }

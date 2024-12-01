@@ -1,5 +1,6 @@
 ﻿using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Logic.Models;
 using Resourcerer.Logic.V1.Items.Events.Production;
 using Resourcerer.Messaging.Abstractions;
 
@@ -13,39 +14,29 @@ public class ItemProductionOrderEventService : ChannelConsumerHostingServiceBase
 
     protected override Task HandleEvent(V1ItemProductionCommand message, AppDbContext appDbContext)
     {
-        if (message is V1CreateCompositeItemProductionOrderCommand createComposite)
+        Func<Task<HandlerResult<Unit>>> handler = message switch
         {
-            var handler = new CreateCompositeItemProductionOrder.Handler(appDbContext);
-            return handler.Handle(createComposite);
-        }
-        else if (message is V1CancelCompositeItemProductionOrderCommand cancel)
-        {
-            var handler = new CancelCompositeItemProductionOrder.Handler(appDbContext);
-            return handler.Handle(cancel);
-        }
-        else if (message is V1CreateElementItemProductionOrderCommand createElement)
-        {
-            var handler = new CreateElementItemProductionOrder.Handler(appDbContext);
-            return handler.Handle(createElement);
-        }
-        else if (message is V1CancelElementItemProductionOrderCommand cancelElement)
-        {
-            var handler = new CancelElementItemProductionOrder.Handler(appDbContext);
-            return handler.Handle(cancelElement);
-        }
-        else if (message is V1StartItemProductionOrderCommand start)
-        {
-            var handler = new StartItemProductionOrder.Handler(appDbContext);
-            return handler.Handle(start);
-        }
-        else if (message is V1FinishItemProductionOrderCommand finish)
-        {
-            var handler = new FinishItemProductionOrder.Handler(appDbContext);
-            return handler.Handle(finish);
-        }
-        else
-        {
-            throw new InvalidOperationException("Unsupported event type");
-        }
+            V1CreateCompositeItemProductionOrderCommand createComposite =>
+                () => new CreateCompositeItemProductionOrder.Handler(appDbContext).Handle(createComposite),
+            
+            V1CancelCompositeItemProductionOrderCommand cancelComposite =>
+                () => new CancelCompositeItemProductionOrder.Handler(appDbContext).Handle(cancelComposite),
+            
+            V1CreateElementItemProductionOrderCommand createElement =>
+                () => new CreateElementItemProductionOrder.Handler(appDbContext).Handle(createElement),
+            
+            V1CancelElementItemProductionOrderCommand cancelElement =>
+                () => new CancelElementItemProductionOrder.Handler(appDbContext).Handle(cancelElement),
+            
+            V1StartItemProductionOrderCommand start =>
+                () => new StartItemProductionOrder.Handler(appDbContext).Handle(start),
+            
+            V1FinishItemProductionOrderCommand finish =>
+                () => new FinishItemProductionOrder.Handler(appDbContext).Handle(finish),
+            
+            _ => throw new InvalidOperationException("Unsupported event type")
+        };
+
+        return handler();
     }
 }
