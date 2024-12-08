@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Resourcerer.DataAccess.Abstractions;
-using Resourcerer.DataAccess.Configurations;
-using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
 using Resourcerer.DataAccess.Records;
 using System.Linq.Expressions;
@@ -12,7 +10,7 @@ public partial class AppDbContext
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        InvokeEntityConfigurations(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
@@ -58,28 +56,6 @@ public partial class AppDbContext
             etb.OwnsOne(x => ((IAuditedEntity<TAudit>)x).AuditRecord);
 
         customConfiguration?.Invoke(etb);
-    }
-
-    private static void InvokeEntityConfigurations(ModelBuilder modelBuilder)
-    {
-        new AppUserConfiguration().Configure(modelBuilder.Entity<AppUser>());
-        new CategoryConfiguration().Configure(modelBuilder.Entity<Category>());
-        new CompanyConfiguration().Configure(modelBuilder.Entity<Company>());
-
-        new InstanceConfiguration().Configure(modelBuilder.Entity<Instance>());
-        new InstanceDiscardedEventConfiguration().Configure(modelBuilder.Entity<InstanceDiscardedEvent>());
-        new InstanceOrderedEventConfiguration().Configure(modelBuilder.Entity<InstanceOrderedEvent>());
-        new InstanceReservedEventConfiguration().Configure(modelBuilder.Entity<InstanceReservedEvent>());
-
-        new ItemConfiguration().Configure(modelBuilder.Entity<Item>());
-        new ItemProductionOrderConfiguration().Configure(modelBuilder.Entity<ItemProductionOrder>());
-
-        new PriceConfiguration().Configure(modelBuilder.Entity<Price>());
-
-        new RecipeConfiguration().Configure(modelBuilder.Entity<Recipe>());
-        new RecipeExcerptConfiguration().Configure(modelBuilder.Entity<RecipeExcerpt>());
-
-        new UnitOfMeasureConfiguration().Configure(modelBuilder.Entity<UnitOfMeasure>());
     }
 }
 
