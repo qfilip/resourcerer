@@ -6,6 +6,7 @@ using Resourcerer.Logic.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.Records;
 
 namespace Resourcerer.Logic.V1;
 
@@ -49,7 +50,7 @@ public static class GetAllCompanyCategories
                 Name = current.Name,
                 ParentCategoryId = current.ParentCategoryId,
                 ChildCategories = children.Select(x => MapDto(x, all)).ToArray(),
-                AuditRecord = current.AuditRecord
+                AuditRecord = AuditDto.Map(current.AuditRecord)
             };
         }
 

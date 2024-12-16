@@ -2,10 +2,11 @@
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Logic.Handlers;
-using Resourcerer.Logic.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.Records;
 using Resourcerer.Dtos.V1;
+using Resourcerer.Logic.Models;
 using Resourcerer.Logic.Utilities;
 using Resourcerer.Logic.Utilities.Map;
 
@@ -41,7 +42,7 @@ public static class GetCompanyOverview
                 {
                     Name = x.Name,
                     IsAdmin = x.IsAdmin,
-                    AuditRecord = x.AuditRecord
+                    AuditRecord = AuditDto.Map(x.AuditRecord)
                 })
                 .AsNoTracking()
                 .ToArrayAsync();
