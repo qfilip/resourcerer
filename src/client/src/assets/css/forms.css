@@ -1,12 +1,5 @@
-form > fieldset > button {
+form button {
     width: 100%;
-}
-
-label > div.error {
-    color: var(--c-red);
-    text-align: center;
-    min-height: var(--rem-s);
-    font-size: var(--rem-s);
 }
 
 label.disabled > * {
@@ -20,5 +13,11 @@ input[readonly] {
 .form-fields label {
     display: flex;
     justify-content: space-between;
-    margin-bottom: var(--rem-xxs);
+    margin: 0;
+}
+
+.form-fields div.error {
+    color: var(--c-red);
+    min-height: var(--rem-s);
+    font-size: var(--rem-s);
 }
