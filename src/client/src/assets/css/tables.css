@@ -15,10 +15,6 @@ tbody tr:nth-of-type(even) {
     background-color: var(--c-white-d1);
 }
 
-tr > th {
-    font-size: var(--rem-s);
-}
-
-tr > td {
+tr > th, tr > td {
     font-size: var(--rem-s);
 }

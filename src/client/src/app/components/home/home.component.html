@@ -1,7 +1,5 @@
 <section>
-    <header>
-        <h2>{{ page$() }}</h2>
-        <hr />
+    <div class="content">
         <nav>
             <ul>
                 @for(i of pages; track $index) {
@@ -13,8 +11,12 @@
                 }
             </ul>
         </nav>
-    </header>
-    <section class="sub-page">
-        <router-outlet></router-outlet>
-    </section>
+        <section class="sub-page">
+            <header>
+                <h2>{{ page$() }}</h2>
+                <hr />
+            </header>
+            <router-outlet></router-outlet>
+        </section>
+    </div>
 </section>

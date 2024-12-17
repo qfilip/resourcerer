@@ -21,6 +21,7 @@ export class BrowseItemsPage implements OnInit {
   pageSize$ = new BehaviorSubject<number>(20);
   search$ = new BehaviorSubject<string>('');
   pageCount = 0;
+  
   ngOnInit(): void {
     const user = this.userService.user();
     this.itemShoppingDetails$ = combineLatest({

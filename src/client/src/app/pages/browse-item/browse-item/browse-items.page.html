@@ -1,7 +1,4 @@
 <article>
-    <div>
-         
-    </div>
     <table>
         <thead>
             <tr>
@@ -12,11 +9,11 @@
         </thead>
         <tbody>
             @for(isd of (itemShoppingDetails$ | async); track isd.id) {
-            <tr>
-                <td>{{ isd.name }}</td>
-                <td>{{ isd.categoryName }}</td>
-                <td>{{ isd.companyName }}</td>
-            </tr>
+                <tr>
+                    <td>{{ isd.name }}</td>
+                    <td>{{ isd.categoryName }}</td>
+                    <td>{{ isd.companyName }}</td>
+                </tr>
             }
         </tbody>
     </table>

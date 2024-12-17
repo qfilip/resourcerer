@@ -1,3 +1,7 @@
+header, nav {
+    padding-top: var(--rem);
+}
+
 header {
     display: flex;
     justify-content: space-between;
@@ -7,18 +11,32 @@ header {
 
 h2 {
     margin: 0rem 0rem var(--rem);
-    padding: 0rem var(--rem-xs);
+}
+
+nav {
+    background-color: var(--c-white-d2);
+    height: 100%;
 }
 
 ul {
-    display: flex;
-    padding: var(--rem-xs);
+    padding: var(--rem-xxs);
     margin: 0;
     list-style: none;
+    
+    li {
+        height: 2rem;
+    }
 }
 
 a {
     text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    display: flex;
 }
 
 .sub-page {
@@ -27,5 +45,5 @@ a {
 }
 
 .selected-icon {
-    border-bottom: var(--rem-xxs) solid var(--c-black);
+    border-top: var(--rem-xxxs) solid var(--c-black);
 }
