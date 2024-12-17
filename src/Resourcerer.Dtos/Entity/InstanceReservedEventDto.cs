@@ -3,7 +3,7 @@ using Resourcerer.Dtos.Entity;
 
 namespace Resourcerer.Dtos;
 
-public class InstanceReservedEventDto : EntityDto<InstanceReservedEventDto>
+public class InstanceReservedEventDto : EntityDto
 {
     public Guid ItemProductionOrderId { get; set; }
     public double Quantity { get; set; }

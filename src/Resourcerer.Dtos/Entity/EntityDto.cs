@@ -4,7 +4,7 @@ using Resourcerer.Dtos.Records;
 
 namespace Resourcerer.Dtos.Entity;
 
-public class EntityDto<T> : IDto, IId<Guid>, IAuditedEntity<AuditDto>, ISoftDeletable
+public class EntityDto : IDto, IId<Guid>, IAuditedEntity<AuditDto>, ISoftDeletable
 {
     public Guid Id { get; set; }
     public eEntityStatus EntityStatus { get; set; }

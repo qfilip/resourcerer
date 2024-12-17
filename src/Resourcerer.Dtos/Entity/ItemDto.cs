@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.Dtos.Entity;
 
-public class ItemDto : EntityDto<ItemDto>
+public class ItemDto : EntityDto
 {
     public string? Name { get; set; }
     public decimal ProductionPrice { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.Dtos.Entity;
 
-public class InstanceDiscardedEventDto : EntityDto<InstanceDiscardedEventDto>
+public class InstanceDiscardedEventDto : EntityDto
 {
     public double Quantity { get; set; }
     public string? Reason { get; set; }

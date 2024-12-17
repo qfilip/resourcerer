@@ -2,7 +2,7 @@
 using Resourcerer.Identity.Utils;
 
 namespace Resourcerer.Dtos.Entity;
-public class AppUserDto : EntityDto<AppUserDto>
+public class AppUserDto : EntityDto
 {
     public string? Name { get; set; }
     public string? DisplayName { get; set; }
@@ -24,6 +24,7 @@ public class AppUserDto : EntityDto<AppUserDto>
             DisplayName = entity.DisplayName,
             Email = entity.Email,
             IsAdmin = entity.IsAdmin,
+            CompanyId = entity.CompanyId,
             Company = new CompanyDto
             {
                 Id = entity.Company!.Id,

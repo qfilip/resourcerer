@@ -3,7 +3,7 @@ using Resourcerer.Dtos.Entity;
 
 namespace Resourcerer.Dtos;
 
-public class InstanceOrderedEventDto : EntityDto<InstanceOrderedEventDto>
+public class InstanceOrderedEventDto : EntityDto
 {
     public Guid DerivedInstanceId { get; set; }
     public Guid SellerCompanyId { get; set; }

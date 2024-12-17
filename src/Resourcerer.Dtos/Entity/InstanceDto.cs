@@ -1,5 +1,5 @@
 ﻿namespace Resourcerer.Dtos.Entity;
-public class InstanceDto : EntityDto<InstanceDto>
+public class InstanceDto : EntityDto
 {
     public double Quantity { get; set; }
     public DateTime? ExpiryDate { get; set; }

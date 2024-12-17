@@ -32,7 +32,7 @@ internal static class EntityBases
 
     public static Expression<Func<T, TDto>> GetDefaultCustomProjection<T, TDto>()
         where T : IId<Guid>, IAuditedEntity<Audit>, ISoftDeletable, new()
-        where TDto : EntityDto<TDto>, new()
+        where TDto : EntityDto, new()
     {
         Expression<Func<T, TDto>> exp = (x) => new TDto
         {
@@ -52,7 +52,7 @@ internal static class EntityBases
 
     public static Expression<Func<T, TDto>> Expand<T, TDto>(Expression<Func<T, TDto>> selector)
         where T : IId<Guid>, IAuditedEntity<Audit>, ISoftDeletable, new()
-        where TDto: EntityDto<TDto>, new()
+        where TDto: EntityDto, new()
     {
         return ExpressionUtils.CombineDto(GetDefaultCustomProjection<T, TDto>(), selector);
     }

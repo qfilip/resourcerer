@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.Dtos.Entity;
 
-public class ExcerptDto : EntityDto<ExcerptDto>
+public class ExcerptDto : EntityDto
 {
     public double Quantity { get; set; }
     

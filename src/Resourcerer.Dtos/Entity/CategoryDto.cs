@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.Dtos.Entity;
 
-public class CategoryDto : EntityDto<CategoryDto>
+public class CategoryDto : EntityDto
 {
     public string? Name { get; set; }
 

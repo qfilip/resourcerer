@@ -1,8 +1,6 @@
-﻿using Resourcerer.DataAccess.Entities;
+﻿namespace Resourcerer.Dtos.Entity;
 
-namespace Resourcerer.Dtos.Entity;
-
-public class PriceDto : EntityDto<PriceDto>
+public class PriceDto : EntityDto
 {
     public double UnitValue { get; set; }
 

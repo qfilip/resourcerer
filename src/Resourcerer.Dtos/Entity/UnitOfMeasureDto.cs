@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.Dtos.Entity;
 
-public class UnitOfMeasureDto : EntityDto<UnitOfMeasureDto>
+public class UnitOfMeasureDto : EntityDto
 {
     public string? Name { get; set; }
     public string? Symbol { get; set; }

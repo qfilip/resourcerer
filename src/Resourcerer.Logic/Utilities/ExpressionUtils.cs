@@ -38,7 +38,7 @@ internal sealed class ExpressionUtils
 
     public static Expression<Func<T, TDto>> CombineDto<T, TDto>(params Expression<Func<T, TDto>>[] selectors)
         where T : IId<Guid>, IAuditedEntity<Audit>, ISoftDeletable, new()
-        where TDto: EntityDto<TDto>
+        where TDto: EntityDto
     {
         var zeroth = ((MemberInitExpression)selectors[0].Body);
         var param = selectors[0].Parameters[0];

@@ -3,7 +3,7 @@ using Resourcerer.Dtos.Entity;
 
 namespace Resourcerer.Dtos;
 
-public class ItemProductionOrderDto : EntityDto<ItemProductionOrderDto>
+public class ItemProductionOrderDto : EntityDto
 {
     public double Quantity { get; set; }
     public string? Reason { get; set; }
