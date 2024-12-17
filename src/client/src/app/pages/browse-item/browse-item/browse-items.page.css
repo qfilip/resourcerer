@@ -6,3 +6,20 @@ tbody {
     max-height: 50vh;
     height: 50vh;
 }
+
+.table-nav {
+    margin-top: var(--rem-s);
+    font-size: var(--rem-s);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.table-nav * {
+    margin: var(--rem-xxxs);
+}
+
+.table-nav button {
+    width: 2rem;
+}

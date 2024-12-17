@@ -17,16 +17,18 @@
             }
         </tbody>
     </table>
-    <div>
-        <label>
-            Page size: <input type="number" min="5" max="20" />
-        </label>
+    <div class="table-nav">
         <span>
-            <button (click)="page$.next(1)"><<</button>
-            <button (click)="page$.next(page$.value - 1)"><</button>
-            <span>Page {{ page$.value }}</span>
-            <button (click)="page$.next(page$.value + 1)">></button>
-            <button (click)="page$.next(pageCount)">>></button>
+            <label>
+                Page size: <input type="number" min="5" max="20" />
+            </label>
+            <span>
+                <button (click)="page$.next(1)"><<</button>
+                <button (click)="page$.next(page$.value - 1)"><</button>
+                <span>Page {{ page$.value }}</span>
+                <button (click)="page$.next(page$.value + 1)">></button>
+                <button (click)="page$.next(pageCount)">>></button>
+            </span>
         </span>
     </div>
 </article>
