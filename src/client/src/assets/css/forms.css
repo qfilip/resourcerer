@@ -17,7 +17,7 @@ input[readonly] {
     background-color: var(--c-white-d1);
 }
 
-.form-fields > label {
+.form-fields label {
     display: flex;
     justify-content: space-between;
     margin-bottom: var(--rem-xxs);
