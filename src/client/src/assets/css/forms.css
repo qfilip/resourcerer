@@ -2,6 +2,10 @@ form button {
     width: 100%;
 }
 
+label {
+    font-size: var(--rem-s);
+}
+
 label.disabled > * {
     color: var(--c-white-d3);
 }

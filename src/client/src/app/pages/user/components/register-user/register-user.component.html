@@ -2,30 +2,36 @@
     <fieldset>
         <legend>Register</legend>
         <div class="form-fields">
-            <div>
-                <label>
-                    <span>Username</span>
-                    <input #username type="text" />
-                </label>
+            <label>
+                <span>Username:</span>
+                <input #username type="text" />
+            </label>
+            
+            <div class="error">
             </div>
         
-            <div>
-                <label>
-                    <span>Email</span>
-                    <input #email type="text" />
-                </label>
+            <label>
+                <span>Email:</span>
+                <input #email type="text" />
+            </label>
+            
+            <div class="error">
             </div>
         
-            <div>
-                <label>
-                    <span>Admin</span>
-                    <input #admin type="checkbox" />
-                </label>
+            <label>
+                <span>Admin:</span>
+                <input #admin type="checkbox" />
+            </label>
+            <div class="error">
             </div>
+
+            <label>
+                <span>Permissions:</span>
+                <permission-map (onMapChanged)="userPermissions = $event" [editable]="true" [user]="null"></permission-map>
+            </label>
         </div>
     
         <div>
-            <permission-map (onMapChanged)="userPermissions = $event" [editable]="true" [user]="null"></permission-map>
         </div>
         
         <button type="submit">Submit</button>
