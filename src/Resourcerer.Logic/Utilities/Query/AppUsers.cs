@@ -21,6 +21,7 @@ public class AppUsers
             Email = x.Email,
             IsAdmin = x.IsAdmin,
             Permissions = x.Permissions,
+            CompanyId = x.CompanyId,
             Company = new()
             {
                 Id = x.Company!.Id,

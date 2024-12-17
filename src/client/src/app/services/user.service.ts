@@ -47,7 +47,7 @@ export class UserService {
     setUser(jwt: string) {
         this._cache.setCache(jwt);
         const jwtData = parseJwt(jwt);
-
+        
         this._user$.set(jwtData.dto);
         this._jwt$.set(jwt);
     }
