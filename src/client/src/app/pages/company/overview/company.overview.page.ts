@@ -1,7 +1,7 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CompanyController } from '../../../controllers/company.controller';
 import { IV1CompanyOverview } from '../../../models/dtos/interfaces';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UserService } from '../../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { CategoryTreeComponent } from '../../../components/company/category-tree/category-tree.component';

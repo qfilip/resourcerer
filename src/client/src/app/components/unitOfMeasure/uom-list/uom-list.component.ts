@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, Signal, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, EventEmitter, Input, Output, Signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IDialogOptions } from '../../../models/components/IDialogOptions';
 import { IAppUserDto, IUnitOfMeasureDto } from '../../../models/dtos/interfaces';

@@ -1,8 +1,8 @@
-import { Component, OnInit, effect, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { PopupService } from '../../../services/popup.service';
-import { IPopup, PopupSnake } from '../../../models/components/IPopup';
+import { PopupSnake } from '../../../models/components/IPopup';
 import { CommonModule } from '@angular/common';
-import { Observable, Subject, map, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-popup',

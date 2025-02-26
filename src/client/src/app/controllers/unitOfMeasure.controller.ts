@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BaseController } from "./base.controller";
-import { IUnitOfMeasureDto, IV1CompanyOverview, IV1CreateUnitOfMeasure, IV1EditUnitOfMeasure } from "../models/dtos/interfaces";
+import { IUnitOfMeasureDto, IV1CreateUnitOfMeasure, IV1EditUnitOfMeasure } from "../models/dtos/interfaces";
 import { HttpParams } from "@angular/common/http";
 
 @Injectable({

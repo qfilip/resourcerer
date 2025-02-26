@@ -1,13 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject, signal } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { UserEditComponent } from "../user-edit/user-edit.component";
-import { RegisterUserComponent } from "../register-user/register-user.component";
 import { IDialogOptions } from '../../../models/components/IDialogOptions';
 import { IAppUserDto } from '../../../models/dtos/interfaces';
 import { DialogService } from '../../../services/dialog.service';
 import { InMemoryCacheService } from '../../../services/inmemory.cache.service';
-import { DialogWrapperComponent } from '../../common-ui/dialog-wrapper/dialog-wrapper.component';
 
 @Component({
     selector: 'user-list',

@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { DialogService } from '../../../services/dialog.service';
 import { IDialogOptions } from '../../../models/components/IDialogOptions';
 

@@ -1,5 +1,4 @@
 import { Component, ViewChild, inject, signal } from '@angular/core';
-import { Observable } from 'rxjs';
 import { IAppUserDto } from '../../../models/dtos/interfaces';
 import { UserService } from '../../../services/user.service';
 import { CommonModule } from '@angular/common';

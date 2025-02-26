@@ -4,7 +4,7 @@ import { UomOverviewPage } from './pages/unitOfMeasure/uom-overview/uom-overview
 import { ItemsOverviewPage } from './pages/item/items-overview/items-overview.page';
 import { UserManagementPage } from './pages/user/user-management/user-management.page';
 import { AccountPage } from './pages/user/account/account.page';
-import { BrowseItemsPage } from './components/item/browse-item/browse-items.page';
+import { BrowseItemsPage } from './pages/item/browse-item/browse-items.page';
 import { HomePage } from './pages/home/home.page';
 import { LoginPage } from './pages/user/login/login.page';
 
