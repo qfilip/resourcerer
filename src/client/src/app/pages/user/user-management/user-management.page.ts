@@ -1,12 +1,11 @@
 import { Component, ViewChild, inject, signal } from '@angular/core';
-import { UserListComponent } from "../components/user-list/user-list.component";
 import { Observable } from 'rxjs';
 import { IAppUserDto } from '../../../models/dtos/interfaces';
-import { InMemoryCacheService } from '../../../services/inmemory.cache.service';
 import { UserService } from '../../../services/user.service';
-import { RegisterUserComponent } from '../components/register-user/register-user.component';
-import { UserEditComponent } from '../components/user-edit/user-edit.component';
 import { CommonModule } from '@angular/common';
+import { UserListComponent } from '../../../components/user/user-list/user-list.component';
+import { RegisterUserComponent } from '../../../components/user/register-user/register-user.component';
+import { UserEditComponent } from '../../../components/user/user-edit/user-edit.component';
 
 @Component({
     selector: 'user-management',

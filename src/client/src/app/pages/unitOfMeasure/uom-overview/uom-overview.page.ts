@@ -1,11 +1,11 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
-import { UomListComponent } from "../components/uom-list/uom-list.component";
 import { UserService } from '../../../services/user.service';
-import { UomEditorComponent } from "../components/uom-editor/uom-editor.component";
 import { IUnitOfMeasureDto, IV1CreateUnitOfMeasure, IV1EditUnitOfMeasure } from '../../../models/dtos/interfaces';
 import { UnitOfMeasureController } from '../../../controllers/unitOfMeasure.controller';
 import { Observable, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { UomEditorComponent } from '../../../components/unitOfMeasure/uom-editor/uom-editor.component';
+import { UomListComponent } from '../../../components/unitOfMeasure/uom-list/uom-list.component';
 
 @Component({
     selector: 'uom-overview',

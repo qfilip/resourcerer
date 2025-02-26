@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
-import { ItemListComponent } from '../components/item-list/item-list.component';
 import { IItemDto } from '../../../models/dtos/interfaces';
 import { UserService } from '../../../services/user.service';
 import { ItemController } from '../../../controllers/item.controller';
-import { CreateItemComponent } from "../components/item-form/item-form.component";
+import { CreateItemComponent } from '../../../components/item/item-form/item-form.component';
+import { ItemListComponent } from '../../../components/item/item-list/item-list.component';
 
 @Component({
     selector: 'items-overview',

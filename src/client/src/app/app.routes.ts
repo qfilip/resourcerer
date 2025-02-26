@@ -1,19 +1,19 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './pages/user/login/login.component';
-import { HomeComponent } from './components/home/home.component';
-import { CompanyOverviewPage } from './pages/company/overview/overview.page';
+import { CompanyOverviewPage } from './pages/company/overview/company.overview.page';
 import { UomOverviewPage } from './pages/unitOfMeasure/uom-overview/uom-overview.page';
 import { ItemsOverviewPage } from './pages/item/items-overview/items-overview.page';
 import { UserManagementPage } from './pages/user/user-management/user-management.page';
 import { AccountPage } from './pages/user/account/account.page';
-import { BrowseItemsPage } from './pages/browse-item/browse-item/browse-items.page';
+import { BrowseItemsPage } from './components/item/browse-item/browse-items.page';
+import { HomePage } from './pages/home/home.page';
+import { LoginPage } from './pages/user/login/login.page';
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent },
-    { path: 'login', component: LoginComponent },
+    { path: '', component: HomePage },
+    { path: 'login', component: LoginPage },
     {
         path: 'home',
-        component: HomeComponent,
+        component: HomePage,
         children: [
             { path: 'browse-items', component: BrowseItemsPage },
             { path: 'company', component: CompanyOverviewPage },
