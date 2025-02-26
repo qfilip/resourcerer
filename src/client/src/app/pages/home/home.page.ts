@@ -15,10 +15,10 @@ export class HomePage implements OnInit, OnDestroy {
 
   private router = inject(Router);
   private subbed = new Subject();
+  page$ = signal<HomepageNav>('Company');
 
   ngOnInit(): void {
     this.router.events.pipe(
-      takeUntil(this.subbed),
       filter(event => event instanceof NavigationEnd),
       map((event) => event as NavigationEnd)
     ).subscribe({
@@ -35,15 +35,14 @@ export class HomePage implements OnInit, OnDestroy {
           }
         }
       });
+
+    this.router.navigate(['/home/company']);
   }
 
   ngOnDestroy(): void {
     this.subbed.next(0);
     this.subbed.complete();
   }
-
-
-  page$ = signal<HomepageNav>('Company');
 
   pages: { pageName: HomepageNav, route: string, icon: string }[] = [
     { pageName: 'Browse items', route: 'browse-items', icon: 'ra ra-telescope'},
