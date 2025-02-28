@@ -10,7 +10,7 @@ header {
 }
 
 
-header > .nav {
+hgroup {
     display: flex;
     justify-content: space-between;
     align-items: center;
