@@ -223,7 +223,7 @@ public class CreateCompositeItemProductionOrderTests : TestsBase
         Assert.True(orderEvent.InstancesUsedIds.All(dto.InstancesToUse.Keys.Contains));
         Assert.Equal(recipe.Version, orderEvent.ItemRecipeVersion);
         
-            foreach (var i in instances)
+        foreach (var i in instances)
         {
             var qty = dto.InstancesToUse[i.Id];
             i.ReservedEvents.First(ev => ev.Quantity == qty);
