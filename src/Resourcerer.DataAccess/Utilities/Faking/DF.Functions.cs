@@ -57,7 +57,7 @@ public static partial class DF
         },
         {
             typeof(ItemProductionOrder),
-            () => MakeEntity(() => new ItemProductionOrder { Quantity = 1 })
+            () => MakeEventEntity(() => new ItemProductionOrder { Quantity = 1 })
         },
         {
             typeof(Instance),
@@ -65,15 +65,15 @@ public static partial class DF
         },
         {
             typeof(InstanceOrderedEvent),
-            () => MakeEntity(()=> new InstanceOrderedEvent { Quantity = 1 })
+            () => MakeEventEntity(()=> new InstanceOrderedEvent { Quantity = 1 })
         },
         {
             typeof(InstanceReservedEvent),
-            () => MakeEntity(()=> new InstanceReservedEvent { Quantity = 1 })
+            () => MakeEventEntity(()=> new InstanceReservedEvent { Quantity = 1 })
         },
         {
             typeof(InstanceDiscardedEvent),
-            () => MakeEntity(()=> new InstanceDiscardedEvent { Quantity = 1 })
+            () => MakeEventEntity(()=> new InstanceDiscardedEvent { Quantity = 1 })
         }
     };
 }

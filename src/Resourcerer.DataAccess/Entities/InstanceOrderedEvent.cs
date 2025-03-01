@@ -1,10 +1,9 @@
 ﻿using Resourcerer.DataAccess.Abstractions;
-using Resourcerer.DataAccess.Enums;
 using Resourcerer.DataAccess.Records;
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class InstanceOrderedEvent : IId<Guid>, IAuditedEntity<Audit>, ISoftDeletable
+public class InstanceOrderedEvent : IId<Guid>, IAuditedEntity<Audit>
 {
     public Guid DerivedInstanceId { get; set; }
     public Guid SellerCompanyId { get; set; }
@@ -27,5 +26,4 @@ public class InstanceOrderedEvent : IId<Guid>, IAuditedEntity<Audit>, ISoftDelet
     // entity definition
     public Guid Id { get; set; }
     public Audit AuditRecord { get; set; } = new();
-    public eEntityStatus EntityStatus { get; set; }
 }

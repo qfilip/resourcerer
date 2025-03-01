@@ -1,11 +1,10 @@
 ﻿using Resourcerer.DataAccess.Abstractions;
 using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.DataAccess.Enums;
 using Resourcerer.DataAccess.Records;
 
 namespace Resourcerer.DataAccess.Entities;
 
-public class InstanceReservedEvent : IId<Guid>, IAuditedEntity<Audit>, ISoftDeletable
+public class InstanceReservedEvent : IId<Guid>, IAuditedEntity<Audit>
 {
     public Guid ItemProductionOrderId { get; set; }
     public double Quantity { get; set; }
@@ -22,5 +21,4 @@ public class InstanceReservedEvent : IId<Guid>, IAuditedEntity<Audit>, ISoftDele
     // entity definition
     public Guid Id { get; set; }
     public Audit AuditRecord { get; set; } = new();
-    public eEntityStatus EntityStatus { get; set; }
 }

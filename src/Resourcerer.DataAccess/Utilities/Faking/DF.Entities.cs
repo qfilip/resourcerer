@@ -26,6 +26,22 @@ public static partial class DF
         return e;
     }
 
+    public static T MakeEventEntity<T>(Func<T> retn)
+        where T : IId<Guid>, IAuditedEntity<Audit>
+    {
+        var e = retn();
+
+        e.Id = e.Id != Guid.Empty ? e.Id : Guid.NewGuid();
+
+        e.AuditRecord = new()
+        {
+            CreatedAt = Now,
+            ModifiedAt = Now
+        };
+
+        return e;
+    }
+
     public static T MakeEntityWithCustomKey<T>(Func<T> retn)
         where T : IAuditedEntity<Audit>, ISoftDeletable
     {
