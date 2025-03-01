@@ -14,29 +14,16 @@ public class ItemProductionOrderCommandSender : IMessageSender<V1ItemProductionC
 
     public Task SendAsync(V1ItemProductionCommand message)
     {
-        if (message is V1CreateCompositeItemProductionOrderCommand createComposite)
+        var task = message switch
         {
-            return _bus.Send(createComposite);
-        }
-        else if (message is V1CreateElementItemProductionOrderCommand createElement)
-        {
-            return _bus.Send(createElement);
-        }
-        else if (message is V1CancelCompositeItemProductionOrderCommand cancel)
-        {
-            return _bus.Send(cancel);
-        }
-        else if (message is V1StartItemProductionOrderCommand start)
-        {
-            return _bus.Send(start);
-        }
-        else if (message is V1FinishItemProductionOrderCommand finish)
-        {
-            return _bus.Send(finish);
-        }
-        else
-        {
-            throw new InvalidOperationException("Unsupported event type");
-        }
+            V1CreateCompositeItemProductionOrderCommand createComposite => _bus.Send(createComposite),
+            V1CreateElementItemProductionOrderCommand createElement => _bus.Send(createElement),
+            V1CancelCompositeItemProductionOrderCommand cancel => _bus.Send(cancel),
+            V1StartItemProductionOrderCommand start => _bus.Send(start),
+            V1FinishItemProductionOrderCommand finish => _bus.Send(finish),
+            _ => throw new InvalidOperationException("Unsupported event type")
+        };
+        
+        return task;
     }
 }

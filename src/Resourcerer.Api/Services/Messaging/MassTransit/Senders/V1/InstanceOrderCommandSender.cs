@@ -13,25 +13,15 @@ public class InstanceOrderCommandSender : IMessageSender<V1InstanceOrderCommand>
     }
     public Task SendAsync(V1InstanceOrderCommand message)
     {
-        if (message is V1InstanceOrderCreateCommand orderEv)
+        var task = message switch
         {
-            return _bus.Send(orderEv);
-        }
-        else if (message is V1InstanceOrderCancelCommand cancelEv)
-        {
-            return _bus.Send(cancelEv);
-        }
-        else if (message is V1InstanceOrderDeliverCommand deliverEv)
-        {
-            return _bus.Send(deliverEv);
-        }
-        else if (message is V1InstanceOrderSendCommand sentEv)
-        {
-            return _bus.Send(sentEv);
-        }
-        else
-        {
-            throw new InvalidOperationException("Unsupported event type");
-        }
+            V1InstanceOrderCreateCommand orderEv => _bus.Send(orderEv),
+            V1InstanceOrderCancelCommand cancelEv => _bus.Send(cancelEv),
+            V1InstanceOrderDeliverCommand deliverEv => _bus.Send(deliverEv),
+            V1InstanceOrderSendCommand sentEv => _bus.Send(sentEv),
+            _ => throw new InvalidOperationException("Unsupported event type")
+        };
+        
+        return task;
     }
 }
