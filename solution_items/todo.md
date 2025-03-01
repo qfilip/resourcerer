@@ -18,18 +18,6 @@
 
 <section class="pending">
 
-## Set event entities to be readonly
-
-### Reason
-Events shouldn't be deletable.
-
-### Tasks
-Remove `ISoftDeletable` interface from:
-- ItemProductionOrder
-- InstanceDiscardedEvent
-- InstanceOrderedEvent
-- InstanceReservedEvent
-
 ## Recipe table utilization
 
 ### Reason
@@ -41,6 +29,18 @@ Set recipe version in `CreateCompositeItemProductionOrder` to enable proper trac
 </section>
 
 <section class="done">
+
+## Set event entities to be readonly
+
+### Reason
+Events shouldn't be deletable.
+
+### Tasks
+Remove `ISoftDeletable` interface from:
+- ItemProductionOrder
+- InstanceDiscardedEvent
+- InstanceOrderedEvent
+- InstanceReservedEvent
 
 ## Recipe versioning
 
