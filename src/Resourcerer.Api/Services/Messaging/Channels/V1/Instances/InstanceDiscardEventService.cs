@@ -5,7 +5,7 @@ using Resourcerer.Messaging.Abstractions;
 
 namespace Resourcerer.Api.Services.Messaging.Channels.V1.Instances;
 
-public class InstanceDiscardEventService : ChannelConsumerHostingServiceBase<V1InstanceDiscardCommand>
+public class InstanceDiscardEventService : ChannelConsumerHostingService<V1InstanceDiscardCommand>
 {
     public InstanceDiscardEventService(
         IMessageReader<V1InstanceDiscardCommand> consumer,

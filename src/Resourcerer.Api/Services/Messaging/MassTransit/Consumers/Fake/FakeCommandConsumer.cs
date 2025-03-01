@@ -5,7 +5,7 @@ using Resourcerer.Messaging.MassTransit;
 
 namespace Resourcerer.Api.Services.Messaging.MassTransit.Consumers.Fake;
 
-public class FakeCommandConsumer : BaseConsumer<FakeCommandDto>
+public class FakeCommandConsumer : ConsumerBase<FakeCommandDto>
 {
     public FakeCommandConsumer(FakeCommandEventHandler.Handler handler)
         : base(handler.Handle) { }

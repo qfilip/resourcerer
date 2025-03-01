@@ -6,7 +6,7 @@ using Resourcerer.Messaging.Abstractions;
 
 namespace Resourcerer.Api.Services.Messaging.Channels.V1.Instances;
 
-public class InstanceOrderEventService : ChannelConsumerHostingServiceBase<V1InstanceOrderCommand>
+public class InstanceOrderEventService : ChannelConsumerHostingService<V1InstanceOrderCommand>
 {
     public InstanceOrderEventService(
         IMessageReader<V1InstanceOrderCommand> consumer,

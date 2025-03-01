@@ -4,7 +4,7 @@ using Resourcerer.Messaging.MassTransit;
 
 namespace Resourcerer.Api.Services.Messaging.MassTransit.Consumers.V1.Instances.Production;
 
-public class V1InstanceOrderCancelCommandConsumer : BaseConsumer<V1InstanceOrderCancelCommand>
+public class V1InstanceOrderCancelCommandConsumer : ConsumerBase<V1InstanceOrderCancelCommand>
 {
     public V1InstanceOrderCancelCommandConsumer(CreateInstanceOrderCancelledEvent.Handler handler)
         : base(handler.Handle) { }

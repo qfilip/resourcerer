@@ -5,7 +5,7 @@ using Resourcerer.Messaging.Abstractions;
 
 namespace Resourcerer.Api.Services.Messaging.Channels.Fake;
 
-public class FakeEventService : ChannelConsumerHostingServiceBase<FakeCommandDto>
+public class FakeEventService : ChannelConsumerHostingService<FakeCommandDto>
 {
     public FakeEventService(
         IMessageReader<FakeCommandDto> consumer,

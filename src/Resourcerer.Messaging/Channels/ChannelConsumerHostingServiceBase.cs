@@ -4,12 +4,12 @@ using Resourcerer.Messaging.Abstractions;
 namespace Resourcerer.Messaging.Channels;
 
 
-public abstract class ChannelConsumerHostingService<TMessage, TRepository> : BackgroundService
+public abstract class ChannelConsumerHostingServiceBase<TMessage, TRepository> : BackgroundService
 {
     protected readonly IMessageReader<TMessage> _consumer;
     protected readonly IServiceProvider _serviceProvider;
 
-    public ChannelConsumerHostingService(
+    public ChannelConsumerHostingServiceBase(
         IMessageReader<TMessage> consumer,
         IServiceProvider serviceProvider)
     {

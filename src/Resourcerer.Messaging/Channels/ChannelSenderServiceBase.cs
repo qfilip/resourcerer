@@ -3,11 +3,11 @@ using System.Threading.Channels;
 
 namespace Resourcerer.Messaging.Channels;
 
-public class ChannelSenderService<TMessage> : IMessageSender<TMessage>
+public class ChannelSenderServiceBase<TMessage> : IMessageSender<TMessage>
 {
     private readonly ChannelWriter<TMessage> _channel;
 
-    public ChannelSenderService(ChannelWriter<TMessage> channel)
+    public ChannelSenderServiceBase(ChannelWriter<TMessage> channel)
     {
         _channel = channel;
     }

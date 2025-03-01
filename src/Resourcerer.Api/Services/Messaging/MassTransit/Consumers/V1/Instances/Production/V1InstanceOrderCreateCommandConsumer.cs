@@ -4,7 +4,7 @@ using Resourcerer.Messaging.MassTransit;
 
 namespace Resourcerer.Api.Services.Messaging.MassTransit.Consumers.V1.Instances.Production;
 
-public class V1InstanceOrderCreateCommandConsumer : BaseConsumer<V1InstanceOrderCreateCommand>
+public class V1InstanceOrderCreateCommandConsumer : ConsumerBase<V1InstanceOrderCreateCommand>
 {
     public V1InstanceOrderCreateCommandConsumer(CreateInstanceOrderedEvent.Handler handler)
         : base(handler.Handle) { }

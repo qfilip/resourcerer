@@ -51,22 +51,22 @@ public class DependencyInjection
     }
 
     public static void AddChannelMessagingService<TMessage, THostingService, TRepository>(IServiceCollection services)
-        where THostingService : ChannelConsumerHostingService<TMessage, TRepository>
+        where THostingService : ChannelConsumerHostingServiceBase<TMessage, TRepository>
     {
         services.AddSingleton(_ => Channel.CreateUnbounded<TMessage>());
         services.AddSingleton(sp => sp.GetRequiredService<Channel<TMessage>>().Writer);
         services.AddSingleton(sp => sp.GetRequiredService<Channel<TMessage>>().Reader);
 
-        services.AddSingleton<IMessageSender<TMessage>, ChannelSenderService<TMessage>>(sp =>
+        services.AddSingleton<IMessageSender<TMessage>, ChannelSenderServiceBase<TMessage>>(sp =>
         {
             var sender = sp.GetRequiredService<Channel<TMessage>>().Writer;
-            return new ChannelSenderService<TMessage>(sender);
+            return new ChannelSenderServiceBase<TMessage>(sender);
         });
 
-        services.AddSingleton<IMessageReader<TMessage>, ChannelConsumerService<TMessage>>(sp =>
+        services.AddSingleton<IMessageReader<TMessage>, ChannelConsumerServiceBase<TMessage>>(sp =>
         {
             var consumer = sp.GetRequiredService<Channel<TMessage>>().Reader;
-            return new ChannelConsumerService<TMessage>(consumer);
+            return new ChannelConsumerServiceBase<TMessage>(consumer);
         });
 
         services.AddHostedService<THostingService>();

@@ -3,10 +3,10 @@ using System.Threading.Channels;
 
 namespace Resourcerer.Messaging.Channels;
 
-public class ChannelConsumerService<TMessage> : IMessageReader<TMessage>
+public class ChannelConsumerServiceBase<TMessage> : IMessageReader<TMessage>
 {
     private readonly ChannelReader<TMessage> _reader;
-    public ChannelConsumerService(ChannelReader<TMessage> reader)
+    public ChannelConsumerServiceBase(ChannelReader<TMessage> reader)
     {
         _reader = reader;
     }

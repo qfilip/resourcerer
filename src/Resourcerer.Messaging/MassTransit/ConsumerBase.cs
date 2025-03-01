@@ -2,11 +2,11 @@
 
 namespace Resourcerer.Messaging.MassTransit;
 
-public class BaseConsumer<TMessage> : IConsumer<TMessage> where TMessage : class
+public class ConsumerBase<TMessage> : IConsumer<TMessage> where TMessage : class
 {
     private readonly Func<TMessage, Task> _handleMethod;
 
-    public BaseConsumer(Func<TMessage, Task> handleMethod)
+    public ConsumerBase(Func<TMessage, Task> handleMethod)
     {
         _handleMethod = handleMethod;
     }

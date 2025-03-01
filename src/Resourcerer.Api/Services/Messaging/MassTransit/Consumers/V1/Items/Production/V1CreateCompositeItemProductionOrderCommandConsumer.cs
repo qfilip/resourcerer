@@ -4,7 +4,7 @@ using Resourcerer.Messaging.MassTransit;
 
 namespace Resourcerer.Api.Services.Messaging.MassTransit.Consumers.V1.Items.Production;
 
-public class V1CreateCompositeItemProductionOrderCommandConsumer : BaseConsumer<V1CreateCompositeItemProductionOrderCommand>
+public class V1CreateCompositeItemProductionOrderCommandConsumer : ConsumerBase<V1CreateCompositeItemProductionOrderCommand>
 {
     public V1CreateCompositeItemProductionOrderCommandConsumer(CreateCompositeItemProductionOrder.Handler handler)
         : base(handler.Handle) { }
