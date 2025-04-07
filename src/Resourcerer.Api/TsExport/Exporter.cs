@@ -56,6 +56,7 @@ public static class Exporter
         {
             ("constants.ts", new List<Action<StringBuilder>>()
             {
+                CustomExports.ExportPermissionsMapConst,
                 CustomExports.ExportJwtClaimKeys
             })
         };
