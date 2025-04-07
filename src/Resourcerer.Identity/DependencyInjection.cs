@@ -9,7 +9,7 @@ namespace Resourcerer.Identity;
 
 public static class DependencyInjection
 {
-    private static AppIdentity SystemIdentity = new(Guid.Empty, "system", "system@email.com", true, Guid.Empty);
+    private static AppIdentity SystemIdentity = new(Guid.Empty, "system", "system@email.com");
     public static void AddAppIdentityServices(
         IServiceCollection services,
         bool authEnabled,

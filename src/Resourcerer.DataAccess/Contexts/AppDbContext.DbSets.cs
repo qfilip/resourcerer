@@ -18,22 +18,7 @@ public partial class AppDbContext : DbContext
         _identity = identity;
     }
 
-	public virtual DbSet<AppUser> AppUsers { get; set; }
-    public virtual DbSet<Company> Companies { get; set; }
-    public virtual DbSet<Category> Categories { get; set; }
-    public virtual DbSet<Recipe> Recipes { get; set; }
-    public virtual DbSet<RecipeExcerpt> RecipeExcerpts { get; set; }
-    public virtual DbSet<UnitOfMeasure> UnitsOfMeasure { get; set; }
-    public virtual DbSet<Price> Prices { get; set; }
-    // items
-    public virtual DbSet<Item> Items { get; set; }
-    public virtual DbSet<ItemProductionOrder> ItemProductionOrders { get; set; }
-    // instances
-    public virtual DbSet<Instance> Instances { get; set; }
-    public virtual DbSet<InstanceOrderedEvent> InstanceOrderedEvents { get; set; }
-    public virtual DbSet<InstanceReservedEvent> InstanceReservedEvents { get; set; }
-    public virtual DbSet<InstanceDiscardedEvent> InstanceDiscardedEvents { get; set; }
-
+	public virtual DbSet<ExampleEntity> Examples { get; set; }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

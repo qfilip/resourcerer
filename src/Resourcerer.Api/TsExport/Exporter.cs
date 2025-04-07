@@ -56,7 +56,6 @@ public static class Exporter
         {
             ("constants.ts", new List<Action<StringBuilder>>()
             {
-                CustomExports.ExportPermissionsMapConst,
                 CustomExports.ExportJwtClaimKeys
             })
         };
@@ -106,8 +105,8 @@ public static class Exporter
         builder.ExportAsEnums(
             [
                 typeof(eEntityStatus),
-                typeof(eSection),
-                typeof(ePermission)
+                typeof(eResource),
+                typeof(eAction),
             ],
             conf => conf.ExportTo("enums.ts")
         );

@@ -28,10 +28,8 @@ public sealed class AppIdentityService : IAppIdentityService<AppIdentity>
         var id = GetClaim<Guid>(claims, Claims.ClaimId, Guid.TryParse);
         var name = GetClaim<string>(claims, Claims.ClaimUsername, Return);
         var email = GetClaim<string>(claims, Claims.ClaimEmail, Return);
-        var isAdmin = GetClaim<bool>(claims, Claims.ClaimIsAdmin, bool.TryParse);
-        var companyId = GetClaim<Guid>(claims, Claims.ClaimCompanyId, Guid.TryParse);
 
-        _identity = new(id, name!, email!, isAdmin, companyId);
+        _identity = new(id, name!, email!);
     }
 
     private static T? GetClaim<T>(

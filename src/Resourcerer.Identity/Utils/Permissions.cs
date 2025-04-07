@@ -6,10 +6,10 @@ namespace Resourcerer.Identity.Utils;
 
 public class Permissions
 {
-    public readonly static List<ePermission> AllPermissions = Enum.GetValues<ePermission>()
+    public readonly static List<eAction> AllPermissions = Enum.GetValues<eAction>()
         .ToList();
 
-    public readonly static List<string> AllSections = Enum.GetValues<eSection>()
+    public readonly static List<string> AllSections = Enum.GetValues<eResource>()
         .Select(x => x.ToString())
         .ToList();
 
@@ -19,14 +19,14 @@ public class Permissions
 
         foreach (var kv in permissionsMap)
         {
-            if (!Enum.TryParse<eSection>(kv.Key, out var _))
+            if (!Enum.TryParse<eResource>(kv.Key, out var _))
             {
                 errors.Add($"Permission section {kv.Key} doesn't exist");
             }
 
             foreach (var permission in kv.Value)
             {
-                if (!Enum.TryParse<ePermission>(permission, out var _))
+                if (!Enum.TryParse<eAction>(permission, out var _))
                     errors.Add($"Permission {permission} doesn't exist");
             }
         }
@@ -63,7 +63,7 @@ public class Permissions
             var level = 0;
             foreach (var permission in kv.Value)
             {
-                var e = Enum.Parse<ePermission>(permission);
+                var e = Enum.Parse<eAction>(permission);
                 level |= (int)e;
             }
 
@@ -156,7 +156,7 @@ public class Permissions
 
             foreach (var sc in setClaims)
             {
-                var e = Enum.Parse<ePermission>(sc.Value);
+                var e = Enum.Parse<eAction>(sc.Value);
                 level = level | (int)e;
             }
 

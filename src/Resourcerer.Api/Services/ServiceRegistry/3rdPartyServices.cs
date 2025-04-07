@@ -8,7 +8,7 @@ using Microsoft.OpenApi.Models;
 using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.V1;
 using Resourcerer.Identity.Abstractions;
 using Resourcerer.Identity.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -51,15 +51,7 @@ public static partial class ServiceRegistry
             mapsterConfig!.NewConfig<TTarget, TSource>().PreserveReference(true); ;
         }
 
-        TwoWayMap<AppUser, AppUserDto>();
-        TwoWayMap<Category, CategoryDto>();
-        TwoWayMap<Company, CompanyDto>();
-        TwoWayMap<Recipe, RecipeDto>();
-        TwoWayMap<RecipeExcerpt, ExcerptDto>();
-        TwoWayMap<Instance, InstanceDto>();
-        TwoWayMap<Item, ItemDto>();
-        TwoWayMap<Price, PriceDto>();
-        TwoWayMap<UnitOfMeasure, UnitOfMeasureDto>();
+        TwoWayMap<ExampleEntity, V1ExampleDto>();
 
         mapsterConfig.Compile(failFast: true);
 

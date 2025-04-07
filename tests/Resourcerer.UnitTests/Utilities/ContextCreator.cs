@@ -9,7 +9,7 @@ namespace Resourcerer.UnitTests.Utilities;
 public class ContextCreator: IDisposable
 {
     public static AppIdentity SystemIdentity =
-        new AppIdentity(Guid.Empty, "system", "a@a.com", true, Guid.Empty);
+        new AppIdentity(Guid.Empty, "system", "a@a.com");
 
     private readonly SqliteConnection _connection;
     private readonly DbContextOptions<AppDbContext> _options;

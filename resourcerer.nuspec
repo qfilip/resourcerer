@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+
+    <id>Resourcerer.Solution.Template</id>
+    <version>1.0.0</version>
+    <title>Resourcerer Solution Template</title>
+    <authors>qfilip</authors>
+    <description>Resourcerer Solution Template for .NET 8</description>
+    <summary>
+      Architecture Solution Template for creating apps using Angular with ASP.NET Core.
+    </summary>
+
+    <!-- <projectUrl>https://github.com/JasonTaylorDev/CleanArchitecture</projectUrl>
+    <repository type="git" url="https://github.com/JasonTaylorDev/CleanArchitecture.git" branch="main" /> -->
+
+    <license type="expression">MIT</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>slution project template csharp dotnet angular</tags>
+    <!-- <icon>icon.png</icon> -->
+    <readme>README.md</readme>
+
+    <packageTypes>
+      <packageType name="Template" />
+    </packageTypes>
+
+  </metadata>
+
+  <files>
+    <file src=".template.config\icon.png" />
+    <file src="README.md" />
+    <file src=".\**" target="content" exclude="**\node_modules\**;**\tools\**;**\bin\**;**\obj\**;.\.vs\**;.\.vscode\**;**\ClientApp\dist\**;**\wwwroot\dist\**;content\Directory.Build.*;.\.git\**;.\.github\workflows\jekyll-gh-pages.yml;.\.github\workflows\package.yml;.\.github\workflows\codeql.yml;.\.github\workflows\build.yml;.\.github\ISSUE_TEMPLATE\**;.\.github\icon.png;.\.github\FUNDING.yml;.\CODE_OF_CONDUCT.md;.\LICENSE;.\README.md;.\CleanArchitecture.nuspec;.\src\Web\app.db;" />
+  </files>
+
+</package>

@@ -1,7 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Resourcerer.Identity.Constants;
 using Resourcerer.Identity.Models;
-using Resourcerer.Identity.Utils;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -31,14 +30,8 @@ public class JwtTokenService
             new Claim(Claims.ClaimId, identity.Id.ToString()),
             new Claim(Claims.ClaimUsername, identity.Name!),
             new Claim(Claims.ClaimEmail, identity.Email!.ToString()),
-            new Claim(Claims.ClaimIsAdmin, identity.Admin.ToString()),
-            new Claim(Claims.ClaimCompanyId, identity.CompanyId.ToString()),
-
-            new Claim(Claims.ClaimDisplayName, displayName),
-            new Claim(Claims.ClaimCompanyName, companyName)
+            new Claim(Claims.ClaimDisplayName, displayName)
         };
-
-        claims.AddRange(Permissions.GetClaimsFromPermissionsMap(permissionMap));
 
         return WriteToken(claims);
     }
