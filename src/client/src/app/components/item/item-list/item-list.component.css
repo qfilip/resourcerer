@@ -1,8 +1,0 @@
-.action-buttons {
-    display: flex;
-    justify-content: center;
-}
-
-tr > th:nth-child(2), tr > td:nth-child(2) {
-    text-align: right;
-}
