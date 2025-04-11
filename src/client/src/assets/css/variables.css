@@ -10,31 +10,38 @@
     --transparency: 0.2;
     --transparency-1: 0.8;
     
+    /* black */
     --sat1: calc(var(--sat) - 50%);
     --color1: hsl(var(--hue1), var(--sat1), 7%);
     --color1-t1: hsla(var(--hue1), var(--sat1), 7%, var(--transparency));
     --color1-t2: hsla(var(--hue1), var(--sat1), 7%, var(--transparency-1));
     
+    /* white */
     --color2: hsl(var(--hue1), var(--sat1), 100%);
     --color2-d1: hsl(var(--hue1), var(--sat1), 90%);
     --color2-d3: hsl(var(--hue1), var(--sat1), 70%);
     
+    /* grey */
     --color3: hsl(var(--hue1), var(--sat1), 40%);
     --color3-d1: hsl(var(--hue1), var(--sat1), 20%);
     
+    /* blue */
     --sat4: calc(var(--sat) + 40%);
     --color4: hsl(var(--hue4), var(--sat4), 54%);
     --color4-t: hsla(var(--hue4), var(--sat4), 54%, var(--transparency));
 
+    /* green */
     --sat5: calc(var(--sat) - 11%);
     --color5:hsl(var(--hue5), var(--sat5), 49%);
     --color5-t:hsla(var(--hue5), var(--sat5), 49%, var(--transparency));
     --color5-d1:hsl(var(--hue5), var(--sat5), 39%);
     
+    /* orange */
     --sat6: calc(var(--sat) + 50%);
     --color6:hsl(var(--hue6), var(--sat6), 50%);
     --color6-t:hsla(var(--hue6), var(--sat6), 50%, var(--transparency));
     
+    /* red */
     --sat7: calc(var(--sat) + 40%);
     --color7: hsl(var(--hue7), var(--sat7), 58%);
     --color7-l2: hsl(var(--hue7), var(--sat7), 78%);
