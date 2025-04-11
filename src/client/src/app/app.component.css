@@ -1,0 +1,26 @@
+hgroup {
+    background-color: var(--color1);
+    color: var(--color2-d1);
+
+    padding: var(--rem-xs) var(--rem);
+    box-shadow: 2px 2px 5px var(--color1);
+
+    & p {
+        margin: 0;
+    }
+
+    & a {
+        color: var(--color2);
+        cursor: pointer;
+    }
+
+    & a:hover {
+        text-shadow: 1px 1px 2px var(--color7);
+    }
+}
+
+main {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+

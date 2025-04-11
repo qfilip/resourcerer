@@ -1,0 +1,20 @@
+<dialog #dialog>
+    @let options = $options();
+    @if(options) {
+    <section>
+        <header>
+            {{ options.header }}
+        </header>
+        <main>
+            <p>
+                {{ options.message }}
+            </p>
+        </main>
+        <footer>
+            @for(btn of options.buttons; track $index) {
+            <button (click)="onButtonClicked(btn.action)" [class]="btn.class">{{ btn.label }}</button>
+            }
+        </footer>
+    </section>
+    }
+</dialog>

@@ -1,0 +1,40 @@
+.info {
+    --c1: var(--color4);
+    --c2: var(--color2);
+    --c3: var(--color4-t);
+}
+
+.ok {
+    --c1: var(--color5);
+    --c2: var(--color2);
+    --c3: var(--color5-t);
+}
+
+.warn {
+    --c1: var(--color6);
+    --c2: var(--color2);
+    --c3: var(--color6-t);
+}
+
+.error {
+    --c1: var(--color7);
+    --c2: var(--color2);
+    --c3: var(--color7-t);
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+.ellipsis {
+    overflow: hidden;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}

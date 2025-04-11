@@ -1,0 +1,30 @@
+form button {
+    width: 100%;
+}
+
+label {
+    font-size: var(--font-s);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+label.disabled > * {
+    color: var(--color2-d3);
+}
+
+input[readonly] {
+    background-color: var(--color2-d1);
+}
+
+.form-fields label {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+}
+
+.form-fields div.error {
+    color: var(--color7);
+    min-height: var(--rem-s);
+    font-size: var(--font-s);
+}

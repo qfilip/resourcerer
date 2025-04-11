@@ -1,0 +1,24 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    margin: auto;
+    width: 30%;
+}
+
+form button {
+    width: 100%;
+}
+
+fieldset div {
+    margin: var(--rem-xs) 0;
+}
+
+label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

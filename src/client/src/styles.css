@@ -1,0 +1,60 @@
+@import "./assets/css/buttons.css";
+@import "./assets/css/forms.css";
+@import "./assets/css/icons.css";
+@import "./assets/css/scrollbar.css";
+@import "./assets/css/tables.css";
+@import "./assets/css/variables.css";
+@import "./assets/css/classes.css";
+@import "./assets/css/dialogs.css";
+
+* {
+    transition: var(--transition);
+}
+
+html, body {
+    max-height: 99vh;
+    overflow-y: hidden;
+}
+
+html, body, h1, h2, h3, h4, h5, h6, ul {
+    margin: 0;
+    padding: 0;
+}
+
+html, body, button {
+    font-size: var(--font-base);
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    color: var(--color5);
+}
+
+a:hover {
+    color: var(--color2);
+    background-color: var(--color5);
+}
+
+details > summary {
+    list-style-type: '📁';
+}
+
+details[open] > summary {
+    list-style-type: '📂';
+}
+
+summary, .clickable {
+    cursor: pointer;
+}
+
+summary:hover, .hoverable:hover, .clickable:hover {
+    background-color: var(--color2-d1);
+}
+
+::selection {
+    color: var(--color2);
+    background: var(--color5);
+}

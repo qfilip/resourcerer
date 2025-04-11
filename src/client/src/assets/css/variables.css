@@ -1,0 +1,62 @@
+:root {
+    /* colors */
+    --sat: 50%;
+    --light: 50%;
+    --hue1: 0;
+    --hue4: 207;
+    --hue5: 122;
+    --hue6: 39;
+    --hue7: 4;
+    --transparency: 0.2;
+    --transparency-1: 0.8;
+    
+    --sat1: calc(var(--sat) - 50%);
+    --color1: hsl(var(--hue1), var(--sat1), 7%);
+    --color1-t1: hsla(var(--hue1), var(--sat1), 7%, var(--transparency));
+    --color1-t2: hsla(var(--hue1), var(--sat1), 7%, var(--transparency-1));
+    
+    --color2: hsl(var(--hue1), var(--sat1), 100%);
+    --color2-d1: hsl(var(--hue1), var(--sat1), 90%);
+    --color2-d3: hsl(var(--hue1), var(--sat1), 70%);
+    
+    --color3: hsl(var(--hue1), var(--sat1), 40%);
+    --color3-d1: hsl(var(--hue1), var(--sat1), 20%);
+    
+    --sat4: calc(var(--sat) + 40%);
+    --color4: hsl(var(--hue4), var(--sat4), 54%);
+    --color4-t: hsla(var(--hue4), var(--sat4), 54%, var(--transparency));
+
+    --sat5: calc(var(--sat) - 11%);
+    --color5:hsl(var(--hue5), var(--sat5), 49%);
+    --color5-t:hsla(var(--hue5), var(--sat5), 49%, var(--transparency));
+    --color5-d1:hsl(var(--hue5), var(--sat5), 39%);
+    
+    --sat6: calc(var(--sat) + 50%);
+    --color6:hsl(var(--hue6), var(--sat6), 50%);
+    --color6-t:hsla(var(--hue6), var(--sat6), 50%, var(--transparency));
+    
+    --sat7: calc(var(--sat) + 40%);
+    --color7: hsl(var(--hue7), var(--sat7), 58%);
+    --color7-l2: hsl(var(--hue7), var(--sat7), 78%);
+    --color7-t: hsla(var(--hue7), var(--sat7), 58%, var(--transparency));
+    
+    
+
+    /* layout */
+    --rem: 1rem;
+    --rem-s: calc(var(--rem) - .2rem);
+    --rem-xs: calc(var(--rem) - .4rem);
+    --rem-xxs: calc(var(--rem) - .7rem);
+    --rem-xxxs: calc(var(--rem) - .9rem);
+
+    /* font */
+    --font-xs: 0.8rem;
+    --font-s: 1rem;
+    --font-base: 1.1rem;
+    --font-l: 1.2rem;
+    --font-xl: 1.3rem;
+    --font-xxl: 1.4rem;
+
+    /* movement */
+    --transition: .3s;
+}

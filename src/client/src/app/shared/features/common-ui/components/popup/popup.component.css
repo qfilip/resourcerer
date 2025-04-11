@@ -1,0 +1,37 @@
+.popup {
+    position: absolute;
+    z-index: 1500;
+    right: 0;
+    
+    width: 20%;
+    max-width: 20%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    max-height: 90%;
+
+    transition: .3s;
+    background-color: transparent;
+    
+    & div {
+        background-color: var(--color2);
+
+        & section {
+            color: var(--c1, var(--color1));
+            background-color: var(--c3, var(--color2-d3));
+            
+            border-top: var(--rem-s) solid var(--c1, var(--color1));
+            border-left: none;
+            border-right: none;
+            border-bottom: var(--rem-s) solid var(--c1, var(--color1));
+            
+            padding: var(--rem-xxs) var(--rem-xs);
+            margin-bottom: var(--rem-xs);
+    
+            & p {
+                margin: 0;
+                color: var(--color1);
+                text-wrap: wrap;
+            }
+        }
+    }
+}

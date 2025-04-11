@@ -1,0 +1,43 @@
+i {
+    font-style: normal;
+}
+
+i.top::before {
+    content: '🔝';
+}
+
+i.eye::before {
+    content: '👁‍🗨';
+}
+
+i.plus::before {
+    content: '➕';
+}
+
+i.close::before {
+    content: '❌';
+}
+
+i.skull::before {
+    content: '💀';
+}
+
+i.change::before {
+    content: '🎭';
+}
+
+i.search::before {
+    content: '🔍';
+}
+
+i.doc::before {
+    content: '📃';
+}
+
+i.dir::before {
+    content: '📁';
+}
+
+i.dir-open::before {
+    content: '📂';
+}
