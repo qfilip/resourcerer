@@ -38,7 +38,3 @@
     text-overflow: ellipsis;
     max-width: 100%;
 }
-
-.subpage {
-    border-top: 1px solid var(--color3);
-}

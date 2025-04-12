@@ -16,24 +16,27 @@ export class HomePageComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private userService = inject(UserService);
   private sub: Subscription | null = null;
-  
-  $user = signal<IAppUserDto | null>(null);
-  $page = signal<{ route: string, icon: string } | null>(null);
 
   pages: { route: string, icon: string }[] = [
     { route: 'categories', icon: 'las la-folder-minus' },
-    { route: 'items', icon: 'las la-flask' }
-  ]
-  
+    { route: 'items', icon: 'las la-vial' }
+  ];
+
+  $user = signal<IAppUserDto | null>(null);
+  $page = signal<{ route: string, icon: string }>(this.pages[0]);
+
+
   constructor() {
     effect(() => {
       const user = this.userService.$user();
-      if(!user) return;
+      if (!user) return;
       this.$user.set(user);
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.router.navigate(['/home/categories']);
+
     this.sub = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map((event) => event as NavigationEnd)
@@ -42,7 +45,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
         const i = x.url.split('/');
         const last = i[i.length - 1];
         const page = this.pages.find(x => x.route === last);
-        if(page)
+        if (page)
           this.$page.set(page);
       }
     });

@@ -4,9 +4,9 @@
   <nav>
     <ul>
       @for(p of pages; track $index) {
-        <li [ngClass]="{'selected': page?.route === p.route }">
+        <li [ngClass]="{'selected': page.route === p.route }">
           <a [routerLink]="p.route">
-              <i [class]="p.icon"></i>
+            <i [class]="p.icon"></i>
           </a>
         </li>
       }
@@ -14,8 +14,8 @@
   </nav>
   <div class="subpages">
     <h2>
-      {{ user?.company?.name }}
+      {{ user?.company?.name }} | {{ page.route }}
     </h2>
-      <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
   </div>
 </section>
