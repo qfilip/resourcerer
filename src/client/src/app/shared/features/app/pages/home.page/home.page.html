@@ -1,20 +1,18 @@
 @let user = $user();
+@let page = $page();
 <section>
   <nav>
     <ul>
-      <li>
-        <a routerLink="categories">
-            <i class="las la-folder-minus"></i>
-        </a>
-      </li>
-      <li>
-        <a routerLink="items">
-            <i class="las la-flask"></i>
-        </a>
-      </li>
+      @for(p of pages; track $index) {
+        <li [ngClass]="{'selected': page?.route === p.route }">
+          <a [routerLink]="p.route">
+              <i [class]="p.icon"></i>
+          </a>
+        </li>
+      }
     </ul>
   </nav>
-  <div>
+  <div class="subpages">
     <h2>
       {{ user?.company?.name }}
     </h2>

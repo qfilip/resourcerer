@@ -12,7 +12,7 @@ li {
     transition: var(--transition-1);
 
     a {
-        font-size: var(--font-xxl);
+        font-size: var(--font-xxxl);
         color: var(--color5);
         background-color: var(--color1);
 
@@ -28,4 +28,8 @@ li.selected {
         color: var(--color1);
         background-color: var(--color5);
     }
+}
+
+.subpages {
+    width: 100%;
 }
