@@ -2,7 +2,7 @@
 <header>
     <h1>Resourcerer</h1>
     @if(loggedIn) {
-        <button ariaLabel="login">
+        <button (click)="logout()" ariaLabel="logout">
             <i class="las la-lock"></i>
         </button>
     }

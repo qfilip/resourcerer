@@ -21,4 +21,8 @@ export class AppHeaderComponent {
 			this._$loggedIn.set(loggedIn);
 		});
 	}
+
+	logout() {
+		this.userService.logout();
+	}
 }

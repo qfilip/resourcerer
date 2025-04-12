@@ -43,6 +43,8 @@ export class UserService {
             );
     }
 
+    logout = () => this.clearUser();
+
     getFromCache() {
         const sub = this._cache.retrieve()
             .subscribe({
@@ -55,6 +57,7 @@ export class UserService {
     }
 
     setUser(jwt: string) {
+
         this._cache.setCache(jwt);
         const jwtData = this.parseJwt(jwt);
         

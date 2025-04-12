@@ -7,6 +7,7 @@ header {
     
     color: var(--color2);
     background-color: var(--color1);
+    min-height: 5vh;
 }
 
 button {
