@@ -16,7 +16,7 @@ export class AppHeaderComponent {
 	
 	constructor() {
 		effect(() => {
-			const user = this.userService.user$();
+			const user = this.userService.$user();
 			const loggedIn = user !== null;
 			this._$loggedIn.set(loggedIn);
 		});

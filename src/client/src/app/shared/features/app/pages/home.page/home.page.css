@@ -1,0 +1,31 @@
+section {
+    display: flex;
+}
+
+nav {
+    color: var(--color2);
+    background-color: var(--color1);
+    min-height: 95vh;
+}
+
+li {
+    transition: var(--transition-1);
+
+    a {
+        font-size: var(--font-xxl);
+        color: var(--color5);
+        background-color: var(--color1);
+
+        &:hover {
+            color: var(--color1);
+            background-color: var(--color5);
+        }
+    }
+}
+
+li.selected {
+    a {
+        color: var(--color1);
+        background-color: var(--color5);
+    }
+}

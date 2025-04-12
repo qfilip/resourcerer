@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
     
     constructor() {
         effect(() => {
-            const user = this.userService.user$();
+            const user = this.userService.$user();
 			const route = user !== null ? 'home' : 'login';
 			this.router.navigate([route]);
         });

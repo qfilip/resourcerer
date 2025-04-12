@@ -1,0 +1,23 @@
+@let user = $user();
+<section>
+  <nav>
+    <ul>
+      <li>
+        <a routerLink="categories">
+            <i class="las la-folder-minus"></i>
+        </a>
+      </li>
+      <li>
+        <a routerLink="items">
+            <i class="las la-flask"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <div>
+    <h2>
+      {{ user?.company?.name }}
+    </h2>
+      <router-outlet></router-outlet>
+  </div>
+</section>

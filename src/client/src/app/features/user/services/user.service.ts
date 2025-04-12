@@ -13,11 +13,11 @@ import { UserApiService } from "./user.api.service";
 })
 export class UserService {
     private _cache: CacheFunctions<string>;
-    private _user$ = signal<IAppUserDto | null>(null);
-    private _jwt$ = signal<string | null>(null);
+    private _$user = signal<IAppUserDto | null>(null);
+    private _$jwt = signal<string | null>(null);
 
-    user$ = this._user$.asReadonly();
-    jwt$ = this._jwt$.asReadonly();
+    $user = this._$user.asReadonly();
+    $jwt = this._$jwt.asReadonly();
 
     constructor(
         private cacheService: LocalstorageCacheService,
@@ -61,14 +61,14 @@ export class UserService {
         this._cache.setCache(jwt);
         const jwtData = this.parseJwt(jwt);
         
-        this._user$.set(jwtData.dto);
-        this._jwt$.set(jwt);
+        this._$user.set(jwtData.dto);
+        this._$jwt.set(jwt);
     }
 
     clearUser() {
         this._cache.clear();
-        this._user$.set(null);
-        this._jwt$.set(null);
+        this._$user.set(null);
+        this._$jwt.set(null);
     }
 
     private parseJwt(jwt: string) {
