@@ -1,3 +1,9 @@
+@let loggedIn = $loggedIn();
 <header>
     <h1>Resourcerer</h1>
+    @if(loggedIn) {
+        <button ariaLabel="login">
+            <i class="las la-lock"></i>
+        </button>
+    }
 </header>

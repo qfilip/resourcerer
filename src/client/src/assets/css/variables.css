@@ -66,4 +66,5 @@
 
     /* movement */
     --transition: .3s;
+    --transition-1: .1s;
 }

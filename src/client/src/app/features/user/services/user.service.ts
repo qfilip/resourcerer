@@ -16,8 +16,8 @@ export class UserService {
     private _user$ = signal<IAppUserDto | null>(null);
     private _jwt$ = signal<string | null>(null);
 
-    user = this._user$.asReadonly();
-    jwt = this._jwt$.asReadonly();
+    user$ = this._user$.asReadonly();
+    jwt$ = this._jwt$.asReadonly();
 
     constructor(
         private cacheService: LocalstorageCacheService,
@@ -43,18 +43,15 @@ export class UserService {
             );
     }
 
-    isLoggedIn() {
-        return this._cache.retrieve().pipe(
-            map((jwt) => {
-                if (!jwt) return false;
-                
-                const jwtData = this.parseJwt(jwt);
-                this._user$.set(jwtData.dto);
-                this._jwt$.set(jwt);
-
-                return !jwtData.expired;
+    getFromCache() {
+        const sub = this._cache.retrieve()
+            .subscribe({
+                next: jwt => {
+                    if (!jwt) return;
+                    this.setUser(jwt);
+                    sub.unsubscribe();
+                }
             })
-        );
     }
 
     setUser(jwt: string) {

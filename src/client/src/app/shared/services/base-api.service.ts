@@ -8,7 +8,7 @@ import { PopupService } from "../features/common-ui/services/popup.service";
     providedIn: 'root'
 })
 export class BaseApiService {
-    protected apiUrl = 'http://localhost:5000';
+    protected apiUrl = 'http://localhost:24822/v1.0';
     
     protected http = inject(HttpClient);
     protected popup = inject(PopupService);

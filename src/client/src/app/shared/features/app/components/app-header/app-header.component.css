@@ -1,0 +1,20 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding: var(--rem-s) var(--rem);
+    
+    color: var(--color2);
+    background-color: var(--color1);
+}
+
+button {
+    color: var(--color2);
+    background-color: var(--color1);
+    transition: var(--transition-1);
+
+    &:hover {
+        color: var(--color7);
+    }
+}
