@@ -1,35 +1,35 @@
 section {
-    display: flex;
+  display: flex;
 }
 
 nav {
-    color: var(--color2);
-    background-color: var(--color1);
-    min-height: 95vh;
+  color: var(--color2);
+  background-color: var(--color1);
+  min-height: 95vh;
 }
 
 li {
-    transition: var(--transition-1);
-    font-size: var(--font-xxxl);
+  transition: var(--transition-1);
+  font-size: var(--font-xxxl);
 
-    a {
-        color: var(--color5-l1);
-        background-color: var(--color1);
+  a {
+    color: var(--color5-l1);
+    background-color: var(--color1);
 
-        &:hover {
-            color: var(--color1);
-            background-color: var(--color5-l1);
-        }
+    &:hover {
+      color: var(--color1);
+      background-color: var(--color5-l1);
     }
+  }
 }
 
 li.selected {
-    a {
-        color: var(--color1);
-        background-color: var(--color5-l1);
-    }
+  a {
+    color: var(--color1);
+    background-color: var(--color5-l1);
+  }
 }
 
 .subpages {
-    width: 100%;
+  width: 100%;
 }

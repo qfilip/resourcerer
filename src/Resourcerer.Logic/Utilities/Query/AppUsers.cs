@@ -17,6 +17,7 @@ public class AppUsers
         {
             Id = x.Id,
             Name = x.Name,
+            CompanyId = x.CompanyId,
             DisplayName = x.DisplayName,
             Email = x.Email,
             IsAdmin = x.IsAdmin,
