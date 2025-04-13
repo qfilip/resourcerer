@@ -11,7 +11,7 @@
       <app-create-category-form (onSubmitDone)="showComponent(null, null)"></app-create-category-form>
     }
     @else if(component === 'updateForm') {
-      <!-- <app-category-form [$updateItem]="$updateItem()" (onSubmitDone)="showComponent(null, null)"></app-category-form> -->
+      <app-update-category-form [$updateItem]="$updateItem()!" (onSubmitDone)="showComponent(null, null)"></app-update-category-form>
     }
   </div>
   <div>

@@ -5,9 +5,9 @@ import { PopupService } from '../../../../shared/features/common-ui/services/pop
 import { CommonModule } from '@angular/common';
 
 @Component({
+  standalone: true,
   selector: 'app-create-category-form',
   imports: [CommonModule],
-  standalone: true,
   templateUrl: './create-category-form.component.html',
   styleUrl: './create-category-form.component.css'
 })

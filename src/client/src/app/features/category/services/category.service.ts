@@ -35,13 +35,7 @@ export class CategoryService extends BaseApiService {
       ));
   }
 
-  updateCategory(id: string, newName: string, newParentCategoryId?: string) {
-    const dto: IV1UpdateCategory = {
-      categoryId: id,
-      newName: newName,
-      newParentCategoryId: newParentCategoryId
-    };
-
+  updateCategory(dto: IV1UpdateCategory) {
     return this.apiService.updateCategory(dto)
       .pipe(
         tap(x => this._$categories.update(xs => {

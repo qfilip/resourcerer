@@ -3,11 +3,12 @@ import { CategoryService } from '../../services/category.service';
 import { CategoryListComponent } from "../../components/category-list/category-list.component";
 import { CategoryFormComponent } from "../../components/create-category-form/create-category-form.component";
 import { ICategoryDto } from '../../../../shared/dtos/interfaces';
+import { UpdateCategoryFormComponent } from "../../components/update-category-form/update-category-form.component";
 
 @Component({
   standalone: true,
   selector: 'app-category-page',
-  imports: [CategoryListComponent, CategoryFormComponent],
+  imports: [CategoryListComponent, CategoryFormComponent, UpdateCategoryFormComponent],
   templateUrl: './category.page.html',
   styleUrl: './category.page.css'
 })
