@@ -7,7 +7,7 @@
     <li>
       <app-category [$category]="c"></app-category>
       <div class="flex">
-        <button ariaLabel="edit">
+        <button (click)="onUpdate.emit(c)" ariaLabel="edit">
           <i class="las la-pen-fancy"></i>
         </button>
         <button ariaLabel="delete">

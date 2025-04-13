@@ -1,11 +1,17 @@
 @let component = $component();
 <section class="subpage">
   <div>
-    <app-category-list (onCreate)="showComponent('createForm')"></app-category-list>
+    <app-category-list 
+      (onCreate)="showComponent('createForm', null)"
+      (onUpdate)="showComponent('updateForm', $event)">
+    </app-category-list>
   </div>
   <div>
     @if(component === 'createForm') {
-      <app-create-category-form (onCategoryCreated)="showComponent(null)"></app-create-category-form>
+      <app-create-category-form (onSubmitDone)="showComponent(null, null)"></app-create-category-form>
+    }
+    @else if(component === 'updateForm') {
+      <!-- <app-category-form [$updateItem]="$updateItem()" (onSubmitDone)="showComponent(null, null)"></app-category-form> -->
     }
   </div>
   <div>

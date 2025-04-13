@@ -1,18 +1,25 @@
+@let formData = $formData();
 <form (submit)="submit($event)">
   <fieldset>
     <legend>Create category</legend>
     <div>
       <label>
         <span>Name:</span>
-        <input #name (change)="onNameChanged(name.value)" type="text" />
+        <input #name (change)="onNameChanged(name.value)" [value]="formData?.name" type="text" />
       </label>
     </div>
     <div>
       <label>
+        <span>Has parent category:</span>
+        <input #parent (change)="onHasParentChanged(parent.checked)" [checked]="formData.parentCategoryId !== undefined" type="checkbox" />
+      </label>
+    </div>
+    <div>
+      <label [ngClass]="{'disabled': !parent.checked}">
         <span>Parent category:</span>
         <select #pcid (change)="onParentCategorySelected(pcid.value)">
           @for(x of categories; track $index) {
-            <option [value]="x.id" [selected]="selected.id === x.id">{{ x.name }}</option>
+            <option [value]="x.id" [selected]="selected?.id === x.id">{{ x.name }}</option>
           }
         </select>
       </label>

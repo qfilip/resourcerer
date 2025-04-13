@@ -15,6 +15,7 @@ export class CategoryListComponent {
   private categoryService = inject(CategoryService);
   $categories = signal<ICategoryDto[]>([]);
   onCreate = output();
+  onUpdate = output<ICategoryDto>();
   
   constructor() {
     effect(() => {

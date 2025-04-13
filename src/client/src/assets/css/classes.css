@@ -32,6 +32,11 @@
                                     supported by Chrome, Edge, Opera and Firefox */
 }
 
+.disabled > * {
+  color: var(--color3);
+  pointer-events: none;
+}
+
 .ellipsis {
     overflow: hidden;
     text-wrap: nowrap;
