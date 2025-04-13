@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 @Component({
+  standalone: true,
 	selector: 'app-header',
 	imports: [CommonModule],
 	templateUrl: './app-header.component.html',

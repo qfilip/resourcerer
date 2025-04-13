@@ -1,12 +1,15 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { ICategoryDto } from '../../../../shared/dtos/interfaces';
 import { CategoryService } from '../../services/category.service';
+import { CategoryComponent } from '../category/category.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
+  standalone: true,
   selector: 'app-category-list',
-  imports: [],
   templateUrl: './category-list.component.html',
-  styleUrl: './category-list.component.css'
+  styleUrl: './category-list.component.css',
+  imports: [CommonModule, CategoryComponent]
 })
 export class CategoryListComponent {
   private categoryService = inject(CategoryService);

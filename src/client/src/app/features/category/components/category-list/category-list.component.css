@@ -1,0 +1,9 @@
+li, .flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+li, button.create {
+  width: 30%;
+}

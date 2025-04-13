@@ -4,6 +4,7 @@ import { DialogOptions } from '../../models/dialog-options.model';
 import { DialogService } from '../../services/dialog.service';
 
 @Component({
+  standalone: true,
   selector: 'app-simple-dialog',
   imports: [],
   templateUrl: './simple-dialog.component.html',

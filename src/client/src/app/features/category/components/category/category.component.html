@@ -1,0 +1,13 @@
+@let category = $category();
+<details>
+  <summary>{{ category.name }}</summary>
+  <div>
+    <ul>
+      @for(child of category.childCategories; track $index) {
+        <li>
+          <app-category [$category]="child"></app-category>
+        </li>
+      }
+    </ul>
+  </div>
+</details>

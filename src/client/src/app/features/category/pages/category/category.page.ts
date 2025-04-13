@@ -3,7 +3,8 @@ import { CategoryService } from '../../services/category.service';
 import { CategoryListComponent } from "../../components/category-list/category-list.component";
 
 @Component({
-  selector: 'app-category',
+  standalone: true,
+  selector: 'app-category-page',
   imports: [CategoryListComponent],
   templateUrl: './category.page.html',
   styleUrl: './category.page.css'

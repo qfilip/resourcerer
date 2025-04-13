@@ -1,8 +1,19 @@
 @let categories = $categories();
+<button class="create" ariaLabel="create">
+  <i class="las la-plus"></i>
+</button>
 <ul>
   @for(c of categories; track $index) {
     <li>
-      {{ c.name }}
+      <app-category [$category]="c"></app-category>
+      <div class="flex">
+        <button>
+          <i class="las la-pen-fancy"></i>
+        </button>
+        <button>
+          <i class="las la-trash"></i>
+        </button>
+      </div>
     </li>
   }
 </ul>
