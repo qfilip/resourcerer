@@ -1,0 +1,8 @@
+@let categories = $categories();
+<ul>
+  @for(c of categories; track $index) {
+    <li>
+      {{ c.name }}
+    </li>
+  }
+</ul>

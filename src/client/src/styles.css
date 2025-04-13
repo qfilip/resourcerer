@@ -30,6 +30,10 @@ html, body, button {
     font-size: var(--font-base);
 }
 
+section.subpage {
+  padding: 0rem var(--rem);
+}
+
 ul {
     list-style: none;
 }
