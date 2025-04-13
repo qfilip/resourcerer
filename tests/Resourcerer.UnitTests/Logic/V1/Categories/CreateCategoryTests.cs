@@ -11,7 +11,7 @@ public class CreateCategoryTests : TestsBase
     private readonly CreateCategory.Handler _handler;
     public CreateCategoryTests()
     {
-        _handler = new CreateCategory.Handler(_ctx, new());
+        _handler = new CreateCategory.Handler(_ctx, GetMapster(), new());
     }
 
     [Fact]

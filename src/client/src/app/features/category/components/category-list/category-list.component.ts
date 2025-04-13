@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, output, signal } from '@angular/core';
 import { ICategoryDto } from '../../../../shared/dtos/interfaces';
 import { CategoryService } from '../../services/category.service';
 import { CategoryComponent } from '../category/category.component';
@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 export class CategoryListComponent {
   private categoryService = inject(CategoryService);
   $categories = signal<ICategoryDto[]>([]);
+  onCreate = output();
   
   constructor() {
     effect(() => {

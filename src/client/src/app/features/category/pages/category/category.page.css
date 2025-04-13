@@ -1,0 +1,8 @@
+.subpage {
+  display: flex;
+  justify-content: space-between;
+  & > div {
+    flex: 1 0 33%;
+    margin: 0rem var(--rem);
+  }
+}

@@ -1,0 +1,24 @@
+<form (submit)="submit($event)">
+  <fieldset>
+    <legend>Create category</legend>
+    <div>
+      <label>
+        <span>Name:</span>
+        <input #name (change)="onNameChanged(name.value)" type="text" />
+      </label>
+    </div>
+    <div>
+      <label>
+        <span>Parent category:</span>
+        <select #pcid (change)="onParentCategorySelected(pcid.value)">
+          @for(x of categories; track $index) {
+            <option [value]="x.id" [selected]="selected.id === x.id">{{ x.name }}</option>
+          }
+        </select>
+      </label>
+    </div>
+    <div>
+      <button type="submit">Submit</button>
+    </div>
+  </fieldset>
+</form>

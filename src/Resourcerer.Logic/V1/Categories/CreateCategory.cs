@@ -7,23 +7,27 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Utilities;
+using Resourcerer.Dtos.Entity;
+using MapsterMapper;
 
 namespace Resourcerer.Logic.V1;
 
 public class CreateCategory
 {
-    public class Handler : IAppHandler<V1CreateCategory, Unit>
+    public class Handler : IAppHandler<V1CreateCategory, CategoryDto>
     {
         private readonly AppDbContext _appDbContext;
+        private readonly IMapper _mapper;
         private readonly Validator _validator;
 
-        public Handler(AppDbContext appDbContext, Validator validator)
+        public Handler(AppDbContext appDbContext, IMapper mapper, Validator validator)
         {
             _appDbContext = appDbContext;
+            _mapper = mapper;
             _validator = validator;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(V1CreateCategory request)
+        public async Task<HandlerResult<CategoryDto>> Handle(V1CreateCategory request)
         {
             var existing = await _appDbContext.Categories
                 .Where(x => x.CompanyId == request.CompanyId)
@@ -33,14 +37,14 @@ public class CreateCategory
             if (existing.Any(x => x.Name == request.Name && x.ParentCategoryId == request.ParentCategoryId))
             {
                 var error = $"Category with name {request.Name} already exists";
-                return HandlerResult<Unit>.Rejected(error);
+                return HandlerResult<CategoryDto>.Rejected(error);
             }
 
             if (request.ParentCategoryId != null)
             {
                 if (!existing.Any(x => x.Id == request.ParentCategoryId))
                 {
-                    return HandlerResult<Unit>.Rejected("Parent category not found");
+                    return HandlerResult<CategoryDto>.Rejected("Parent category not found");
                 }
             }
 
@@ -54,7 +58,8 @@ public class CreateCategory
             _appDbContext.Categories.Add(entity);
             await _appDbContext.SaveChangesAsync();
 
-            return HandlerResult<Unit>.Ok(new Unit());
+            var dto = _mapper.Map<CategoryDto>(entity);
+            return HandlerResult<CategoryDto>.Ok(dto);
         }
 
         public ValidationResult Validate(V1CreateCategory request) => _validator.Validate(request);

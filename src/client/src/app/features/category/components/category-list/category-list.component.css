@@ -4,6 +4,6 @@ li, .flex {
   justify-content: space-between;
 }
 
-li, button.create {
-  width: 30%;
+.create {
+  width: 100%;
 }

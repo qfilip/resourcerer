@@ -1,3 +1,14 @@
+@let component = $component();
 <section class="subpage">
-  <app-category-list></app-category-list>
+  <div>
+    <app-category-list (onCreate)="showComponent('createForm')"></app-category-list>
+  </div>
+  <div>
+    @if(component === 'createForm') {
+      <app-create-category-form (onCategoryCreated)="showComponent(null)"></app-create-category-form>
+    }
+  </div>
+  <div>
+
+  </div>
 </section>

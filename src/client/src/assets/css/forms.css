@@ -1,5 +1,6 @@
 form button {
     width: 100%;
+    margin-top: var(--rem);
 }
 
 label {
@@ -28,3 +29,4 @@ input[readonly] {
     min-height: var(--rem-s);
     font-size: var(--font-s);
 }
+

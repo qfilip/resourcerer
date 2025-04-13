@@ -16,6 +16,9 @@
         background-color: var(--color2);
 
         & section {
+            & h1 {
+              padding: 0;
+            }
             color: var(--c1, var(--color1));
             background-color: var(--c3, var(--color2-d3));
             
