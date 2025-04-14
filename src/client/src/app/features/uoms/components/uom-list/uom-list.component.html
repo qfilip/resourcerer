@@ -1,0 +1,25 @@
+@let uoms = $displayedUoms();
+@let selectedUom = $selectedUom();
+<div>
+    <div class="flex">
+        <button (click)="onCreate.emit()" class="info" ariaLabel="create">
+          <i class="las la-plus"></i>
+        </button>
+        @if(selectedUom) {
+          <button (click)="onUpdate.emit(selectedUom)" class="warn" ariaLabel="edit">
+            <i class="las la-pen-fancy"></i>
+          </button>
+          <button (click)="onRemove.emit(selectedUom)" class="error" ariaLabel="delete">
+            <i class="las la-trash"></i>
+          </button>
+        }
+      </div>
+    <input #query (change)="onQueryChanged(query.value)" type="text" />
+    <ul>
+        @for(uom of uoms; track $index) {
+            <li (click)="setSelectedItem(uom)" [ngClass]="{'selected': selectedUom?.id === uom.id}" class="hoverable clickable">
+                {{ uom.name }}
+            </li>
+        }
+    </ul>
+</div>

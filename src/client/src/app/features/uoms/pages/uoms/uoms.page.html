@@ -1,3 +1,20 @@
 <section class="subpage">
-  <h2>Units of Measure</h2>
+  <div>
+    <app-uom-list
+      (onCreate)="showComponent('createForm', null)"
+      (onUpdate)="showComponent('updateForm', $event)"
+      (onRemove)="deleteUom($event)">
+    </app-uom-list>
+  </div>
+  <div>
+    @switch ($component()) {
+      @case ("createForm") {
+        <app-create-uom-form (onCreated)="showComponent(null, null)"></app-create-uom-form>
+      }
+      @case ("updateForm") {
+      }
+    }
+  </div>
+  <div>
+  </div>
 </section>

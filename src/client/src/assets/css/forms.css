@@ -18,15 +18,29 @@ input[readonly] {
     background-color: var(--color2-d1);
 }
 
-.form-fields label {
+.form-fields > div {
+  position: relative;
+}
+
+.form-fields > div > label {
     display: flex;
     justify-content: space-between;
     margin: 0;
 }
 
-.form-fields div.error {
-    color: var(--color7);
-    min-height: var(--rem-s);
-    font-size: var(--font-s);
+.form-fields > div > .error {
+  min-height: var(--rem-l);
+  max-height: var(--rem);
+  overflow-y: hidden;
+  color: var(--color7);
 }
+
+.form-fields > div > .error:hover {
+  max-height: fit-content;
+  position: absolute;
+  width: 100%;
+  z-index: 100;
+  background-color: var(--color2);
+}
+
 

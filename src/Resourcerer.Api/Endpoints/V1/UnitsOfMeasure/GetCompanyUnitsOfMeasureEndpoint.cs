@@ -25,5 +25,5 @@ public class GetCompanyUnitsOfMeasureEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.UnitsOfMeasure("company-all"), eHttpMethod.Get, Action, MapAuth);
+            EndpointMapper.UnitsOfMeasure(""), eHttpMethod.Get, Action, MapAuth);
 }

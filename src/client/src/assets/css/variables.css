@@ -57,6 +57,7 @@
     --rem-xs: calc(var(--rem) - .4rem);
     --rem-xxs: calc(var(--rem) - .7rem);
     --rem-xxxs: calc(var(--rem) - .9rem);
+    --rem-l: 1.2rem;
 
     /* font */
     --font-xs: 0.8rem;

@@ -16,7 +16,7 @@
   --c3: var(--color6-t);
 }
 
-.error {
+.danger {
   --c1: var(--color7);
   --c2: var(--color2);
   --c3: var(--color7-t);

@@ -26,7 +26,7 @@ export class PopupService {
         this.pushItem(message, 'warn', header); 
 
     error = (message: string, header = 'Error') =>
-        this.pushItem(message, 'error', header); 
+        this.pushItem(message, 'danger', header); 
 
     private pushItem(message: string, color: PopupColor, header: string) {
         this._popup$.next({

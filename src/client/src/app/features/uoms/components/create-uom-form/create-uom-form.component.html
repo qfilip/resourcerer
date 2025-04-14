@@ -1,0 +1,32 @@
+<form [formGroup]="form" (submit)="onSubmit($event)">
+  <fieldset>
+    <legend>Create Unit of Measure</legend>
+    <div class="form-fields">
+      <div>
+        <label>
+          <span>Name:</span>
+          <input formControlName="name" />
+        </label>
+        <div class="error">
+          @if(formSubmitted && form.controls.name.invalid) {
+            <div>Name must have at least 2 characters</div>
+         }
+        </div>
+      </div>
+  
+      <div>
+        <label>
+          <span>Symbol:</span>
+          <input formControlName="symbol" />
+        </label>
+        <div class="error">
+          @if(formSubmitted && form.controls.symbol.invalid) {
+            Symbol must have at least 1 character
+          }
+        </div>
+      </div>
+    </div>
+  
+    <button type="submit">Submit</button>
+  </fieldset>
+</form>

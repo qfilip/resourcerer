@@ -4,7 +4,6 @@ import { IAppUserDto } from '../../../../dtos/interfaces';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { filter, map, Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { LoaderService } from '../../../common-ui/services/loader.service';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +15,6 @@ import { LoaderService } from '../../../common-ui/services/loader.service';
 export class HomePageComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private userService = inject(UserService);
-  private ls = inject(LoaderService)
   private sub: Subscription | null = null;
   
   pages: { title: string, route: string, icon: string }[] = [
@@ -38,7 +36,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.ls.show();
     this.router.navigate(['/home/categories']);
 
     this.sub = this.router.events.pipe(
