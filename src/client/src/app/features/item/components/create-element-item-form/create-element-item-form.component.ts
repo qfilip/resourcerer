@@ -61,7 +61,7 @@ export class CreateElementItemFormComponent {
   createItem() {
     const dto = this.mapDtoFromForm();
 
-    this.itemController.createElementItem(dto)
+    this.itemService.createElementItem(dto)
       .subscribe({
         next: _ => this.onSubmitted.emit()
       })
