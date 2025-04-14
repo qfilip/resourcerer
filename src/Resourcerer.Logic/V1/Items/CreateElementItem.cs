@@ -7,23 +7,27 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Utilities;
+using Resourcerer.Dtos.Entity;
+using MapsterMapper;
 
 namespace Resourcerer.Logic.V1.Items;
 
 public static class CreateElementItem
 {
-    public class Handler : IAppHandler<V1CreateElementItem, Unit>
+    public class Handler : IAppHandler<V1CreateElementItem, ItemDto>
     {
         private readonly AppDbContext _appDbContext;
+        private readonly IMapper _mapper;
         private readonly Validator _validator;
 
-        public Handler(AppDbContext appDbContext, Validator validator)
+        public Handler(AppDbContext appDbContext, IMapper mapper, Validator validator)
         {
             _appDbContext = appDbContext;
+            _mapper = mapper;
             _validator = validator;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(V1CreateElementItem request)
+        public async Task<HandlerResult<ItemDto>> Handle(V1CreateElementItem request)
         {
             var category = await _appDbContext.Categories
                 .Select(x => new
@@ -35,7 +39,7 @@ public static class CreateElementItem
             if (category == null)
             {
                 var error = "Category not found";
-                return HandlerResult<Unit>.Rejected(error);
+                return HandlerResult<ItemDto>.Rejected(error);
             }
 
             var existing = await _appDbContext.Items
@@ -46,7 +50,7 @@ public static class CreateElementItem
             if (existing != null)
             {
                 var error = "Element with the same name and category already exist";
-                return HandlerResult<Unit>.Rejected(error);
+                return HandlerResult<ItemDto>.Rejected(error);
             }
 
             var uom = await _appDbContext.UnitsOfMeasure
@@ -55,7 +59,7 @@ public static class CreateElementItem
             if (uom == null)
             {
                 var error = "Requested unit of measure doesn't exist";
-                return HandlerResult<Unit>.Rejected(error);
+                return HandlerResult<ItemDto>.Rejected(error);
             }
 
             var item = new Item
@@ -79,7 +83,7 @@ public static class CreateElementItem
 
             await _appDbContext.SaveChangesAsync();
 
-            return HandlerResult<Unit>.Ok(new Unit());
+            return HandlerResult<ItemDto>.Ok(_mapper.Map<ItemDto>(item));
         }
 
         public ValidationResult Validate(V1CreateElementItem request) => _validator.Validate(request);

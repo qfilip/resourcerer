@@ -11,7 +11,7 @@ public class CreateElementItemTests : TestsBase
     private readonly CreateElementItem.Handler _handler;
     public CreateElementItemTests()
     {
-        _handler = new CreateElementItem.Handler(_ctx, new());
+        _handler = new CreateElementItem.Handler(_ctx, _mapper, new());
     }
 
     [Fact]

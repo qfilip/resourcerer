@@ -13,6 +13,7 @@ public class TestsBase
     protected readonly TestDbContext _ctx;
     protected readonly JsonSerializerOptions _serializerOptions;
     protected readonly Forger _forger;
+    protected readonly IMapper _mapper;
 
     public TestsBase()
     {
@@ -24,6 +25,7 @@ public class TestsBase
         };
 
         _forger = new Forger(_ctx, DF.FakingFunctions);
+        _mapper = GetMapster();
     }
 
     protected ILogger<T> MockLogger<T>() => A.Fake<ILogger<T>>();

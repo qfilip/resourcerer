@@ -1,0 +1,88 @@
+<form [formGroup]="form" (submit)="onSubmit($event)">
+  <div class="form-fields">
+    <label>
+      <span>Name:</span>
+      <input formControlName="name" />
+    </label>
+    <div class="error">
+      @if(formSubmitted && form.controls.name.invalid) { Name must have at
+      least 2 characters }
+    </div>
+
+    <label>
+      <span>Production Price:</span>
+      <input formControlName="productionPrice" />
+    </label>
+    <div class="error">
+      @if(formSubmitted && form.controls.productionPrice.invalid) {
+      Production price cannot be negative }
+    </div>
+
+    <label>
+      <span>Production Time (seconds):</span>
+      <input formControlName="productionTimeSeconds" />
+    </label>
+    <div class="error">
+      @if(formSubmitted && form.controls.productionTimeSeconds.invalid) {
+      Production time cannot be negative }
+    </div>
+
+    <label>
+      <span>Can expire:</span>
+      <input type="checkbox" formControlName="canExpire" />
+    </label>
+    <div class="error"></div>
+
+    <label [class.disabled]="!form.controls.canExpire.value">
+      <span>Expiration Time (seconds):</span>
+      <input formControlName="expirationTimeSeconds" [readOnly]="!form.controls.canExpire.value" />
+
+    </label>
+    <div class="error">
+      @if(formSubmitted && form.controls.expirationTimeSeconds.invalid)
+      {
+        Expiration time cannot be negative
+      }
+    </div>
+
+    <label>
+      <span>Unit Price:</span>
+      <input formControlName="unitPrice" />
+    </label>
+    <div class="error">
+      @if(formSubmitted && form.controls.unitPrice.invalid) {
+        Unit price cannot be negative
+      }
+    </div>
+
+    <label>
+      <span>Category:</span>
+      <select formControlName="categoryId">
+        @for(x of formData.categories; track $index) {
+        <option [ngValue]="x.id">{{ x.name }}</option>
+        }
+      </select>
+    </label>
+    <div class="error">
+      @if(formSubmitted && form.controls.categoryId.invalid) {
+        Category is required
+      }
+    </div>
+
+    <label>
+      <span>Unit of Measure:</span>
+      <select formControlName="unitOfMeasureId">
+        @for(x of formData.unitsOfMeasure; track $index) {
+        <option [ngValue]="x.id">{{ x.name }}</option>
+        }
+      </select>
+    </label>
+    <div class="error">
+      @if(formSubmitted && form.controls.unitOfMeasureId.invalid) {
+        Unit of Measure is required
+      }
+    </div>
+  </div>
+
+  <button (click)="onSubmit($event)">Submit</button>
+</form>
