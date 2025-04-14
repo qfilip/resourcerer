@@ -1,6 +1,6 @@
 @let category = $category();
 <details>
-  <summary>{{ category.name }}</summary>
+  <summary (click)="childs()">{{ category.name }}</summary>
   <div>
     <ul>
       @for(child of category.childCategories; track $index) {

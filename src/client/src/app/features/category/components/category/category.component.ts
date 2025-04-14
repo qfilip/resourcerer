@@ -10,4 +10,8 @@ import { ICategoryDto } from '../../../../shared/dtos/interfaces';
 })
 export class CategoryComponent {
   $category = input.required<ICategoryDto>();
+
+  childs() {
+    console.log(this.$category().childCategories);
+  }
 }

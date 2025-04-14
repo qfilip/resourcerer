@@ -22,7 +22,7 @@ export class CategoryService extends BaseApiService {
     
     this.apiService.getAllCompanyCategories(user.company.id)
       .subscribe({
-        next: xs => this.runReducers(xs)
+        next: xs => this.runReducers(CategoryUtils.flattenTree(xs))
       });
   }
 

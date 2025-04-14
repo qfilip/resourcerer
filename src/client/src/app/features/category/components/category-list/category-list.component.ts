@@ -22,7 +22,6 @@ export class CategoryListComponent {
   constructor() {
     effect(() => {
       const xs = this.categoryService.$categoryTree();
-      console.log(xs)
       this.$categories.set(xs);
     });
   }
