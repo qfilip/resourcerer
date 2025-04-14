@@ -1,2 +1,18 @@
-<section>
+<section class="subpage">
+    <div>
+        <app-item-list
+            (onCreate)="showComponent('createForm', null)"
+            (onUpdate)="showComponent('updateForm', $event)"
+            (onRemove)="removeItem($event)">
+        </app-item-list>
+    </div>
+    <div>
+        @switch ($component()) {
+            @case ("createForm") {
+            }
+            @case ("updateForm") {
+            }
+        }
+    </div>
+    <div></div>
 </section>

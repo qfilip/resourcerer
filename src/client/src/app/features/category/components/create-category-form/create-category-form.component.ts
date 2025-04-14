@@ -28,8 +28,11 @@ export class CategoryFormComponent implements OnInit {
   selected: ICategoryDto | null = null;
 
   ngOnInit(): void {
+    const selectedCategory = this.categoryService.$selectedCategory();
     this.categories = this.categoryService.$categories();
-    this.selected = this.categories[0];
+    selectedCategory === null
+      ? this.selected = this.categories[0]
+      : this.selected = selectedCategory;
   }
 
   onNameChanged(name: string) {
