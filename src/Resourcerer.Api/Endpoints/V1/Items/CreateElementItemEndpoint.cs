@@ -18,9 +18,9 @@ public class CreateElementItemEndpoint : IAppEndpoint
 
     internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(eResource claimType, ePermission[] claimValues)>
         {
-            (eSection.Item, new[] { ePermission.Create })
+            (eResource.Item, new[] { ePermission.Create })
         });
     }
 

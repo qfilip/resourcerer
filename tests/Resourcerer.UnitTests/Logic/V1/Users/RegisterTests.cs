@@ -59,6 +59,7 @@ public class RegisterTests : TestsBase
                     Id = user.Id,
                     Name = user.Name,
                     IsAdmin = user.IsAdmin,
+                    CompanyId = user.CompanyId,
                     DisplayName = user.DisplayName,
                     Email = user.Email,
                     PermissionsMap = user.PermissionsMap,

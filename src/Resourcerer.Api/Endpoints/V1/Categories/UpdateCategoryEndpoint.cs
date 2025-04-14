@@ -18,9 +18,9 @@ public class UpdateCategoryEndpoint : IAppEndpoint
 
     internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(eResource claimType, ePermission[] claimValues)>
         {
-            (eSection.Category, new[] { ePermission.Update })
+            (eResource.Category, new[] { ePermission.Update })
         });
     }
 

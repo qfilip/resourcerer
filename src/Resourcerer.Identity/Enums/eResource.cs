@@ -1,6 +1,6 @@
 ﻿namespace Resourcerer.Identity.Enums;
 
-public enum eSection
+public enum eResource
 {
     Company,
     User,

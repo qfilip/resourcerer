@@ -108,7 +108,7 @@ public class RegisterUserTests : TestsBase
             x.PermissionsMap = new Dictionary<string, string[]>
             {
                 {
-                    eSection.User.ToString(), ["one", "two"]
+                    eResource.User.ToString(), ["one", "two"]
                 }
             };
         });

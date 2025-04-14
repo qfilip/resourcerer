@@ -6,7 +6,7 @@ export enum eEntityStatus {
 	Active = 0,
 	Deleted = 99
 }
-export enum eSection {
+export enum eResource {
 	Company = 0,
 	User = 1,
 	Category = 2,

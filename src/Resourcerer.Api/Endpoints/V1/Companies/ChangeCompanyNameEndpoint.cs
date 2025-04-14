@@ -18,9 +18,9 @@ public class ChangeCompanyNameEndpoint : IAppEndpoint
 
     internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(eResource claimType, ePermission[] claimValues)>
         {
-            (eSection.Company, new[] { ePermission.Update })
+            (eResource.Company, new[] { ePermission.Update })
         });
     }
 

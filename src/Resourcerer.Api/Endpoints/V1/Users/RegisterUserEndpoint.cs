@@ -18,9 +18,9 @@ public class RegisterUserEndpoint : IAppEndpoint
 
     internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(eResource claimType, ePermission[] claimValues)>
         {
-            (eSection.User, new[] { ePermission.Create })
+            (eResource.User, new[] { ePermission.Create })
         });
     }
 

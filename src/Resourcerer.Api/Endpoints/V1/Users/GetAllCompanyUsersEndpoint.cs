@@ -17,9 +17,9 @@ public class GetAllCompanyUsersEndpoint : IAppEndpoint
 
     internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(eResource claimType, ePermission[] claimValues)>
         {
-            (eSection.User, new[] { ePermission.View })
+            (eResource.User, new[] { ePermission.View })
         });
     }
 

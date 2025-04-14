@@ -37,7 +37,7 @@ public static class EndpointMapper
 
     public static void AddAuthorization(
         RouteHandlerBuilder route,
-        List<(eSection claimType, ePermission[] claimValues)>? claims = null)
+        List<(eResource claimType, ePermission[] claimValues)>? claims = null)
     {
         if(!AppStaticData.Auth.Enabled) // set in appsetting.json
         {

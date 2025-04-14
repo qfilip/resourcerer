@@ -24,9 +24,9 @@ public class CreateInstanceOrderCancelledEventEndpoint : IAppEndpoint
 
     internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(eResource claimType, ePermission[] claimValues)>
         {
-            (eSection.InstanceEvent, new[] { ePermission.Create })
+            (eResource.InstanceEvent, new[] { ePermission.Create })
         });
     }
 

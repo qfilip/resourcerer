@@ -35,6 +35,7 @@ public class AppUsers
             Id = x.Id,
             Name = x.Name,
             DisplayName = x.DisplayName,
+            CompanyId = x.CompanyId,
             Email = x.Email,
             IsAdmin = x.IsAdmin,
             PermissionsMap = Permissions.GetPermissionsMap(x.Permissions!),

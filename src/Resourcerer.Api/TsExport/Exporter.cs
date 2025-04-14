@@ -106,7 +106,7 @@ public static class Exporter
         builder.ExportAsEnums(
             [
                 typeof(eEntityStatus),
-                typeof(eSection),
+                typeof(eResource),
                 typeof(ePermission)
             ],
             conf => conf.ExportTo("enums.ts")

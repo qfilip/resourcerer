@@ -24,9 +24,9 @@ public class FinishItemProductionOrderEndpoint : IAppEndpoint
 
     internal static void MapAuth(RouteHandlerBuilder endpoint)
     {
-        EndpointMapper.AddAuthorization(endpoint, new List<(eSection claimType, ePermission[] claimValues)>
+        EndpointMapper.AddAuthorization(endpoint, new List<(eResource claimType, ePermission[] claimValues)>
         {
-            (eSection.ItemEvent, new[] { ePermission.Create })
+            (eResource.ItemEvent, new[] { ePermission.Create })
         });
     }
 

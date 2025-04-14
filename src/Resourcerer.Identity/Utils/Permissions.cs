@@ -9,7 +9,7 @@ public class Permissions
     public readonly static List<ePermission> AllPermissions = Enum.GetValues<ePermission>()
         .ToList();
 
-    public readonly static List<string> AllSections = Enum.GetValues<eSection>()
+    public readonly static List<string> AllSections = Enum.GetValues<eResource>()
         .Select(x => x.ToString())
         .ToList();
 
@@ -19,7 +19,7 @@ public class Permissions
 
         foreach (var kv in permissionsMap)
         {
-            if (!Enum.TryParse<eSection>(kv.Key, out var _))
+            if (!Enum.TryParse<eResource>(kv.Key, out var _))
             {
                 errors.Add($"Permission section {kv.Key} doesn't exist");
             }

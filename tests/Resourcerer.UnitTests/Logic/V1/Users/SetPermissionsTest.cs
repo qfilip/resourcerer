@@ -20,7 +20,7 @@ public class SetPermissionsTest : TestsBase
         // arrange
         var permissions = new Dictionary<string, string[]>()
         {
-            { eSection.User.ToString(), [ePermission.View.ToString()] }
+            { eResource.User.ToString(), [ePermission.View.ToString()] }
         };
 
         var user = _forger.Fake<AppUser>(x => x.Permissions = JsonSerializer.Serialize(permissions));
@@ -32,7 +32,7 @@ public class SetPermissionsTest : TestsBase
             Permissions = new Dictionary<string, string[]>()
             {
                 {
-                    eSection.User.ToString(),
+                    eResource.User.ToString(),
                     [ePermission.View.ToString(), ePermission.Create.ToString()]
                 }
             }
@@ -71,11 +71,11 @@ public class SetPermissionsTest : TestsBase
             Permissions = new Dictionary<string, string[]>()
             {
                 {
-                    eSection.User.ToString().ToLower(),
+                    eResource.User.ToString().ToLower(),
                     [ePermission.View.ToString(), ePermission.Create.ToString()]
                 },
                 {
-                    eSection.User.ToString(),
+                    eResource.User.ToString(),
                     [ePermission.View.ToString().ToLower(), ePermission.Create.ToString().ToLower()]
                 }
             }
@@ -104,7 +104,7 @@ public class SetPermissionsTest : TestsBase
             Permissions = new Dictionary<string, string[]>()
             {
                 {
-                    eSection.User.ToString(), [ePermission.View.ToString()]
+                    eResource.User.ToString(), [ePermission.View.ToString()]
                 }
             }
         };
