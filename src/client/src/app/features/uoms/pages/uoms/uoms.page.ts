@@ -20,14 +20,13 @@ export class UomsPage {
   private uomService = inject(UomService);
   
   $component = signal<'createForm' | 'updateForm' | null>(null);
-  $itemToUpdate = signal<IUnitOfMeasureDto | undefined>(undefined);
+  $selectedUom = this.uomService.$selectedUom;
 
   ngOnInit(): void {
     this.uomService.getCompanyUnitsOfMeasure();
   }
 
-  showComponent(x: 'createForm' | 'updateForm' | null, data?: IUnitOfMeasureDto) {
-    this.$itemToUpdate.set(data);
+  showComponent(x: 'createForm' | 'updateForm' | null) {
     this.$component.set(x);
   }
 

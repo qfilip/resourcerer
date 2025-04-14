@@ -19,15 +19,14 @@ export class CategoryPage implements OnInit {
   private dialogService = inject(DialogService);
   private categoryService = inject(CategoryService);
   
-  $itemToUpdate = signal<ICategoryDto | undefined>(undefined);
+  $selectedCategory = this.categoryService.$selectedCategory;
   $component = signal<'createForm' | 'updateForm' | null>(null);
   
   ngOnInit(): void {
     this.categoryService.getAllCompanyCategories();
   }
 
-  showComponent(x: 'createForm' | 'updateForm' | null, data?: ICategoryDto) {
-    this.$itemToUpdate.set(data);
+  showComponent(x: 'createForm' | 'updateForm' | null) {
     this.$component.set(x);
   }
 

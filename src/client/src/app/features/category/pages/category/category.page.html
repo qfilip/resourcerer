@@ -3,7 +3,7 @@
   <div>
     <app-category-list 
       (onCreate)="showComponent('createForm')"
-      (onUpdate)="showComponent('updateForm', $event)"
+      (onUpdate)="showComponent('updateForm')"
       (onRemove)="removeCategory($event)">
     </app-category-list>
   </div>
@@ -12,7 +12,7 @@
       <app-create-category-form (onSubmitDone)="showComponent(null)"></app-create-category-form>
     }
     @else if(component === 'updateForm') {
-      <app-update-category-form [$updateItem]="$itemToUpdate()!" (onSubmitDone)="showComponent(null)"></app-update-category-form>
+      <app-update-category-form [$updateItem]="$selectedCategory()!" (onSubmitDone)="showComponent(null)"></app-update-category-form>
     }
   </div>
   <div>

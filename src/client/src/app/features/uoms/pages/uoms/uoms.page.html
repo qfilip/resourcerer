@@ -2,7 +2,7 @@
   <div>
     <app-uom-list
       (onCreate)="showComponent('createForm')"
-      (onUpdate)="showComponent('updateForm', $event)"
+      (onUpdate)="showComponent('updateForm')"
       (onRemove)="deleteUom($event)">
     </app-uom-list>
   </div>
@@ -12,7 +12,7 @@
         <app-create-uom-form (onSubmitDone)="showComponent(null)"></app-create-uom-form>
       }
       @case ("updateForm") {
-        <app-update-uom-form [$uom]="$itemToUpdate()!"></app-update-uom-form>
+        <app-update-uom-form [$uom]="$selectedUom()!"></app-update-uom-form>
       }
     }
   </div>
