@@ -9,8 +9,9 @@
 }
 
 input {
-width: 100%;
-margin-bottom: var(--rem);
+  width: 100%;
+  margin-bottom: var(--rem);
+  box-sizing: border-box;
 }
 
 .selected {

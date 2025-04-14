@@ -28,15 +28,25 @@ input[readonly] {
     margin: 0;
 }
 
-.form-fields > div > .error {
-  min-height: var(--rem-l);
-  max-height: var(--rem);
+.form-fields > div > small {
+  display: block;
+  font-size: var(--font-form-error);
+  min-height: var(--font-form-error);
+  max-height: var(--font-form-error);
   overflow-y: hidden;
   color: var(--color7);
+  padding: 0rem var(--rem-xxxs);
 }
 
-.form-fields > div > .error:hover {
-  max-height: fit-content;
+.form-fields > div > small:has(*):hover {
+  min-height: calc(var(--font-form-error) * 5);
+  max-height: calc(var(--font-form-error) * 5);
+
+  border-left: 1px solid var(--color7);
+  border-right: 1px solid var(--color7);
+  border-bottom: 1px solid var(--color7);
+
+  overflow-y: auto;
   position: absolute;
   width: 100%;
   z-index: 100;
