@@ -9,9 +9,9 @@
       </label>
     </div>
     <div>
-      <label>
+      <label [ngClass]="{'disabled': categories.length === 0}">
         <span>Has parent category:</span>
-        <input #parent (change)="onHasParentChanged(parent.checked)" [(checked)]="formData.newParentCategoryId" type="checkbox" />
+        <input #parent (change)="onHasParentChanged(parent.checked)" [checked]="formData.newParentCategoryId" type="checkbox" />
       </label>
     </div>
     <div>

@@ -3,7 +3,8 @@
   <div>
     <app-category-list 
       (onCreate)="showComponent('createForm', null)"
-      (onUpdate)="showComponent('updateForm', $event)">
+      (onUpdate)="showComponent('updateForm', $event)"
+      (onRemove)="removeCategory($event)">
     </app-category-list>
   </div>
   <div>

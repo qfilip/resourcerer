@@ -4,6 +4,7 @@ import { CategoryApiService } from "./category.api.service";
 import { UserService } from "../../user/services/user.service";
 import { ICategoryDto, IV1CreateCategory, IV1UpdateCategory } from "../../../shared/dtos/interfaces";
 import { tap } from "rxjs";
+import { CategoryUtils } from "../category.utils";
 
 @Injectable({ providedIn: 'root' })
 export class CategoryService extends BaseApiService {
@@ -11,7 +12,10 @@ export class CategoryService extends BaseApiService {
   private userService = inject(UserService);
 
   private _$categories = signal<ICategoryDto[]>([]);
+  private _$categoryTree = signal<ICategoryDto[]>([]);
+  
   $categories = this._$categories.asReadonly();
+  $categoryTree = this._$categoryTree.asReadonly();
 
   getAllCompanyCategories() {
     const user = this.userService.$user()!;
@@ -31,17 +35,35 @@ export class CategoryService extends BaseApiService {
 
     return this.apiService.createCategory(request)
       .pipe(
-        tap(x => this._$categories.update(xs => xs.concat(x))
-      ));
+        tap(x => {
+          const xs = this._$categories().concat(x);
+          this.runReducers(xs);
+        })
+      );
   }
 
   updateCategory(dto: IV1UpdateCategory) {
     return this.apiService.updateCategory(dto)
       .pipe(
-        tap(x => this._$categories.update(xs => {
-          xs = xs.filter(c => c.id !== x.id);
-          return xs.concat(x);
+        tap(x => {
+          const xs = this._$categories().filter(c => c.id !== x.id);
+          this.runReducers(xs.concat(x));
         })
-      ));
+      );
+  }
+
+  removeCategory(dto: ICategoryDto) {
+    return this.apiService.removeCategory(dto)
+      .pipe(
+        tap(id => {
+          const xs = this._$categories().filter(c => c.id !== id);
+          this.runReducers(xs);
+        })
+      );
+  }
+
+  private runReducers(xs: ICategoryDto[]) {
+    this._$categories.set(xs);
+    this._$categoryTree.set(CategoryUtils.mapTree(xs));
   }
 }

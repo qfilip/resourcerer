@@ -21,4 +21,8 @@ export class CategoryApiService extends BaseApiService {
     const url = this.url + '/update';
     return this.http.post<ICategoryDto>(url, dto).pipe(this.withLoader());
   }
+
+  removeCategory(dto: ICategoryDto) {
+    return this.http.delete<string>(this.url, { body: dto }).pipe(this.withLoader());
+  }
 }

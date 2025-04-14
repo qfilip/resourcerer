@@ -10,7 +10,7 @@
         <button (click)="onUpdate.emit(c)" ariaLabel="edit">
           <i class="las la-pen-fancy"></i>
         </button>
-        <button ariaLabel="delete">
+        <button (click)="onRemove.emit(c)" ariaLabel="delete">
           <i class="las la-trash"></i>
         </button>
       </div>

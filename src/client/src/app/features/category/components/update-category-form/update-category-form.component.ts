@@ -30,7 +30,10 @@ export class UpdateCategoryFormComponent {
   constructor() {
     effect(() => {
       const item = this.$updateItem();
-      this.selected = this.categories.find(x => x.id === item.parentCategoryId);
+      const categories = this.categoryService.$categories();
+      
+      this.setAvailableCategories(categories, item);
+
       this.$formData.set({
         categoryId: item.id,
         newName: item.name,
@@ -40,8 +43,16 @@ export class UpdateCategoryFormComponent {
   }
 
   ngOnInit(): void {
-    this.categories = this.categoryService.$categories();
-    this.selected = this.categories[0];
+    const categories = this.categoryService.$categories();
+    const updateItem = this.$updateItem();
+    this.setAvailableCategories(categories, updateItem);
+  }
+
+  private setAvailableCategories(xs: ICategoryDto[], updateItem: ICategoryDto) {
+    this.categories = xs.filter(x => x.id !== updateItem.id);
+    if(updateItem.parentCategoryId) {
+      this.selected = this.categories.find(x => x.id === updateItem.parentCategoryId);
+    }
   }
 
   onNameChanged(name: string) {
@@ -52,7 +63,8 @@ export class UpdateCategoryFormComponent {
     if (checked && this.selected === null) {
       this.popup.warn('No category exists to be a parent');
     }
-    this.$formData.update(x => ({ ...x, newParentCategoryId: this.selected?.id }));
+    const parentId = checked ? this.selected?.id : undefined;
+    this.$formData.update(x => ({ ...x, newParentCategoryId: parentId }));
   }
 
   onParentCategorySelected(parentId?: string) {
@@ -63,6 +75,7 @@ export class UpdateCategoryFormComponent {
   submit(ev: Event) {
     ev.preventDefault();
     const formData = this.$formData()!;
+    
     const notEmpty = (x: string) => x && x.length > 0;
 
     if (!notEmpty(formData.newName)) {

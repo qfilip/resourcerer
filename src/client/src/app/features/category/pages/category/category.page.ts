@@ -4,6 +4,8 @@ import { CategoryListComponent } from "../../components/category-list/category-l
 import { CategoryFormComponent } from "../../components/create-category-form/create-category-form.component";
 import { ICategoryDto } from '../../../../shared/dtos/interfaces';
 import { UpdateCategoryFormComponent } from "../../components/update-category-form/update-category-form.component";
+import { DialogService } from '../../../../shared/features/common-ui/services/dialog.service';
+import { PopupService } from '../../../../shared/features/common-ui/services/popup.service';
 
 @Component({
   standalone: true,
@@ -13,7 +15,10 @@ import { UpdateCategoryFormComponent } from "../../components/update-category-fo
   styleUrl: './category.page.css'
 })
 export class CategoryPage implements OnInit {
+  private popup = inject(PopupService);
+  private dialogService = inject(DialogService);
   private categoryService = inject(CategoryService);
+  
   $updateItem = signal<ICategoryDto | null>(null);
   $component = signal<'createForm' | 'updateForm' | null>(null);
   
@@ -24,5 +29,14 @@ export class CategoryPage implements OnInit {
   showComponent(x: 'createForm' | 'updateForm' | null, data: ICategoryDto | null) {
     this.$component.set(x);
     this.$updateItem.set(data);
+  }
+
+  removeCategory(dto: ICategoryDto) {
+    this.dialogService.openCheck(
+      `Remove category ${dto.name}?`,
+      () =>
+        this.categoryService.removeCategory(dto)
+          .subscribe({ next: () => this.popup.ok('Category removed')})
+    );
   }
 }

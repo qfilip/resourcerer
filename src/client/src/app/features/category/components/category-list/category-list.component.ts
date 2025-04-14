@@ -14,9 +14,11 @@ import { CommonModule } from '@angular/common';
 export class CategoryListComponent {
   private categoryService = inject(CategoryService);
   $categories = signal<ICategoryDto[]>([]);
+  
   onCreate = output();
   onUpdate = output<ICategoryDto>();
-  
+  onRemove = output<ICategoryDto>();
+
   constructor() {
     effect(() => {
       const xs = this.categoryService.$categories();
