@@ -1,19 +1,22 @@
-@let categories = $categories();
-<button (click)="onCreate.emit()" class="create" ariaLabel="create">
-  <i class="las la-plus"></i>
-</button>
+@let trees = $categoryTrees();
+@let selectedTree = $selectedTree();
+<div class="flex">
+  <button (click)="onCreate.emit()" ariaLabel="create">
+    <i class="las la-plus"></i>
+  </button>
+  @if(selectedTree) {
+    <button (click)="onUpdate.emit(selectedTree)" ariaLabel="edit">
+      <i class="las la-pen-fancy"></i>
+    </button>
+    <button (click)="onRemove.emit(selectedTree)" ariaLabel="delete">
+      <i class="las la-trash"></i>
+    </button>
+  }
+</div>
 <ul>
-  @for(c of categories; track $index) {
+  @for(tree of trees; track $index) {
     <li>
-      <app-category [$category]="c"></app-category>
-      <div class="flex">
-        <button (click)="onUpdate.emit(c)" ariaLabel="edit">
-          <i class="las la-pen-fancy"></i>
-        </button>
-        <button (click)="onRemove.emit(c)" ariaLabel="delete">
-          <i class="las la-trash"></i>
-        </button>
-      </div>
+      <app-category [$category]="tree"></app-category>
     </li>
   }
 </ul>

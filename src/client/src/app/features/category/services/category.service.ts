@@ -12,10 +12,14 @@ export class CategoryService extends BaseApiService {
   private userService = inject(UserService);
 
   private _$categories = signal<ICategoryDto[]>([]);
-  private _$categoryTree = signal<ICategoryDto[]>([]);
+  private _$categoryTrees = signal<ICategoryDto[]>([]);
+  private _$selectedCategory = signal<ICategoryDto | null>(null);
   
   $categories = this._$categories.asReadonly();
-  $categoryTree = this._$categoryTree.asReadonly();
+  $categoryTrees = this._$categoryTrees.asReadonly();
+  $selectedCategory = this._$selectedCategory.asReadonly();
+
+  selectCategory = (x: ICategoryDto) => this._$selectedCategory.set(x);
 
   getAllCompanyCategories() {
     const user = this.userService.$user()!;
@@ -64,6 +68,7 @@ export class CategoryService extends BaseApiService {
 
   private runReducers(xs: ICategoryDto[]) {
     this._$categories.set(xs);
-    this._$categoryTree.set(CategoryUtils.mapTree(xs));
+    this._$categoryTrees.set(CategoryUtils.mapTree(xs));
+    this._$selectedCategory.set(null);
   }
 }

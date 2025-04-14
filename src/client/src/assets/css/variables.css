@@ -23,6 +23,7 @@
     
     /* grey */
     --color3: hsl(var(--hue1), var(--sat1), 40%);
+    --color3-t1: hsla(var(--hue1), var(--sat1), 40%, var(--transparency-1));
     --color3-d1: hsl(var(--hue1), var(--sat1), 20%);
     
     /* blue */

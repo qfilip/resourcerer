@@ -1,3 +1,7 @@
 ul {
     padding-left: var(--rem);
 }
+
+.selected {
+    background-color: var(--color2-d1);
+}

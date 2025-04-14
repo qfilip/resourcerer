@@ -1,6 +1,7 @@
 @let category = $category();
+@let selected = $selected();
 <details>
-  <summary (click)="childs()">{{ category.name }}</summary>
+  <summary (click)="selectCategory()" [ngClass]="{'selected': selected }">{{ category.name }}</summary>
   <div>
     <ul>
       @for(child of category.childCategories; track $index) {

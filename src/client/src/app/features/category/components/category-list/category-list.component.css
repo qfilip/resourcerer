@@ -1,9 +1,9 @@
-li, .flex {
+.flex {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.create {
-  width: 100%;
+  
+  button {
+    flex: 1;
+  }
 }
