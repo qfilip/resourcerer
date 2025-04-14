@@ -1,27 +1,37 @@
-<form [formGroup]="form" (submit)="onSubmit($event)">
+<form (submit)="onSubmit($event)">
   <fieldset>
     <legend>Create Unit of Measure</legend>
     <div class="form-fields">
       <div>
         <label>
           <span>Name:</span>
-          <input formControlName="name" />
+          <input #name (change)="f.controls.name.setValue(name.value)" type="text" />
         </label>
         <small>
-          @if(formSubmitted && form.controls.name.invalid) {
-            <div>Name must have at least 2 characters</div>
-         }
+          @let nameErrors = f.controls.name.errors;
+          @if(nameErrors.length > 0) {
+            <ul>
+            @for(e of nameErrors; track $index) {
+              <li>{{ e }}</li>
+            }
+            </ul>
+          }
         </small>
       </div>
   
       <div>
         <label>
           <span>Symbol:</span>
-          <input formControlName="symbol" />
+          <input #symbol (change)="f.controls.symbol.setValue(symbol.value)" type="text" />
         </label>
         <small class="expandable">
-          @if(formSubmitted && form.controls.symbol.invalid) {
-            <div>Symbol must have at least 1 character</div>
+          @let symbolErrors = f.controls.symbol.errors;
+          @if(symbolErrors.length > 0) {
+            <ul>
+              @for(e of symbolErrors; track $index) {
+                <li>{{ e }}</li>
+              }
+            </ul>
           }
         </small>
       </div>

@@ -1,12 +1,12 @@
 import { Component, inject, output } from '@angular/core';
 import { UomService } from '../../services/uom.service';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IV1CreateUnitOfMeasure } from '../../../../shared/dtos/interfaces';
-import { Utils } from '../../../../shared/services/utils';
+import { FormObject, FormObjectControl } from '../../../../shared/utils/forms';
+import { Validation } from '../../../../shared/utils/validation';
 
 @Component({
   selector: 'app-create-uom-form',
-  imports: [ReactiveFormsModule],
+  imports: [],
   templateUrl: './create-uom-form.component.html',
   styleUrl: './create-uom-form.component.css'
 })
@@ -15,25 +15,32 @@ export class CreateUomFormComponent {
 
   onCreated = output();
 
-  form = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    symbol: new FormControl('', [Validators.required, Validators.minLength(2)])
+  f = new FormObject({
+    name: new FormObjectControl<string>({
+      value: '',
+      validators: [
+        { fn: Validation.notNull, error: 'Name is required' },
+        { fn: Validation.minLength(2), error: 'Name must be at least 2 characters long' }
+      ]
+    }),
+    symbol: new FormObjectControl<string>({
+      value: '',
+      validators: [
+        { fn: Validation.notNull, error: 'Symbol is required' },
+        { fn: Validation.minLength(2), error: 'Name must be at least 2 characters long' }
+      ]
+    })
   });
-  
-  formSubmitted = false;
 
   onSubmit(ev: Event) {
     ev.preventDefault();
-    console.log(Utils.getFormValidationErrors(this.form));
-    this.formSubmitted = true;
-
-    if (!this.form.valid) {
+    if (!this.f.valid) {
       return;
     }
 
     const dto = {
-      name: this.form.controls.name.value!,
-      symbol: this.form.controls.symbol.value!,
+      name: this.f.controls.name.data.value!,
+      symbol: this.f.controls.symbol.data.value!,
     } as IV1CreateUnitOfMeasure;
 
     this.uomService.createUnitOfMeasure(dto)

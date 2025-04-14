@@ -1,7 +1,7 @@
 import { FormGroup, ValidationErrors } from "@angular/forms";
 import { PopupService } from "../features/common-ui/services/popup.service";
 
-export class Utils {
+export class Functions {
     static makeId = () => Math.random().toString(16).substr(2, 8);
 
     static printErrors(service: PopupService, errors: string[]) {
