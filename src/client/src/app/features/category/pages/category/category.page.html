@@ -2,17 +2,17 @@
 <section class="subpage">
   <div>
     <app-category-list 
-      (onCreate)="showComponent('createForm', null)"
+      (onCreate)="showComponent('createForm')"
       (onUpdate)="showComponent('updateForm', $event)"
       (onRemove)="removeCategory($event)">
     </app-category-list>
   </div>
   <div>
     @if(component === 'createForm') {
-      <app-create-category-form (onSubmitDone)="showComponent(null, null)"></app-create-category-form>
+      <app-create-category-form (onSubmitDone)="showComponent(null)"></app-create-category-form>
     }
     @else if(component === 'updateForm') {
-      <app-update-category-form [$updateItem]="$updateItem()!" (onSubmitDone)="showComponent(null, null)"></app-update-category-form>
+      <app-update-category-form [$updateItem]="$itemToUpdate()!" (onSubmitDone)="showComponent(null)"></app-update-category-form>
     }
   </div>
   <div>

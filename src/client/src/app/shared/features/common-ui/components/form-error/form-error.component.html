@@ -1,0 +1,11 @@
+@let errors = $errors();
+@let expandable = $expandable();
+<small [ngClass]="{'expandable': expandable}">
+    @if(errors.length > 0) {
+      <ul>
+      @for(e of errors; track $index) {
+        <li>{{ e }}</li>
+      }
+      </ul>
+    }
+</small>

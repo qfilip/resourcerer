@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Signal, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, Signal, signal } from '@angular/core';
 import { CategoryService } from '../../services/category.service';
 import { CategoryListComponent } from "../../components/category-list/category-list.component";
 import { CategoryFormComponent } from "../../components/create-category-form/create-category-form.component";
@@ -19,16 +19,16 @@ export class CategoryPage implements OnInit {
   private dialogService = inject(DialogService);
   private categoryService = inject(CategoryService);
   
-  $updateItem = signal<ICategoryDto | null>(null);
+  $itemToUpdate = signal<ICategoryDto | undefined>(undefined);
   $component = signal<'createForm' | 'updateForm' | null>(null);
   
   ngOnInit(): void {
     this.categoryService.getAllCompanyCategories();
   }
 
-  showComponent(x: 'createForm' | 'updateForm' | null, data: ICategoryDto | null) {
+  showComponent(x: 'createForm' | 'updateForm' | null, data?: ICategoryDto) {
+    this.$itemToUpdate.set(data);
     this.$component.set(x);
-    this.$updateItem.set(data);
   }
 
   removeCategory(dto: ICategoryDto) {

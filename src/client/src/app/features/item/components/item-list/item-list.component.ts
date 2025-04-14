@@ -18,9 +18,9 @@ export class ItemListComponent {
   $selectedItem = this.itemService.$selectedItem;
   $displayedItems = computed(() => {
     const items = this.$items();
-    const query = this.$query();
+    const query = this.$query().toLowerCase();
     
-    return items.filter(x => x.name.includes(query));
+    return items.filter(x => x.name.toLowerCase().includes(query));
   });
 
   onCreate = output();

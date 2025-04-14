@@ -1,14 +1,14 @@
 @let trees = $categoryTrees();
 @let selectedTree = $selectedTree();
 <div class="flex">
-  <button (click)="onCreate.emit()" ariaLabel="create">
+  <button (click)="onCreate.emit()" class="info" ariaLabel="create">
     <i class="las la-plus"></i>
   </button>
   @if(selectedTree) {
-    <button (click)="onUpdate.emit(selectedTree)" ariaLabel="edit">
+    <button (click)="onUpdate.emit(selectedTree)" class="warn" ariaLabel="edit">
       <i class="las la-pen-fancy"></i>
     </button>
-    <button (click)="onRemove.emit(selectedTree)" ariaLabel="delete">
+    <button (click)="onRemove.emit(selectedTree)" class="danger" ariaLabel="delete">
       <i class="las la-trash"></i>
     </button>
   }

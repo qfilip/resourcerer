@@ -1,0 +1,27 @@
+@let form = $form();
+@if(form) {
+  <form (submit)="onSubmit($event)">
+    <fieldset>
+      <legend>Create Unit of Measure</legend>
+      <div class="form-fields">
+        <div>
+          <label>
+            <span>Name:</span>
+            <input #name (change)="form.controls.name.setValue(name.value)" [value]="form.controls.name.data.value" type="text" />
+          </label>
+          <app-form-error [$errors]="form.controls.name.errors"></app-form-error>
+        </div>
+  
+        <div>
+          <label>
+            <span>Symbol:</span>
+            <input #symbol (change)="form.controls.symbol.setValue(symbol.value)" [value]="form.controls.symbol.data.value" type="text" />
+          </label>
+          <app-form-error [$errors]="form.controls.symbol.errors"></app-form-error>
+        </div>
+      </div>
+  
+      <button type="submit">Submit</button>
+    </fieldset>
+  </form>
+}

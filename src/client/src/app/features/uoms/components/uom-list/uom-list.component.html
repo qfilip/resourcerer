@@ -14,7 +14,7 @@
           </button>
         }
       </div>
-    <input #query (change)="onQueryChanged(query.value)" type="text" />
+    <input #query (keyup)="onQueryChanged(query.value)" type="text" />
     <ul>
         @for(uom of uoms; track $index) {
             <li (click)="setSelectedItem(uom)" [ngClass]="{'selected': selectedUom?.id === uom.id}" class="hoverable clickable">

@@ -9,12 +9,12 @@
           <button (click)="onUpdate.emit(selectedItem)" class="warn" ariaLabel="edit">
             <i class="las la-pen-fancy"></i>
           </button>
-          <button (click)="onRemove.emit(selectedItem)" class="error" ariaLabel="delete">
+          <button (click)="onRemove.emit(selectedItem)" class="danger" ariaLabel="delete">
             <i class="las la-trash"></i>
           </button>
         }
       </div>
-    <input #query (change)="onQueryChanged(query.value)" type="text" />
+    <input #query (keyup)="onQueryChanged(query.value)" type="text" />
     <ul>
         @for(item of items; track $index) {
             <li (click)="setSelectedItem(item)" [ngClass]="{'selected': selectedItem?.id === item.id}" class="hoverable clickable">

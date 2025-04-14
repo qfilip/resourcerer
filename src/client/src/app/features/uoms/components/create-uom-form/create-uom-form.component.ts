@@ -3,17 +3,19 @@ import { UomService } from '../../services/uom.service';
 import { IV1CreateUnitOfMeasure } from '../../../../shared/dtos/interfaces';
 import { FormObject, FormObjectControl } from '../../../../shared/utils/forms';
 import { Validation } from '../../../../shared/utils/validation';
+import { FormErrorComponent } from "../../../../shared/features/common-ui/components/form-error/form-error.component";
 
 @Component({
+  standalone: true,
   selector: 'app-create-uom-form',
-  imports: [],
+  imports: [FormErrorComponent],
   templateUrl: './create-uom-form.component.html',
   styleUrl: './create-uom-form.component.css'
 })
 export class CreateUomFormComponent {
   private uomService = inject(UomService);
 
-  onCreated = output();
+  onSubmitDone = output();
 
   f = new FormObject({
     name: new FormObjectControl<string>({
@@ -45,7 +47,7 @@ export class CreateUomFormComponent {
 
     this.uomService.createUnitOfMeasure(dto)
       .subscribe({
-        next: () => this.onCreated.emit()
+        next: () => this.onSubmitDone.emit()
       });
   }
 }

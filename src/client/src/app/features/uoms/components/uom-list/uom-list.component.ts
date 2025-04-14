@@ -18,9 +18,9 @@ export class UomListComponent {
   $selectedUom = this.uomService.$selectedUom;
   $displayedUoms = computed(() => {
     const uoms = this.$uoms();
-    const query = this.$query();
+    const query = this.$query().toLowerCase();
     
-    return uoms.filter(x => x.name.includes(query));
+    return uoms.filter(x => x.name.toLowerCase().includes(query));
   });
 
   onCreate = output();

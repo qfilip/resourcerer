@@ -7,16 +7,7 @@
           <span>Name:</span>
           <input #name (change)="f.controls.name.setValue(name.value)" type="text" />
         </label>
-        <small>
-          @let nameErrors = f.controls.name.errors;
-          @if(nameErrors.length > 0) {
-            <ul>
-            @for(e of nameErrors; track $index) {
-              <li>{{ e }}</li>
-            }
-            </ul>
-          }
-        </small>
+        <app-form-error [$errors]="f.controls.name.errors"></app-form-error>
       </div>
   
       <div>
@@ -24,16 +15,7 @@
           <span>Symbol:</span>
           <input #symbol (change)="f.controls.symbol.setValue(symbol.value)" type="text" />
         </label>
-        <small class="expandable">
-          @let symbolErrors = f.controls.symbol.errors;
-          @if(symbolErrors.length > 0) {
-            <ul>
-              @for(e of symbolErrors; track $index) {
-                <li>{{ e }}</li>
-              }
-            </ul>
-          }
-        </small>
+        <app-form-error [$errors]="f.controls.symbol.errors"></app-form-error>
       </div>
     </div>
   

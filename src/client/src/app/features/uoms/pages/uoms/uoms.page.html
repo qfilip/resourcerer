@@ -1,7 +1,7 @@
 <section class="subpage">
   <div>
     <app-uom-list
-      (onCreate)="showComponent('createForm', null)"
+      (onCreate)="showComponent('createForm')"
       (onUpdate)="showComponent('updateForm', $event)"
       (onRemove)="deleteUom($event)">
     </app-uom-list>
@@ -9,9 +9,10 @@
   <div>
     @switch ($component()) {
       @case ("createForm") {
-        <app-create-uom-form (onCreated)="showComponent(null, null)"></app-create-uom-form>
+        <app-create-uom-form (onSubmitDone)="showComponent(null)"></app-create-uom-form>
       }
       @case ("updateForm") {
+        <app-update-uom-form [$uom]="$itemToUpdate()!"></app-update-uom-form>
       }
     }
   </div>

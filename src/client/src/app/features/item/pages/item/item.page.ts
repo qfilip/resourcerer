@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ItemListComponent } from "../../components/item-list/item-list.component";
 import { ItemService } from '../../services/item.service';
 import { IItemDto } from '../../../../shared/dtos/interfaces';
@@ -18,15 +18,14 @@ export class ItemPage implements OnInit {
   private itemService = inject(ItemService);
   
   $component = signal<'createForm' | 'updateForm' | null>(null);
-  $updateItem = signal<IItemDto | null>(null);
+  $selectedItem = computed(() => this.itemService.$selectedItem());
 
   ngOnInit(): void {
     this.itemService.getCompanyItems();
   }
 
-  showComponent(x: 'createForm' | 'updateForm' | null, data: IItemDto | null) {
+  showComponent(x: 'createForm' | 'updateForm' | null) {
       this.$component.set(x);
-      this.$updateItem.set(data);
   }
 
   removeItem(dto: IItemDto) {
