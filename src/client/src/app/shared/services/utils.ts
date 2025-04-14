@@ -1,3 +1,4 @@
+import { FormGroup, ValidationErrors } from "@angular/forms";
 import { PopupService } from "../features/common-ui/services/popup.service";
 
 export class Utils {
@@ -28,4 +29,23 @@ export class Utils {
 
     static timeSort = (a: Date, b: Date) => 
         new Date(a).getTime() > new Date(b).getTime() ? 1 : -1
+
+    static getFormValidationErrors(form: FormGroup) {
+      const result: any = [];
+      Object.keys(form.controls).forEach(key => {
+    
+        const controlErrors: ValidationErrors = form.get(key)!.errors!;
+        if (controlErrors) {
+          Object.keys(controlErrors).forEach(keyError => {
+            result.push({
+              'control': key,
+              'error': keyError,
+              'value': controlErrors[keyError]
+            });
+          });
+        }
+      });
+    
+      return result;
+    }
 }

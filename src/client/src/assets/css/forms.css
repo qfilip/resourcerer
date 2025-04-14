@@ -28,7 +28,7 @@ input[readonly] {
     margin: 0;
 }
 
-.form-fields > div > small {
+.form-fields > div > small, small.expandable {
   display: block;
   font-size: var(--font-form-error);
   min-height: var(--font-form-error);
@@ -38,7 +38,7 @@ input[readonly] {
   padding: 0rem var(--rem-xxxs);
 }
 
-.form-fields > div > small:has(*):hover {
+.form-fields > div > small.expandable:has(*):hover {
   min-height: calc(var(--font-form-error) * 5);
   max-height: calc(var(--font-form-error) * 5);
 

@@ -19,7 +19,7 @@
           <span>Symbol:</span>
           <input formControlName="symbol" />
         </label>
-        <small>
+        <small class="expandable">
           @if(formSubmitted && form.controls.symbol.invalid) {
             <div>Symbol must have at least 1 character</div>
           }
