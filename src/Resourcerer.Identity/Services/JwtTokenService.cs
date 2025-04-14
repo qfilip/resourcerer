@@ -12,6 +12,7 @@ public class JwtTokenService
     private readonly SymmetricSecurityKey _secretKey;
     private readonly string _issuer;
     private readonly string _audience;
+    private readonly byte _tokenExpirationMinutes = 60;
 
     public JwtTokenService(SymmetricSecurityKey secretKey, string issuer, string audience)
     {
@@ -55,7 +56,7 @@ public class JwtTokenService
             _audience,
             claims,
             now,
-            now.AddMinutes(30),
+            now.AddMinutes(_tokenExpirationMinutes),
             creadentials);
 
         var handler = new JwtSecurityTokenHandler();

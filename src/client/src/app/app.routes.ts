@@ -3,6 +3,7 @@ import { HomePageComponent } from './shared/features/app/pages/home.page/home.pa
 import { LoginPage } from './features/user/pages/login/login.page';
 import { CategoryPage } from './features/category/pages/category/category.page';
 import { ItemPage } from './features/item/pages/item/item.page';
+import { UomsPage } from './features/uoms/pages/uoms/uoms.page';
 
 export const routes: Routes = [
     { path: '', component: HomePageComponent },
@@ -12,6 +13,7 @@ export const routes: Routes = [
         children: [
             { path: 'categories', component: CategoryPage },
             { path: 'items', component: ItemPage },
+            { path: 'uoms', component: UomsPage },
         ]
     },
     { path: 'login', component: LoginPage }

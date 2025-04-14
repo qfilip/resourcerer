@@ -17,7 +17,6 @@
 }
 
 .body {
-    font-size: 3rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27,7 +26,11 @@
     color: var(--color2);
 }
 
-.la-cog {
+.spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     line-height: 100%;
     color: var(--color4);
     text-shadow: 1px 1px 5px var(--color7);
@@ -36,12 +39,12 @@
     text-align: center;
     background-color: transparent;
 
-    animation: cog-rotate .5s, cog-color 3s;
+    animation: cog-rotate 2s, cog-color 3s;
     animation-iteration-count: infinite;
 }
 
-.la-cog > i {
-    font-size: 2rem;
+.spinner > i {
+    font-size: 4rem;
     color: var(--color2);
     background-color: transparent;
 }

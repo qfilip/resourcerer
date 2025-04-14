@@ -4,6 +4,7 @@ import { IAppUserDto } from '../../../../dtos/interfaces';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { filter, map, Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { LoaderService } from '../../../common-ui/services/loader.service';
 
 @Component({
   selector: 'app-home',
@@ -15,15 +16,17 @@ import { CommonModule } from '@angular/common';
 export class HomePageComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private userService = inject(UserService);
+  private ls = inject(LoaderService)
   private sub: Subscription | null = null;
-
-  pages: { route: string, icon: string }[] = [
-    { route: 'categories', icon: 'las la-folder-minus' },
-    { route: 'items', icon: 'las la-vial' }
+  
+  pages: { title: string, route: string, icon: string }[] = [
+    { title: 'categories', route: 'categories', icon: 'las la-folder-minus' },
+    { title: 'items', route: 'items', icon: 'las la-vial' },
+    { title: 'units of measure', route: 'uoms', icon: 'las la-ruler'}
   ];
 
   $user = signal<IAppUserDto | null>(null);
-  $page = signal<{ route: string, icon: string }>(this.pages[0]);
+  $page = signal<{ title: string, route: string, icon: string }>(this.pages[0]);
 
 
   constructor() {
@@ -35,6 +38,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.ls.show();
     this.router.navigate(['/home/categories']);
 
     this.sub = this.router.events.pipe(
