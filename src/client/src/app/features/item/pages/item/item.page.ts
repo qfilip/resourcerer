@@ -5,11 +5,12 @@ import { IItemDto } from '../../../../shared/dtos/interfaces';
 import { DialogService } from '../../../../shared/features/common-ui/services/dialog.service';
 import { PopupService } from '../../../../shared/features/common-ui/services/popup.service';
 import { DialogOptions } from '../../../../shared/features/common-ui/models/dialog-options.model';
+import { CreateElementItemFormComponent } from "../../components/create-element-item-form/create-element-item-form.component";
 
 @Component({
   standalone: true,
   selector: 'app-item',
-  imports: [ItemListComponent],
+  imports: [ItemListComponent, CreateElementItemFormComponent],
   templateUrl: './item.page.html',
   styleUrl: './item.page.css'
 })
@@ -29,6 +30,11 @@ export class ItemPage implements OnInit {
       this.$component.set(x);
   }
 
+  closeComponent(errors: string[]) {
+    this.popup.pushMany(errors, 'warn', 'Invalid data');
+    this.$component.set(null);
+  }
+
   openDialog() {
     this.dialogService.open({
       header: 'Form selection',
@@ -36,11 +42,11 @@ export class ItemPage implements OnInit {
       buttons: [
         { 
           label: 'Element',
-          action: () => this.showCreateElementItemForm()
+          action: () => this.$component.set('ce')
         },
         { 
           label: 'Composite',
-          action: () => this.showCreateCompositeItemForm()
+          action: () => this.dialogService.close()
         },
         { 
           label: 'Cancel',
@@ -48,14 +54,6 @@ export class ItemPage implements OnInit {
         }
       ]
     } as DialogOptions)
-  }
-
-  showCreateElementItemForm() {
-
-  }
-
-  showCreateCompositeItemForm() {
-
   }
 
   removeItem(dto: IItemDto) {

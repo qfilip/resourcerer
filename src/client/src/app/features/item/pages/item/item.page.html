@@ -8,9 +8,14 @@
     </div>
     <div>
         @switch ($component()) {
-            @case ("cc") {
+            @case ("ce") {
+                <app-create-element-item-form (onFormDataError)="closeComponent($event)"></app-create-element-item-form>
+            }
+            @case ("ue") {
             }
             @case ("cc") {
+            }
+            @case ("uc") {
             }
         }
     </div>

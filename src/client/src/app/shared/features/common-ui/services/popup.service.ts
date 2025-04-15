@@ -16,6 +16,10 @@ export class PopupService {
             duration: duration
         });
 
+    pushMany(messages: string[], color: PopupColor, header: string) {
+        messages.forEach(x => this.pushItem(x, color, header));
+    }
+
     info = (message: string, header = 'Info') =>
         this.pushItem(message, 'info', header);
 
