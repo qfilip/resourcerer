@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BaseApiService } from "../../../shared/services/base-api.service";
-import { IItemDto, IV1CreateElementItem, IV1CreateElementItemFormDataDto, IV1EditElementItemFormData } from "../../../shared/dtos/interfaces";
+import { IItemDto, IV1CreateElementItem, IV1ElementItemFormData } from "../../../shared/dtos/interfaces";
 import { HttpParams } from "@angular/common/http";
 
 @Injectable({ providedIn: 'root' })
@@ -13,9 +13,9 @@ export class ItemApiService extends BaseApiService {
     }).pipe(this.withLoader());
   }
 
-  getCreateElementItemFormData(companyId: string) {
-    const url = this.url + '/create/element/form';
-    return this.http.get<IV1CreateElementItemFormDataDto>(url, {
+  getElementItemFormData(companyId: string) {
+    const url = this.url + '/element/formdata';
+    return this.http.get<IV1ElementItemFormData>(url, {
       params: new HttpParams().set('companyId', companyId)
     }).pipe(this.withLoader());
   }
@@ -23,12 +23,5 @@ export class ItemApiService extends BaseApiService {
   createElementItem(dto: IV1CreateElementItem) {
     const url = this.url + '/create/element';
     return this.http.post<IItemDto>(url, dto).pipe(this.withLoader());
-  }
-
-  getEditElementItemFormData(itemId: string, companyId: string) {
-    const url = this.url + '/edit/element/form';
-    return this.http.get<IV1EditElementItemFormData>(url, {
-      params: new HttpParams().set('itemId', itemId).set('companyId', companyId)
-    }).pipe(this.withLoader());
   }
 }

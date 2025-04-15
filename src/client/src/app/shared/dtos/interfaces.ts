@@ -43,12 +43,6 @@ export interface IItemProductionOrderDto extends IEntityDto
 	cancelledEvent: any;
 	finishedEvent: any;
 }
-export interface IV1CreateElementItemFormDataDto
-{
-	companyId: string;
-	categories: ICategoryDto[];
-	unitsOfMeasure: IUnitOfMeasureDto[];
-}
 export interface IV1CreateCategory
 {
 	name: string;
@@ -158,9 +152,8 @@ export interface IV1CreateElementItem
 	unitOfMeasureId: string;
 	unitPrice: number;
 }
-export interface IV1EditElementItemFormData
+export interface IV1ElementItemFormData
 {
-	item: IItemDto;
 	categories: ICategoryDto[];
 	unitsOfMeasure: IUnitOfMeasureDto[];
 }

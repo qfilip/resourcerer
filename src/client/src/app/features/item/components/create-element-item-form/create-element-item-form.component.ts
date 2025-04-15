@@ -1,12 +1,10 @@
-import { Component, computed, EventEmitter, inject, Input, OnInit, output, Output, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IV1CreateElementItemFormDataDto, IV1CreateElementItem } from '../../../../shared/dtos/interfaces';
-import { UserService } from '../../../user/services/user.service';
+import { Component, computed, inject, OnInit, output, signal } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { IItemDto, IV1CreateElementItem, IV1ElementItemFormData } from '../../../../shared/dtos/interfaces';
 import { ItemService } from '../../services/item.service';
 import { FormObject, FormObjectControl } from '../../../../shared/utils/forms';
 import { Validation } from '../../../../shared/utils/validation';
 import { FormErrorComponent } from "../../../../shared/features/common-ui/components/form-error/form-error.component";
-import { PopupService } from '../../../../shared/features/common-ui/services/popup.service';
 
 @Component({
   selector: 'app-create-element-item-form',
@@ -16,13 +14,12 @@ import { PopupService } from '../../../../shared/features/common-ui/services/pop
   styleUrl: './create-element-item-form.component.css'
 })
 export class CreateElementItemFormComponent implements OnInit {
-  onSubmitDone = output();
+  onSubmitDone = output<IItemDto>();
   onFormDataError = output<string[]>();
   
-  private popup = inject(PopupService);
   private itemService = inject(ItemService);
   
-  $formData = signal<IV1CreateElementItemFormDataDto | null>(null);
+  $formData = signal<IV1ElementItemFormData | null>(null);
   $form = computed(() => {
     const formData = this.$formData();
     if(!formData) return null;
@@ -76,7 +73,7 @@ export class CreateElementItemFormComponent implements OnInit {
   })
 
   ngOnInit() {
-    this.itemService.getCreateElementItemFormData()
+    this.itemService.getElementItemFormData()
       .subscribe({
         next: x => {
           const errors: string[] = [];
@@ -98,7 +95,7 @@ export class CreateElementItemFormComponent implements OnInit {
     ev.preventDefault();
     const form = this.$form()!;
     
-    if (form.valid) {
+    if (!form.valid) {
       return;
     }
 
@@ -112,9 +109,9 @@ export class CreateElementItemFormComponent implements OnInit {
       unitOfMeasureId: form.controls.unitOfMeasureId.data.value!
     }
 
-    // this.itemService.createElementItem(dto)
-    //   .subscribe({
-    //     next: _ => this.onSubmitted.emit()
-    //   })
+    this.itemService.createElementItem(dto)
+      .subscribe({
+        next: x => this.onSubmitDone.emit(x)
+      })
   }
 }

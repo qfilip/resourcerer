@@ -29,9 +29,9 @@ export class ItemService {
   removeItem(x: IItemDto) { }
 
   // element item
-  getCreateElementItemFormData() {
+  getElementItemFormData() {
     const user = this.userService.$user()!;
-    return this.apiService.getCreateElementItemFormData(user.company.id);
+    return this.apiService.getElementItemFormData(user.company.id);
   }
 
   createElementItem(dto: IV1CreateElementItem) {

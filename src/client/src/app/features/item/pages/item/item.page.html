@@ -9,7 +9,7 @@
     <div>
         @switch ($component()) {
             @case ("ce") {
-                <app-create-element-item-form (onFormDataError)="closeComponent($event)"></app-create-element-item-form>
+                <app-create-element-item-form (onSubmitDone)="closeComponent($event)" (onFormDataError)="closeComponent(undefined, $event)"></app-create-element-item-form>
             }
             @case ("ue") {
             }

@@ -30,8 +30,13 @@ export class ItemPage implements OnInit {
       this.$component.set(x);
   }
 
-  closeComponent(errors: string[]) {
-    this.popup.pushMany(errors, 'warn', 'Invalid data');
+  closeComponent(data?: IItemDto, errors?: string[]) {
+    if(data)
+      this.popup.ok(`Item ${data.name} created`);
+    
+    if(errors)
+      this.popup.pushMany(errors, 'warn', 'Invalid data');
+    
     this.$component.set(null);
   }
 

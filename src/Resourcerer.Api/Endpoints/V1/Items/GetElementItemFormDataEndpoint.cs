@@ -5,15 +5,14 @@ using Resourcerer.Logic.V1;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public class GetElementItemForEditEndpoint : IAppEndpoint
+public class GetElementItemFormDataEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
-        [FromQuery] Guid itemId,
         [FromQuery] Guid companyId,
         Pipeline pipeline,
-        GetElementItemForEdit.Handler handler)
+        GetElementItemFormData.Handler handler)
     {
-        return await pipeline.Pipe(handler, (itemId, companyId));
+        return await pipeline.Pipe(handler, companyId);
     }
 
     internal static void MapAuth(RouteHandlerBuilder endpoint)
@@ -26,5 +25,5 @@ public class GetElementItemForEditEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.Items("edit/element/form"), eHttpMethod.Get, Action, MapAuth);
+            EndpointMapper.Items("element/formdata"), eHttpMethod.Get, Action, MapAuth);
 }
