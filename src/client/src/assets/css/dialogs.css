@@ -50,7 +50,8 @@ dialog[open] {
             background-color: var(--color2);
 
             & button {
-                width: 5rem;
+                min-width: 5rem;
+                width: fit-content;
             }
         }
     }

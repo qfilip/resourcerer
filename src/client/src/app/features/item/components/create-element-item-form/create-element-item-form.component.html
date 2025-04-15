@@ -1,88 +1,76 @@
-<form [formGroup]="form" (submit)="onSubmit($event)">
+<form (submit)="onSubmit($event)">
   <div class="form-fields">
-    <label>
-      <span>Name:</span>
-      <input formControlName="name" />
-    </label>
-    <div class="error">
-      @if(formSubmitted && form.controls.name.invalid) { Name must have at
-      least 2 characters }
+    <div>
+      <label>
+        <span>Name:</span>
+        <input #name (input)="form.controls.name.setValue(name.value)" type="text" />
+      </label>
+      <app-form-error [$errors]="form.controls.name.errors"></app-form-error>
     </div>
 
-    <label>
-      <span>Production Price:</span>
-      <input formControlName="productionPrice" />
-    </label>
-    <div class="error">
-      @if(formSubmitted && form.controls.productionPrice.invalid) {
-      Production price cannot be negative }
+    <div>
+      <label>
+        <span>Production Price:</span>
+        <input #pprice (input)="form.controls.productionPrice.setValue(pprice.value)" type="number" />
+      </label>
+      <app-form-error [$errors]="form.controls.productionPrice.errors"></app-form-error>
     </div>
 
-    <label>
-      <span>Production Time (seconds):</span>
-      <input formControlName="productionTimeSeconds" />
-    </label>
-    <div class="error">
-      @if(formSubmitted && form.controls.productionTimeSeconds.invalid) {
-      Production time cannot be negative }
+    <div>
+      <label>
+        <span>Production Time (seconds):</span>
+        <input #ptime (input)="form.controls.productionTimeSeconds.setValue(ptime.value)" type="number" />
+      </label>
+      <app-form-error [$errors]="form.controls.productionTimeSeconds.errors"></app-form-error>
     </div>
 
-    <label>
-      <span>Can expire:</span>
-      <input type="checkbox" formControlName="canExpire" />
-    </label>
-    <div class="error"></div>
-
-    <label [class.disabled]="!form.controls.canExpire.value">
-      <span>Expiration Time (seconds):</span>
-      <input formControlName="expirationTimeSeconds" [readOnly]="!form.controls.canExpire.value" />
-
-    </label>
-    <div class="error">
-      @if(formSubmitted && form.controls.expirationTimeSeconds.invalid)
-      {
-        Expiration time cannot be negative
-      }
+    <div>
+      <label>
+        <span>Can expire:</span>
+        <input #canExpire (change)="form.controls.canExpire.setValue(canExpire.checked)" type="checkbox" />
+      </label>
     </div>
 
-    <label>
-      <span>Unit Price:</span>
-      <input formControlName="unitPrice" />
-    </label>
-    <div class="error">
-      @if(formSubmitted && form.controls.unitPrice.invalid) {
-        Unit price cannot be negative
-      }
+    <div>
+      <label [class.disabled]="!form.controls.canExpire.data.value">
+        <span>Expiration Time (seconds):</span>
+        <input #expTime (input)="form.controls.expirationTimeSeconds.setValue(expTime.value)" type="number" />
+      </label>
+      <app-form-error [$errors]="form.controls.expirationTimeSeconds.errors"></app-form-error>
     </div>
 
-    <label>
-      <span>Category:</span>
-      <select formControlName="categoryId">
-        @for(x of formData.categories; track $index) {
-        <option [ngValue]="x.id">{{ x.name }}</option>
-        }
-      </select>
-    </label>
-    <div class="error">
-      @if(formSubmitted && form.controls.categoryId.invalid) {
-        Category is required
-      }
+    <div>
+      <label>
+        <span>Unit Price:</span>
+        <input #uprice (input)="form.controls.unitPrice.setValue(uprice.value)" type="number" />
+      </label>
+      <app-form-error [$errors]="form.controls.unitPrice.errors"></app-form-error>
     </div>
 
-    <label>
-      <span>Unit of Measure:</span>
-      <select formControlName="unitOfMeasureId">
-        @for(x of formData.unitsOfMeasure; track $index) {
-        <option [ngValue]="x.id">{{ x.name }}</option>
-        }
-      </select>
-    </label>
-    <div class="error">
-      @if(formSubmitted && form.controls.unitOfMeasureId.invalid) {
-        Unit of Measure is required
-      }
+    <div>
+      <label>
+        <span>Category:</span>
+        <select #category (change)="form.controls.categoryId.setValue(category.value)">
+          @for(x of formData.categories; track $index) {
+            <option [ngValue]="x.id">{{ x.name }}</option>
+          }
+        </select>
+      </label>
+      <app-form-error [$errors]="form.controls.categoryId.errors"></app-form-error>
+    </div>
+
+    <div>
+      <label>
+        <span>Unit of Measure:</span>
+        <select #uom (change)="form.controls.unitOfMeasureId.setValue(uom.value)">
+          @for(x of formData.unitsOfMeasure; track $index) {
+          <option [ngValue]="x.id">{{ x.name }}</option>
+          }
+        </select>
+      </label>
+      <app-form-error [$errors]="form.controls.unitOfMeasureId.errors"></app-form-error>
     </div>
   </div>
 
-  <button (click)="onSubmit($event)">Submit</button>
+  <button type="submit">Submit</button>
 </form>

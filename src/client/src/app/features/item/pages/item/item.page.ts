@@ -4,6 +4,7 @@ import { ItemService } from '../../services/item.service';
 import { IItemDto } from '../../../../shared/dtos/interfaces';
 import { DialogService } from '../../../../shared/features/common-ui/services/dialog.service';
 import { PopupService } from '../../../../shared/features/common-ui/services/popup.service';
+import { DialogOptions } from '../../../../shared/features/common-ui/models/dialog-options.model';
 
 @Component({
   standalone: true,
@@ -17,15 +18,44 @@ export class ItemPage implements OnInit {
   private dialogService = inject(DialogService);
   private itemService = inject(ItemService);
   
-  $component = signal<'createForm' | 'updateForm' | null>(null);
+  $component = signal<'ce' | 'ue' | 'cc' | 'uc' | null>(null);
   $selectedItem = computed(() => this.itemService.$selectedItem());
 
   ngOnInit(): void {
     this.itemService.getCompanyItems();
   }
 
-  showComponent(x: 'createForm' | 'updateForm' | null) {
+  showComponent(x: 'ce' | 'ue' | 'cc' | 'uc' | null) {
       this.$component.set(x);
+  }
+
+  openDialog() {
+    this.dialogService.open({
+      header: 'Form selection',
+      message: 'Select item type you wish to create',
+      buttons: [
+        { 
+          label: 'Element',
+          action: () => this.showCreateElementItemForm()
+        },
+        { 
+          label: 'Composite',
+          action: () => this.showCreateCompositeItemForm()
+        },
+        { 
+          label: 'Cancel',
+          action: () => this.dialogService.close()
+        }
+      ]
+    } as DialogOptions)
+  }
+
+  showCreateElementItemForm() {
+
+  }
+
+  showCreateCompositeItemForm() {
+
   }
 
   removeItem(dto: IItemDto) {

@@ -3,11 +3,14 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { IV1CreateElementItemFormDataDto, IV1CreateElementItem } from '../../../../shared/dtos/interfaces';
 import { UserService } from '../../../user/services/user.service';
 import { ItemService } from '../../services/item.service';
+import { FormObject, FormObjectControl } from '../../../../shared/utils/forms';
+import { Validation } from '../../../../shared/utils/validation';
+import { FormErrorComponent } from "../../../../shared/features/common-ui/components/form-error/form-error.component";
 
 @Component({
   selector: 'app-create-element-item-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FormErrorComponent],
   templateUrl: './create-element-item-form.component.html',
   styleUrl: './create-element-item-form.component.css'
 })
@@ -18,17 +21,52 @@ export class CreateElementItemFormComponent {
   private itemService = inject(ItemService);
   userService = inject(UserService);
 
-  form = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    productionPrice: new FormControl(0, [Validators.required, Validators.min(0)]),
-    productionTimeSeconds: new FormControl(0, [Validators.required, Validators.min(0)]),
-    canExpire: new FormControl(false),
-    expirationTimeSeconds: new FormControl(null, [Validators.min(0)]),
-    unitPrice: new FormControl(0, [Validators.required, Validators.min(0)]),
-    categoryId: new FormControl(null, [Validators.required]),
-    unitOfMeasureId: new FormControl(null, [Validators.required])
-  });
-  formSubmitted = false;
+  form = new FormObject({
+    name: new FormObjectControl({
+      value: '',
+      validators: [
+        { fn: Validation.notNull, error: 'Required' },
+        { fn: Validation.minLength(2), error: 'Must be minimum 2 characters long' },
+      ]
+    }),
+    productionPrice: new FormObjectControl({
+      value: 0,
+      validators: [
+        { fn: Validation.notNull, error: 'Required' },
+        { fn: Validation.min(0), error: 'Must be 0 or above' },
+      ]
+    }),
+    productionTimeSeconds: new FormObjectControl({
+      value: 0,
+      validators: [
+        { fn: Validation.notNull, error: 'Required' },
+        { fn: Validation.min(0), error: 'Must be 0 or above' },
+      ]
+    }),
+    canExpire: new FormObjectControl({
+      value: false,
+      validators: []
+    }),
+    expirationTimeSeconds: new FormObjectControl({
+      value: null,
+      validators: [{ fn: Validation.optional(Validation.min(0)), error: 'Must be 0 or above' },]
+    }),
+    unitPrice: new FormObjectControl({
+      value: 0,
+      validators: [
+        { fn: Validation.notNull, error: 'Required' },
+        { fn: Validation.min(0), error: 'Must be 0 or above' },
+      ]
+    }),
+    categoryId: new FormObjectControl({
+      value: null,
+      validators: [{ fn: Validation.notNull, error: 'Required' }]
+    }),
+    unitOfMeasureId: new FormObjectControl({
+      value: null,
+      validators: [{ fn: Validation.notNull, error: 'Required' }]
+    }),
+  })
 
   formData: IV1CreateElementItemFormDataDto = {
     companyId: '',
@@ -42,7 +80,6 @@ export class CreateElementItemFormComponent {
 
   onSubmit(ev: Event) {
     ev.preventDefault();
-    this.formSubmitted = true;
 
     if (!this.form.valid) {
       return;
@@ -77,13 +114,13 @@ export class CreateElementItemFormComponent {
 
   private mapDtoFromForm() {
     const dto: IV1CreateElementItem = {
-      name: this.form.controls.name.value!,
-      productionPrice: this.form.controls.productionPrice.value!,
-      productionTimeSeconds: this.form.controls.productionTimeSeconds.value!,
-      expirationTimeSeconds: this.form.controls.expirationTimeSeconds.value ?? undefined,
-      unitPrice: this.form.controls.unitPrice.value!,
-      categoryId: this.form.controls.categoryId.value!,
-      unitOfMeasureId: this.form.controls.unitOfMeasureId.value!
+      name: this.form.controls.name.data.value!,
+      productionPrice: this.form.controls.productionPrice.data.value!,
+      productionTimeSeconds: this.form.controls.productionTimeSeconds.data.value!,
+      expirationTimeSeconds: this.form.controls.expirationTimeSeconds.data.value,
+      unitPrice: this.form.controls.unitPrice.data.value!,
+      categoryId: this.form.controls.categoryId.data.value!,
+      unitOfMeasureId: this.form.controls.unitOfMeasureId.data.value!
     }
 
     return dto;

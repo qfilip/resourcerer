@@ -1,16 +1,16 @@
 <section class="subpage">
     <div>
         <app-item-list
-            (onCreate)="showComponent('createForm')"
-            (onUpdate)="showComponent('updateForm')"
+            (onCreate)="openDialog()"
+            (onUpdate)="showComponent('cc')"
             (onRemove)="removeItem($event)">
         </app-item-list>
     </div>
     <div>
         @switch ($component()) {
-            @case ("createForm") {
+            @case ("cc") {
             }
-            @case ("updateForm") {
+            @case ("cc") {
             }
         }
     </div>
