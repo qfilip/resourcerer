@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { ItemApiService } from "./item.api.service";
 import { UserService } from "../../user/services/user.service";
-import { IItemDto, IV1CreateElementItem } from "../../../shared/dtos/interfaces";
+import { IItemDto, IV1CreateElementItem, IV1UpdateElementItem } from "../../../shared/dtos/interfaces";
 import { tap } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
@@ -22,7 +22,7 @@ export class ItemService {
 
     this.apiService.getCompanyItems(user.company.id)
       .subscribe({
-        next: xs => this._$items.set(xs)
+        next: xs => this.runReducers(xs)
       });
   }
 
@@ -38,9 +38,30 @@ export class ItemService {
     return this.apiService.createElementItem(dto)
       .pipe(
         tap(x => {
-          this._$items.update(xs => xs.concat(x));
-          this._$selectedItem.set(null);
+          this.runReducers(undefined, x);
         })
       );
   }
+
+  updateElementItem(dto: IV1UpdateElementItem) {
+    return this.apiService.updateElementItem(dto)
+      .pipe(
+        tap(x => this.runReducers(undefined, undefined, x))
+      );
+  }
+
+  private runReducers(all?: IItemDto[], created?: IItemDto, updated?: IItemDto, deleted?: IItemDto) {
+      if(all)
+        this._$items.set(all);
+      else if(created)
+        this._$items.update(xs => xs.concat(created));
+      else if(updated)
+        this._$items.update(xs => xs.filter(x => x.id !== updated.id).concat(updated));
+      else if(deleted)
+        this._$items.update(xs => xs.filter(x => x.id !== deleted.id));
+      else
+        throw 'Item reducer failed';
+  
+      this._$selectedItem.set(null);
+    }
 }

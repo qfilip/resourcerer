@@ -190,6 +190,17 @@ export interface IV1ItemStockInfo
 	productionCostAsComposite: number;
 	sellingPrice: number;
 }
+export interface IV1UpdateElementItem
+{
+	itemId: string;
+	name: string;
+	productionPrice: number;
+	productionTimeSeconds: number;
+	expirationTimeSeconds?: number;
+	categoryId: string;
+	unitOfMeasureId: string;
+	unitPrice: number;
+}
 export interface IV1ChangeItemPrice
 {
 	itemId: string;

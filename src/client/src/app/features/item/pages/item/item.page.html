@@ -9,9 +9,10 @@
     <div>
         @switch ($component()) {
             @case ("ce") {
-                <app-create-element-item-form (onSubmitDone)="closeComponent($event)" (onFormDataError)="closeComponent(undefined, $event)"></app-create-element-item-form>
+                <app-create-element-item-form (onSubmitDone)="onItemCreated($event)" (onFormDataError)="onFormError($event)"></app-create-element-item-form>
             }
             @case ("ue") {
+                <app-update-element-item-form [$updateItem]="$selectedItem()!" (onSubmitDone)="onItemUpdated($event)" (onFormDataError)="onFormError($event)"></app-update-element-item-form>
             }
             @case ("cc") {
             }

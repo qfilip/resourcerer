@@ -6,11 +6,12 @@ import { DialogService } from '../../../../shared/features/common-ui/services/di
 import { PopupService } from '../../../../shared/features/common-ui/services/popup.service';
 import { DialogOptions } from '../../../../shared/features/common-ui/models/dialog-options.model';
 import { CreateElementItemFormComponent } from "../../components/create-element-item-form/create-element-item-form.component";
+import { UpdateElementItemFormComponent } from "../../components/update-element-item-form/update-element-item-form.component";
 
 @Component({
   standalone: true,
   selector: 'app-item',
-  imports: [ItemListComponent, CreateElementItemFormComponent],
+  imports: [ItemListComponent, CreateElementItemFormComponent, UpdateElementItemFormComponent],
   templateUrl: './item.page.html',
   styleUrl: './item.page.css'
 })
@@ -30,13 +31,18 @@ export class ItemPage implements OnInit {
       this.$component.set(x);
   }
 
-  closeComponent(data?: IItemDto, errors?: string[]) {
-    if(data)
-      this.popup.ok(`Item ${data.name} created`);
-    
-    if(errors)
-      this.popup.pushMany(errors, 'warn', 'Invalid data');
-    
+  onItemCreated(x: IItemDto) {
+    this.popup.ok(`Item ${x.name} created`);
+    this.$component.set(null);
+  }
+
+  onItemUpdated(x: IItemDto) {
+    this.popup.ok(`Item ${x.name} updated`);
+    this.$component.set(null);
+  }
+
+  onFormError(errors: string[]) {
+    this.popup.pushMany(errors, 'warn', 'Invalid data');
     this.$component.set(null);
   }
 
