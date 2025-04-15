@@ -1,6 +1,7 @@
 export type FormObjectControlData<T> = {
   value: T,
   validators: { fn: (v: T) => boolean, error: string }[],
+  skipValidation?: boolean,
   errors?: string[]
 }
 
@@ -11,8 +12,9 @@ export class FormObjectControl<T> {
     this.data = data;
   }
 
-  setValue(value: T) {
+  setValue(value: T, skipValidation?: boolean) {
     this.data.value = value;
+    this.data.skipValidation = skipValidation;
     this.data.errors = this.errors;
   }
 
