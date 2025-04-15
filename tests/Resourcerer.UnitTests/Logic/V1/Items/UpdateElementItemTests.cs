@@ -28,6 +28,7 @@ public class UpdateElementItemTests : TestsBase
             Name = "test",
             CategoryId = category.Id,
             UnitOfMeasureId = uom.Id,
+            ProductionPrice = 17,
             ProductionTimeSeconds = 17,
             ExpirationTimeSeconds = 17,
             UnitPrice = 2
@@ -50,6 +51,7 @@ public class UpdateElementItemTests : TestsBase
                 Assert.Equal(dto.Name, updatedItem.Name);
                 Assert.Equal(dto.CategoryId, updatedItem.CategoryId);
                 Assert.Equal(dto.UnitOfMeasureId, updatedItem.UnitOfMeasureId);
+                Assert.Equal(dto.ProductionPrice, updatedItem.ProductionPrice);
                 Assert.Equal(dto.ProductionTimeSeconds, updatedItem.ProductionTimeSeconds);
                 Assert.Equal(dto.ExpirationTimeSeconds, updatedItem.ExpirationTimeSeconds);
                 

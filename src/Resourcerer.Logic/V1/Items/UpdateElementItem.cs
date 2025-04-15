@@ -61,6 +61,7 @@ public class UpdateElementItem
             item.Name = request.Name;
             item.CategoryId = request.CategoryId;
             item.UnitOfMeasureId = request.UnitOfMeasureId;
+            item.ProductionPrice = request.ProductionPrice;
             item.ProductionTimeSeconds = request.ProductionTimeSeconds;
             item.ExpirationTimeSeconds = request.ExpirationTimeSeconds;
 
