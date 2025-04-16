@@ -20,30 +20,35 @@ export class ItemPage implements OnInit {
   private dialogService = inject(DialogService);
   private itemService = inject(ItemService);
   
-  $component = signal<'ce' | 'ue' | 'cc' | 'uc' | null>(null);
+  $formType = signal<'ce' | 'ue' | 'cc' | 'uc' | null>(null);
   $selectedItem = computed(() => this.itemService.$selectedItem());
 
   ngOnInit(): void {
     this.itemService.getCompanyItems();
   }
 
-  showComponent(x: 'ce' | 'ue' | 'cc' | 'uc' | null) {
-      this.$component.set(x);
+  showForm(item?: IItemDto) {
+    this.itemService.getItemType(item!)
+      .subscribe({ next: v => console.log(v.data)})
+    // if(!item)
+    //   this.$formType.set('create');
+    // else
+    //   this.$formType.set('update');
   }
 
   onItemCreated(x: IItemDto) {
     this.popup.ok(`Item ${x.name} created`);
-    this.$component.set(null);
+    this.$formType.set(null);
   }
 
   onItemUpdated(x: IItemDto) {
     this.popup.ok(`Item ${x.name} updated`);
-    this.$component.set(null);
+    this.$formType.set(null);
   }
 
   onFormError(errors: string[]) {
     this.popup.pushMany(errors, 'warn', 'Invalid data');
-    this.$component.set(null);
+    this.$formType.set(null);
   }
 
   openDialog() {
@@ -53,11 +58,11 @@ export class ItemPage implements OnInit {
       buttons: [
         { 
           label: 'Element',
-          action: () => this.$component.set('ce')
+          action: () => this.$formType.set('ce')
         },
         { 
           label: 'Composite',
-          action: () => this.dialogService.close()
+          action: () => this.$formType.set('cc')
         },
         { 
           label: 'Cancel',

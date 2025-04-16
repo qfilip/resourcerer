@@ -43,6 +43,10 @@ export interface IItemProductionOrderDto extends IEntityDto
 	cancelledEvent: any;
 	finishedEvent: any;
 }
+export interface ISimple<T>
+{
+	data: T;
+}
 export interface IV1CreateCategory
 {
 	name: string;

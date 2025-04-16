@@ -34,6 +34,10 @@ export class ItemService {
     return this.apiService.getElementItemFormData(user.company.id);
   }
 
+  getItemType(dto: IItemDto) {
+    return this.apiService.getItemType(dto.id);
+  }
+
   createElementItem(dto: IV1CreateElementItem) {
     return this.apiService.createElementItem(dto)
       .pipe(

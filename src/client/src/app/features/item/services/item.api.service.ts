@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { BaseApiService } from "../../../shared/services/base-api.service";
-import { IItemDto, IV1CreateElementItem, IV1ElementItemFormData, IV1UpdateElementItem } from "../../../shared/dtos/interfaces";
+import { IItemDto, ISimple, IV1CreateElementItem, IV1ElementItemFormData, IV1UpdateElementItem } from "../../../shared/dtos/interfaces";
 import { HttpParams } from "@angular/common/http";
+import { eItemType } from "../../../shared/dtos/enums";
 
 @Injectable({ providedIn: 'root' })
 export class ItemApiService extends BaseApiService {
@@ -10,6 +11,13 @@ export class ItemApiService extends BaseApiService {
   getCompanyItems(companyId: string) {
     return this.http.get<IItemDto[]>(this.url, {
       params: new HttpParams().set('companyId', companyId)
+    }).pipe(this.withLoader());
+  }
+
+  getItemType(itemId: string) {
+    const url = this.url + '/type';
+    return this.http.get<ISimple<eItemType>>(url, {
+      params: new HttpParams().set('itemId', itemId)
     }).pipe(this.withLoader());
   }
 

@@ -27,7 +27,7 @@ public class GetItemTypeTests : TestsBase
         // assert
         Assert.Multiple(
             () => Assert.Equal(eHandlerResultStatus.Ok, result.Status),
-            () => Assert.Equal(eItemType.Element, result.Object!)
+            () => Assert.Equal(eItemType.Element, result.Object!.Data)
         );
     }
 
@@ -49,7 +49,7 @@ public class GetItemTypeTests : TestsBase
         // assert
         Assert.Multiple(
             () => Assert.Equal(eHandlerResultStatus.Ok, result.Status),
-            () => Assert.Equal(eItemType.Composite, result.Object!)
+            () => Assert.Equal(eItemType.Composite, result.Object!.Data)
         );
     }
 

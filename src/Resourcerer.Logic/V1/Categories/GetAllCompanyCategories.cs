@@ -12,7 +12,7 @@ namespace Resourcerer.Logic.V1;
 
 public static class GetAllCompanyCategories
 {
-    public class Handler : IAppHandler<Guid, List<CategoryDto>>
+    public class Handler : IAppHandler<Guid, CategoryDto[]>
     {
         private readonly AppDbContext _appDbContext;
         private readonly Validator _validator;
@@ -23,7 +23,7 @@ public static class GetAllCompanyCategories
             _validator = validator;
         }
 
-        public async Task<HandlerResult<List<CategoryDto>>> Handle(Guid companyId)
+        public async Task<HandlerResult<CategoryDto[]>> Handle(Guid companyId)
         {
             var entities = await _appDbContext.Categories
                 .Where(x => x.CompanyId == companyId)
@@ -33,9 +33,9 @@ public static class GetAllCompanyCategories
             var result = entities
                 .Where(x => x.ParentCategoryId == null)
                 .Select(x => MapDto(x, entities))
-                .ToList();
+                .ToArray();
 
-            return HandlerResult<List<CategoryDto>>.Ok(result);
+            return HandlerResult<CategoryDto[]>.Ok(result);
         }
 
         private static CategoryDto MapDto(Category current, Category[] all)
