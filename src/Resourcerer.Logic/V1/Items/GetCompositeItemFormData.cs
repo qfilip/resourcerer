@@ -1,5 +1,4 @@
 ﻿using FluentValidation.Results;
-using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Logic.Handlers;
 using Resourcerer.DataAccess.Contexts;
@@ -10,9 +9,9 @@ using Resourcerer.Logic.Utilities;
 
 namespace Resourcerer.Logic.V1;
 
-public static class GetElementItemFormData
+public class GetCompositeItemFormData
 {
-    public class Handler : IAppHandler<Guid, V1ElementItemFormData>
+    public class Handler : IAppHandler<Guid, V1CompositeItemFormData>
     {
         private readonly AppDbContext _dbContext;
 
@@ -21,8 +20,18 @@ public static class GetElementItemFormData
             _dbContext = dbContext;
         }
 
-        public async Task<HandlerResult<V1ElementItemFormData>> Handle(Guid request)
+        public async Task<HandlerResult<V1CompositeItemFormData>> Handle(Guid request)
         {
+            var items = await _dbContext.Items
+                .Where(x => x.Category!.CompanyId == request)
+                .Select(x => new ItemDto
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                .AsNoTracking()
+                .ToArrayAsync();
+
             var categories = await _dbContext.Categories
                 .Where(x => x.CompanyId == request)
                 .Select(x => new CategoryDto
@@ -43,13 +52,14 @@ public static class GetElementItemFormData
                 .AsNoTracking()
                 .ToArrayAsync();
 
-            return HandlerResult<V1ElementItemFormData>.Ok(new V1ElementItemFormData
+            return HandlerResult<V1CompositeItemFormData>.Ok(new()
             {
+                Items = items,
                 Categories = categories,
                 UnitsOfMeasure = unitsOfMeasure
             });
         }
 
-        public ValidationResult Validate(Guid _) => Validation.Empty;
+        public ValidationResult Validate(Guid request) => Validation.Empty;
     }
 }
