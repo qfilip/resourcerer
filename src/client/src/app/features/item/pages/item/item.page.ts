@@ -7,6 +7,7 @@ import { PopupService } from '../../../../shared/features/common-ui/services/pop
 import { DialogOptions } from '../../../../shared/features/common-ui/models/dialog-options.model';
 import { CreateElementItemFormComponent } from "../../components/create-element-item-form/create-element-item-form.component";
 import { UpdateElementItemFormComponent } from "../../components/update-element-item-form/update-element-item-form.component";
+import { eItemType } from '../../../../shared/dtos/enums';
 
 @Component({
   standalone: true,
@@ -29,11 +30,16 @@ export class ItemPage implements OnInit {
 
   showForm(item?: IItemDto) {
     this.itemService.getItemType(item!)
-      .subscribe({ next: v => console.log(v.data)})
-    // if(!item)
-    //   this.$formType.set('create');
-    // else
-    //   this.$formType.set('update');
+      .subscribe({ next: v => {
+        if(!item && v.data === eItemType.Element)
+          this.$formType.set('ce');
+        else if(!item && v.data === eItemType.Composite)
+          this.$formType.set('cc');
+        else if(item && v.data === eItemType.Element)
+          this.$formType.set('ue');
+        else if(item && v.data === eItemType.Composite)
+          this.$formType.set('uc');
+      }})
   }
 
   onItemCreated(x: IItemDto) {
