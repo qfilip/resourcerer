@@ -1,6 +1,7 @@
 ﻿using Reinforced.Typings.Fluent;
 using Resourcerer.DataAccess.Enums;
 using Resourcerer.Dtos;
+using Resourcerer.Dtos.Enums;
 using Resourcerer.Identity.Enums;
 using System.Text;
 using TsBuilder = Reinforced.Typings.Fluent.ConfigurationBuilder;
@@ -107,7 +108,8 @@ public static class Exporter
             [
                 typeof(eEntityStatus),
                 typeof(eResource),
-                typeof(ePermission)
+                typeof(ePermission),
+                typeof(eItemType)
             ],
             conf => conf.ExportTo("enums.ts")
         );

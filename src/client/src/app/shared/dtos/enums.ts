@@ -22,3 +22,7 @@ export enum ePermission {
 	Remove = 8,
 	Delete = 16
 }
+export enum eItemType {
+	Element = 0,
+	Composite = 1
+}
