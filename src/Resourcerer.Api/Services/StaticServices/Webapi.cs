@@ -1,5 +1,7 @@
-﻿using Resourcerer.Api.Endpoints;
+﻿using Microsoft.AspNetCore.Http.Json;
+using Resourcerer.Api.Endpoints;
 using Resourcerer.Api.Middlewares;
+using System.Text.Json.Serialization;
 
 namespace Resourcerer.Api.Services.StaticServices;
 
@@ -8,6 +10,11 @@ public class Webapi
     public static WebApplication Build(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.Configure<JsonOptions>(x =>
+        {
+            x.SerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+        });
 
         AppInitializer.LoadAuthConfiguration(builder.Configuration);
 
