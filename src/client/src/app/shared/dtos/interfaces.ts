@@ -136,6 +136,12 @@ export interface IV1ChangeItemName
 	itemId: string;
 	newName: string;
 }
+export interface IV1CompositeItemFormData
+{
+	items: IItemDto[];
+	categories: ICategoryDto[];
+	unitsOfMeasure: IUnitOfMeasureDto[];
+}
 export interface IV1CreateCompositeItem
 {
 	name: string;

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BaseApiService } from "../../../shared/services/base-api.service";
-import { IItemDto, ISimple, IV1CreateElementItem, IV1ElementItemFormData, IV1UpdateElementItem } from "../../../shared/dtos/interfaces";
+import { IItemDto, ISimple, IV1CompositeItemFormData, IV1CreateElementItem, IV1ElementItemFormData, IV1UpdateElementItem } from "../../../shared/dtos/interfaces";
 import { HttpParams } from "@angular/common/http";
 import { eItemType } from "../../../shared/dtos/enums";
 
@@ -24,6 +24,13 @@ export class ItemApiService extends BaseApiService {
   getElementItemFormData(companyId: string) {
     const url = this.url + '/element/formdata';
     return this.http.get<IV1ElementItemFormData>(url, {
+      params: new HttpParams().set('companyId', companyId)
+    }).pipe(this.withLoader());
+  }
+
+  getCompositeItemFormData(companyId: string) {
+    const url = this.url + '/composite/formdata';
+    return this.http.get<IV1CompositeItemFormData>(url, {
       params: new HttpParams().set('companyId', companyId)
     }).pipe(this.withLoader());
   }

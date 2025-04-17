@@ -34,6 +34,11 @@ export class ItemService {
     return this.apiService.getElementItemFormData(user.company.id);
   }
 
+  getCompositeItemFormData() {
+    const user = this.userService.$user()!;
+    return this.apiService.getCompositeItemFormData(user.company.id);
+  }
+
   getItemType(dto: IItemDto) {
     return this.apiService.getItemType(dto.id);
   }
