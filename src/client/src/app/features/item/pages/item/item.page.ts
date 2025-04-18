@@ -8,11 +8,12 @@ import { DialogOptions } from '../../../../shared/features/common-ui/models/dial
 import { CreateElementItemFormComponent } from "../../components/create-element-item-form/create-element-item-form.component";
 import { UpdateElementItemFormComponent } from "../../components/update-element-item-form/update-element-item-form.component";
 import { eItemType } from '../../../../shared/dtos/enums';
+import { CreateCompositeItemFormComponent } from "../../components/create-composite-item-form/create-composite-item-form.component";
 
 @Component({
   standalone: true,
   selector: 'app-item',
-  imports: [ItemListComponent, CreateElementItemFormComponent, UpdateElementItemFormComponent],
+  imports: [ItemListComponent, CreateElementItemFormComponent, UpdateElementItemFormComponent, CreateCompositeItemFormComponent],
   templateUrl: './item.page.html',
   styleUrl: './item.page.css'
 })

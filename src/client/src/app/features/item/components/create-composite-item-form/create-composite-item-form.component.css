@@ -1,0 +1,18 @@
+ul {
+  margin: var(--rem-xxs) 0;
+}
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  select {
+    flex: 7;
+  }
+
+  button {
+    flex: 1;
+    margin: 0;
+    padding: 0;
+  }
+}

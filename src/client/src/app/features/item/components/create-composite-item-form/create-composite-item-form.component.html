@@ -1,4 +1,3 @@
-@let form = $form();
 @let formData = $formData();
 @if(form && formData) {
   @let cs = form.controls;
@@ -52,6 +51,29 @@
           </label>
           <app-form-error [$errors]="cs.unitPrice.errors"></app-form-error>
         </div>
+
+        <div>
+          <button (click)="addItemSlot()" class="info" ariaLabel="create">
+            <i class="las la-plus"></i>
+          </button>
+        </div>
+        <ul>
+          @for(toUse of itemsToUse; track $index) {
+            <li>
+              <select #itemSelect (change)="setItem($index, itemSelect.value)">
+                <option value="" disabled selected hidden>Please Choose...</option>
+                @for(available of $itemsAvailable(); track $index) {
+                  <option [value]="available.id">
+                    {{ available.name }}
+                  </option>
+                }
+              </select>
+              <button (click)="removeItemSlot($index)" class="error" ariaLabel="delete">
+                <i class="las la-trash"></i>
+              </button>
+            </li>
+          }
+        </ul>
     
         <div>
           <label>
