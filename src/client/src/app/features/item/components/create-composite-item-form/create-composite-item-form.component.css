@@ -1,18 +1,38 @@
 ul {
   margin: var(--rem-xxs) 0;
 }
-li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 
-  select {
-    flex: 7;
-  }
+.item-pick {
+  ul {
+    flex: 1 0 50%;
+    min-height: 5rem;
+    max-height: 7rem;
+    overflow-y: auto;
 
-  button {
-    flex: 1;
-    margin: 0;
-    padding: 0;
-  }
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      button {
+        margin: 0;
+      }
+
+      div:nth-child(odd) {
+        flex: 5 0;
+        background-color: red;
+      }
+
+      div:nth-child(even) {
+        flex: 1 0;
+      }
+    }
+
+    .item-qty {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  } 
 }

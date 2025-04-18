@@ -53,27 +53,35 @@
         </div>
 
         <div>
-          <button (click)="addItemSlot()" class="info" ariaLabel="create">
-            <i class="las la-plus"></i>
-          </button>
+          <label>Items:</label>
+          <div class="item-pick">
+            <ul>
+              @for(item of itemsLeft; track $index) {
+                <li>
+                  <div>{{ item.name }}</div>
+                  <button (click)="addItem(item)">
+                    <i class="las la-plus"></i>
+                  </button>
+                </li>
+              }
+            </ul>
+            <ul>
+              @for(x of recipe; track $index) {
+                <li>
+                  <div>
+                    {{ x.item.name }}
+                  </div>
+                  <div class="item-qty">
+                    <input #qty (input)="setQuantity(x, qty.value)" type="number" placeholder="quantity">
+                    <button (click)="removeItem(x.item)" >
+                      <i class="las la-trash"></i>
+                    </button>
+                  </div>
+                </li>
+              }
+            </ul>
+          </div>
         </div>
-        <ul>
-          @for(toUse of itemsToUse; track $index) {
-            <li>
-              <select #itemSelect (change)="setItem($index, itemSelect.value)">
-                <option value="" disabled selected hidden>Please Choose...</option>
-                @for(available of $itemsAvailable(); track $index) {
-                  <option [value]="available.id">
-                    {{ available.name }}
-                  </option>
-                }
-              </select>
-              <button (click)="removeItemSlot($index)" class="error" ariaLabel="delete">
-                <i class="las la-trash"></i>
-              </button>
-            </li>
-          }
-        </ul>
     
         <div>
           <label>

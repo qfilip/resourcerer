@@ -4,6 +4,7 @@ import { ItemService } from '../../services/item.service';
 import { FormObject, FormObjectControl } from '../../../../shared/utils/forms';
 import { Validation } from '../../../../shared/utils/validation';
 import { FormErrorComponent } from "../../../../shared/features/common-ui/components/form-error/form-error.component";
+import { Functions } from '../../../../shared/utils/functions';
 
 @Component({
   selector: 'app-create-composite-item-form',
@@ -17,8 +18,8 @@ export class CreateCompositeItemFormComponent implements OnInit {
   
   private itemService = inject(ItemService);
   
-  itemsToUse: IItemDto[] = [];
-  $itemsAvailable = signal<IItemDto[]>([]);
+  recipe: { item: IItemDto, qty: number}[] = [];
+  itemsLeft: IItemDto[] = [];
   $formData = signal<IV1CompositeItemFormData | null>(null);
   form: FormObject<CreateCompositeElementForm> | null = null;
 
@@ -94,9 +95,8 @@ export class CreateCompositeItemFormComponent implements OnInit {
           
           if(x.unitsOfMeasure.length === 0)
             errors.push('At least 1 unit of measure must exist to create element item');
-          
-          this.$itemsAvailable.set(x.items);
 
+          this.itemsLeft = x.items;
           errors.length === 0
             ? this.$formData.set(x)
             : this.onFormDataError.emit(errors);
@@ -104,26 +104,18 @@ export class CreateCompositeItemFormComponent implements OnInit {
       });
   }
 
-  addItemSlot() {
-    const availiable = this.$itemsAvailable();
-    if(availiable.length === 0) return;
-    debugger
-    console.log(availiable);
-    this.itemsToUse.push(availiable.pop()!);
-    console.log(availiable);
-    this.$itemsAvailable.set(availiable);
-    this.form!.controls.itemIds.data.value[this.itemsToUse.length - 1] = availiable[0].id;
+  addItem(item: IItemDto) {
+    this.recipe.push({ item: item, qty: 0 });
+    this.itemsLeft = this.itemsLeft.filter(x => x.id !== item.id);
   }
 
-  setItem(useIndex: number, id: string) {
-    const available = this.$itemsAvailable()
-    const i = available.findIndex(x => x.id === id);
-    this.form!.controls.itemIds.data.value[useIndex] = available[i].id;
-    this.$itemsAvailable.update(xs => xs.splice(i, 1))
+  removeItem(item: IItemDto) {
+    this.itemsLeft.push(item);
+    this.recipe = this.recipe.filter(x => x.item.id !== item.id);
   }
 
-  removeItemSlot(i: number) {
-    this.$itemsAvailable.update(xs => xs.concat(this.itemsToUse.splice(i, 1)[0]));
+  setQuantity(x: { item: IItemDto, qty: number}, qty: number | string) {
+    x.qty = qty as number;
   }
 
   onSubmit(e: Event) {
