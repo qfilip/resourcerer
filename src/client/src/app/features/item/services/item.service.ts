@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { ItemApiService } from "./item.api.service";
 import { UserService } from "../../user/services/user.service";
-import { IItemDto, IV1CreateElementItem, IV1UpdateElementItem } from "../../../shared/dtos/interfaces";
+import { IItemDto, IV1CreateCompositeItem, IV1CreateElementItem, IV1UpdateElementItem } from "../../../shared/dtos/interfaces";
 import { tap } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
@@ -56,6 +56,15 @@ export class ItemService {
     return this.apiService.updateElementItem(dto)
       .pipe(
         tap(x => this.runReducers(undefined, undefined, x))
+      );
+  }
+
+  createCompositeItem(dto: IV1CreateCompositeItem) {
+    return this.apiService.createCompositeItem(dto)
+      .pipe(
+        tap(x => {
+          this.runReducers(undefined, x);
+        })
       );
   }
 
