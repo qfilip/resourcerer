@@ -1,25 +1,26 @@
-import { Component, computed, effect, inject, OnInit, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, output, signal, ViewChild } from '@angular/core';
 import { IItemDto, IV1CompositeItemFormData, IV1CreateCompositeItem, IV1ElementItemFormData } from '../../../../shared/dtos/interfaces';
 import { ItemService } from '../../services/item.service';
 import { FormObject, FormObjectControl } from '../../../../shared/utils/forms';
 import { Validation } from '../../../../shared/utils/validation';
 import { FormErrorComponent } from "../../../../shared/features/common-ui/components/form-error/form-error.component";
 import { Functions } from '../../../../shared/utils/functions';
+import { ExcerptDialogComponent } from "../excerpt-dialog/excerpt-dialog.component";
 
 @Component({
   selector: 'app-create-composite-item-form',
-  imports: [FormErrorComponent],
+  imports: [FormErrorComponent, ExcerptDialogComponent],
   templateUrl: './create-composite-item-form.component.html',
   styleUrl: './create-composite-item-form.component.css'
 })
 export class CreateCompositeItemFormComponent implements OnInit {
+  @ViewChild('excerptDialog') private excerptDialog!: ExcerptDialogComponent;
   onSubmitDone = output<IItemDto>();
   onFormDataError = output<string[]>();
   
   private itemService = inject(ItemService);
   
-  recipe: { item: IItemDto, qty: number}[] = [];
-  itemsLeft: IItemDto[] = [];
+  items: IItemDto[] = [];
   $formData = signal<IV1CompositeItemFormData | null>(null);
   form: FormObject<CreateCompositeElementForm> | null = null;
 
@@ -65,9 +66,9 @@ export class CreateCompositeItemFormComponent implements OnInit {
             { fn: Validation.min(0), error: 'Must be 0 or above' },
           ]
         }),
-        itemIds: new FormObjectControl({
-          value: [] as string[],
-          validators: [{ fn: (xs: string[]) => xs.length > 0, error: 'At least 1 item must be specified' }]
+        recipe: new FormObjectControl({
+          value: [] as {item: IItemDto, qty: number }[],
+          validators: [{ fn: this.recipeValidator, error: 'Required' }]
         }),
         categoryId: new FormObjectControl({
           value: formData.categories[0].id,
@@ -96,7 +97,7 @@ export class CreateCompositeItemFormComponent implements OnInit {
           if(x.unitsOfMeasure.length === 0)
             errors.push('At least 1 unit of measure must exist to create element item');
 
-          this.itemsLeft = x.items;
+          this.items = x.items;
           errors.length === 0
             ? this.$formData.set(x)
             : this.onFormDataError.emit(errors);
@@ -104,23 +105,25 @@ export class CreateCompositeItemFormComponent implements OnInit {
       });
   }
 
-  addItem(item: IItemDto) {
-    this.recipe.push({ item: item, qty: 0 });
-    this.itemsLeft = this.itemsLeft.filter(x => x.id !== item.id);
-  }
-
-  removeItem(item: IItemDto) {
-    this.itemsLeft.push(item);
-    this.recipe = this.recipe.filter(x => x.item.id !== item.id);
-  }
-
-  setQuantity(x: { item: IItemDto, qty: number}, qty: number | string) {
-    x.qty = qty as number;
+  openRecipeDialog() {
+    const result = this.excerptDialog.open(this.items);
+    result.subscribe({
+      next: v => {
+        if(v) {
+          this.form!.controls.recipe.setValue(v);
+        }
+      }
+    })
   }
 
   onSubmit(e: Event) {
     e.preventDefault();
+    if(!this.form?.valid) {
+      return;
+    }
   }
+
+  private recipeValidator = (xs: {item: IItemDto, qty: number}[]) => xs.length > 0;
 }
 
 type CreateCompositeElementForm = {
@@ -130,7 +133,7 @@ type CreateCompositeElementForm = {
   canExpire: boolean;
   expirationTimeSeconds: number;
   unitPrice: number;
-  itemIds: string[];
+  recipe: {item: IItemDto, qty: number}[];
   categoryId: string;
   unitOfMeasureId: string;
 }

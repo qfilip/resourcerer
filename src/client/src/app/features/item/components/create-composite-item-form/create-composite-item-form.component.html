@@ -1,3 +1,4 @@
+<app-excerpt-dialog #excerptDialog></app-excerpt-dialog>
 @let formData = $formData();
 @if(form && formData) {
   @let cs = form.controls;
@@ -54,33 +55,10 @@
 
         <div>
           <label>Items:</label>
-          <div class="item-pick">
-            <ul>
-              @for(item of itemsLeft; track $index) {
-                <li>
-                  <div>{{ item.name }}</div>
-                  <button (click)="addItem(item)">
-                    <i class="las la-plus"></i>
-                  </button>
-                </li>
-              }
-            </ul>
-            <ul>
-              @for(x of recipe; track $index) {
-                <li>
-                  <div>
-                    {{ x.item.name }}
-                  </div>
-                  <div class="item-qty">
-                    <input #qty (input)="setQuantity(x, qty.value)" type="number" placeholder="quantity">
-                    <button (click)="removeItem(x.item)" >
-                      <i class="las la-trash"></i>
-                    </button>
-                  </div>
-                </li>
-              }
-            </ul>
-          </div>
+          <button (click)="openRecipeDialog()">
+            <i class="las la-plus"></i>
+          </button>
+          <app-form-error [$errors]="cs.recipe.errors"></app-form-error>
         </div>
     
         <div>
