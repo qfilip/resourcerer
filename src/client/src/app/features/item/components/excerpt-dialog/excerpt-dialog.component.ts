@@ -1,6 +1,7 @@
 import { Component, output, signal, ViewChild } from '@angular/core';
 import { DialogWrapperComponent } from '../../../../shared/features/common-ui/components/dialog-wrapper/dialog-wrapper.component';
 import { IItemDto } from '../../../../shared/dtos/interfaces';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-excerpt-dialog',
@@ -10,7 +11,8 @@ import { IItemDto } from '../../../../shared/dtos/interfaces';
 })
 export class ExcerptDialogComponent {
   @ViewChild('wrapper') private wrapper!: DialogWrapperComponent;
-  onOk = output<{ item: IItemDto, qty: number }[]>();
+  
+  private result!: Subject<{ item: IItemDto, qty: number }[] | null>;
   private _$items = signal<IItemDto[]>([]);
   $items = this._$items.asReadonly();
 
@@ -20,6 +22,9 @@ export class ExcerptDialogComponent {
   open(items: IItemDto[]) {
     this._$items.set(items);
     this.wrapper.open();
+    
+    this.result = new Subject();
+    return this.result.asObservable();
   }
 
   addItem(item: IItemDto) {
@@ -44,11 +49,14 @@ export class ExcerptDialogComponent {
   }
 
   create() {
-    this.onOk.emit(this._$recipe());
+    this.result.next(this._$recipe());
+    this.result.complete();
     this.wrapper.close();
   }
 
   close() {
+    this.result.next(null);
+    this.result.complete();
     this.wrapper.close();
   }
 }
