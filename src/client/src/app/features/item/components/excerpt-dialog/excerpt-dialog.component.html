@@ -1,33 +1,36 @@
 <app-dialog-wrapper #wrapper>
   <h2 header>Excerpt</h2>
 
-  <div body class="flex">
-    <div>
-      <h3>Available items</h3>
-      <ul>
-        @let items = $items();
-        @for(i of items; track $index) {
-          <li (click)="addItem(i)">{{ i.name }}</li>
-        }
-      </ul>
+  <div body>
+    <div class="flex">
+      <div>
+        <h3>Available items</h3>
+        <ul>
+          @let items = $items();
+          @for(i of items; track $index) {
+            <li (click)="addItem(i)">{{ i.name }}</li>
+          }
+        </ul>
+      </div>
+      <div>
+        <h3>Recipe</h3>
+        <ul class="recipe">
+          @let recipe = $recipe();
+          @for(x of recipe; track $index) {
+            <li>
+              <div>{{ x.item.name }}</div>
+              <div>
+                <input #qty (change)="updateRecipe(x.item, qty.value)" [value]="x.qty" type="number" />
+                <button (click)="remove(x.item)" class="danger">
+                  <i class="las la-trash"></i>
+                </button>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
     </div>
-    <div>
-      <h3>Recipe</h3>
-      <ul class="recipe">
-        @let recipe = $recipe();
-        @for(x of recipe; track $index) {
-          <li>
-            <div>{{ x.item.name }}</div>
-            <div>
-              <input #qty (change)="updateRecipe(x.item, qty.value)" [value]="x.qty" type="number" />
-              <button (click)="remove(x.item)" class="danger">
-                <i class="las la-trash"></i>
-              </button>
-            </div>
-          </li>
-        }
-      </ul>
-    </div>
+    <app-form-error [$errors]="errors"></app-form-error>
   </div>
 
   <div footer>

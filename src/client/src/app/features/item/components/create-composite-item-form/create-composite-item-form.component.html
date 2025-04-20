@@ -54,10 +54,27 @@
         </div>
 
         <div>
-          <label>Items:</label>
-          <button (click)="openRecipeDialog()">
-            <i class="las la-plus"></i>
-          </button>
+          <fieldset>
+            <legend>Composite elements</legend>
+            <ul class="element-list">
+              @for(x of cs.recipe.data.value; track $index) {
+                <li>
+                  <div>{{ x.item.name }}</div>
+                  <div>{{ x.qty }}</div>
+                </li>
+              }
+            </ul>
+            <div class="element-actions">
+              <button (click)="openRecipeDialog()">
+                <i class="las la-plus"></i>
+              </button>
+              @if(cs.recipe.data.value.length > 0) {
+                <button (click)="openRecipeDialog()">
+                  <i class="las la-pen-fancy"></i>
+                </button>
+              }
+            </div>
+          </fieldset>
           <app-form-error [$errors]="cs.recipe.errors"></app-form-error>
         </div>
     

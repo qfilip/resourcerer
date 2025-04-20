@@ -68,7 +68,7 @@ export class CreateCompositeItemFormComponent implements OnInit {
         }),
         recipe: new FormObjectControl({
           value: [] as {item: IItemDto, qty: number }[],
-          validators: [{ fn: this.recipeValidator, error: 'Required' }]
+          validators: [{ fn: this.recipeValidator, error: 'Composite must have at least 1 element' }]
         }),
         categoryId: new FormObjectControl({
           value: formData.categories[0].id,
@@ -106,14 +106,14 @@ export class CreateCompositeItemFormComponent implements OnInit {
   }
 
   openRecipeDialog() {
-    const result = this.excerptDialog.open(this.items);
-    result.subscribe({
+    this.excerptDialog.open(this.items, this.form!.controls.recipe.data.value)
+    .subscribe({
       next: v => {
         if(v) {
           this.form!.controls.recipe.setValue(v);
         }
       }
-    })
+    });
   }
 
   onSubmit(e: Event) {
@@ -121,9 +121,31 @@ export class CreateCompositeItemFormComponent implements OnInit {
     if(!this.form?.valid) {
       return;
     }
+
+    const cs = this.form.controls;
+    const dto: IV1CreateCompositeItem = {
+      name: cs.name.data.value!,
+      categoryId: cs.categoryId.data.value!,
+      unitOfMeasureId: cs.unitOfMeasureId.data.value,
+      preparationTimeSeconds: cs.productionTimeSeconds.data.value,
+      expirationTimeSeconds: cs.expirationTimeSeconds.data.value,
+      unitPrice: cs.unitPrice.data.value,
+      excerptMap: this.mapRecipeDictionary(cs.recipe.data.value)
+    }
+
+    this.itemService.createCompositeItem(dto)
+      .subscribe({
+        next: v => this.onSubmitDone.emit(v)
+      });
   }
 
   private recipeValidator = (xs: {item: IItemDto, qty: number}[]) => xs.length > 0;
+  private mapRecipeDictionary(xs: {item: IItemDto, qty: number}[]) {
+    const dict = {} as { [key: string]: number };
+    xs.forEach(x => dict[x.item.id] = x.qty)
+
+    return dict;
+  }
 }
 
 type CreateCompositeElementForm = {

@@ -2,6 +2,16 @@ ul {
   margin: var(--rem-xxs) 0;
 }
 
+.element-list > li {
+  display: flex;
+  justify-content: space-between;
+}
+
+.element-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
 .item-pick {
   ul {
     flex: 1 0 50%;

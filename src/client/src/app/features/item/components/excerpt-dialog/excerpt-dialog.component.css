@@ -1,3 +1,13 @@
+h3 {
+  padding: 0;
+}
+
+ul {
+  min-height: 10rem;
+  max-height: 10rem;
+  overflow-y: auto;
+}
+
 .flex, .recipe > li {
   display: flex;
   justify-content: space-between;

@@ -2,10 +2,11 @@ import { Component, output, signal, ViewChild } from '@angular/core';
 import { DialogWrapperComponent } from '../../../../shared/features/common-ui/components/dialog-wrapper/dialog-wrapper.component';
 import { IItemDto } from '../../../../shared/dtos/interfaces';
 import { Observable, Subject } from 'rxjs';
+import { FormErrorComponent } from "../../../../shared/features/common-ui/components/form-error/form-error.component";
 
 @Component({
   selector: 'app-excerpt-dialog',
-  imports: [DialogWrapperComponent],
+  imports: [DialogWrapperComponent, FormErrorComponent],
   templateUrl: './excerpt-dialog.component.html',
   styleUrl: './excerpt-dialog.component.css'
 })
@@ -18,9 +19,12 @@ export class ExcerptDialogComponent {
 
   private _$recipe = signal<{ item: IItemDto, qty: number }[]>([]);
   $recipe = this._$recipe.asReadonly();
+  errors = [] as string[];
 
-  open(items: IItemDto[]) {
+  open(items: IItemDto[], recipe?: { item: IItemDto, qty: number }[]) {
     this._$items.set(items);
+    if(recipe)
+      this._$recipe.set(recipe);
     this.wrapper.open();
     
     this.result = new Subject();
@@ -49,6 +53,12 @@ export class ExcerptDialogComponent {
   }
 
   create() {
+    const xs = this._$recipe();
+    if(!xs.every(x => x.qty > 0)) {
+      this.errors = ['All items must have value above 0'];
+      return;
+    }
+
     this.result.next(this._$recipe());
     this.result.complete();
     this.wrapper.close();
