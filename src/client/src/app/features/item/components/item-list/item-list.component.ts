@@ -25,6 +25,7 @@ export class ItemListComponent {
 
   onCreate = output();
   onUpdate = output<IItemDto>();
+  onProduce = output<IItemDto>();
   onRemove = output<IItemDto>();
   
   constructor() {

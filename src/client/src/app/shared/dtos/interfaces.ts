@@ -121,6 +121,46 @@ export interface IV1InstanceInfo
 	sellProfit: number;
 	sellCancellationsPenaltyDifference: number;
 }
+export interface IV1CancelCompositeItemProductionOrderCommand extends IV1ItemProductionCommand
+{
+	productionOrderId: string;
+	reason: string;
+}
+export interface IV1CancelElementItemProductionOrderCommand extends IV1ItemProductionCommand
+{
+	productionOrderId: string;
+	reason: string;
+}
+export interface IV1CreateCompositeItemProductionOrderCommand extends IV1ItemProductionCommand
+{
+	itemId: string;
+	companyId: string;
+	quantity: number;
+	reason: string;
+	instantProduction: boolean;
+	desiredProductionStartTime: Date;
+	instancesToUse: { [key:string]: number };
+}
+export interface IV1CreateElementItemProductionOrderCommand extends IV1ItemProductionCommand
+{
+	itemId: string;
+	companyId: string;
+	quantity: number;
+	reason: string;
+	instantProduction: boolean;
+	desiredProductionStartTime: Date;
+}
+export interface IV1FinishItemProductionOrderCommand extends IV1ItemProductionCommand
+{
+	productionOrderId: string;
+}
+export interface IV1ItemProductionCommand
+{
+}
+export interface IV1StartItemProductionOrderCommand extends IV1ItemProductionCommand
+{
+	productionOrderId: string;
+}
 export interface IV1ChangeCompositeItemRecipe
 {
 	compositeId: string;

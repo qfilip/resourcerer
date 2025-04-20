@@ -31,5 +31,5 @@ public class CreateElementItemProductionOrderEndpoint : IAppEndpoint
     }
 
     public AppEndpoint GetEndpointInfo() =>
-        new AppEndpoint(1, 0, EndpointMapper.Items("production_order/element/create"), eHttpMethod.Post, Action, MapAuth);
+        new AppEndpoint(1, 0, EndpointMapper.Items("element/production/create"), eHttpMethod.Post, Action, MapAuth);
 }

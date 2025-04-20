@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BaseApiService } from "../../../shared/services/base-api.service";
-import { IItemDto, ISimple, IV1CompositeItemFormData, IV1CreateCompositeItem, IV1CreateElementItem, IV1ElementItemFormData, IV1UpdateElementItem } from "../../../shared/dtos/interfaces";
+import { IItemDto, ISimple, IV1CompositeItemFormData, IV1CreateCompositeItem, IV1CreateElementItem, IV1CreateElementItemProductionOrderCommand, IV1ElementItemFormData, IV1UpdateElementItem } from "../../../shared/dtos/interfaces";
 import { HttpParams } from "@angular/common/http";
 import { eItemType } from "../../../shared/dtos/enums";
 
@@ -48,5 +48,11 @@ export class ItemApiService extends BaseApiService {
   createCompositeItem(dto: IV1CreateCompositeItem) {
     const url = this.url + '/create/composite';
     return this.http.post<IItemDto>(url, dto).pipe(this.withLoader());
+  }
+
+  // production
+  produceElement(cmd: IV1CreateElementItemProductionOrderCommand) {
+    const url = this.url + '/element/production/create';
+    return this.http.post<unknown>(url, cmd).pipe(this.withLoader(true));
   }
 }

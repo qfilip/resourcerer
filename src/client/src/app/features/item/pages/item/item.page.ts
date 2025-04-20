@@ -9,11 +9,12 @@ import { CreateElementItemFormComponent } from "../../components/create-element-
 import { UpdateElementItemFormComponent } from "../../components/update-element-item-form/update-element-item-form.component";
 import { eItemType } from '../../../../shared/dtos/enums';
 import { CreateCompositeItemFormComponent } from "../../components/create-composite-item-form/create-composite-item-form.component";
+import { ItemProductionFormComponent } from '../../components/item-production-overview/item-production-form.component';
 
 @Component({
   standalone: true,
   selector: 'app-item',
-  imports: [ItemListComponent, CreateElementItemFormComponent, UpdateElementItemFormComponent, CreateCompositeItemFormComponent],
+  imports: [ItemListComponent, CreateElementItemFormComponent, UpdateElementItemFormComponent, CreateCompositeItemFormComponent, ItemProductionFormComponent],
   templateUrl: './item.page.html',
   styleUrl: './item.page.css'
 })
@@ -22,7 +23,7 @@ export class ItemPage implements OnInit {
   private dialogService = inject(DialogService);
   private itemService = inject(ItemService);
   
-  $formType = signal<'ce' | 'ue' | 'cc' | 'uc' | null>(null);
+  $display = signal<ToDisplay | null>(null);
   $selectedItem = computed(() => this.itemService.$selectedItem());
 
   ngOnInit(): void {
@@ -33,29 +34,29 @@ export class ItemPage implements OnInit {
     this.itemService.getItemType(item!)
       .subscribe({ next: v => {
         if(!item && v.data === eItemType.Element)
-          this.$formType.set('ce');
+          this.$display.set('create-element-form');
         else if(!item && v.data === eItemType.Composite)
-          this.$formType.set('cc');
+          this.$display.set('create-composite-form');
         else if(item && v.data === eItemType.Element)
-          this.$formType.set('ue');
+          this.$display.set('update-element-form');
         else if(item && v.data === eItemType.Composite)
-          this.$formType.set('uc');
+          this.$display.set('update-composite-form');
       }})
   }
 
   onItemCreated(x: IItemDto) {
     this.popup.ok(`Item ${x.name} created`);
-    this.$formType.set(null);
+    this.$display.set(null);
   }
 
   onItemUpdated(x: IItemDto) {
     this.popup.ok(`Item ${x.name} updated`);
-    this.$formType.set(null);
+    this.$display.set(null);
   }
 
   onFormError(errors: string[]) {
     this.popup.pushMany(errors, 'warn', 'Invalid data');
-    this.$formType.set(null);
+    this.$display.set(null);
   }
 
   openDialog() {
@@ -65,11 +66,11 @@ export class ItemPage implements OnInit {
       buttons: [
         { 
           label: 'Element',
-          action: () => this.$formType.set('ce')
+          action: () => this.$display.set('create-element-form')
         },
         { 
           label: 'Composite',
-          action: () => this.$formType.set('cc')
+          action: () => this.$display.set('create-composite-form')
         },
         { 
           label: 'Cancel',
@@ -88,3 +89,11 @@ export class ItemPage implements OnInit {
       );
   }
 }
+
+type ToDisplay = 
+  | 'create-element-form'
+  | 'update-element-form'
+  | 'create-composite-form'
+  | 'update-composite-form'
+  | 'production-form';
+
