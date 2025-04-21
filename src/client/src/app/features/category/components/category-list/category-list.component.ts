@@ -16,10 +16,18 @@ export class CategoryListComponent {
   
   $categoryTrees = signal<ICategoryDto[]>([]);
   $selectedTree = computed(() => this.categoryService.$selectedCategory());
+  private $query = signal<string>('');
 
-  onCreate = output();
-  onUpdate = output<ICategoryDto>();
-  onRemove = output<ICategoryDto>();
+  onSelected = output<ICategoryDto>();
+
+  $displayed = computed(() => {
+    const items = this.$categoryTrees();
+    const query = this.$query().toLowerCase();
+    
+    return items.filter(x => 
+      x.name.toLowerCase().includes(query) ||
+      x.id.toLowerCase().includes(query));
+  });
 
   constructor() {
     effect(() => {
@@ -27,4 +35,6 @@ export class CategoryListComponent {
       this.$categoryTrees.set(xs);
     });
   }
+
+  onQueryChanged = (query: string) => this.$query.set(query);
 }

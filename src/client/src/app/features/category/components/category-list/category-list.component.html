@@ -1,22 +1,13 @@
-@let trees = $categoryTrees();
+@let displayed = $displayed();
 @let selectedTree = $selectedTree();
-<div class="flex">
-  <button (click)="onCreate.emit()" class="info" ariaLabel="create">
-    <i class="las la-plus"></i>
-  </button>
-  @if(selectedTree) {
-    <button (click)="onUpdate.emit(selectedTree)" class="warn" ariaLabel="edit">
-      <i class="las la-pen-fancy"></i>
-    </button>
-    <button (click)="onRemove.emit(selectedTree)" class="danger" ariaLabel="delete">
-      <i class="las la-trash"></i>
-    </button>
-  }
+<div>
+  <input #query (keyup)="onQueryChanged(query.value)" type="text" />
+  <ul>
+    @for(tree of displayed; track $index) {
+      <li (click)="onSelected.emit(tree)" [ngClass]="{'selected': selectedTree?.id === tree.id}"
+        class="hoverable clickable">
+        <app-category [$category]="tree"></app-category>
+      </li>
+    }
+  </ul>
 </div>
-<ul>
-  @for(tree of trees; track $index) {
-    <li>
-      <app-category [$category]="tree"></app-category>
-    </li>
-  }
-</ul>

@@ -1,9 +1,9 @@
-.flex {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  
-  button {
-    flex: 1;
-  }
+input {
+  width: 100%;
+  margin-bottom: var(--rem);
+  box-sizing: border-box;
+}
+
+.selected {
+  background-color: var(--color2-d1);
 }

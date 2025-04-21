@@ -26,6 +26,8 @@ export class CategoryPage implements OnInit {
     this.categoryService.getAllCompanyCategories();
   }
 
+  selectTree = (x: ICategoryDto) => this.categoryService.selectCategory(x);
+
   showComponent(x: 'createForm' | 'updateForm' | null) {
     this.$component.set(x);
   }

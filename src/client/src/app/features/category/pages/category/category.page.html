@@ -1,11 +1,22 @@
 @let component = $component();
+@let selectedTree = $selectedCategory();
 <section class="subpage">
   <div>
+    <div class="flex">
+      <button (click)="showComponent('createForm')" class="info" ariaLabel="create">
+        <i class="las la-plus"></i>
+      </button>
+      @if(selectedTree) {
+        <button (click)="showComponent('updateForm')" class="warn" ariaLabel="edit">
+          <i class="las la-pen-fancy"></i>
+        </button>
+        <button (click)="removeCategory(selectedTree)" class="danger" ariaLabel="delete">
+          <i class="las la-trash"></i>
+        </button>
+      }
+    </div>
     <app-category-list 
-      (onCreate)="showComponent('createForm')"
-      (onUpdate)="showComponent('updateForm')"
-      (onRemove)="removeCategory($event)">
-    </app-category-list>
+      (onSelected)="selectTree($event)"></app-category-list>
   </div>
   <div>
     @if(component === 'createForm') {

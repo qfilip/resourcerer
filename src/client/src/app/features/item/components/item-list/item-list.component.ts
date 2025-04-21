@@ -25,10 +25,7 @@ export class ItemListComponent {
       x.id.toLowerCase().includes(query));
   });
 
-  onCreate = output();
   onSelected = output<IItemDto>();
-  onProduce = output<IItemDto>();
-  onRemove = output<IItemDto>();
   
   constructor() {
     effect(() => this.$items.set(this.itemService.$items()))
