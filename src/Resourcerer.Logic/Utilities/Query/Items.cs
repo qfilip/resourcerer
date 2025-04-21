@@ -1,4 +1,6 @@
-﻿using Resourcerer.DataAccess.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Resourcerer.DataAccess.Contexts;
+using Resourcerer.DataAccess.Entities;
 using System.Linq.Expressions;
 
 namespace Resourcerer.Logic.Utilities.Query;

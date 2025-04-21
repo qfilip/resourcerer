@@ -41,6 +41,30 @@ public class CreateCompositeItemProductionOrderTests : TestsBase
     }
 
     [Fact]
+    public void ItemNotComposite__Rejected()
+    {
+        // arrange
+        var fd = Faking.FakeData(_forger, 2, 2);
+        var item = _forger.Fake<Item>();
+
+        var dto = new V1CreateCompositeItemProductionOrderCommand
+        {
+            ItemId = item.Id,
+            CompanyId = item.Category!.Company!.Id,
+            Quantity = 2,
+            InstancesToUse = Faking.MapInstancesToUse(fd)
+        };
+
+        _ctx.SaveChanges();
+
+        // act
+        var result = _sut.Handle(dto).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
     public void InstantProduction_CreatesInstanceAndEvents()
     {
         // arrange
@@ -79,28 +103,6 @@ public class CreateCompositeItemProductionOrderTests : TestsBase
 
         // assert
         Assert.Equal(eHandlerResultStatus.NotFound, result.Status);
-    }
-
-    [Fact]
-    public void RecipeNotFound___Exception()
-    {
-        // arrange
-        var fd = Faking.FakeData(_forger, 2, 2, fakeRecipe: false);
-
-        var dto = new V1CreateCompositeItemProductionOrderCommand
-        {
-            ItemId = fd.Composite!.Id,
-            CompanyId = fd.Composite!.Category!.Company!.Id,
-            Quantity = 2,
-            InstancesToUse = Faking.MapInstancesToUse(fd)
-        };
-
-        _ctx.SaveChanges();
-
-        var handler = () => _sut.Handle(dto).Await();
-        
-        // act, assert
-        Assert.Throws<DataCorruptionException>(handler);
     }
 
     [Fact]

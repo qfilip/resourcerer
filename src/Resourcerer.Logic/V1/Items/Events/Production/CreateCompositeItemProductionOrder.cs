@@ -28,16 +28,18 @@ public static class CreateCompositeItemProductionOrder
                     x.Id,
                     x.Name,
                     x.Category!.CompanyId,
-                    x.ExpirationTimeSeconds
+                    x.ExpirationTimeSeconds,
+                    IsComposite = x.Recipes.Count > 0,
                 })
                 .FirstOrDefault(x =>
                     x.Id == request.ItemId &&
                     x.CompanyId == request.CompanyId);
 
             if (item == null)
-            {
                 return HandlerResult<Unit>.NotFound("Item not found");
-            }
+
+            if(!item.IsComposite)
+                return HandlerResult<Unit>.Rejected("Item is not of composite type");
 
             var recipe = await _dbContext.Recipes
                 .Where(x => x.CompositeItemId == item.Id)
