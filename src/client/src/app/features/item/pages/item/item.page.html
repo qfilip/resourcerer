@@ -1,30 +1,44 @@
+@let selectedItem = $selectedItem();
 <section class="subpage">
-    <div>
-        <app-item-list
-            (onCreate)="openDialog()"
-            (onUpdate)="showForm($event)"
-            (onProduce)="$display.set('production-form')"
-            (onRemove)="removeItem($event)">
-        </app-item-list>
+  <div>
+    <div class="flex">
+      <button (click)="openDialog()" class="info" ariaLabel="create">
+        <i class="las la-plus"></i>
+      </button>
+      @if(selectedItem) {
+      <button (click)="showForm(selectedItem)" class="warn" ariaLabel="edit">
+        <i class="las la-pen-fancy"></i>
+      </button>
+      <button (click)="$display.set('production-form')">
+        <i class="las la-hammer"></i>
+      </button>
+      <button (click)="removeItem(selectedItem)" class="danger" ariaLabel="delete">
+        <i class="las la-trash"></i>
+      </button>
+      }
     </div>
-    <div>
-        @switch ($display()) {
-            @case ("create-element-form") {
-              <app-create-element-item-form (onSubmitDone)="onItemCreated($event)" (onFormDataError)="onFormError($event)"></app-create-element-item-form>
-            }
-            @case ("update-element-form") {
-              <app-update-element-item-form [$updateItem]="$selectedItem()!" (onSubmitDone)="onItemUpdated($event)" (onFormDataError)="onFormError($event)"></app-update-element-item-form>
-            }
-            @case ("create-composite-form") {
-              <app-create-composite-item-form></app-create-composite-item-form>
-            }
-            @case ("update-composite-form") {
-              
-            }
-            @case ("production-form") {
-              <app-item-production-form [$item]="$selectedItem()!"></app-item-production-form>
-            }
-        }
-    </div>
-    <div></div>
+    <app-item-list (onSelected)="selectItem($event)"></app-item-list>
+  </div>
+  <div>
+    @switch ($display()) {
+    @case ("create-element-form") {
+    <app-create-element-item-form (onSubmitDone)="onItemCreated($event)"
+      (onFormDataError)="onFormError($event)"></app-create-element-item-form>
+    }
+    @case ("update-element-form") {
+    <app-update-element-item-form [$updateItem]="$selectedItem()!" (onSubmitDone)="onItemUpdated($event)"
+      (onFormDataError)="onFormError($event)"></app-update-element-item-form>
+    }
+    @case ("create-composite-form") {
+    <app-create-composite-item-form></app-create-composite-item-form>
+    }
+    @case ("update-composite-form") {
+
+    }
+    @case ("production-form") {
+    <app-item-production-form [$item]="$selectedItem()!"></app-item-production-form>
+    }
+    }
+  </div>
+  <div></div>
 </section>

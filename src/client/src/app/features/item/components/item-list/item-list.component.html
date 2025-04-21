@@ -1,26 +1,10 @@
 @let items = $displayedItems();
 @let selectedItem = $selectedItem();
 <div>
-  <div class="flex">
-    <button (click)="onCreate.emit()" class="info" ariaLabel="create">
-      <i class="las la-plus"></i>
-    </button>
-    @if(selectedItem) {
-    <button (click)="onUpdate.emit(selectedItem)" class="warn" ariaLabel="edit">
-      <i class="las la-pen-fancy"></i>
-    </button>
-    <button (click)="onProduce.emit(selectedItem)">
-      <i class="las la-hammer"></i>
-    </button>
-    <button (click)="onRemove.emit(selectedItem)" class="danger" ariaLabel="delete">
-      <i class="las la-trash"></i>
-    </button>
-    }
-  </div>
   <input #query (keyup)="onQueryChanged(query.value)" type="text" />
   <ul>
     @for(item of items; track $index) {
-    <li (click)="setSelectedItem(item)" [ngClass]="{'selected': selectedItem?.id === item.id}"
+    <li (click)="onSelected.emit(item)" [ngClass]="{'selected': selectedItem?.id === item.id}"
       class="hoverable clickable">
       {{ item.name }}
     </li>

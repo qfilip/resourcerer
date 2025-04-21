@@ -30,6 +30,8 @@ export class ItemPage implements OnInit {
     this.itemService.getCompanyItems();
   }
 
+  selectItem = (x: IItemDto) => this.itemService.setSelectedItem(x);
+
   showForm(item?: IItemDto) {
     this.itemService.getItemType(item!)
       .subscribe({ next: v => {

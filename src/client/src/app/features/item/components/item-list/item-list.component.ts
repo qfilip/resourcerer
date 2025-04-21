@@ -20,11 +20,13 @@ export class ItemListComponent {
     const items = this.$items();
     const query = this.$query().toLowerCase();
     
-    return items.filter(x => x.name.toLowerCase().includes(query));
+    return items.filter(x => 
+      x.name.toLowerCase().includes(query) ||
+      x.id.toLowerCase().includes(query));
   });
 
   onCreate = output();
-  onUpdate = output<IItemDto>();
+  onSelected = output<IItemDto>();
   onProduce = output<IItemDto>();
   onRemove = output<IItemDto>();
   
@@ -33,5 +35,4 @@ export class ItemListComponent {
   }
 
   onQueryChanged = (query: string) => this.$query.set(query);
-  setSelectedItem = (x: IItemDto) => this.itemService.setSelectedItem(x);
 }
