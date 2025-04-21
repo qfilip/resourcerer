@@ -14,7 +14,7 @@ export class BaseApiService {
     protected popup = inject(PopupService);
     protected loader = inject(LoaderService);
 
-    protected withLoader = <T>() => (source: Observable<T>): Observable<T> => {
+    protected withLoader = <T>(alwaysHide = false) => (source: Observable<T>): Observable<T> => {
         this.loader.show();
         return source.pipe(
             catchError(err => {
@@ -27,6 +27,7 @@ export class BaseApiService {
             }),
             tap(x => {
                 if (x) this.loader.hide();
+                if(alwaysHide) this.loader.hide();
             }),
             filter(x => x !== null)
         );

@@ -3,22 +3,26 @@
         <app-item-list
             (onCreate)="openDialog()"
             (onUpdate)="showForm($event)"
+            (onProduce)="$display.set('production-form')"
             (onRemove)="removeItem($event)">
         </app-item-list>
     </div>
     <div>
-        @switch ($formType()) {
-            @case ("ce") {
+        @switch ($display()) {
+            @case ("create-element-form") {
               <app-create-element-item-form (onSubmitDone)="onItemCreated($event)" (onFormDataError)="onFormError($event)"></app-create-element-item-form>
             }
-            @case ("ue") {
+            @case ("update-element-form") {
               <app-update-element-item-form [$updateItem]="$selectedItem()!" (onSubmitDone)="onItemUpdated($event)" (onFormDataError)="onFormError($event)"></app-update-element-item-form>
             }
-            @case ("cc") {
+            @case ("create-composite-form") {
               <app-create-composite-item-form></app-create-composite-item-form>
             }
-            @case ("uc") {
+            @case ("update-composite-form") {
               
+            }
+            @case ("production-form") {
+              <app-item-production-form [$item]="$selectedItem()!"></app-item-production-form>
             }
         }
     </div>

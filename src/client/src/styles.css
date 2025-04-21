@@ -67,3 +67,8 @@ summary:hover, .hoverable:hover, .clickable:hover {
     color: var(--color2);
     background: var(--color5);
 }
+
+dl, dd {
+  margin: 0;
+  padding: 0;
+}

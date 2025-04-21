@@ -1,5 +1,5 @@
 ﻿namespace Resourcerer.Dtos.V1;
 
-public class V1ItemProductionCommand
+public class V1ItemProductionCommand : IDto
 {
 }

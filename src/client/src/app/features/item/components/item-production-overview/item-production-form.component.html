@@ -1,0 +1,61 @@
+
+@let item = $item();
+<form (submit)="onSubmit($event)">
+  <fieldset>
+    <legend>Production</legend>
+    <div>
+      <dl>
+        <div>
+          <dd>Name:</dd>
+          <dt>{{ item.name}}</dt>
+        </div>
+        <div>
+          <dd>Production price:</dd>
+          <dt>{{ item.productionPrice }}</dt>
+        </div>
+        <div>
+          <dd>Production time:</dd>
+          <dt>{{ item.productionTimeSeconds }}</dt>
+        </div>
+      </dl>
+    </div>
+    @let cs = form.controls;
+    <div class="form-fields">
+      <div>
+        <label>
+          <span>Quantity:</span>
+          <input #qty (input)="cs.quantity.setValue(qty.value)" type="number" />
+        </label>
+        <app-form-error [$errors]="cs.quantity.errors"></app-form-error>
+      </div>
+  
+      <div>
+        <label>
+          <span>Instant production:</span>
+          <input #insProd (change)="cs.instantProduction.setValue(insProd.checked)" type="checkbox" />
+        </label>
+        <app-form-error [$errors]="cs.instantProduction.errors"></app-form-error>
+      </div>
+
+      <div>
+        <label>
+          <span>Desired production start time:</span>
+          <input #dpst (change)="cs.desiredProductionStartTime.setValue(dpst.value)" type="date">
+        </label>
+        <app-form-error [$errors]="cs.desiredProductionStartTime.errors"></app-form-error>
+      </div>
+
+      <div>
+        <label>
+          <span>Reason:</span>
+          <textarea #rsn (change)="cs.reason.setValue(rsn.value)"></textarea>
+        </label>
+        <app-form-error [$errors]="[]"></app-form-error>
+      </div>
+
+    </div>
+    <div class="actions">
+      <button type="submit">Produce</button>
+    </div>
+  </fieldset>
+</form>

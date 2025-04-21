@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { ItemApiService } from "./item.api.service";
 import { UserService } from "../../user/services/user.service";
-import { IItemDto, IV1CreateCompositeItem, IV1CreateElementItem, IV1UpdateElementItem } from "../../../shared/dtos/interfaces";
+import { IItemDto, IV1CreateCompositeItem, IV1CreateElementItem, IV1CreateElementItemProductionOrderCommand, IV1UpdateElementItem } from "../../../shared/dtos/interfaces";
 import { tap } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
@@ -66,6 +66,10 @@ export class ItemService {
           this.runReducers(undefined, x);
         })
       );
+  }
+
+  produceElement(cmd: IV1CreateElementItemProductionOrderCommand) {
+    return this.apiService.produceElement(cmd);
   }
 
   private runReducers(all?: IItemDto[], created?: IItemDto, updated?: IItemDto, deleted?: IItemDto) {

@@ -1,0 +1,16 @@
+dl > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actions {
+  margin-top: var(--rem);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  
+  button {
+    min-width: var(--rem);
+  }
+}
