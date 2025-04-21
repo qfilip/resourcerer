@@ -26,6 +26,8 @@ export class UomsPage {
     this.uomService.getCompanyUnitsOfMeasure();
   }
 
+  setSelectedUom = (x: IUnitOfMeasureDto) => this.uomService.selectUom(x);
+
   showComponent(x: 'createForm' | 'updateForm' | null) {
     this.$component.set(x);
   }

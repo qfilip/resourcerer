@@ -1,10 +1,20 @@
+@let selectedUom = $selectedUom();
 <section class="subpage">
   <div>
-    <app-uom-list
-      (onCreate)="showComponent('createForm')"
-      (onUpdate)="showComponent('updateForm')"
-      (onRemove)="deleteUom($event)">
-    </app-uom-list>
+    <div class="flex">
+      <button (click)="showComponent('createForm')" class="info" ariaLabel="create">
+        <i class="las la-plus"></i>
+      </button>
+      @if(selectedUom) {
+      <button (click)="showComponent('updateForm')" class="warn" ariaLabel="edit">
+        <i class="las la-pen-fancy"></i>
+      </button>
+      <button (click)="deleteUom(selectedUom)" class="error" ariaLabel="delete">
+        <i class="las la-trash"></i>
+      </button>
+      }
+    </div>
+    <app-uom-list (onSelected)="setSelectedUom($event)"></app-uom-list>
   </div>
   <div>
     @switch ($component()) {

@@ -23,14 +23,11 @@ export class UomListComponent {
     return uoms.filter(x => x.name.toLowerCase().includes(query));
   });
 
-  onCreate = output();
-  onUpdate = output<IUnitOfMeasureDto>();
-  onRemove = output<IUnitOfMeasureDto>();
+  onSelected = output<IUnitOfMeasureDto>();
   
   constructor() {
     effect(() => this.$uoms.set(this.uomService.$uoms()))
   }
 
   onQueryChanged = (query: string) => this.$query.set(query);
-  setSelectedItem = (x: IUnitOfMeasureDto) => this.uomService.selectUom(x);
 }
