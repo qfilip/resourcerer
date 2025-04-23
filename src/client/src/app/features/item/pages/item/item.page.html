@@ -35,9 +35,12 @@
       @case ("update-composite-form") {
 
       }
-      @case ("production-form") {
+      @case ("element-production-form") {
       <app-element-item-production-form [$item]="$selectedItem()!"></app-element-item-production-form>
       }
+      @case ("composite-production-form") {
+        <app-element-item-production-form [$item]="$selectedItem()!"></app-element-item-production-form>
+        }
     }
   </div>
   <div>

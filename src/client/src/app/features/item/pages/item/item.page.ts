@@ -9,7 +9,7 @@ import { CreateElementItemFormComponent } from "../../components/create-element-
 import { UpdateElementItemFormComponent } from "../../components/update-element-item-form/update-element-item-form.component";
 import { eItemType } from '../../../../shared/dtos/enums';
 import { CreateCompositeItemFormComponent } from "../../components/create-composite-item-form/create-composite-item-form.component";
-import { ElementItemProductionFormComponent } from "../../components/element-item-production-overview/element-item-production-form.component";
+import { ElementItemProductionFormComponent } from "../../components/element-item-production-form/element-item-production-form.component";
 
 @Component({
   standalone: true,
