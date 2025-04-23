@@ -1,21 +1,19 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core';
-import { IItemDto, ISimple, IV1CancelElementItemProductionOrderCommand, IV1CreateElementItemProductionOrderCommand } from '../../../../shared/dtos/interfaces';
+import { Component, inject, input } from '@angular/core';
+import { IItemDto, IV1CreateElementItemProductionOrderCommand } from '../../../../shared/dtos/interfaces';
 import { ItemService } from '../../services/item.service';
-import { eItemType } from '../../../../shared/dtos/enums';
 import { DialogService } from '../../../../shared/features/common-ui/services/dialog.service';
 import { FormErrorComponent } from "../../../../shared/features/common-ui/components/form-error/form-error.component";
 import { FormObject, FormObjectControl } from '../../../../shared/utils/forms';
-import { FormControl } from '@angular/forms';
 import { Validation } from '../../../../shared/utils/validation';
 import { UserService } from '../../../user/services/user.service';
 
 @Component({
-  selector: 'app-item-production-form',
+  selector: 'app-element-item-production-form',
   imports: [FormErrorComponent],
-  templateUrl: './item-production-form.component.html',
-  styleUrl: './item-production-form.component.css'
+  templateUrl: './element-item-production-form.component.html',
+  styleUrl: './element-item-production-form.component.css'
 })
-export class ItemProductionFormComponent {
+export class ElementItemProductionFormComponent {
   $item = input.required<IItemDto>();
   private itemService = inject(ItemService);
   private userService = inject(UserService);

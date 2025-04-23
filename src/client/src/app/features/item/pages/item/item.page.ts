@@ -9,12 +9,12 @@ import { CreateElementItemFormComponent } from "../../components/create-element-
 import { UpdateElementItemFormComponent } from "../../components/update-element-item-form/update-element-item-form.component";
 import { eItemType } from '../../../../shared/dtos/enums';
 import { CreateCompositeItemFormComponent } from "../../components/create-composite-item-form/create-composite-item-form.component";
-import { ItemProductionFormComponent } from '../../components/item-production-overview/item-production-form.component';
+import { ElementItemProductionFormComponent } from "../../components/element-item-production-overview/element-item-production-form.component";
 
 @Component({
   standalone: true,
   selector: 'app-item',
-  imports: [ItemListComponent, CreateElementItemFormComponent, UpdateElementItemFormComponent, CreateCompositeItemFormComponent, ItemProductionFormComponent],
+  imports: [ItemListComponent, CreateElementItemFormComponent, UpdateElementItemFormComponent, CreateCompositeItemFormComponent, ElementItemProductionFormComponent],
   templateUrl: './item.page.html',
   styleUrl: './item.page.css'
 })
@@ -43,6 +43,17 @@ export class ItemPage implements OnInit {
           this.$display.set('update-element-form');
         else if(item && v.data === eItemType.Composite)
           this.$display.set('update-composite-form');
+      }})
+  }
+
+  showProductionForm(item: IItemDto) {
+    this.itemService.getItemType(item!)
+      .subscribe({ next: v => {
+        const formType: ToDisplay = v.data === eItemType.Element
+          ? 'element-production-form'
+          : 'composite-production-form';
+
+        this.$display.set(formType);
       }})
   }
 
@@ -97,5 +108,6 @@ type ToDisplay =
   | 'update-element-form'
   | 'create-composite-form'
   | 'update-composite-form'
-  | 'production-form';
+  | 'element-production-form'
+  | 'composite-production-form';
 
