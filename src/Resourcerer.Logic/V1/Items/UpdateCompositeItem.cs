@@ -8,12 +8,11 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.V1;
-using Resourcerer.Logic.Exceptions;
 using Resourcerer.Logic.Models;
 
 namespace Resourcerer.Logic.V1;
 
-public class ChangeCompositeItemRecipe
+public class UpdateCompositeItem
 {
     public class Handler : IAppHandler<V1ChangeCompositeItemRecipe, ItemDto>
     {
@@ -66,6 +65,11 @@ public class ChangeCompositeItemRecipe
 
             UpdatePrice(composite, request.UnitPrice);
 
+            composite.Name = request.Name;
+            composite.ExpirationTimeSeconds = request.ExpirationTimeSeconds;
+            composite.ProductionPrice = request.ProductionPrice;
+            composite.ProductionTimeSeconds = request.ProductionTimeSeconds;
+
             await _dbContext.SaveChangesAsync();
 
             var dto = _mapper.Map<ItemDto>(composite);
@@ -110,7 +114,7 @@ public class ChangeCompositeItemRecipe
         private void UpdatePrice(Item composite, double newPrice)
         {
             var lastPrice = composite.Prices.OrderBy(x => x.AuditRecord.CreatedAt).Last();
-            if (lastPrice.UnitValue != newPrice) return;
+            if (lastPrice.UnitValue == newPrice) return;
 
             composite.Prices.Add(new Price
             {

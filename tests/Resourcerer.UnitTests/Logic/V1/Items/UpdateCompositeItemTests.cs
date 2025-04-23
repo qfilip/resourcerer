@@ -9,10 +9,10 @@ using SqlForgery;
 
 namespace Resourcerer.UnitTests.Logic.V1.Items;
 
-public class ChangeCompositeItemRecipeTests : TestsBase
+public class UpdateCompositeItemTests : TestsBase
 {
-    private readonly ChangeCompositeItemRecipe.Handler _sut;
-    public ChangeCompositeItemRecipeTests()
+    private readonly UpdateCompositeItem.Handler _sut;
+    public UpdateCompositeItemTests()
     {
         _sut = new(_ctx, new(), GetMapster());
     }
@@ -25,7 +25,14 @@ public class ChangeCompositeItemRecipeTests : TestsBase
 
         var request = new V1ChangeCompositeItemRecipe
         {
-            CompositeId = oldComposite.Id,
+            ItemId = oldComposite.Id,
+            CategoryId = _forger.Fake<Category>().Id,
+            UnitOfMeasureId = _forger.Fake<UnitOfMeasure>().Id,
+            Name = "test",
+            ExpirationTimeSeconds = 10,
+            ProductionPrice = 10,
+            ProductionTimeSeconds = 10,
+            UnitPrice = 10,
             ExcerptMap = excerptMap
         };
 
@@ -40,9 +47,21 @@ public class ChangeCompositeItemRecipeTests : TestsBase
             () =>
             {
                 var updatedComposite = _ctx.Items
+                    .Include(x => x.Prices)
                     .Include(x => x.Recipes)
                         .ThenInclude(x => x.RecipeExcerpts)
-                    .Single(x => x.Id == request.CompositeId);
+                    .Single(x => x.Id == request.ItemId);
+
+                Assert.Equal(request.CategoryId, updatedComposite.CategoryId);
+                Assert.Equal(request.UnitOfMeasureId, updatedComposite.UnitOfMeasureId);
+                Assert.Equal(request.Name, updatedComposite.Name);
+                Assert.Equal(request.ExpirationTimeSeconds, updatedComposite.ExpirationTimeSeconds);
+                Assert.Equal(request.ProductionPrice, updatedComposite.ProductionPrice);
+                Assert.Equal(request.ProductionTimeSeconds, updatedComposite.ProductionTimeSeconds);
+
+                Assert.Equal(oldComposite.Prices.Count + 1, updatedComposite.Prices.Count);
+                var latestPrice = updatedComposite.Prices.OrderBy(x => x.AuditRecord.CreatedAt).Last();
+                Assert.Equal(request.UnitPrice, latestPrice.UnitValue);
 
                 Assert.Equal(oldComposite.Recipes.Count + 1, updatedComposite.Recipes.Count);
 
@@ -72,7 +91,7 @@ public class ChangeCompositeItemRecipeTests : TestsBase
 
         var request = new V1ChangeCompositeItemRecipe
         {
-            CompositeId = Guid.NewGuid(),
+            ItemId = Guid.NewGuid(),
             ExcerptMap = excerptMap
         };
 
@@ -86,21 +105,67 @@ public class ChangeCompositeItemRecipeTests : TestsBase
     }
 
     [Fact]
-    public void CompositeHasNoRecipes__Exception()
+    public void CategoryNotFound__Rejected()
+    {
+        // arrange
+        (var oldComposite, var excerptMap) = FakeData(_forger, _ctx);
+
+        var request = new V1ChangeCompositeItemRecipe
+        {
+            ItemId = oldComposite.Id,
+            ExcerptMap = excerptMap,
+            CategoryId = Guid.NewGuid()
+        };
+
+        _ctx.SaveChanges();
+
+        // act
+        var result = _sut.Handle(request).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
+    public void UnitOfMeasureNotFound__Rejected()
+    {
+        // arrange
+        (var oldComposite, var excerptMap) = FakeData(_forger, _ctx);
+
+        var request = new V1ChangeCompositeItemRecipe
+        {
+            ItemId = oldComposite.Id,
+            ExcerptMap = excerptMap,
+            CategoryId = oldComposite.CategoryId,
+            UnitOfMeasureId = Guid.NewGuid()
+        };
+
+        _ctx.SaveChanges();
+
+        // act
+        var result = _sut.Handle(request).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
+    }
+
+    [Fact]
+    public void CompositeHasNoRecipes__Rejected()
     {
         // arrange
         var request = new V1ChangeCompositeItemRecipe
         {
-            CompositeId = _forger.Fake<Item>().Id,
+            ItemId = _forger.Fake<Item>().Id,
             ExcerptMap = new Dictionary<Guid, double>()
         };
 
         _ctx.SaveChanges();
 
-        var handler = () => _sut.Handle(request).Await();
-        
-        // act, assert
-        Assert.Throws<DataCorruptionException>(handler);
+        // act
+        var result = _sut.Handle(request).Await();
+
+        // assert
+        Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
     }
 
     [Fact]
@@ -112,7 +177,7 @@ public class ChangeCompositeItemRecipeTests : TestsBase
 
         var request = new V1ChangeCompositeItemRecipe
         {
-            CompositeId = oldComposite.Id,
+            ItemId = oldComposite.Id,
             ExcerptMap = excerptMap
         };
 
@@ -134,6 +199,15 @@ public class ChangeCompositeItemRecipeTests : TestsBase
                 {
                     r.CompositeItem = x;
                     r.Version = i + 1;
+                }))
+                .ToArray();
+
+            x.Prices = Enumerable.Range(1, 3)
+                .Select(i => forger.Fake<Price>(r =>
+                {
+                    r.Item = x;
+                    r.UnitValue = i + 1;
+                    r.AuditRecord = new() { CreatedAt = new DateTime(2000, 1, i) };
                 }))
                 .ToArray();
         });

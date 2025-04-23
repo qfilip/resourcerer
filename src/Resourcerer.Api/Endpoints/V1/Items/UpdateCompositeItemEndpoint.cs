@@ -6,12 +6,12 @@ using Resourcerer.Logic.V1;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public class ChangeCompositeItemRecipeEndpoint : IAppEndpoint
+public class UpdateCompositeItemEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
        [FromBody] V1ChangeCompositeItemRecipe dto,
        [FromServices] Pipeline pipeline,
-       [FromServices] ChangeCompositeItemRecipe.Handler handler)
+       [FromServices] UpdateCompositeItem.Handler handler)
     {
         return await pipeline.Pipe(handler, dto);
     }

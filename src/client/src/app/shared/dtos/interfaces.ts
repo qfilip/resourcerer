@@ -163,7 +163,14 @@ export interface IV1StartItemProductionOrderCommand extends IV1ItemProductionCom
 }
 export interface IV1ChangeCompositeItemRecipe
 {
-	compositeId: string;
+	itemId: string;
+	categoryId: string;
+	name: string;
+	productionPrice: number;
+	productionTimeSeconds: number;
+	expirationTimeSeconds?: number;
+	unitOfMeasureId: string;
+	unitPrice: number;
 	excerptMap: { [key:string]: number };
 }
 export interface IV1ChangeItemCategory
