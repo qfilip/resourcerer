@@ -3,6 +3,7 @@ using FluentValidation.Results;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Logic.Handlers;
+using Resourcerer.DataAccess.Abstractions;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
@@ -31,19 +32,54 @@ public class ChangeCompositeItemRecipe
         {
             var composite = await _dbContext.Items
                 .Include(x => x.Recipes)
-                .FirstOrDefaultAsync(x => x.Id == request.CompositeId);
+                .Include(x => x.Prices)
+                .FirstOrDefaultAsync(x => x.Id == request.ItemId);
 
             if (composite == null)
                 return HandlerResult<ItemDto>.NotFound("Composite item not found");
 
             if(composite.Recipes.Count == 0)
-                throw new DataCorruptionException($"Recipe for composite item {composite.Id} not found");
+                return HandlerResult<ItemDto>.Rejected($"Item is not of composite type");
 
+            var categoryUpdateResult = await UpdateRelationAsync(
+                () => composite.CategoryId == request.CategoryId,
+                () => _dbContext.Categories.FirstOrDefaultAsync(x => x.Id == request.CategoryId),
+                (x) => composite.CategoryId = x.Id
+            );
+            
+            if(categoryUpdateResult != eHandlerResultStatus.Ok)
+                return HandlerResult<ItemDto>.Rejected($"Specified category not found");
+
+            var uomUpdateResult = await UpdateRelationAsync(
+                () => composite.UnitOfMeasureId == request.UnitOfMeasureId,
+                () => _dbContext.UnitsOfMeasure.FirstOrDefaultAsync(x => x.Id == request.UnitOfMeasureId),
+                (x) => composite.UnitOfMeasureId = x.Id
+            );
+
+            if (uomUpdateResult != eHandlerResultStatus.Ok)
+                return HandlerResult<ItemDto>.Rejected($"Specified unit of measure not found");
+
+            var recipeUpdateResult = await AddRecipeAsync(composite, request.ExcerptMap!);
+            
+            if(recipeUpdateResult != eHandlerResultStatus.Ok)
+                return HandlerResult<ItemDto>.Rejected("Not all required items have been found");
+
+            UpdatePrice(composite, request.UnitPrice);
+
+            await _dbContext.SaveChangesAsync();
+
+            var dto = _mapper.Map<ItemDto>(composite);
+
+            return HandlerResult<ItemDto>.Ok(dto);
+        }
+
+        private async Task<eHandlerResultStatus> AddRecipeAsync(Item composite, Dictionary<Guid, double> excerptMap)
+        {
             var latestRecipe = composite.Recipes
-                .OrderByDescending(x => x.Version)
-                .First();
+               .OrderByDescending(x => x.Version)
+               .First();
 
-            var requiredItemIds = request.ExcerptMap!.Keys.ToArray();
+            var requiredItemIds = excerptMap!.Keys.ToArray();
 
             var items = await _dbContext.Items
                 .Where(x => requiredItemIds.Contains(x.Id))
@@ -54,8 +90,8 @@ public class ChangeCompositeItemRecipe
                 })
                 .ToArrayAsync();
 
-            if(requiredItemIds.Length > items.Length)
-                return HandlerResult<ItemDto>.Rejected("Not all required items have been found");
+            if (requiredItemIds.Length > items.Length)
+                return eHandlerResultStatus.Rejected;
 
             var recipe = new Recipe
             {
@@ -68,11 +104,35 @@ public class ChangeCompositeItemRecipe
             };
 
             composite.Recipes.Add(recipe);
-            await _dbContext.SaveChangesAsync();
+            return eHandlerResultStatus.Ok;
+        }
 
-            var dto = _mapper.Map<ItemDto>(composite);
+        private void UpdatePrice(Item composite, double newPrice)
+        {
+            var lastPrice = composite.Prices.OrderBy(x => x.AuditRecord.CreatedAt).Last();
+            if (lastPrice.UnitValue != newPrice) return;
 
-            return HandlerResult<ItemDto>.Ok(dto);
+            composite.Prices.Add(new Price
+            {
+                UnitValue = newPrice,
+            });
+        }
+
+        private async Task<eHandlerResultStatus> UpdateRelationAsync<T>(
+            Func<bool> idempotencyCheck,
+            Func<Task<T?>> queryAsync,
+            Action<T> updateWith) where T : class, IId<Guid>
+        {
+            if(idempotencyCheck()) return eHandlerResultStatus.Ok;
+
+            var entity = await queryAsync();
+            
+            if(entity == null)
+                return eHandlerResultStatus.Rejected;
+
+            updateWith(entity);
+
+            return eHandlerResultStatus.Ok;
         }
 
         public ValidationResult Validate(V1ChangeCompositeItemRecipe request) =>
@@ -83,7 +143,7 @@ public class ChangeCompositeItemRecipe
     {
         public Validator()
         {
-            RuleFor(x => x.CompositeId)
+            RuleFor(x => x.ItemId)
                 .NotEmpty()
                 .WithMessage("Composite id cannot be empty");
 
