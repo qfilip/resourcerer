@@ -38,6 +38,10 @@ ul {
     list-style: none;
 }
 
+li.selected {
+  background-color: var(--color2-d1);
+}
+
 a {
     color: var(--color5);
 }

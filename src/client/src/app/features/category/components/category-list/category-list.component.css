@@ -3,7 +3,3 @@ input {
   margin-bottom: var(--rem);
   box-sizing: border-box;
 }
-
-.selected {
-  background-color: var(--color2-d1);
-}
