@@ -22,15 +22,23 @@
   <div>
     @switch ($display()) {
     @case ("create-element-form") {
-      <app-create-element-item-form (onSubmitDone)="onItemCreated($event)"
-        (onFormDataError)="onFormError($event)"></app-create-element-item-form>
+      <app-create-element-item-form
+        (onSubmitDone)="onItemCreated($event)"
+        (onFormDataError)="onFormError($event)">
+      </app-create-element-item-form>
       }
       @case ("update-element-form") {
-      <app-update-element-item-form [$updateItem]="$selectedItem()!" (onSubmitDone)="onItemUpdated($event)"
-        (onFormDataError)="onFormError($event)"></app-update-element-item-form>
+      <app-update-element-item-form
+        [$updateItem]="$selectedItem()!"
+        (onSubmitDone)="onItemUpdated($event)"
+        (onFormDataError)="onFormError($event)">
+      </app-update-element-item-form>
       }
       @case ("create-composite-form") {
-      <app-create-composite-item-form></app-create-composite-item-form>
+      <app-create-composite-item-form
+        (onSubmitDone)="onItemCreated($event)"
+        (onFormDataError)="onFormError($event)">
+      </app-create-composite-item-form>
       }
       @case ("update-composite-form") {
 
