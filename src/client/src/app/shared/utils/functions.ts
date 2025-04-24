@@ -1,5 +1,7 @@
 import { FormGroup, ValidationErrors } from "@angular/forms";
 import { PopupService } from "../features/common-ui/services/popup.service";
+import { IEntityDto } from "../dtos/interfaces";
+import { WritableSignal } from "@angular/core";
 
 export class Functions {
     static makeId = () => Math.random().toString(16).substr(2, 8);
@@ -47,5 +49,20 @@ export class Functions {
       });
     
       return result;
+    }
+
+    static getReducer<T extends IEntityDto>($signal: WritableSignal<T[]>, reducerError: string) {
+      return (all?: T[], created?: T, updated?: T, removed?: T) => {
+        if(all)
+          $signal.set(all);
+        else if(created)
+          $signal.update(xs => xs.concat(created));
+        else if(updated)
+          $signal.update(xs => xs.filter(x => x.id !== updated.id).concat(updated));
+        else if(removed)
+          $signal.update(xs => xs.filter(x => x.id !== removed.id));
+        else
+          throw reducerError;
+      }
     }
 }

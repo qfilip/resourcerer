@@ -20,7 +20,13 @@ export class BaseApiService {
             catchError(err => {
                 if(err instanceof HttpErrorResponse) {
                     const e = err as HttpErrorResponse;
-                    this.popup.error(e.statusText);
+                    const errorMessages = e.error as string[];
+                    if(errorMessages.length === 0) {
+                      this.popup.error(e.statusText);
+                    }
+                    else {
+                      this.popup.pushMany(errorMessages, 'danger', e.statusText);
+                    }
                 }
                 this.loader.hide();
                 return of(null);

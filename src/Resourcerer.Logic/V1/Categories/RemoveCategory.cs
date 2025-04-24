@@ -12,7 +12,7 @@ namespace Resourcerer.Logic.V1;
 
 public static class RemoveCategory
 {
-    public class Handler : IAppHandler<CategoryDto, Guid>
+    public class Handler : IAppHandler<CategoryDto, CategoryDto>
     {
         private readonly AppDbContext _dbContext;
         private readonly Validator _validator;
@@ -23,14 +23,14 @@ public static class RemoveCategory
             _validator = validator;
         }
 
-        public async Task<HandlerResult<Guid>> Handle(CategoryDto request)
+        public async Task<HandlerResult<CategoryDto>> Handle(CategoryDto request)
         {
             var entity = await _dbContext.Categories
                 .Include(c => c.ChildCategories)
                 .FirstOrDefaultAsync(x => x.Id == request.Id);
 
             if (entity == null)
-                return HandlerResult<Guid>.NotFound();
+                return HandlerResult<CategoryDto>.NotFound();
 
             entity.EntityStatus = eEntityStatus.Deleted;
             
@@ -39,7 +39,10 @@ public static class RemoveCategory
 
             await _dbContext.SaveChangesAsync();
 
-            return HandlerResult<Guid>.Ok(entity.Id);
+            return HandlerResult<CategoryDto>.Ok(new CategoryDto
+            {
+                Id = entity.Id
+            });
         }
 
         public ValidationResult Validate(CategoryDto request) => _validator.Validate(request);

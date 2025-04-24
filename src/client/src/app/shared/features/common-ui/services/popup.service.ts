@@ -6,7 +6,7 @@ import { Popup, PopupColor } from "../models/popup.model";
     providedIn: 'root'
 })
 export class PopupService {
-    private defaultDuration = 3000;
+    private defaultDuration = 5000;
     private _popup$ = new BehaviorSubject<{x: Popup, duration: number } | null>(null);
     popup$ = this._popup$.asObservable();
 
@@ -16,8 +16,8 @@ export class PopupService {
             duration: duration
         });
 
-    pushMany(messages: string[], color: PopupColor, header: string) {
-        messages.forEach(x => this.pushItem(x, color, header));
+    pushMany(messages: string[], color: PopupColor, header: string, duration?: number) {
+        messages.forEach(x => this.pushItem(x, color, header, duration));
     }
 
     info = (message: string, header = 'Info') =>
@@ -32,14 +32,14 @@ export class PopupService {
     error = (message: string, header = 'Error') =>
         this.pushItem(message, 'danger', header); 
 
-    private pushItem(message: string, color: PopupColor, header: string) {
+    private pushItem(message: string, color: PopupColor, header: string, duration?: number) {
         this._popup$.next({
             x: {
                 color: color,
                 header: header,
                 text: message
             },
-            duration: this.defaultDuration
+            duration: duration ?? this.defaultDuration
         });
     }
 }

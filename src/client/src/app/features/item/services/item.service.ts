@@ -3,17 +3,21 @@ import { ItemApiService } from "./item.api.service";
 import { UserService } from "../../user/services/user.service";
 import { IItemDto, IV1CreateCompositeItem, IV1CreateElementItem, IV1CreateElementItemProductionOrderCommand, IV1UpdateElementItem } from "../../../shared/dtos/interfaces";
 import { tap } from "rxjs";
+import { Functions } from "../../../shared/utils/functions";
 
 @Injectable({ providedIn: 'root' })
 export class ItemService {
   private apiService = inject(ItemApiService);
   private userService = inject(UserService);
 
+  
   private _$items = signal<IItemDto[]>([]);
   private _$selectedItem = signal<IItemDto | null>(null);
-
+  
   $items = this._$items.asReadonly();
   $selectedItem = this._$selectedItem.asReadonly();
+  
+  private reducer = Functions.getReducer<IItemDto>(this._$items, 'Item reducer failed');
 
   setSelectedItem = (x: IItemDto) => this._$selectedItem.set(x);
 
@@ -44,9 +48,7 @@ export class ItemService {
   createElementItem(dto: IV1CreateElementItem) {
     return this.apiService.createElementItem(dto)
       .pipe(
-        tap(x => {
-          this.runReducers(undefined, x);
-        })
+        tap(x => this.runReducers(undefined, x))
       );
   }
 
@@ -77,18 +79,8 @@ export class ItemService {
     return this.apiService.produceElement(cmd);
   }
 
-  private runReducers(all?: IItemDto[], created?: IItemDto, updated?: IItemDto, deleted?: IItemDto) {
-      if(all)
-        this._$items.set(all);
-      else if(created)
-        this._$items.update(xs => xs.concat(created));
-      else if(updated)
-        this._$items.update(xs => xs.filter(x => x.id !== updated.id).concat(updated));
-      else if(deleted)
-        this._$items.update(xs => xs.filter(x => x.id !== deleted.id));
-      else
-        throw 'Item reducer failed';
-  
+  private runReducers(all?: IItemDto[], created?: IItemDto, updated?: IItemDto, removed?: IItemDto) {
+      this.reducer(all, created, updated, removed);
       this._$selectedItem.set(null);
     }
 }

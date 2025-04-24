@@ -3,6 +3,7 @@ import { UomApiService } from "./uom.api.service";
 import { IUnitOfMeasureDto, IV1CreateUnitOfMeasure, IV1EditUnitOfMeasure } from "../../../shared/dtos/interfaces";
 import { UserService } from "../../user/services/user.service";
 import { tap } from "rxjs";
+import { Functions } from "../../../shared/utils/functions";
 
 @Injectable({ providedIn: 'root'})
 export class UomService {
@@ -14,6 +15,8 @@ export class UomService {
   
   $uoms = this._$uoms.asReadonly();
   $selectedUom = this._$selectedUom.asReadonly();
+
+  private reducer = Functions.getReducer<IUnitOfMeasureDto>(this._$uoms, 'UnitOfMeasure reducer failed');
 
   selectUom = (x: IUnitOfMeasureDto) => this._$selectedUom.set(x);
 
@@ -53,18 +56,8 @@ export class UomService {
       );
   }
 
-  private runReducers(all?: IUnitOfMeasureDto[], created?: IUnitOfMeasureDto, updated?: IUnitOfMeasureDto, deleted?: IUnitOfMeasureDto) {
-    if(all)
-      this._$uoms.set(all);
-    else if(created)
-      this._$uoms.update(xs => xs.concat(created));
-    else if(updated)
-      this._$uoms.update(xs => xs.filter(x => x.id !== updated.id).concat(updated));
-    else if(deleted)
-      this._$uoms.update(xs => xs.filter(x => x.id !== deleted.id));
-    else
-      throw 'Uom reducer failed';
-
+  private runReducers(all?: IUnitOfMeasureDto[], created?: IUnitOfMeasureDto, updated?: IUnitOfMeasureDto, removed?: IUnitOfMeasureDto) {
+    this.reducer(all, created, updated, removed);
     this._$selectedUom.set(null);
   }
 }

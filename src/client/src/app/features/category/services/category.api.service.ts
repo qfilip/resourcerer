@@ -23,6 +23,6 @@ export class CategoryApiService extends BaseApiService {
   }
 
   removeCategory(dto: ICategoryDto) {
-    return this.http.delete<string>(this.url, { body: dto }).pipe(this.withLoader());
+    return this.http.delete<ICategoryDto>(this.url, { body: dto }).pipe(this.withLoader());
   }
 }

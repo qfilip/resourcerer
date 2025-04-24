@@ -1,10 +1,11 @@
-import { inject, Injectable, signal } from "@angular/core";
+import { computed, inject, Injectable, signal } from "@angular/core";
 import { BaseApiService } from "../../../shared/services/base-api.service";
 import { CategoryApiService } from "./category.api.service";
 import { UserService } from "../../user/services/user.service";
 import { ICategoryDto, IV1CreateCategory, IV1UpdateCategory } from "../../../shared/dtos/interfaces";
 import { tap } from "rxjs";
 import { CategoryUtils } from "../category.utils";
+import { Functions } from "../../../shared/utils/functions";
 
 @Injectable({ providedIn: 'root' })
 export class CategoryService extends BaseApiService {
@@ -12,12 +13,13 @@ export class CategoryService extends BaseApiService {
   private userService = inject(UserService);
 
   private _$categories = signal<ICategoryDto[]>([]);
-  private _$categoryTrees = signal<ICategoryDto[]>([]);
   private _$selectedCategory = signal<ICategoryDto | null>(null);
   
   $categories = this._$categories.asReadonly();
-  $categoryTrees = this._$categoryTrees.asReadonly();
+  $categoryTrees = computed(() => CategoryUtils.mapTree(this._$categories()));
   $selectedCategory = this._$selectedCategory.asReadonly();
+
+  private reducer = Functions.getReducer<ICategoryDto>(this._$categories, 'Category reducer failed');
 
   selectCategory = (x: ICategoryDto) => this._$selectedCategory.set(x);
 
@@ -26,7 +28,7 @@ export class CategoryService extends BaseApiService {
     
     this.apiService.getAllCompanyCategories(user.company.id)
       .subscribe({
-        next: xs => this.runReducers(CategoryUtils.flattenTree(xs))
+        next: xs => this.runReducers(xs)
       });
   }
 
@@ -39,36 +41,26 @@ export class CategoryService extends BaseApiService {
 
     return this.apiService.createCategory(request)
       .pipe(
-        tap(x => {
-          const xs = this._$categories().concat(x);
-          this.runReducers(xs);
-        })
+        tap(x => this.runReducers(undefined, x, undefined, undefined))
       );
   }
 
   updateCategory(dto: IV1UpdateCategory) {
     return this.apiService.updateCategory(dto)
       .pipe(
-        tap(x => {
-          const xs = this._$categories().filter(c => c.id !== x.id);
-          this.runReducers(xs.concat(x));
-        })
+        tap(x => this.runReducers(undefined, undefined, x, undefined))
       );
   }
 
   removeCategory(dto: ICategoryDto) {
     return this.apiService.removeCategory(dto)
       .pipe(
-        tap(id => {
-          const xs = this._$categories().filter(c => c.id !== id);
-          this.runReducers(xs);
-        })
+        tap(x => this.runReducers(undefined, undefined, undefined, x))
       );
   }
 
-  private runReducers(xs: ICategoryDto[]) {
-    this._$categories.set(xs);
-    this._$categoryTrees.set(CategoryUtils.mapTree(xs));
+  private runReducers(all?: ICategoryDto[], created?: ICategoryDto, updated?: ICategoryDto, removed?: ICategoryDto) {
+    this.reducer(all, created, updated, removed);
     this._$selectedCategory.set(null);
   }
 }
