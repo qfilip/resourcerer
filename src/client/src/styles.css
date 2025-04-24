@@ -63,7 +63,7 @@ summary, .clickable {
   cursor: pointer;
 }
 
-summary:hover, .hoverable:hover, .clickable:hover {
+summary:hover, .hoverable:hover {
     background-color: var(--color2-d1);
 }
 

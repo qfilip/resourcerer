@@ -3,7 +3,7 @@
   <input #query (keyup)="onQueryChanged(query.value)" type="text" />
   <ul>
     @for(tree of displayed; track $index) {
-      <li (click)="onSelected.emit(tree)" class="hoverable clickable">
+      <li (click)="onSelected.emit(tree)" class="clickable">
         <app-category [$category]="tree"></app-category>
       </li>
     }
