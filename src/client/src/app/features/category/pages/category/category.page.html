@@ -3,14 +3,14 @@
 <section class="subpage">
   <div>
     <div class="flex">
-      <button (click)="showComponent('createForm')" class="info" ariaLabel="create">
+      <button (click)="showComponent('createForm')" class="info" title="Create">
         <i class="las la-plus"></i>
       </button>
       @if(selectedTree) {
-        <button (click)="showComponent('updateForm')" class="warn" ariaLabel="edit">
+        <button (click)="showComponent('updateForm')" class="warn" title="Update">
           <i class="las la-pen-fancy"></i>
         </button>
-        <button (click)="removeCategory(selectedTree)" class="danger" ariaLabel="delete">
+        <button (click)="removeCategory(selectedTree)" class="danger" title="Remove">
           <i class="las la-trash"></i>
         </button>
       }

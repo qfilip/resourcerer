@@ -2,17 +2,17 @@
 <section class="subpage">
   <div>
     <div class="flex">
-      <button (click)="openDialog()" class="info" ariaLabel="create">
+      <button (click)="openDialog()" class="info" title="Create">
         <i class="las la-plus"></i>
       </button>
       @if(selectedItem) {
-      <button (click)="showForm(selectedItem)" class="warn" ariaLabel="edit">
+      <button (click)="showForm(selectedItem)" class="warn" title="Update">
         <i class="las la-pen-fancy"></i>
       </button>
       <button (click)="showProductionForm(selectedItem)">
         <i class="las la-hammer"></i>
       </button>
-      <button (click)="removeItem(selectedItem)" class="danger" ariaLabel="delete">
+      <button (click)="removeItem(selectedItem)" class="danger" title="Remove">
         <i class="las la-trash"></i>
       </button>
       }

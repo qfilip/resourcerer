@@ -17,15 +17,14 @@ export class HomePageComponent implements OnInit, OnDestroy {
   private userService = inject(UserService);
   private sub: Subscription | null = null;
   
-  pages: { title: string, route: string, icon: string }[] = [
-    { title: 'categories', route: 'categories', icon: 'las la-folder-minus' },
-    { title: 'items', route: 'items', icon: 'las la-vial' },
-    { title: 'units of measure', route: 'uoms', icon: 'las la-ruler'}
+  pages: Link[] = [
+    { title: 'Categories', route: 'categories', icon: 'las la-folder-minus' },
+    { title: 'Items', route: 'items', icon: 'las la-vial' },
+    { title: 'Units of measure', route: 'uoms', icon: 'las la-ruler'}
   ];
 
   $user = signal<IAppUserDto | null>(null);
-  $page = signal<{ title: string, route: string, icon: string }>(this.pages[0]);
-
+  $page = signal<{ title: string, route: string, icon: string }>(this.pages[0])
 
   constructor() {
     effect(() => {
@@ -56,3 +55,9 @@ export class HomePageComponent implements OnInit, OnDestroy {
     this.sub?.unsubscribe();
   }
 }
+
+type Link = { 
+  title: string,
+  route: string,
+  icon: string
+};

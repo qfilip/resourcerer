@@ -5,7 +5,10 @@
   <ul>
     @for(uom of uoms; track $index) {
     <li (click)="onSelected.emit(uom)" [ngClass]="{'selected': selectedUom?.id === uom.id}" class="hoverable clickable">
-      {{ uom.name }}
+      <data [value]="uom.id">
+        {{ uom.name }}
+      </data>
+      da
     </li>
     }
   </ul>

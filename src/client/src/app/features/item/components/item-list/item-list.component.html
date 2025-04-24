@@ -6,7 +6,9 @@
     @for(item of items; track $index) {
     <li (click)="onSelected.emit(item)" [ngClass]="{'selected': selectedItem?.id === item.id}"
       class="hoverable clickable">
-      {{ item.name }}
+      <data [value]="item.id">
+        {{ item.name }}
+      </data>
     </li>
     }
   </ul>
