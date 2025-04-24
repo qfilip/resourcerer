@@ -1,6 +1,6 @@
 @let category = $category();
-<!-- @let selected = $selected(); -->
-<app-details>
+@let selected = $selected();
+<app-details [$selected]="selected">
   <span header>{{ category.name }}</span>
   <div body>
     <ul>

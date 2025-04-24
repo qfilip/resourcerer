@@ -10,6 +10,7 @@ import { Component, input, OnInit, output, signal } from '@angular/core';
 })
 export class DetailsComponent implements OnInit {
   $startOpen = input<boolean>(false);
+  $selected = input<boolean>(false);
   
   private _$open = signal<boolean>(false);
   $open = this._$open.asReadonly();

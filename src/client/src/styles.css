@@ -60,7 +60,7 @@ details[open] > summary {
 }
 
 summary, .clickable {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 summary:hover, .hoverable:hover, .clickable:hover {

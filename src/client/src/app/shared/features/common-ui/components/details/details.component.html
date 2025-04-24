@@ -1,6 +1,7 @@
 @let open = $open();
+@let selected = $selected();
 <details [open]="open">
-  <summary (click)="toggle()">
+  <summary (click)="toggle()" [ngClass]="{'selected': selected}">
     @if(open) {
       <i class="las la-caret-square-down"></i>
     }

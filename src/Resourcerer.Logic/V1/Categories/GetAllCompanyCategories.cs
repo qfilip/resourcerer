@@ -7,6 +7,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entity;
 using Resourcerer.Dtos.Records;
+using MapsterMapper;
 
 namespace Resourcerer.Logic.V1;
 
@@ -15,11 +16,13 @@ public static class GetAllCompanyCategories
     public class Handler : IAppHandler<Guid, CategoryDto[]>
     {
         private readonly AppDbContext _appDbContext;
+        private readonly IMapper _mapper;
         private readonly Validator _validator;
 
-        public Handler(AppDbContext appDbContext, Validator validator)
+        public Handler(AppDbContext appDbContext, IMapper mapper, Validator validator)
         {
             _appDbContext = appDbContext;
+            _mapper = mapper;
             _validator = validator;
         }
 
@@ -31,27 +34,10 @@ public static class GetAllCompanyCategories
                 .ToArrayAsync();
 
             var result = entities
-                .Where(x => x.ParentCategoryId == null)
-                .Select(x => MapDto(x, entities))
+                .Select(_mapper.Map<CategoryDto>)
                 .ToArray();
 
             return HandlerResult<CategoryDto[]>.Ok(result);
-        }
-
-        private static CategoryDto MapDto(Category current, Category[] all)
-        {
-            var children = all
-                .Where(x => x.ParentCategoryId == current.Id)
-                .ToArray();
-
-            return new CategoryDto
-            {
-                Id = current.Id,
-                Name = current.Name,
-                ParentCategoryId = current.ParentCategoryId,
-                ChildCategories = children.Select(x => MapDto(x, all)).ToArray(),
-                AuditRecord = AuditDto.Map(current.AuditRecord)
-            };
         }
 
         public ValidationResult Validate(Guid request) => _validator.Validate(request);
