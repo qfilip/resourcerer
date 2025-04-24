@@ -13,7 +13,9 @@ public class Webapi
 
         builder.Services.Configure<JsonOptions>(x =>
         {
-            x.SerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            // don't return recursive types
+            // ReferenceHandler adds $id property
+            // x.SerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
         });
 
         AppInitializer.LoadAuthConfiguration(builder.Configuration);

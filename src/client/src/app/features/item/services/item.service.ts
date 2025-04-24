@@ -26,8 +26,6 @@ export class ItemService {
       });
   }
 
-  removeItem(x: IItemDto) { }
-
   // element item
   getElementItemFormData() {
     const user = this.userService.$user()!;
@@ -65,6 +63,13 @@ export class ItemService {
         tap(x => {
           this.runReducers(undefined, x);
         })
+      );
+  }
+
+  removeItem(dto: IItemDto) {
+    return this.apiService.removeItem(dto)
+      .pipe(
+        tap(x => this.runReducers(undefined, undefined, undefined, x))
       );
   }
 

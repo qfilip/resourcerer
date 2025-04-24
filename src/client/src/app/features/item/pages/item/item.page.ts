@@ -98,7 +98,7 @@ export class ItemPage implements OnInit {
         `Remove category ${dto.name}?`,
         () =>
           this.itemService.removeItem(dto)
-            // .subscribe({ next: () => this.popup.ok('Item removed')})
+            .subscribe({ next: x => this.popup.ok(`Item ${x.name} removed`)})
       );
   }
 }

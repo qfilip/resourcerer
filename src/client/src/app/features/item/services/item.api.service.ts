@@ -50,6 +50,12 @@ export class ItemApiService extends BaseApiService {
     return this.http.post<IItemDto>(url, dto).pipe(this.withLoader());
   }
 
+  removeItem(dto: IItemDto) {
+    return this.http.delete<IItemDto>(this.url, {
+      params: new HttpParams().set('itemId', dto.id)
+    }).pipe(this.withLoader());
+  }
+
   // production
   produceElement(cmd: IV1CreateElementItemProductionOrderCommand) {
     const url = this.url + '/element/production/create';

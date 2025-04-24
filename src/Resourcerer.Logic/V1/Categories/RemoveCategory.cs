@@ -26,12 +26,17 @@ public static class RemoveCategory
         public async Task<HandlerResult<Guid>> Handle(CategoryDto request)
         {
             var entity = await _dbContext.Categories
+                .Include(c => c.ChildCategories)
                 .FirstOrDefaultAsync(x => x.Id == request.Id);
 
             if (entity == null)
                 return HandlerResult<Guid>.NotFound();
 
             entity.EntityStatus = eEntityStatus.Deleted;
+            
+            foreach (var cc in entity.ChildCategories)
+                cc.ParentCategoryId = null;
+
             await _dbContext.SaveChangesAsync();
 
             return HandlerResult<Guid>.Ok(entity.Id);
