@@ -66,6 +66,6 @@ public class PipelineTests
         var result = _pipeline.Pipe(handler, dto, customMapper).Await();
 
         Assert.NotNull(result);
-        Assert.True(result is NotFound<Unit>);
+        Assert.True(result is NotFound<string[]>);
     }
 }
