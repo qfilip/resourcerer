@@ -2,11 +2,12 @@ import { Component, computed, effect, inject, input, signal } from '@angular/cor
 import { ICategoryDto } from '../../../../shared/dtos/interfaces';
 import { CategoryService } from '../../services/category.service';
 import { CommonModule } from '@angular/common';
+import { DetailsComponent } from "../../../../shared/features/common-ui/components/details/details.component";
 
 @Component({
   standalone: true,
   selector: 'app-category',
-  imports: [CommonModule],
+  imports: [CommonModule, DetailsComponent],
   templateUrl: './category.component.html',
   styleUrl: './category.component.css'
 })

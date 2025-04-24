@@ -1,8 +1,8 @@
 @let category = $category();
-@let selected = $selected();
-<details>
-  <summary (click)="selectCategory()" [ngClass]="{'selected': selected }">{{ category.name }}</summary>
-  <div>
+<!-- @let selected = $selected(); -->
+<app-details>
+  <span header>{{ category.name }}</span>
+  <div body>
     <ul>
       @for(child of category.childCategories; track $index) {
         <li>
@@ -13,4 +13,4 @@
       }
     </ul>
   </div>
-</details>
+</app-details>

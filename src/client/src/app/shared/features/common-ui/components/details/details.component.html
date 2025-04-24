@@ -1,0 +1,13 @@
+@let open = $open();
+<details [open]="open">
+  <summary (click)="toggle()">
+    @if(open) {
+      <i class="las la-caret-square-down"></i>
+    }
+    @else {
+      <i class="las la-caret-square-right"></i>
+    }
+    <ng-content select="[header]"></ng-content>
+  </summary>
+  <ng-content select="[body]"></ng-content>
+</details>
