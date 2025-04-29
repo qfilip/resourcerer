@@ -65,11 +65,11 @@
               }
             </ul>
             <div class="element-actions">
-              <button (click)="openRecipeDialog()">
+              <button type="button" (click)="openRecipeDialog()">
                 <i class="las la-plus"></i>
               </button>
               @if(cs.recipe.value.length > 0) {
-                <button (click)="openRecipeDialog()">
+                <button type="button" (click)="openRecipeDialog()">
                   <i class="las la-pen-fancy"></i>
                 </button>
               }
