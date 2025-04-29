@@ -4,11 +4,12 @@ import { map, Subscription, switchMap, tap } from 'rxjs';
 import { InstanceService } from '../../services/instance.service';
 import { ItemService } from '../../../item/services/item.service';
 import { IItemDto } from '../../../../shared/dtos/interfaces';
+import { ItemInstanceListComponent } from "../../components/item-instance-list/item-instance-list.component";
 
 @Component({
   standalone: true,
   selector: 'app-instance.page',
-  imports: [],
+  imports: [ItemInstanceListComponent],
   templateUrl: './instance.page.html',
   styleUrl: './instance.page.css'
 })

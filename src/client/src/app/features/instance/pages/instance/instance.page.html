@@ -1,3 +1,10 @@
+@let item = $item();
 <section class="subpage">
-  
+  <div>
+    @if(item) {
+      <app-item-instance-list [$item]="item"></app-item-instance-list>
+    }
+  </div>
+  <div></div>
+  <div></div>
 </section>

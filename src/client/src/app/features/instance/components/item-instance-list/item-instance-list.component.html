@@ -6,8 +6,23 @@
     class="hoverable clickable">
     <dl>
       <div>
-        <dd></dd>
-        <dt></dt>
+        <dd>Item:</dd>
+        <dt>{{ $item().name }}</dt>
+      </div>
+
+      <div>
+        <dd>Quantity:</dd>
+        <dt>{{ instance.quantity }}</dt>
+      </div>
+
+      <div>
+        <dd>Expires at:</dd>
+        <dt>{{ instance.expiryDate ?? 'No expiry date' }}</dt>
+      </div>
+
+      <div>
+        <dd>State:</dd>
+        <dt>Compute state with pipe here</dt>
       </div>
     </dl>
   </li>

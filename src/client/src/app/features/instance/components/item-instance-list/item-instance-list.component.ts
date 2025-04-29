@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { InstanceService } from '../../services/instance.service';
-import { IInstanceDto } from '../../../../shared/dtos/interfaces';
+import { IInstanceDto, IItemDto } from '../../../../shared/dtos/interfaces';
 import { ItemService } from '../../../item/services/item.service';
 
 @Component({
@@ -13,6 +13,8 @@ import { ItemService } from '../../../item/services/item.service';
 })
 export class ItemInstanceListComponent {
   private service = inject(InstanceService);
+
+  $item = input.required<IItemDto>();
 
   $instances = signal<IInstanceDto[]>([]);
   $selected = this.service.$selectedInstance;
