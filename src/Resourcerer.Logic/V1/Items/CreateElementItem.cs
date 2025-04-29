@@ -17,13 +17,11 @@ public static class CreateElementItem
     public class Handler : IAppHandler<V1CreateElementItem, ItemDto>
     {
         private readonly AppDbContext _appDbContext;
-        private readonly IMapper _mapper;
         private readonly Validator _validator;
 
-        public Handler(AppDbContext appDbContext, IMapper mapper, Validator validator)
+        public Handler(AppDbContext appDbContext, Validator validator)
         {
             _appDbContext = appDbContext;
-            _mapper = mapper;
             _validator = validator;
         }
 
@@ -34,6 +32,7 @@ public static class CreateElementItem
                 {
                     x.Id
                 })
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.CategoryId);
 
             if (category == null)
@@ -43,6 +42,7 @@ public static class CreateElementItem
             }
 
             var existing = await _appDbContext.Items
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x =>
                     x.Name == request.Name &&
                     x.CategoryId == request.CategoryId);
@@ -54,6 +54,7 @@ public static class CreateElementItem
             }
 
             var uom = await _appDbContext.UnitsOfMeasure
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.UnitOfMeasureId);
 
             if (uom == null)
@@ -83,7 +84,15 @@ public static class CreateElementItem
 
             await _appDbContext.SaveChangesAsync();
 
-            return HandlerResult<ItemDto>.Ok(_mapper.Map<ItemDto>(item));
+            return HandlerResult<ItemDto>.Ok(new ItemDto
+            {
+                Id = item.Id,
+                ProductionTimeSeconds = item.ProductionTimeSeconds,
+                ExpirationTimeSeconds = item.ExpirationTimeSeconds,
+                Name = item.Name,
+                CategoryId = item.CategoryId,
+                UnitOfMeasureId = item.UnitOfMeasureId
+            });
         }
 
         public ValidationResult Validate(V1CreateElementItem request) => _validator.Validate(request);
