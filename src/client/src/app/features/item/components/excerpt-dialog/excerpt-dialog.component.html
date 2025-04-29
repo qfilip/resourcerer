@@ -8,7 +8,7 @@
         <ul>
           @let items = $items();
           @for(i of items; track $index) {
-            <li (click)="addItem(i)">{{ i.name }}</li>
+            <li (click)="addItem(i)" class="clickable hoverable add">{{ i.name }}</li>
           }
         </ul>
       </div>
@@ -17,13 +17,10 @@
         <ul class="recipe">
           @let recipe = $recipe();
           @for(x of recipe; track $index) {
-            <li>
+            <li (click)="remove(x.item)" class="clickable hoverable remove">
               <div>{{ x.item.name }}</div>
               <div>
                 <input #qty (change)="updateRecipe(x.item, qty.value)" [value]="x.qty" type="number" />
-                <button (click)="remove(x.item)" class="danger">
-                  <i class="las la-trash"></i>
-                </button>
               </div>
             </li>
           }

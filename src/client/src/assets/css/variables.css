@@ -37,6 +37,7 @@
     --color5-t:hsla(var(--hue5), var(--sat5), 49%, var(--transparency));
     --color5-d1:hsl(var(--hue5), var(--sat5), 39%);
     --color5-l1:hsl(var(--hue5), var(--sat5), 59%);
+    --color5-l2:hsl(var(--hue5), var(--sat5), 69%);
     
     /* orange */
     --sat6: calc(var(--sat) + 50%);

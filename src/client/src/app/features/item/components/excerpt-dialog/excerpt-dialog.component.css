@@ -13,3 +13,15 @@ ul {
   justify-content: space-between;
   align-items: center;
 }
+
+.flex > div {
+  flex: 1;
+}
+
+.add:hover {
+  background-color: var(--color5-l2);
+}
+
+.remove:hover {
+  background-color: var(--color7-l2);
+}
