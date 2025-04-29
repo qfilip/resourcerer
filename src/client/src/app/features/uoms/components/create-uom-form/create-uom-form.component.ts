@@ -41,8 +41,8 @@ export class CreateUomFormComponent {
     }
 
     const dto = {
-      name: this.f.controls.name.data.value!,
-      symbol: this.f.controls.symbol.data.value!,
+      name: this.f.controls.name.value!,
+      symbol: this.f.controls.symbol.value!,
     } as IV1CreateUnitOfMeasure;
 
     this.uomService.createUnitOfMeasure(dto)

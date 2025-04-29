@@ -59,10 +59,10 @@ export class ElementItemProductionFormComponent {
     const cmd: IV1CreateElementItemProductionOrderCommand = {
       itemId: item.id,
       companyId: user.company.id,
-      quantity: cs.quantity.data.value,
-      instantProduction: cs.instantProduction.data.value,
-      desiredProductionStartTime: cs.desiredProductionStartTime.data.value,
-      reason: cs.reason.data.value
+      quantity: cs.quantity.value,
+      instantProduction: cs.instantProduction.value,
+      desiredProductionStartTime: cs.desiredProductionStartTime.value,
+      reason: cs.reason.value
     }
 
     this.itemService.produceElement(cmd).subscribe();

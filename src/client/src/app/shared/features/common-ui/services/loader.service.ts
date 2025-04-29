@@ -26,6 +26,7 @@ export class LoaderService {
 
     hide() {
         this.tasks -= 1;
+        console.log(this.tasks);
         if (this.tasks === 0) {
             this._$isLoading.set(false);
         }

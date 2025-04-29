@@ -42,7 +42,7 @@ export class UomService {
       );
   }
 
-  editUnitOfMeasure(dto: IV1EditUnitOfMeasure) {
+  updateUnitOfMeasure(dto: IV1EditUnitOfMeasure) {
     return this.apiService.editUnitOfMeasure(dto)
       .pipe(
         tap(x => this.runReducers(undefined, undefined, x))

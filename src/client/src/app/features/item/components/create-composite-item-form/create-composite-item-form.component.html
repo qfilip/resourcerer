@@ -38,9 +38,9 @@
         </div>
     
         <div>
-          <label [class.disabled]="!cs.canExpire.data.value">
+          <label [class.disabled]="!cs.canExpire.value">
             <span>Expiration Time (seconds):</span>
-            <input #expTime (input)="cs.expirationTimeSeconds.setValue(expTime.value, !cs.canExpire.data.value)" type="number" />
+            <input #expTime (input)="cs.expirationTimeSeconds.setValue(expTime.value, !cs.canExpire.value)" type="number" />
           </label>
           <app-form-error [$errors]="cs.expirationTimeSeconds.errors"></app-form-error>
         </div>
@@ -57,7 +57,7 @@
           <fieldset>
             <legend>Composite elements</legend>
             <ul class="element-list">
-              @for(x of cs.recipe.data.value; track $index) {
+              @for(x of cs.recipe.value; track $index) {
                 <li>
                   <div>{{ x.item.name }}</div>
                   <div>{{ x.qty }}</div>
@@ -68,7 +68,7 @@
               <button (click)="openRecipeDialog()">
                 <i class="las la-plus"></i>
               </button>
-              @if(cs.recipe.data.value.length > 0) {
+              @if(cs.recipe.value.length > 0) {
                 <button (click)="openRecipeDialog()">
                   <i class="las la-pen-fancy"></i>
                 </button>

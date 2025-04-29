@@ -19,7 +19,7 @@ export class UomApiService extends BaseApiService {
 
   editUnitOfMeasure(dto: IV1EditUnitOfMeasure) {
     const url = this.url + '/edit';
-    return this.http.post<IUnitOfMeasureDto>(this.url, dto).pipe(this.withLoader());
+    return this.http.post<IUnitOfMeasureDto>(url, dto).pipe(this.withLoader());
   }
 
   deleteUnitOfMeasure(id: string) {

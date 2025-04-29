@@ -1,27 +1,35 @@
 export type FormObjectControlData<T> = {
-  value: T,
-  validators: { fn: (v: T) => boolean, error: string }[],
-  skipValidation?: boolean,
-  errors?: string[]
+  value: T | null,
+  validators: { fn: (v: T) => boolean, error: string }[]
 }
 
 export class FormObjectControl<T> {
-  data: FormObjectControlData<T>;
+  private fieldValue: T | null;
+  private validators: { fn: (v: T) => boolean, error: string }[];
+  private skipValidation: boolean = false;
+  
   submitted = false;
   constructor(data: FormObjectControlData<T>) {
-    this.data = data;
+    this.fieldValue = data.value;
+    this.validators = data.validators;
   }
 
   setValue(value: T, skipValidation?: boolean) {
-    this.data.value = value;
-    this.data.skipValidation = skipValidation;
-    this.data.errors = this.errors;
+    this.fieldValue = value;
+    if(skipValidation)
+      this.skipValidation = skipValidation;
+  }
+
+  get value() {
+    return this.fieldValue;
   }
 
   get errors() {
-    return this.data.validators
+    if(this.skipValidation) return [];
+    
+    return this.validators
       .map(x => {
-        const error = x.fn(this.data.value) ? null : x.error
+        const error = x.fn(this.fieldValue!) ? null : x.error
         return this.submitted ? error : null;
       })
       .filter(x => x !== null);
@@ -36,14 +44,15 @@ export class FormObject<TControl> {
 
   get valid() {
     let valid = true;
-    for(const key in this._controls) {
-      this._controls[key].submitted = true;
-      valid = valid && this._controls[key].errors.length === 0;
+    for(const key in this.controls) {
+      this.controls[key].submitted = true;
+      valid = valid && this.controls[key].errors.length === 0;
     }
 
     return valid;
   }
 
+  // allow access to form controls
   get controls() {
     return this._controls;
   }

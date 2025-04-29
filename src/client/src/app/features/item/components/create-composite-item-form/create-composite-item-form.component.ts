@@ -106,7 +106,7 @@ export class CreateCompositeItemFormComponent implements OnInit {
   }
 
   openRecipeDialog() {
-    this.excerptDialog.open(this.items, this.form!.controls.recipe.data.value)
+    this.excerptDialog.open(this.items, this.form!.controls.recipe.value)
     .subscribe({
       next: v => {
         if(v) {
@@ -124,13 +124,13 @@ export class CreateCompositeItemFormComponent implements OnInit {
 
     const cs = this.form.controls;
     const dto: IV1CreateCompositeItem = {
-      name: cs.name.data.value!,
-      categoryId: cs.categoryId.data.value!,
-      unitOfMeasureId: cs.unitOfMeasureId.data.value,
-      preparationTimeSeconds: cs.productionTimeSeconds.data.value,
-      expirationTimeSeconds: cs.expirationTimeSeconds.data.value,
-      unitPrice: cs.unitPrice.data.value,
-      excerptMap: this.mapRecipeDictionary(cs.recipe.data.value)
+      name: cs.name.value!,
+      categoryId: cs.categoryId.value!,
+      unitOfMeasureId: cs.unitOfMeasureId.value,
+      preparationTimeSeconds: cs.productionTimeSeconds.value,
+      expirationTimeSeconds: cs.expirationTimeSeconds.value,
+      unitPrice: cs.unitPrice.value,
+      excerptMap: this.mapRecipeDictionary(cs.recipe.value)
     }
 
     this.itemService.createCompositeItem(dto)

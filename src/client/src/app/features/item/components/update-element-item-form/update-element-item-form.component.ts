@@ -102,13 +102,13 @@ export class UpdateElementItemFormComponent implements OnInit {
 
     const dto: IV1UpdateElementItem = {
       itemId: item.id,
-      name: form.controls.name.data.value!,
-      productionPrice: form.controls.productionPrice.data.value!,
-      productionTimeSeconds: form.controls.productionTimeSeconds.data.value!,
-      expirationTimeSeconds: form.controls.expirationTimeSeconds.data.value,
-      unitPrice: form.controls.unitPrice.data.value!,
-      categoryId: form.controls.categoryId.data.value!,
-      unitOfMeasureId: form.controls.unitOfMeasureId.data.value!
+      name: form.controls.name.value!,
+      productionPrice: form.controls.productionPrice.value!,
+      productionTimeSeconds: form.controls.productionTimeSeconds.value!,
+      expirationTimeSeconds: form.controls.expirationTimeSeconds.value,
+      unitPrice: form.controls.unitPrice.value!,
+      categoryId: form.controls.categoryId.value!,
+      unitOfMeasureId: form.controls.unitOfMeasureId.value!
     }
 
     this.itemService.updateElementItem(dto)

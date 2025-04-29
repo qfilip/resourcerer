@@ -45,11 +45,11 @@ export class UpdateUomFormComponent {
 
     const dto = {
       id: this.$uom().id,
-      name: form.controls.name.data.value!,
-      symbol: form.controls.symbol.data.value!,
+      name: form.controls.name.value!,
+      symbol: form.controls.symbol.value!,
     } as IV1EditUnitOfMeasure;
 
-    this.uomService.editUnitOfMeasure(dto)
+    this.uomService.updateUnitOfMeasure(dto)
       .subscribe({
         next: () => this.onSubmitted.emit()
       });
