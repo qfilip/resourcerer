@@ -1,6 +1,7 @@
 @let displayed = $displayed();
+@let selected = $selectedTree();
 <div>
-  <input #query (keyup)="onQueryChanged(query.value)" type="text" />
+  <input #query (keyup)="onQueryChanged(query.value)" type="text" [placeholder]="selected?.name ?? ''" />
   <ul>
     @for(tree of displayed; track $index) {
       <li (click)="onSelected.emit(tree)" class="clickable">

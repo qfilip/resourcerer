@@ -1,7 +1,7 @@
 @let uoms = $displayedUoms();
 @let selectedUom = $selectedUom();
 <div>
-  <input #query (keyup)="onQueryChanged(query.value)" type="text" />
+  <input #query (keyup)="onQueryChanged(query.value)" type="text" [placeholder]="selectedUom?.name ?? ''" />
   <ul>
     @for(uom of uoms; track $index) {
     <li (click)="onSelected.emit(uom)" [ngClass]="{'selected': selectedUom?.id === uom.id}" class="hoverable clickable">

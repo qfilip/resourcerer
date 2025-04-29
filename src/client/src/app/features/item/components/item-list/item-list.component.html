@@ -1,7 +1,7 @@
 @let items = $displayedItems();
 @let selectedItem = $selectedItem();
 <div>
-  <input #query (keyup)="onQueryChanged(query.value)" type="text" />
+  <input #query (keyup)="onQueryChanged(query.value)" type="text" [placeholder]="selectedItem?.name ?? ''" />
   <ul>
     @for(item of items; track $index) {
     <li (click)="onSelected.emit(item)" [ngClass]="{'selected': selectedItem?.id === item.id}"

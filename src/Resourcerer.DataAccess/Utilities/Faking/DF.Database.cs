@@ -23,59 +23,60 @@ public static partial class DF
             x.Permissions = permissions;
         });
 
-        //var ctgMaterials = forger.Fake<Category>(x =>
-        //{
-        //    x.Name = "Materials";
-        //    x.Company = company;
-        //});
+        var ctgFood = forger.Fake<Category>(x =>
+        {
+            x.Name = "Food";
+            x.Company = company;
+        });
 
-        //var ctgWeapons = forger.Fake<Category>(x =>
-        //{
-        //    x.Name = "Weapons";
-        //    x.Company = company;
-        //});
+        var ctgDrinks = forger.Fake<Category>(x =>
+        {
+            x.Name = "Drink";
+            x.Company = company;
+        });
 
-        //var ctgMelee = forger.Fake<Category>(x =>
-        //{
-        //    x.Name = "Melee";
-        //    x.Company = company;
-        //    x.ParentCategory = ctgWeapons;
-        //});
+        var ctgVegetables = forger.Fake<Category>(x =>
+        {
+            x.Name = "Vegetable";
+            x.Company = company;
+            x.ParentCategory = ctgFood;
+        });
 
-        //var uomItem = forger.Fake<UnitOfMeasure>(x =>
-        //{
-        //    x.Name = "Piece";
-        //    x.Symbol = "p";
-        //});
+        var uomKg = forger.Fake<UnitOfMeasure>(x =>
+        {
+            x.Name = "Kilogram";
+            x.Symbol = "Kg";
+            x.Company = company;
+        });
 
-        //var cSword = forger.Fake<Item>(x =>
-        //{
-        //    x.Name = "Sword";
-        //    x.UnitOfMeasure = uomItem;
-        //    x.Category = ctgMelee;
-        //});
+        var itemTomato = forger.Fake<Item>(x =>
+        {
+            x.Name = "Tomato";
+            x.UnitOfMeasure = uomKg;
+            x.Category = ctgVegetables;
+        });
 
-        //var cWood = forger.Fake<Item>(x =>
-        //{
-        //    x.Name = "Wood";
-        //    x.UnitOfMeasure = uomItem;
-        //    x.Category = ctgMaterials;
-        //});
+        var itemCabbage = forger.Fake<Item>(x =>
+        {
+            x.Name = "Cabbage";
+            x.UnitOfMeasure = uomKg;
+            x.Category = ctgVegetables;
+        });
 
-        //var cIron = forger.Fake<Item>(x =>
-        //{
-        //    x.Name = "Iron";
-        //    x.UnitOfMeasure = uomItem;
-        //    x.Category = ctgMaterials;
-        //});
+        var itemSalad = forger.Fake<Item>(x =>
+        {
+            x.Name = "Salad";
+            x.UnitOfMeasure = uomKg;
+            x.Category = ctgFood;
+        });
 
-        //(Item element, double qty)[] elements = [(cWood, 0.2d), (cIron, 1d)];
+        (Item element, double qty)[] saladElements = [(itemTomato, 0.2d), (itemCabbage, 1d)];
 
-        //FakeRecipe(forger, cSword, elements);
+        FakeRecipe(forger, itemSalad, saladElements);
 
-        //forger.Fake<Price>(x => { x.Item = cSword; x.UnitValue = 2d; });
-        //forger.Fake<Price>(x => { x.Item = cWood; x.UnitValue = 0.2d; });
-        //forger.Fake<Price>(x => { x.Item = cIron; x.UnitValue = 1d; });
+        forger.Fake<Price>(x => { x.Item = itemTomato; x.UnitValue = 2d; });
+        forger.Fake<Price>(x => { x.Item = itemCabbage; x.UnitValue = 0.1d; });
+        forger.Fake<Price>(x => { x.Item = itemSalad; x.UnitValue = 10d; });
     }
 
     private static void FakeRecipe(Forger forger, Item composite, (Item element, double qty)[] elements)
