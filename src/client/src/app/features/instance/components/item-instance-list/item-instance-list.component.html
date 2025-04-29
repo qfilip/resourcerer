@@ -1,0 +1,12 @@
+@let instances = $instances();
+@let selected = $selected();
+<ul>
+  @for(instance of instances; track $index) {
+  <li (click)="onSelected.emit(instance)" [ngClass]="{'selected': selected?.id === instance.id}"
+    class="hoverable clickable">
+    <data [value]="instance.id">
+      {{ instance.id }}
+    </data>
+  </li>
+  }
+</ul>
