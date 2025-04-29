@@ -40,7 +40,7 @@
         <div>
           <label [class.disabled]="!cs.canExpire.value">
             <span>Expiration Time (seconds):</span>
-            <input #expTime (input)="cs.expirationTimeSeconds.setValue(expTime.value, !cs.canExpire.value)" type="number" />
+            <input #expTime (input)="cs.expirationTimeSeconds.setValue(expTime.value, !cs.canExpire.value)" type="number" [readOnly]="!cs.canExpire.value" />
           </label>
           <app-form-error [$errors]="cs.expirationTimeSeconds.errors"></app-form-error>
         </div>
