@@ -19,6 +19,7 @@ export class UpdateUomFormComponent {
   $uom = input.required<IUnitOfMeasureDto>();
   $form = computed(() => {
     const uom = this.$uom();
+    if(!uom) return;
     
     return new FormObject({
       name: new FormObjectControl<string>({
