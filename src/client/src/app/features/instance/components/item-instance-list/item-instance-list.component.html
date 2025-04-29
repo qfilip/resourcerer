@@ -4,9 +4,12 @@
   @for(instance of instances; track $index) {
   <li (click)="onSelected.emit(instance)" [ngClass]="{'selected': selected?.id === instance.id}"
     class="hoverable clickable">
-    <data [value]="instance.id">
-      {{ instance.id }}
-    </data>
+    <dl>
+      <div>
+        <dd></dd>
+        <dt></dt>
+      </div>
+    </dl>
   </li>
   }
 </ul>

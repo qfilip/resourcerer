@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, Subscription, switchMap, tap } from 'rxjs';
+import { InstanceService } from '../../services/instance.service';
+import { ItemService } from '../../../item/services/item.service';
+import { IItemDto } from '../../../../shared/dtos/interfaces';
 
 @Component({
   standalone: true,
@@ -7,6 +12,28 @@ import { Component } from '@angular/core';
   templateUrl: './instance.page.html',
   styleUrl: './instance.page.css'
 })
-export class InstancePageComponent {
+export class InstancePage implements OnInit, OnDestroy {
+  private route = inject(ActivatedRoute);
+  private itemService = inject(ItemService);
+  private instanceService = inject(InstanceService);
+  private sub!: Subscription;
+
+  $item = signal<IItemDto | null>(null);
   
+  ngOnInit(): void {
+    this.sub = this.route.queryParams
+    .pipe(
+      map(params => params['itemId']),
+      tap(itemId => {
+        const item = this.itemService.$items().find(x => x.id === itemId)!;
+        this.$item.set(item);
+      }),
+      switchMap(itemId => this.instanceService.getItemInstances(itemId))
+    )
+    .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
 }

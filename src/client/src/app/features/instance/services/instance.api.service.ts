@@ -9,7 +9,7 @@ export class InstanceApiService extends BaseApiService{
 
   getItemInstances(itemId: string) {
     return this.http.get<IInstanceDto[]>(this.url, {
-      params: new HttpParams().set('companyId', itemId)
+      params: new HttpParams().set('itemId', itemId)
     }).pipe(this.withLoader());
   }
 }

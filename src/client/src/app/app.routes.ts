@@ -4,6 +4,7 @@ import { LoginPage } from './features/user/pages/login/login.page';
 import { CategoryPage } from './features/category/pages/category/category.page';
 import { ItemPage } from './features/item/pages/item/item.page';
 import { UomsPage } from './features/uoms/pages/uoms/uoms.page';
+import { InstancePage } from './features/instance/pages/instance/instance.page';
 
 export const routes: Routes = [
     { path: '', component: HomePageComponent },
@@ -14,6 +15,7 @@ export const routes: Routes = [
             { path: 'categories', component: CategoryPage },
             { path: 'items', component: ItemPage },
             { path: 'uoms', component: UomsPage },
+            { path: 'instances', component: InstancePage },
         ]
     },
     { path: 'login', component: LoginPage }

@@ -10,11 +10,12 @@ import { UpdateElementItemFormComponent } from "../../components/update-element-
 import { eItemType } from '../../../../shared/dtos/enums';
 import { CreateCompositeItemFormComponent } from "../../components/create-composite-item-form/create-composite-item-form.component";
 import { ElementItemProductionFormComponent } from "../../components/element-item-production-form/element-item-production-form.component";
+import { RouterLink } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-item',
-  imports: [ItemListComponent, CreateElementItemFormComponent, UpdateElementItemFormComponent, CreateCompositeItemFormComponent, ElementItemProductionFormComponent],
+  imports: [ItemListComponent, CreateElementItemFormComponent, UpdateElementItemFormComponent, CreateCompositeItemFormComponent, ElementItemProductionFormComponent, RouterLink],
   templateUrl: './item.page.html',
   styleUrl: './item.page.css'
 })

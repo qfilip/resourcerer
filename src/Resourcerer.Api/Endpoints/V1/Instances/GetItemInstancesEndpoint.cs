@@ -10,7 +10,7 @@ public class GetItemInstancesEndpoint : IAppEndpoint
     public static async Task<IResult> Action(
       [FromQuery] Guid itemId,
       [FromServices] Pipeline pipeline,
-      [FromServices] RemoveItem.Handler handler)
+      [FromServices] GetItemInstances.Handler handler)
     {
         return await pipeline.Pipe(handler, itemId);
     }

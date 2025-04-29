@@ -16,15 +16,19 @@ export class HomePageComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private userService = inject(UserService);
   private sub: Subscription | null = null;
-  
-  pages: Link[] = [
+
+  navLinks: Link[] = [
     { title: 'Categories', route: 'categories', icon: 'las la-folder-minus' },
     { title: 'Items', route: 'items', icon: 'las la-vial' },
     { title: 'Units of measure', route: 'uoms', icon: 'las la-ruler'}
-  ];
+  ]
+  
+  pages: Link[] = this.navLinks.concat([
+    { title: 'Instances', route: 'instances', icon: ''}
+  ]);
 
   $user = signal<IAppUserDto | null>(null);
-  $page = signal<{ title: string, route: string, icon: string }>(this.pages[0])
+  $page = signal<Link>(this.pages[0])
 
   constructor() {
     effect(() => {
@@ -43,7 +47,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     ).subscribe({
       next: x => {
         const i = x.url.split('/');
-        const last = i[i.length - 1];
+        const last = i[i.length - 1].split('?')[0];
         const page = this.pages.find(x => x.route === last);
         if (page)
           this.$page.set(page);

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, output, signal } from '@angular/core';
 import { InstanceService } from '../../services/instance.service';
 import { IInstanceDto } from '../../../../shared/dtos/interfaces';
+import { ItemService } from '../../../item/services/item.service';
 
 @Component({
   standalone: true,
