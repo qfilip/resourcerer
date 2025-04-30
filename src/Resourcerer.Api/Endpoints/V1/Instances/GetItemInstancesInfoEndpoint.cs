@@ -5,12 +5,12 @@ using Resourcerer.Logic.V1;
 
 namespace Resourcerer.Api.Endpoints.V1;
 
-public class GetItemInstancesEndpoint : IAppEndpoint
+public class GetItemInstancesInfoEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
       [FromQuery] Guid itemId,
       [FromServices] Pipeline pipeline,
-      [FromServices] GetItemInstances.Handler handler)
+      [FromServices] GetItemInstancesInfo.Handler handler)
     {
         return await pipeline.Pipe(handler, itemId);
     }
@@ -25,5 +25,5 @@ public class GetItemInstancesEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.Instances(""), eHttpMethod.Get, Action, MapAuth);
+            EndpointMapper.Instances("info"), eHttpMethod.Get, Action, MapAuth);
 }

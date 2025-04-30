@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from "@angular/core";
-import { IInstanceDto } from "../../../shared/dtos/interfaces";
+import { IInstanceDto, IV1InstanceInfo } from "../../../shared/dtos/interfaces";
 import { InstanceApiService } from "./instance.api.service";
 import { tap } from "rxjs";
 
@@ -7,16 +7,16 @@ import { tap } from "rxjs";
 export class InstanceService {
   private apiService = inject(InstanceApiService);
   
-  private _$instances = signal<IInstanceDto[]>([]);
+  private _$instancesInfo = signal<IV1InstanceInfo[]>([]);
   private _$selectedInstance = signal<IInstanceDto | null>(null);
   
-  $instances = this._$instances.asReadonly();
+  $instancesInfo = this._$instancesInfo.asReadonly();
   $selectedInstance = this._$selectedInstance.asReadonly();
   
   setSelected = (x: IInstanceDto) => this._$selectedInstance.set(x);
 
   getItemInstances(itemId: string) {
-    return this.apiService.getItemInstances(itemId)
-      .pipe(tap(xs => this._$instances.set(xs)));
+    return this.apiService.getItemInstancesInfo(itemId)
+      .pipe(tap(xs => this._$instancesInfo.set(xs)));
   }
 }

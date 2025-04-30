@@ -1,9 +1,7 @@
-@let instances = $instances();
-@let selected = $selected();
+@let instances = $instancesInfo();
 <ul>
-  @for(instance of instances; track $index) {
-  <li (click)="onSelected.emit(instance)" [ngClass]="{'selected': selected?.id === instance.id}"
-    class="hoverable clickable">
+  @for(x of instances; track $index) {
+  <li class="hoverable clickable">
     <dl>
       <div>
         <dd>Item:</dd>
@@ -12,12 +10,12 @@
 
       <div>
         <dd>Quantity:</dd>
-        <dt>{{ instance.quantity }}</dt>
+        <dt>{{ x.quantityLeft }}</dt>
       </div>
 
       <div>
         <dd>Expires at:</dd>
-        <dt>{{ instance.expiryDate ?? 'No expiry date' }}</dt>
+        <dt>{{ x.expiryDate ?? 'No expiry date' }}</dt>
       </div>
 
       <div>
