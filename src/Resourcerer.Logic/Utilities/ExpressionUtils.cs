@@ -1,5 +1,6 @@
 ﻿using Resourcerer.DataAccess.Abstractions;
 using Resourcerer.DataAccess.Records;
+using Resourcerer.Dtos;
 using Resourcerer.Dtos.Entity;
 using System.Linq.Expressions;
 
@@ -17,28 +18,17 @@ internal sealed class ExpressionUtils
     public static Expression<Func<T, T>> Combine<T>(params Expression<Func<T, T>>[] selectors)
         where T : IId<Guid>, IAuditedEntity<Audit>, ISoftDeletable, new()
     {
-        var zeroth = ((MemberInitExpression)selectors[0].Body);
-        var param = selectors[0].Parameters[0];
-        List<MemberBinding> bindings = new List<MemberBinding>(zeroth.Bindings.OfType<MemberAssignment>());
-        for (int i = 1; i < selectors.Length; i++)
-        {
-            var memberInit = (MemberInitExpression)selectors[i].Body;
-            var replace = new ParameterReplaceVisitor(selectors[i].Parameters[0], param);
-            foreach (var binding in memberInit.Bindings.OfType<MemberAssignment>())
-            {
-                bindings.Add(Expression.Bind(binding.Member,
-                    replace.VisitAndConvert(binding.Expression, "Combine")));
-            }
-        }
-
-
-        return Expression.Lambda<Func<T, T>>(
-            Expression.MemberInit(zeroth.NewExpression, bindings), param);
+        return CombineExpressions(selectors);
     }
 
     public static Expression<Func<T, TDto>> CombineDto<T, TDto>(params Expression<Func<T, TDto>>[] selectors)
         where T : IId<Guid>, IAuditedEntity<Audit>, ISoftDeletable, new()
         where TDto: EntityDto
+    {
+        return CombineExpressions(selectors);
+    }
+
+    private static Expression<Func<T, U>> CombineExpressions<T, U>(params Expression<Func<T, U>>[] selectors)
     {
         var zeroth = ((MemberInitExpression)selectors[0].Body);
         var param = selectors[0].Parameters[0];
@@ -54,7 +44,7 @@ internal sealed class ExpressionUtils
             }
         }
 
-        return Expression.Lambda<Func<T, TDto>>(
+        return Expression.Lambda<Func<T, U>>(
             Expression.MemberInit(zeroth.NewExpression, bindings), param);
     }
 }
