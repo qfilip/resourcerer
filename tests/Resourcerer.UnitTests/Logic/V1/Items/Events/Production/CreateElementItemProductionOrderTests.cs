@@ -48,7 +48,7 @@ public class CreateElementItemProductionOrderTests : TestsBase
     public void InstantProduction__Ok()
     {
         // arrange
-        var item = _forger.Fake<Item>();
+        var item = _forger.Fake<Item>(x => x.ExpirationTimeSeconds = 1000);
         var command = new V1CreateElementItemProductionOrderCommand
         {
             ItemId = item.Id,
@@ -78,7 +78,8 @@ public class CreateElementItemProductionOrderTests : TestsBase
             () => Assert.Equal(command.Quantity, order.Quantity),
             () => Assert.Equal(command.Quantity, newInstance.Quantity),
             () => Assert.NotNull(order.StartedEvent),
-            () => Assert.NotNull(order.FinishedEvent));
+            () => Assert.NotNull(order.FinishedEvent),
+            () => Assert.NotNull(newInstance.ExpiryDate));
     }
 
     [Fact]

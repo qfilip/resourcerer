@@ -31,7 +31,7 @@ export class InstancePage implements OnInit, OnDestroy {
       }),
       switchMap(itemId => this.instanceService.getItemInstances(itemId))
     )
-    .subscribe();
+    .subscribe({ next: xs => console.log(xs)});
   }
 
   ngOnDestroy(): void {
