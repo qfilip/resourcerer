@@ -174,24 +174,23 @@ public static class CreateCompositeItemProductionOrder
                 _dbContext.InstanceReservedEvents.Add(reservedEvent);
             }
 
+            var newInstance = new Instance
+            {
+                Quantity = order.Quantity,
+                ItemId = item.Id,
+                OwnerCompanyId = order.CompanyId
+            };
+
             if(request.InstantProduction)
             {
                 order.StartedEvent = AppDbJsonField.CreateKeyless(() => new ItemProductionStartedEvent());
                 order.FinishedEvent = AppDbJsonField.CreateKeyless(() => new ItemProductionFinishedEvent());
 
                 var expiration = item.ExpirationTimeSeconds;
-                var newInstance = new Instance
-                {
-                    Quantity = order.Quantity,
-                    ExpiryDate = Functions.Instances.GetExpirationDate(expiration, DateTime.UtcNow),
-
-                    ItemId = item.Id,
-                    OwnerCompanyId = order.CompanyId
-                };
-
-                _dbContext.Instances.Add(newInstance);
+                newInstance.ExpiryDate = Functions.Instances.GetExpirationDate(expiration, DateTime.UtcNow);
             }
 
+            _dbContext.Instances.Add(newInstance);
             _dbContext.ItemProductionOrders.Add(order);
 
             await _dbContext.SaveChangesAsync();

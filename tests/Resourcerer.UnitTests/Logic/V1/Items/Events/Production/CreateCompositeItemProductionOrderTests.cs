@@ -221,6 +221,13 @@ public class CreateCompositeItemProductionOrderTests : TestsBase
 
         var orderEvent = _ctx.ItemProductionOrders
             .First(x => x.ItemId == dto.ItemId);
+        
+        var newInstance = _ctx.Instances
+            .Single(x =>
+                x.OwnerCompanyId == orderEvent.CompanyId &&
+                x.ItemId == dto.ItemId &&
+                x.Quantity == dto.Quantity
+            );
 
         Assert.True(orderEvent.InstancesUsedIds.All(dto.InstancesToUse.Keys.Contains));
         Assert.Equal(recipe.Version, orderEvent.ItemRecipeVersion);
@@ -236,12 +243,6 @@ public class CreateCompositeItemProductionOrderTests : TestsBase
             Assert.NotNull(orderEvent.StartedEvent);
             Assert.NotNull(orderEvent.FinishedEvent);
             
-            var newInstance = _ctx.Instances
-                .Single(x =>
-                    x.OwnerCompanyId == orderEvent.CompanyId &&
-                    x.ItemId == dto.ItemId &&
-                    x.Quantity == dto.Quantity
-                );
         }
     }
 }
