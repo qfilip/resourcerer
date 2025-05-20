@@ -24,7 +24,8 @@ public class GetItemInstancesInfo
         public async Task<HandlerResult<V1InstanceInfo[]>> Handle(Guid request)
         {
             var instances = await _dbContext.Instances
-                .Where(i => i.ItemId == request)
+                .Where(x => x.ItemId == request)
+                .Include(x => x.Item)
                 .Include(x => x.SourceInstance)
                 .AsNoTracking()
                 .ToArrayAsync();
