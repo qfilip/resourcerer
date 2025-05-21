@@ -8,7 +8,7 @@ using Microsoft.OpenApi.Models;
 using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.Entities;
 using Resourcerer.Identity.Abstractions;
 using Resourcerer.Identity.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;

@@ -7,7 +7,7 @@ using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Utilities;
-using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.Entities;
 using MapsterMapper;
 
 namespace Resourcerer.Logic.V1;

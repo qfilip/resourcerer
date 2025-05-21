@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Resourcerer.Application.Logic.Handlers;
 using Resourcerer.DataAccess.Contexts;
-using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.Entities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Logic.Models;
 using Resourcerer.Logic.Utilities;

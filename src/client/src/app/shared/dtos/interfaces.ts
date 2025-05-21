@@ -432,3 +432,31 @@ export interface IUnitOfMeasureDto extends IEntityDto
 	company: ICompanyDto;
 	items: IItemDto[];
 }
+export interface IInstanceOrderCancelledEventDto extends IEntityDto
+{
+	reason: string;
+	refundedAmount: number;
+}
+export interface IInstanceOrderDeliveredEventDto extends IEntityDto
+{
+}
+export interface IInstanceOrderSentEventDto extends IEntityDto
+{
+}
+export interface IInstanceReserveCancelledEventDto extends IEntityDto
+{
+	reason: string;
+}
+export interface IInstanceReserveUsedEventDto extends IEntityDto
+{
+}
+export interface IItemProductionFinishedEventDto extends IEntityDto
+{
+}
+export interface IItemProductionOrderCancelledEventDto extends IEntityDto
+{
+	reason: string;
+}
+export interface IItemProductionStartedEventDto extends IEntityDto
+{
+}

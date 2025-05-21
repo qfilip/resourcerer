@@ -4,7 +4,7 @@ using Resourcerer.Application.Logic.Handlers;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
-using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.Entities;
 using Resourcerer.Logic.Models;
 using Resourcerer.Logic.Utilities;
 

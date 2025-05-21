@@ -5,7 +5,7 @@ using Resourcerer.Application.Logic.Handlers;
 using Resourcerer.Logic.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.Entities;
 using Resourcerer.Dtos.Records;
 using MapsterMapper;
 

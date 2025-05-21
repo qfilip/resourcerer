@@ -1,5 +1,5 @@
 ﻿using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.Entities;
 using System.Linq.Expressions;
 
 namespace Resourcerer.Logic.Utilities.Query;

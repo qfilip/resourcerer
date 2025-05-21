@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resourcerer.Api.Services;
-using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.Entities;
 using Resourcerer.Identity.Models;
 using Resourcerer.Identity.Services;
 using Resourcerer.Logic.V1;

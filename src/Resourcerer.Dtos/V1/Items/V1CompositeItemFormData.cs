@@ -1,4 +1,4 @@
-﻿using Resourcerer.Dtos.Entity;
+﻿using Resourcerer.Dtos.Entities;
 
 namespace Resourcerer.Dtos.V1;
 

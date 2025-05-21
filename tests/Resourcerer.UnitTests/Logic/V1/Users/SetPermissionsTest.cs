@@ -1,6 +1,6 @@
 ﻿using Resourcerer.Logic.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.Entities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Identity.Enums;
 using Resourcerer.Logic.V1;

@@ -1,6 +1,6 @@
 ﻿using Resourcerer.Logic.Models;
 using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.Entities;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 

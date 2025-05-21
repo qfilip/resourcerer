@@ -1,7 +1,7 @@
 ﻿using Resourcerer.DataAccess.Abstractions;
 using Resourcerer.DataAccess.Records;
 using Resourcerer.Dtos;
-using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.Entities;
 using System.Linq.Expressions;
 
 namespace Resourcerer.Logic.Utilities;

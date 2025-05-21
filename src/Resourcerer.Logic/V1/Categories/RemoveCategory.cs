@@ -6,7 +6,7 @@ using Resourcerer.Logic.Models;
 using Resourcerer.DataAccess.Contexts;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Enums;
-using Resourcerer.Dtos.Entity;
+using Resourcerer.Dtos.Entities;
 
 namespace Resourcerer.Logic.V1;
 
