@@ -1,7 +1,7 @@
-import { Component, output, signal, ViewChild } from '@angular/core';
+import { Component, signal, ViewChild } from '@angular/core';
 import { DialogWrapperComponent } from '../../../../shared/features/common-ui/components/dialog-wrapper/dialog-wrapper.component';
 import { IItemDto } from '../../../../shared/dtos/interfaces';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { FormErrorComponent } from "../../../../shared/features/common-ui/components/form-error/form-error.component";
 
 @Component({

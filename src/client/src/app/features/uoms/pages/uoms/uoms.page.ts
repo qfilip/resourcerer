@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { UomListComponent } from "../../components/uom-list/uom-list.component";
 import { IUnitOfMeasureDto } from '../../../../shared/dtos/interfaces';
 import { UomService } from '../../services/uom.service';

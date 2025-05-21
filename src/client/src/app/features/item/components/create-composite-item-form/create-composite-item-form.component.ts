@@ -1,10 +1,9 @@
-import { Component, computed, effect, inject, OnInit, output, signal, ViewChild } from '@angular/core';
-import { IItemDto, IV1CompositeItemFormData, IV1CreateCompositeItem, IV1ElementItemFormData } from '../../../../shared/dtos/interfaces';
+import { Component, effect, inject, OnInit, output, signal, ViewChild } from '@angular/core';
+import { IItemDto, IV1CompositeItemFormData, IV1CreateCompositeItem } from '../../../../shared/dtos/interfaces';
 import { ItemService } from '../../services/item.service';
 import { FormObject, FormObjectControl } from '../../../../shared/utils/forms';
 import { Validation } from '../../../../shared/utils/validation';
 import { FormErrorComponent } from "../../../../shared/features/common-ui/components/form-error/form-error.component";
-import { Functions } from '../../../../shared/utils/functions';
 import { ExcerptDialogComponent } from "../excerpt-dialog/excerpt-dialog.component";
 
 @Component({

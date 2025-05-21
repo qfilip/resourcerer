@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, Signal, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CategoryService } from '../../services/category.service';
 import { CategoryListComponent } from "../../components/category-list/category-list.component";
 import { CategoryFormComponent } from "../../components/create-category-form/create-category-form.component";

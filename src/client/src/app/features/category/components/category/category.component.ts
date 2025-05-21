@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { ICategoryDto } from '../../../../shared/dtos/interfaces';
 import { CategoryService } from '../../services/category.service';
 import { CommonModule } from '@angular/common';

@@ -1,5 +1,4 @@
-﻿using Resourcerer.DataAccess.Entities;
-using Resourcerer.Dtos.Entities;
+﻿using Resourcerer.Dtos.Entities;
 using Resourcerer.Dtos.Entities.Json;
 
 namespace Resourcerer.Dtos;

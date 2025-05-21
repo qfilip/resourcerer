@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { map, Subscription, switchMap, tap } from 'rxjs';
 import { InstanceService } from '../../services/instance.service';
 import { ItemService } from '../../../item/services/item.service';

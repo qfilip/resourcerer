@@ -4,7 +4,6 @@ import { ItemService } from '../../services/item.service';
 import { FormObject, FormObjectControl } from '../../../../shared/utils/forms';
 import { Validation } from '../../../../shared/utils/validation';
 import { FormErrorComponent } from "../../../../shared/features/common-ui/components/form-error/form-error.component";
-import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 
 @Component({
   standalone: true,

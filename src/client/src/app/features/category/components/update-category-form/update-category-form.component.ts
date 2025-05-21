@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, input, output, signal } from '@angular/core';
-import { IV1CreateCategory, ICategoryDto, IV1UpdateCategory } from '../../../../shared/dtos/interfaces';
+import { ICategoryDto, IV1UpdateCategory } from '../../../../shared/dtos/interfaces';
 import { PopupService } from '../../../../shared/features/common-ui/services/popup.service';
 import { CategoryService } from '../../services/category.service';
 import { FormsModule } from '@angular/forms';

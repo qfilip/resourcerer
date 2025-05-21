@@ -1,5 +1,5 @@
 import { Injectable, signal } from "@angular/core";
-import { Observable, map, tap } from "rxjs";
+import { Observable, tap } from "rxjs";
 import { IAppUserDto } from "../../../shared/dtos/interfaces";
 import { CacheFunctions } from "../../../shared/services/cache/cache.models";
 import { LocalstorageCacheService } from "../../../shared/services/cache/local-storage-cache.service";

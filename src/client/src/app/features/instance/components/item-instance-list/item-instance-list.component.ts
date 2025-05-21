@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { InstanceService } from '../../services/instance.service';
-import { IInstanceDto, IItemDto, IV1InstanceInfo } from '../../../../shared/dtos/interfaces';
-import { ItemService } from '../../../item/services/item.service';
+import { IItemDto, IV1InstanceInfo } from '../../../../shared/dtos/interfaces';
 
 @Component({
   standalone: true,

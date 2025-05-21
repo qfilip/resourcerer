@@ -1,5 +1,5 @@
 import { Component, computed, inject, input, output } from '@angular/core';
-import { IUnitOfMeasureDto, IV1CreateUnitOfMeasure, IV1EditUnitOfMeasure } from '../../../../shared/dtos/interfaces';
+import { IUnitOfMeasureDto, IV1EditUnitOfMeasure } from '../../../../shared/dtos/interfaces';
 import { FormObject, FormObjectControl } from '../../../../shared/utils/forms';
 import { Validation } from '../../../../shared/utils/validation';
 import { UomService } from '../../services/uom.service';
