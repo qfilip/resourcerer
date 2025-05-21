@@ -16,9 +16,9 @@ export interface IInstanceOrderedEventDto extends IEntityDto
 	expectedDeliveryDate?: Date;
 	instanceId: string;
 	instance: IInstanceDto;
-	cancelledEvent: any;
-	sentEvent: any;
-	deliveredEvent: any;
+	cancelledEvent: IInstanceOrderCancelledEventDto;
+	sentEvent: IInstanceOrderSentEventDto;
+	deliveredEvent: IInstanceOrderDeliveredEventDto;
 }
 export interface IInstanceReservedEventDto extends IEntityDto
 {
@@ -27,8 +27,8 @@ export interface IInstanceReservedEventDto extends IEntityDto
 	reason: string;
 	instanceId: string;
 	instance: IInstanceDto;
-	cancelledEvent: any;
-	usedEvent: any;
+	cancelledEvent: IInstanceReserveCancelledEventDto;
+	usedEvent: IInstanceReserveUsedEventDto;
 }
 export interface IItemProductionOrderDto extends IEntityDto
 {
@@ -39,9 +39,9 @@ export interface IItemProductionOrderDto extends IEntityDto
 	itemId: string;
 	item: IItemDto;
 	instancesUsedIds: any[];
-	startedEvent: any;
-	cancelledEvent: any;
-	finishedEvent: any;
+	startedEvent: IItemProductionStartedEventDto;
+	cancelledEvent: IItemProductionOrderCancelledEventDto;
+	finishedEvent: IItemProductionFinishedEventDto;
 }
 export interface ISimple<T>
 {

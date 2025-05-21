@@ -1,5 +1,6 @@
 ﻿using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entities;
+using Resourcerer.Dtos.Entities.Json;
 
 namespace Resourcerer.Dtos;
 
@@ -16,7 +17,7 @@ public class ItemProductionOrderDto : EntityDto
 
     // json
     public Guid[] InstancesUsedIds { get; set; } = Array.Empty<Guid>();
-    public ItemProductionStartedEvent? StartedEvent { get; set; }
-    public ItemProductionOrderCancelledEvent? CancelledEvent { get; set; }
-    public ItemProductionFinishedEvent? FinishedEvent { get; set; }
+    public ItemProductionStartedEventDto? StartedEvent { get; set; }
+    public ItemProductionOrderCancelledEventDto? CancelledEvent { get; set; }
+    public ItemProductionFinishedEventDto? FinishedEvent { get; set; }
 }

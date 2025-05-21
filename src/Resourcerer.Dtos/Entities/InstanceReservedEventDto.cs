@@ -1,5 +1,5 @@
-﻿using Resourcerer.DataAccess.Entities.JsonEntities;
-using Resourcerer.Dtos.Entities;
+﻿using Resourcerer.Dtos.Entities;
+using Resourcerer.Dtos.Entities.Json;
 
 namespace Resourcerer.Dtos;
 
@@ -14,6 +14,6 @@ public class InstanceReservedEventDto : EntityDto
     public InstanceDto? Instance { get; set; }
 
     // json
-    public InstanceReserveCancelledEvent? CancelledEvent { get; set; }
-    public InstanceReserveUsedEvent? UsedEvent { get; set; }
+    public InstanceReserveCancelledEventDto? CancelledEvent { get; set; }
+    public InstanceReserveUsedEventDto? UsedEvent { get; set; }
 }
