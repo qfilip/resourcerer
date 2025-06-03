@@ -18,9 +18,9 @@ public static partial class Instances
             .Where(x => x.CancelledEvent != null)
             .Select(x => new
             {
-                RefundedAmount = x.CancelledEvent!.RefundedAmount,
-                UnitPrice = x.UnitPrice,
-                Quantity = x.Quantity
+                x.CancelledEvent!.RefundedAmount,
+                x.UnitPrice,
+                x.Quantity
             })
             .Sum(x => x.RefundedAmount - (x.UnitPrice * (decimal)x.Quantity));
 
@@ -41,7 +41,7 @@ public static partial class Instances
         return new V1InstanceInfo()
         {
             InstanceId = i.Id,
-            PendingToArrive = 0,
+            PendingToArrive = ComputePendingToArrive(i),
             PurchaseCost = purchaseCost,
             Discards = discards,
             ExpiryDate = i.ExpiryDate,
@@ -62,5 +62,20 @@ public static partial class Instances
             .First(x => x.DerivedInstanceId == i.Id);
 
         return Maths.Discount((decimal)orderEvent.Quantity * orderEvent.UnitPrice, orderEvent.TotalDiscountPercent);
+    }
+
+    private static double ComputePendingToArrive(Instance i)
+    {
+        if (!i.SourceInstanceId.HasValue)
+        {
+            return 0;
+        }
+
+        return i.SourceInstance!.OrderedEvents
+            .Where(x =>
+                x.DerivedInstanceId == i.Id &&
+                x.CancelledEvent == null &&
+                x.DeliveredEvent == null)
+            .Sum(x => x.Quantity);
     }
 }
