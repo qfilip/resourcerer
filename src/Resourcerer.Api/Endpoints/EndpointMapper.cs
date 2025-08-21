@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning.Builder;
+using Microsoft.AspNetCore.Components.Forms;
 using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.Identity.Enums;
 
@@ -32,7 +33,7 @@ public static class EndpointMapper
         })
         .ToList();
 
-        MapAllVersions(serviceTypes, app);
+        MapAllVersions(x => x.Path.Split("/")[0], serviceTypes, app);
     }
 
     public static void AddAuthorization(
@@ -60,7 +61,16 @@ public static class EndpointMapper
         }
     }
 
-    private static void MapAllVersions(List<AppEndpoint> endpoints, WebApplication app)
+    /// <summary>
+    /// Auto generate newer versions of endpoints that haven't changed.
+    /// </summary>
+    /// <param name="endpoints">Endpoints to use.</param>
+    /// <param name="apiVersionSetBuilder">ApiVersionSetBuilder to map versions to.</param>
+    /// <returns></returns>
+    public static void MapAllVersions(
+        Func<AppEndpoint, string> resourceSelector,
+        List<AppEndpoint> endpoints,
+        WebApplication app)
     {
         // check name duplicates
         endpoints.ForEach(e =>
@@ -71,168 +81,98 @@ public static class EndpointMapper
                 x.Minor == e.Minor &&
                 x.Method == e.Method);
 
-            if(count > 1)
+            if (count > 1)
             {
                 var message = $"More than one endpoint found with path {e.Path} and method {e.Method}";
                 throw new InvalidOperationException(message);
             }
         });
 
-        var apiVersions = app.NewApiVersionSet();
-
-        endpoints = MapAllEndpointVersions(endpoints, apiVersions);
-
-        var apiVersionSet = apiVersions.ReportApiVersions().Build();
-
-        var groupPrefixes = endpoints
-            .Select(x => x.Path.Split('/')[0])
-            .DistinctBy(x => x)
+        var resources = endpoints
+            .Select(resourceSelector)
+            .Distinct()
             .ToArray();
 
-        foreach(var groupPrefix in groupPrefixes)
+        var currentLowestMin = endpoints.MinBy(x => x.Minor)!.Minor;
+        var currentLowestMaj = endpoints.MinBy(x => x.Major)!.Major;
+
+        var keepMapping = true;
+        var mapped = new List<AppEndpoint>();
+
+        while (keepMapping)
         {
-            var group = app
-                .MapGroup("v{version:apiVersion}" + $"/{groupPrefix}") // important, otherwise not working
-                .WithApiVersionSet(apiVersionSet);
-
-            var groupEndpoints = endpoints
-                .Where(x => x.Path.Split('/')[0] == groupPrefix)
-                .ToArray();
-
-            if(groupEndpoints.Length == 0)
-                throw new InvalidOperationException($"No endpoints found for group {groupPrefix}");
-
-            foreach(var e in groupEndpoints)
+            foreach (var resource in resources)
             {
-                var endpointPathParts = e.Path
-                .Split('/')
-                .Skip(1);
+                var largestMin = endpoints
+                    .Where(x => x.Major == currentLowestMaj)
+                    .MaxBy(x => x.Minor)!.Minor;
 
-                var endpointPath = string.Join("/", endpointPathParts);
+                var resourceEndpoints = endpoints
+                    .Where(x => x.Path.StartsWith(resource))
+                    .ToLookup(x => x.Path);
 
-                var endpoint = e.Method switch
+                var keys = resourceEndpoints.Select(x => x.Key).ToArray();
+
+                foreach (var key in keys)
                 {
-                    eHttpMethod.Get => group.MapGet(endpointPath, e.EndpointAction),
-                    eHttpMethod.Put => group.MapPut(endpointPath, e.EndpointAction),
-                    eHttpMethod.Patch => group.MapPatch(endpointPath, e.EndpointAction),
-                    eHttpMethod.Post => group.MapPost(endpointPath, e.EndpointAction),
-                    eHttpMethod.Delete => group.MapDelete(endpointPath, e.EndpointAction),
-                    _ => throw new InvalidOperationException($"HttpMethod {e.Method} not supported")
-                };
+                    var endpointVersions = resourceEndpoints[key].ToArray();
 
-                endpoint
-                    .MapToApiVersion(e.Major, e.Minor);
-
-                if (AppStaticData.Auth.Enabled)
-                    e.MapAuth?.Invoke(endpoint);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Auto generate newer versions of endpoints that haven't changed.
-    /// </summary>
-    /// <param name="endpoints">Endpoints to use.</param>
-    /// <param name="apiVersionSetBuilder">ApiVersionSetBuilder to map versions to.</param>
-    /// <returns></returns>
-    private static List<AppEndpoint> MapAllEndpointVersions(List<AppEndpoint> endpoints, ApiVersionSetBuilder apiVersionSetBuilder)
-    {
-        var lookup = new Dictionary<int, (int min, int max)>();
-
-        var minMajor = endpoints.Min(x => x.Major);
-        var maxMajor = endpoints.Max(x => x.Major);
-
-        var major = minMajor;
-        while (major <= maxMajor)
-        {
-            var minMinor = endpoints.Where(x => x.Major == major).Min(x => x.Minor);
-            var maxMinor = endpoints.Where(x => x.Major == major).Max(x => x.Minor);
-
-            lookup.Add(major, (minMinor, maxMinor));
-
-            major++;
-        }
-
-        major = endpoints.Min(x => x.Major);
-
-        var collection = new List<AppEndpoint>();
-        
-        foreach (var e in endpoints)
-        {
-            var nextMinor = endpoints
-                .Where(x =>
-                    x.Path == e.Path &&
-                    x.Major == e.Major &&
-                    x.Minor > e.Minor)
-                .OrderBy(x => x.Minor)
-                .FirstOrDefault();
-
-            var nextMajor = endpoints
-                .Where(x =>
-                    x.Path == e.Path &&
-                    x.Major > e.Major)
-                .OrderBy(x => x.Minor)
-                .FirstOrDefault();
-
-            var toMajor = maxMajor;
-            var toMinor = lookup[maxMajor].max;
-
-            if(nextMinor != null)
-            {
-                toMajor = nextMinor.Major;
-                toMinor = nextMinor.Minor;
-            }
-            else if(nextMajor != null)
-            {
-                toMajor = nextMajor.Major;
-                toMinor = nextMajor.Minor;
-            }
-            
-            var eMajor = e.Major;
-            var eMinor = e.Minor;
-
-            while (eMajor <= toMajor)
-            {
-                if(nextMinor != null)
-                {
-                    while (eMinor < toMinor)
+                    for (var i = currentLowestMin; i <= largestMin; i++)
                     {
-                        Console.WriteLine($"Mapped [{e.Method}] v{eMajor}.{eMinor}/{e.Path}");
+                        var version = endpointVersions
+                            .FirstOrDefault(x =>
+                                x.Major == currentLowestMaj &&
+                                x.Minor == i
+                            );
 
-                        collection.Add(new AppEndpoint(eMajor, eMinor, e.Path, e.Method, e.EndpointAction, e.MapAuth));
-                        apiVersionSetBuilder.HasApiVersion(new Asp.Versioning.ApiVersion(eMajor, eMinor));
-                    
-                        eMinor++;
+                        if (version != null)
+                        {
+                            mapped.Add(version);
+                        }
+                        else
+                        {
+                            var last = endpointVersions
+                                .OrderBy(x => x.Major)
+                                .ThenBy(x => x.Minor)
+                                .Last();
+
+                            mapped.Add(last with { Major = currentLowestMaj, Minor = i });
+                        }
                     }
                 }
-                else
-                {
-                    Console.WriteLine($"Mapped [{e.Method}] v{eMajor}.{eMinor}/{e.Path}");
-                    collection.Add(new AppEndpoint(eMajor, eMinor, e.Path, e.Method, e.EndpointAction, e.MapAuth));
-                    apiVersionSetBuilder.HasApiVersion(new Asp.Versioning.ApiVersion(eMajor, eMinor));
-                    break;
-                }
-
-                eMajor++;
             }
+
+            currentLowestMaj++;
+            keepMapping = currentLowestMaj <= endpoints.MaxBy(x => x.Major)!.Major;
         }
 
-        return collection
-            .DistinctBy(x => new { x.Major, x.Minor, x.Path, x.Method })
-            .ToList();
+        // map version sets
+        var majors = mapped
+            .Select(x => x.Major)
+            .Distinct()
+            .Order()
+            .ToArray();
+        
+        var apiVersionSetBuilder = app.NewApiVersionSet();
+
+        foreach (var major in majors)
+        {
+            var minors = mapped
+                .Where(x => x.Major == major)
+                .Select(x => x.Minor)
+                .Distinct()
+                .Order()
+                .ToArray();
+
+            foreach(var minor in minors)
+                apiVersionSetBuilder.HasApiVersion(new Asp.Versioning.ApiVersion(major, minor));
+        }
+
+        mapped.ForEach(x =>
+        {
+            Console.WriteLine($"Mapped [{x.Method}] v{x.Major}.{x.Minor} {x.Path}");
+        });
+
+        Console.WriteLine($"Endpoint count: {mapped.Count}");
     }
-
-    //var apiVersions = app
-    //    .NewApiVersionSet()
-    //    .HasApiVersion(new Asp.Versioning.ApiVersion(1, 0))
-    //    .HasApiVersion(new Asp.Versioning.ApiVersion(2, 0))
-    //    .ReportApiVersions().Build();
-
-    //var g = app.MapGroup("v{version:apiVersion}").WithApiVersionSet(apiVersions);
-
-    //g.MapGet("/get", () => Results.Ok())
-    //    .MapToApiVersion(1, 0);
-
-    //g.MapGet("/get", () => Results.Ok())
-    //    .MapToApiVersion(2, 0);
 }
