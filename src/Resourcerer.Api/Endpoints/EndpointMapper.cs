@@ -101,7 +101,7 @@ public static class EndpointMapper
         {
             foreach (var resource in resources)
             {
-                var mins = endpoints
+                var minors = endpoints
                     .Where(x => x.Major == major)
                     .Select(x => x.Minor)
                     .Distinct()
@@ -122,7 +122,7 @@ public static class EndpointMapper
                     if (minimumMajor > major)
                         continue;
 
-                    foreach (var minor in mins)
+                    foreach (var minor in minors)
                     {
                         var version = endpointVersions
                             .FirstOrDefault(x =>
