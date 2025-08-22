@@ -117,6 +117,11 @@ public static class EndpointMapper
                 {
                     var endpointVersions = resourceEndpoints[key].ToArray();
 
+                    var minimumMajor = endpointVersions.Min(x => x.Major);
+                    
+                    if (minimumMajor > major)
+                        continue;
+
                     foreach (var minor in mins)
                     {
                         var version = endpointVersions
