@@ -93,19 +93,19 @@ public static class EndpointMapper
             .Distinct()
             .ToArray();
 
-        var currentLowestMin = endpoints.MinBy(x => x.Minor)!.Minor;
-        var currentLowestMaj = endpoints.MinBy(x => x.Major)!.Major;
+        var majors = endpoints.Select(x => x.Major).Distinct().ToArray();
 
-        var keepMapping = true;
         var mapped = new List<AppEndpoint>();
 
-        while (keepMapping)
+        foreach(var major in majors)
         {
             foreach (var resource in resources)
             {
-                var largestMin = endpoints
-                    .Where(x => x.Major == currentLowestMaj)
-                    .MaxBy(x => x.Minor)!.Minor;
+                var mins = endpoints
+                    .Where(x => x.Major == major)
+                    .Select(x => x.Minor)
+                    .Distinct()
+                    .ToArray();
 
                 var resourceEndpoints = endpoints
                     .Where(x => x.Path.StartsWith(resource))
@@ -117,12 +117,12 @@ public static class EndpointMapper
                 {
                     var endpointVersions = resourceEndpoints[key].ToArray();
 
-                    for (var i = currentLowestMin; i <= largestMin; i++)
+                    foreach (var minor in mins)
                     {
                         var version = endpointVersions
                             .FirstOrDefault(x =>
-                                x.Major == currentLowestMaj &&
-                                x.Minor == i
+                                x.Major == major &&
+                                x.Minor == minor
                             );
 
                         if (version != null)
@@ -136,23 +136,14 @@ public static class EndpointMapper
                                 .ThenBy(x => x.Minor)
                                 .Last();
 
-                            mapped.Add(last with { Major = currentLowestMaj, Minor = i });
+                            mapped.Add(last with { Major = major, Minor = minor });
                         }
                     }
                 }
             }
-
-            currentLowestMaj++;
-            keepMapping = currentLowestMaj <= endpoints.MaxBy(x => x.Major)!.Major;
         }
 
         // map version sets
-        var majors = mapped
-            .Select(x => x.Major)
-            .Distinct()
-            .Order()
-            .ToArray();
-        
         var apiVersionSetBuilder = app.NewApiVersionSet();
 
         foreach (var major in majors)
