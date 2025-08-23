@@ -9,16 +9,11 @@ public class Webapi
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.Services.AddCors(o => o.AddDefaultPolicy(b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
+
         AppInitializer.LoadAuthConfiguration(builder.Configuration);
 
-        var services = builder.Services;
-        var environment = builder.Environment;
-        var configuration = builder.Configuration;
-
-        ServiceRegistry.AddAppHandlersAndValidators(services);
-        ServiceRegistry.Add3rdParyServices(services, environment);
-        ServiceRegistry.AddAppIdentity(services);
-        ServiceRegistry.AddMessagingServices(services, configuration);
+        builder.RegisterAppServices();
 
         builder.Host.UseDefaultServiceProvider((_, options) =>
         {
@@ -29,7 +24,7 @@ public class Webapi
         return builder.Build();
     }
 
-    public static async void Run(WebApplication app)
+    public static void Run(WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {
