@@ -68,7 +68,7 @@ public static class DependencyInjection
         services.AddScoped<IMapper, Mapper>();
     }
 
-    private static TypeAdapterConfig GetMapsterConfig()
+    public static TypeAdapterConfig GetMapsterConfig()
     {
         // mapster
         // check Mapster.Tool package

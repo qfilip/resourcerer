@@ -29,7 +29,7 @@ public class TestsBase
 
     protected static Mapper GetMapster()
     {
-        var mapsterConfig = Resourcerer.Api.Services.ServiceRegistry.GetMapsterConfig();
+        var mapsterConfig = Resourcerer.Logic.DependencyInjection.GetMapsterConfig();
         return new Mapper(mapsterConfig);
     }
 }
