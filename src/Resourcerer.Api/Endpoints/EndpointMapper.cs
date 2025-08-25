@@ -164,9 +164,20 @@ public static class EndpointMapper
                 apiVersionSetBuilder.HasApiVersion(new Asp.Versioning.ApiVersion(major, minor));
         }
 
-        mapped.ForEach(x =>
+        mapped.ForEach(e =>
         {
-            Console.WriteLine($"Mapped [{x.Method}] v{x.Major}.{x.Minor} {x.Path}");
+            var path = $"v{e.Major}.{e.Minor}{e.Path}";
+            var endpoint = e.Method switch
+            {
+                eHttpMethod.Get => app.MapGet(path, e.EndpointAction),
+                eHttpMethod.Put => app.MapPut(path, e.EndpointAction),
+                eHttpMethod.Patch => app.MapPatch(path, e.EndpointAction),
+                eHttpMethod.Post => app.MapPost(path, e.EndpointAction),
+                eHttpMethod.Delete => app.MapDelete(path, e.EndpointAction),
+                _ => throw new InvalidOperationException($"HttpMethod {e.Method} not supported")
+            };
+
+            Console.WriteLine($"Mapped [{e.Method}] v{e.Major}.{e.Minor} {e.Path}");
         });
 
         Console.WriteLine($"Endpoint count: {mapped.Count}");
