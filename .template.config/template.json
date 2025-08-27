@@ -12,7 +12,11 @@
             "target": "./",
             "modifiers": [
                 {
-                    "exclude": [ ".template_config/**" ]
+                    "exclude": [
+                        ".template_config/**",
+                        ".vs/**",
+                        ".git/**"
+                    ]
                 }
             ]
         }
