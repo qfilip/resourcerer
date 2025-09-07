@@ -1,18 +1,22 @@
-import { Component, computed, input, output, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, computed, ContentChild, input, output, signal, TemplateRef } from '@angular/core';
+import { SearchListRowTemplateDirective } from '../../directives/search-list-row-template.directive';
 
 @Component({
   selector: 'app-search-list',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './search-list.component.html',
   styleUrl: './search-list.component.css'
 })
-export class SearchListComponent {
-  $data = input.required<any[]>();
-  $selected = input.required<any>();
-  $displayFilter = input.required<(query: string) => (x: any) => boolean>();
+export class SearchListComponent<T> {
+
+  @ContentChild(SearchListRowTemplateDirective, {read: TemplateRef }) rows?: TemplateRef<any>;
+  $data = input.required<T[]>();
+  $selected = input.required<T | null>();
+  $displayFilter = input.required<(query: string) => (x: T) => boolean>();
   private $query = signal<string>('');
 
-  onSelected = output<any>();
+  onSelected = output<T>();
 
   $displayed = computed(() => {
     const items = this.$data();

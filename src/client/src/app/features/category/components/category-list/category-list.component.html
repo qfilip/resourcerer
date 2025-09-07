@@ -1,19 +1,9 @@
-<!-- @let displayed = $displayed();
-@let selected = $selectedTree();
-<div>
-  <input #query (keyup)="onQueryChanged(query.value)" type="text" [placeholder]="selected?.name ?? ''" />
-  <ul>
-    @for(tree of displayed; track $index) {
-      <li (click)="onSelected.emit(tree)" class="clickable">
-        <app-category [$category]="tree"></app-category>
-      </li>
-    }
-  </ul>
-</div> -->
 <app-search-list
   [$data]="$categoryTrees()"
   [$selected]="$selectedTree()"
   [$displayFilter]="displayFilter"
 >
-
+  <ng-template [listRow]="$categoryTrees()" let-row>
+    <app-category [$category]="row"></app-category>
+  </ng-template>
 </app-search-list>

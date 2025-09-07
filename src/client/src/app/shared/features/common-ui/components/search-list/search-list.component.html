@@ -5,7 +5,9 @@
   <ul>
     @for(x of displayed; track $index) {
       <li (click)="onSelected.emit(x)" class="clickable">
-        {{x}}
+        @if(rows) {
+          <ng-container *ngTemplateOutlet="rows; context: { $implicit: x }"></ng-container>
+        }
       </li>
     }
   </ul>
