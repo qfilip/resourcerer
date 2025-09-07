@@ -109,13 +109,12 @@ public static class EndpointMapper
 
                 var resourceEndpoints = endpoints
                     .Where(x => x.Path.StartsWith(resource))
-                    .ToLookup(x => x.Path);
+                    .GroupBy(x => new { x.Path, x.Method })
+                    .ToArray();
 
-                var keys = resourceEndpoints.Select(x => x.Key).ToArray();
-
-                foreach (var key in keys)
+                foreach (var re in resourceEndpoints)
                 {
-                    var endpointVersions = resourceEndpoints[key].ToArray();
+                    var endpointVersions = re.ToArray();
 
                     var minimumMajor = endpointVersions.Min(x => x.Major);
                     
@@ -166,7 +165,8 @@ public static class EndpointMapper
 
         mapped.ForEach(e =>
         {
-            var path = $"v{e.Major}.{e.Minor}{e.Path}";
+            var path = $"v{e.Major}.{e.Minor}/{e.Path}";
+            
             var endpoint = e.Method switch
             {
                 eHttpMethod.Get => app.MapGet(path, e.EndpointAction),
