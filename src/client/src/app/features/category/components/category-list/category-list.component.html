@@ -1,4 +1,4 @@
-@let displayed = $displayed();
+<!-- @let displayed = $displayed();
 @let selected = $selectedTree();
 <div>
   <input #query (keyup)="onQueryChanged(query.value)" type="text" [placeholder]="selected?.name ?? ''" />
@@ -9,4 +9,11 @@
       </li>
     }
   </ul>
-</div>
+</div> -->
+<app-search-list
+  [$data]="$categoryTrees()"
+  [$selected]="$selectedTree()"
+  [$displayFilter]="displayFilter"
+>
+
+</app-search-list>
