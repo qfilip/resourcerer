@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 export class CategoryListComponent {
   private categoryService = inject(CategoryService);
   
-  $categoryTrees = signal<ICategoryDto[]>([]);
+  $categoryTrees = this.categoryService.$categoryTrees;
   $selectedTree = computed(() => this.categoryService.$selectedCategory());
   private $query = signal<string>('');
 
@@ -28,13 +28,6 @@ export class CategoryListComponent {
       x.name.toLowerCase().includes(query) ||
       x.id.toLowerCase().includes(query));
   });
-
-  constructor() {
-    effect(() => {
-      const xs = this.categoryService.$categoryTrees();
-      this.$categoryTrees.set(xs);
-    });
-  }
 
   onQueryChanged = (query: string) => this.$query.set(query);
 }

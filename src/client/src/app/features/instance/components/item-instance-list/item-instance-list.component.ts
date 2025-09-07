@@ -14,9 +14,5 @@ export class ItemInstanceListComponent {
   private service = inject(InstanceService);
 
   $item = input.required<IItemDto>();
-  $instancesInfo = signal<IV1InstanceInfo[]>([]);
-  
-  constructor() {
-    effect(() => this.$instancesInfo.set(this.service.$instancesInfo()))
-  }
+  $instancesInfo = this.service.$instancesInfo;
 }

@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ItemListComponent {
   private itemService = inject(ItemService);
-  private $items = signal<IItemDto[]>([]);
+  private $items = this.itemService.$items;
   private $query = signal<string>('');
   
   $selectedItem = this.itemService.$selectedItem;
@@ -26,10 +26,6 @@ export class ItemListComponent {
   });
 
   onSelected = output<IItemDto>();
-  
-  constructor() {
-    effect(() => this.$items.set(this.itemService.$items()))
-  }
 
   onQueryChanged = (query: string) => this.$query.set(query);
 }

@@ -12,7 +12,7 @@ import { IUnitOfMeasureDto } from '../../../../shared/dtos/interfaces';
 })
 export class UomListComponent {
   private uomService = inject(UomService);
-  private $uoms = signal<IUnitOfMeasureDto[]>([]);
+  private $uoms = this.uomService.$uoms;
   private $query = signal<string>('');
   
   $selectedUom = this.uomService.$selectedUom;
@@ -24,10 +24,6 @@ export class UomListComponent {
   });
 
   onSelected = output<IUnitOfMeasureDto>();
-  
-  constructor() {
-    effect(() => this.$uoms.set(this.uomService.$uoms()))
-  }
 
   onQueryChanged = (query: string) => this.$query.set(query);
 }
