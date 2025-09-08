@@ -64,13 +64,6 @@ public static class CreateCompositeItemProductionOrder
 
             var excerpts = recipe.RecipeExcerpts;
 
-            var elementQuantityMap = excerpts
-                .Select(x => new
-                {
-                    x.ElementId,
-                    x.Quantity
-                });
-
             var allInstances = excerpts
                 .SelectMany(x => x.Element!.Instances)
                 .ToArray();
@@ -90,6 +83,13 @@ public static class CreateCompositeItemProductionOrder
             {
                 return HandlerResult<Unit>.Rejected("Not all specified instances belong to the company");
             }
+
+            var elementQuantityMap = excerpts
+                .Select(x => new
+                {
+                    x.ElementId,
+                    x.Quantity
+                });
 
             var correctlySpecifiedQuantities = elementQuantityMap.All(x =>
             {
