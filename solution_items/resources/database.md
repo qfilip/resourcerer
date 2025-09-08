@@ -48,11 +48,21 @@ table Price as prc {
 table Item as item {
   Id guid [pk]
   Name float
-  CompositeExcerpts exc[]
-  ElementExcerpts exc[]
 
   UnitOfMeasureId guid [ref:> uom.Id]
   CategoryId guid [ref:> ctg.Id]
+}
+
+table Recipe as recipe {
+  Id guid [pk]
+  Version int
+  CompositeId guid [ref:> item.Id]
+}
+
+table RecipeExcerpt as recipeExcerpt {
+  Id guid [pk]
+  ElementId guid [ref :> item.Id]
+  RecipeId guid [ref:> recipe.Id]
 }
 
 table ItemProductionOrder as itmProdOrd {
