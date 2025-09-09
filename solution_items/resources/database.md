@@ -23,13 +23,6 @@ table Category as ctg {
   CompanyId guid [ref:> cmp.Id]
 }
 
-table Excerpt as exc {
-  Id guid [pk]
-  CompositeId guid [ref:> item.Id]
-  ElementId guid [ref:> item.Id]
-  Quantity int
-}
-
 table UnitOfMeasure as uom {
   Id guid [pk]
   Name string
@@ -63,6 +56,7 @@ table RecipeExcerpt as recipeExcerpt {
   Id guid [pk]
   ElementId guid [ref :> item.Id]
   RecipeId guid [ref:> recipe.Id]
+  Quantity int
 }
 
 table ItemProductionOrder as itmProdOrd {
