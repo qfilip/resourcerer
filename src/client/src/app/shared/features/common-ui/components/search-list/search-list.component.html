@@ -1,12 +1,11 @@
 @let displayed = $displayed();
-@let selected = $selected();
 <div>
     <input #query (keyup)="onQueryChanged(query.value)" type="text" placeholder="search..." />
   <ul>
     @for(x of displayed; track $index) {
       <li (click)="onSelected.emit(x)" class="clickable">
-        @if(rows) {
-          <ng-container *ngTemplateOutlet="rows; context: { $implicit: x }"></ng-container>
+        @if(row) {
+          <ng-container *ngTemplateOutlet="row; context: { $implicit: x }"></ng-container>
         }
       </li>
     }

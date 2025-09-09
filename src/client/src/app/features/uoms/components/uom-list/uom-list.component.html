@@ -1,14 +1,11 @@
-@let uoms = $displayedUoms();
-@let selectedUom = $selectedUom();
-<div>
-  <input #query (keyup)="onQueryChanged(query.value)" type="text" [placeholder]="selectedUom?.name ?? ''" />
-  <ul>
-    @for(uom of uoms; track $index) {
-    <li (click)="onSelected.emit(uom)" [ngClass]="{'selected': selectedUom?.id === uom.id}" class="hoverable clickable">
-      <data [value]="uom.id">
+<app-search-list
+  [$data]="$uoms"
+  [$selected]="$selectedUom()"
+  [$displayFilter]="displayFilter"
+>
+  <ng-template [typeToken]="typeToken" let-uom>
+    <data [value]="uom.id">
         {{ uom.name }}
-      </data>
-    </li>
-    }
-  </ul>
-</div>
+    </data>
+  </ng-template>
+</app-search-list>

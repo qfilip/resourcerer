@@ -3,7 +3,7 @@
   [$selected]="$selectedTree()"
   [$displayFilter]="displayFilter"
 >
-  <ng-template [listRow]="$categoryTrees()" let-row>
+  <ng-template [typeToken]="typeToken" let-row>
     <app-category [$category]="row"></app-category>
   </ng-template>
 </app-search-list>

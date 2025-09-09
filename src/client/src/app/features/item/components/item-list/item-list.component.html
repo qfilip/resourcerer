@@ -1,15 +1,11 @@
-@let items = $displayedItems();
-@let selectedItem = $selectedItem();
-<div>
-  <input #query (keyup)="onQueryChanged(query.value)" type="text" [placeholder]="selectedItem?.name ?? ''" />
-  <ul>
-    @for(item of items; track $index) {
-    <li (click)="onSelected.emit(item)" [ngClass]="{'selected': selectedItem?.id === item.id}"
-      class="hoverable clickable">
-      <data [value]="item.id">
+<app-search-list
+  [$data]="$items()"
+  [$selected]="$selectedItem()"
+  [$displayFilter]="displayFilter"
+>
+  <ng-template [typeToken]="typeToken" let-item>
+    <data [value]="item.id">
         {{ item.name }}
-      </data>
-    </li>
-    }
-  </ul>
-</div>
+    </data>
+  </ng-template>
+</app-search-list>

@@ -10,7 +10,7 @@ import { SearchListRowTemplateDirective } from '../../directives/search-list-row
 })
 export class SearchListComponent<T> {
 
-  @ContentChild(SearchListRowTemplateDirective, {read: TemplateRef }) rows?: TemplateRef<any>;
+  @ContentChild(SearchListRowTemplateDirective, {read: TemplateRef }) row?: TemplateRef<any>;
   $data = input.required<T[]>();
   $selected = input.required<T | null>();
   $displayFilter = input.required<(query: string) => (x: T) => boolean>();

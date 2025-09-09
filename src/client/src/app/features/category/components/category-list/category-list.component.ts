@@ -18,7 +18,6 @@ export class CategoryListComponent {
   
   $categoryTrees = this.categoryService.$categoryTrees;
   $selectedTree = computed(() => this.categoryService.$selectedCategory());
-  private $query = signal<string>('');
 
   onSelected = output<ICategoryDto>();
   displayFilter = (query: string) => (x: ICategoryDto) => {
@@ -26,14 +25,5 @@ export class CategoryListComponent {
       x.id.toLowerCase().includes(query);
   }
 
-  $displayed = computed(() => {
-    const items = this.$categoryTrees();
-    const query = this.$query().toLowerCase();
-    
-    return items.filter(x => 
-      x.name.toLowerCase().includes(query) ||
-      x.id.toLowerCase().includes(query));
-  });
-
-  onQueryChanged = (query: string) => this.$query.set(query);
+  typeToken = {} as ICategoryDto;
 }

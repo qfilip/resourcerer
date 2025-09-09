@@ -1,31 +1,26 @@
-import { Component, computed, effect, inject, output, signal } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { ItemService } from '../../services/item.service';
 import { IItemDto } from '../../../../shared/dtos/interfaces';
 import { CommonModule } from '@angular/common';
+import { SearchListComponent } from "../../../../shared/features/common-ui/components/search-list/search-list.component";
 
 @Component({
   standalone: true,
   selector: 'app-item-list',
-  imports: [CommonModule],
+  imports: [CommonModule, SearchListComponent],
   templateUrl: './item-list.component.html',
   styleUrl: './item-list.component.css'
 })
 export class ItemListComponent {
   private itemService = inject(ItemService);
-  private $items = this.itemService.$items;
-  private $query = signal<string>('');
+  $items = this.itemService.$items;
   
   $selectedItem = this.itemService.$selectedItem;
-  $displayedItems = computed(() => {
-    const items = this.$items();
-    const query = this.$query().toLowerCase();
-    
-    return items.filter(x => 
-      x.name.toLowerCase().includes(query) ||
-      x.id.toLowerCase().includes(query));
-  });
+  displayFilter = (query: string) => (x: IItemDto) => {
+    return x.name.toLowerCase().includes(query) ||
+          x.id.toLowerCase().includes(query);
+  }
 
   onSelected = output<IItemDto>();
-
-  onQueryChanged = (query: string) => this.$query.set(query);
+  typeToken = {} as IItemDto;
 }

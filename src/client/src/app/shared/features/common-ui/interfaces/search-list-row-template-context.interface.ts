@@ -1,3 +1,3 @@
-export interface SearchListRowTemplateContext<T> {
+export interface ISearchListRowTemplateContext<T> {
     $implicit: T;
 }

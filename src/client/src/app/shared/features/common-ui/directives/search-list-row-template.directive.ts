@@ -1,15 +1,15 @@
 import { Directive, Input, input } from "@angular/core";
-import { SearchListRowTemplateContext } from "../interfaces/search-list-row-template-context.interface";
+import { ISearchListRowTemplateContext } from "../interfaces/search-list-row-template-context.interface";
 
 @Directive({
-    selector: 'ng-template[listRow]'
+    selector: 'ng-template[typeToken]'
 })
 export class SearchListRowTemplateDirective<T> {
-    @Input('listRow') data!: T[];
+    @Input('typeToken') typeToken!: T;
 
-    static ngTemplateContextGuard<TContextItem>(
-        dir: SearchListRowTemplateDirective<TContextItem>,
-        ctx: unknown): ctx is SearchListRowTemplateContext<TContextItem> {
+    static ngTemplateContextGuard<T>(
+        dir: SearchListRowTemplateDirective<T>,
+        ctx: unknown): ctx is ISearchListRowTemplateContext<T> {
             return true;
         }
 }
