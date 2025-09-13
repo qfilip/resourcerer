@@ -142,7 +142,7 @@ public class CancelCompositeItemProductionOrderTests : TestsBase
         // arrange
         var order = FakeData(x =>
         {
-            x.InstancesUsedIds = [Guid.NewGuid(), Guid.NewGuid()];
+            x.InstancesUsedIds = [];
         });
         var dto = new V1CancelCompositeItemProductionOrderCommand
         {
