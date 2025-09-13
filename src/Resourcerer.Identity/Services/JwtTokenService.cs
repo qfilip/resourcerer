@@ -2,7 +2,6 @@
 using Resourcerer.Identity.Constants;
 using Resourcerer.Identity.Models;
 using Resourcerer.Identity.Utils;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace Resourcerer.Identity.Services;
@@ -27,29 +26,44 @@ public class JwtTokenService
         string displayName,
         string companyName)
     {
-        var claims = new List<Claim>
+        var claims = new Dictionary<string, object>
         {
-            new Claim(Claims.ClaimId, identity.Id.ToString()),
-            new Claim(Claims.ClaimUsername, identity.Name!),
-            new Claim(Claims.ClaimEmail, identity.Email!.ToString()),
-            new Claim(Claims.ClaimIsAdmin, identity.Admin.ToString()),
-            new Claim(Claims.ClaimCompanyId, identity.CompanyId.ToString()),
+            [Claims.ClaimId] = identity.Id.ToString(),
+            [Claims.ClaimUsername] = identity.Name!,
+            [Claims.ClaimEmail] = identity.Email!.ToString(),
+            [Claims.ClaimIsAdmin] = identity.Admin.ToString(),
+            [Claims.ClaimCompanyId] = identity.CompanyId.ToString(),
 
-            new Claim(Claims.ClaimDisplayName, displayName),
-            new Claim(Claims.ClaimCompanyName, companyName)
+            [Claims.ClaimDisplayName] = displayName,
+            [Claims.ClaimCompanyName] = companyName
         };
 
-        claims.AddRange(Permissions.GetClaimsFromPermissionsMap(permissionMap));
+        Permissions.AddClaimsFromPermissionsMap(claims, permissionMap);
 
         return WriteToken(claims);
     }
 
     public string RefreshToken(IEnumerable<Claim> claims) => WriteToken(claims);
 
-    private string WriteToken(IEnumerable<Claim> claims)
+    private string WriteToken(Dictionary<string, object> claims)
     {
         var creadentials = new SigningCredentials(_secretKey, SecurityAlgorithms.HmacSha256);
         var now = DateTime.UtcNow;
+
+        var descriptor = new SecurityTokenDescriptor
+        {
+            Issuer = _issuer,
+            Audience = _audience,
+            Claims = claims,
+            IssuedAt = now,
+            NotBefore = now,
+            Expires = now.AddMinutes(120),
+            SigningCredentials = creadentials
+        };
+
+        var handler = new Microsoft.IdentityModel.JsonWebTokens.JwtSecurityTokenHandler();
+
+        var tokenString = handler.CreateToken(descriptor);
 
         var token = new JwtSecurityToken(
             _issuer,
@@ -62,5 +76,6 @@ public class JwtTokenService
         var handler = new JwtSecurityTokenHandler();
 
         return handler.WriteToken(token);
+        return "";
     }
 }

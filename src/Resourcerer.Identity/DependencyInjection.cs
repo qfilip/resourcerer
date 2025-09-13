@@ -23,23 +23,24 @@ public static class DependencyInjection
         services.AddScoped<IAppIdentityService<AppIdentity>, AppIdentityService>(_ =>
             new AppIdentityService(authEnabled, SystemIdentity));
 
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
-        {
-            o.TokenValidationParameters = new TokenValidationParameters
+        services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
             {
-                ValidIssuer = issuer,
-                ValidAudience = audience,
-                IssuerSigningKey = secretKey,
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = issuer,
+                    ValidAudience = audience,
+                    IssuerSigningKey = secretKey,
                 
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-            };
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                };
 
-            o.EventsType = typeof(AppJwtBearerEventsService);
-        });
+                o.EventsType = typeof(AppJwtBearerEventsService);
+            });
 
         services.AddAuthorization(cfg =>
         {

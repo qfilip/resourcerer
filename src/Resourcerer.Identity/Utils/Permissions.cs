@@ -111,15 +111,11 @@ public class Permissions
         return dict;
     }
 
-    public static List<Claim> GetClaimsFromPermissionsMap(Dictionary<string, string[]> permissionsMap)
+    public static void AddClaimsFromPermissionsMap(Dictionary<string, object> claims, Dictionary<string, string[]> permissionsMap)
     {
-        var claims = new List<Claim>();
-
         foreach (var kv in permissionsMap)
             foreach (var v in kv.Value)
-                claims.Add(new Claim(kv.Key, v));
-
-        return claims;
+                claims.Add(kv.Key, v.ToString());
     }
 
     public static List<Claim> GetClaimsFromCompressed(Dictionary<string, int> compressed)

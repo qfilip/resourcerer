@@ -1,25 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-  
   <Target Name="CompileTypeScript" />
-
   <ItemGroup>
     <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
-    <PackageReference Include="Mapster.DependencyInjection" Version="1.0.2-pre01" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+    <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Reinforced.Typings" Version="1.6.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.3" />
+    <PackageReference Include="Reinforced.Typings" Version="1.6.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.4" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Resourcerer.DataAccess\Resourcerer.DataAccess.csproj" />
     <ProjectReference Include="..\Resourcerer.Dtos\Resourcerer.Dtos.csproj" />
@@ -28,9 +24,7 @@
     <ProjectReference Include="..\Resourcerer.Messaging\Resourcerer.Messaging.csproj" />
     <ProjectReference Include="..\Resourcerer.Utilities\Resourcerer.Utilities.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
-
 </Project>
