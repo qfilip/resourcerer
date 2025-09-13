@@ -31,5 +31,5 @@ public class StartItemProductionEndpoint : IAppEndpoint
     }
 
     public AppEndpoint GetEndpointInfo() =>
-        new AppEndpoint(1, 0, EndpointMapper.Items("production_order/start"), eHttpMethod.Post, Action, MapAuth);
+        new AppEndpoint(1, 0, EndpointMapper.Items("production/start"), eHttpMethod.Post, Action, MapAuth);
 }

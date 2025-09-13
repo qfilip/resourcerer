@@ -1,0 +1,12 @@
+@rsrc.api = http://localhost:24822/v1.0
+
+GET {{rsrc.api}}/definitions
+
+###
+Post {{rsrc.api}}/items/production_order/element/cancel
+Content-Type: application/json
+
+{
+  "productionOrderId": "e9908413-5feb-42c3-a15e-cd9dee863e9c",
+  "reason": "Give me one reason to stay here..."
+}

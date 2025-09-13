@@ -18,7 +18,8 @@ public class ItemProductionOrderCommandSender : IMessageSender<V1ItemProductionC
         {
             V1CreateCompositeItemProductionOrderCommand createComposite => _bus.Send(createComposite),
             V1CreateElementItemProductionOrderCommand createElement => _bus.Send(createElement),
-            V1CancelCompositeItemProductionOrderCommand cancel => _bus.Send(cancel),
+            V1CancelCompositeItemProductionOrderCommand cancelComposite => _bus.Send(cancelComposite),
+            V1CancelElementItemProductionOrderCommand cancelElement => _bus.Send(cancelElement),
             V1StartItemProductionOrderCommand start => _bus.Send(start),
             V1FinishItemProductionOrderCommand finish => _bus.Send(finish),
             _ => throw new InvalidOperationException("Unsupported event type")

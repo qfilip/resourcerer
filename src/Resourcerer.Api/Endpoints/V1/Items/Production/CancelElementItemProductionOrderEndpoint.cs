@@ -31,5 +31,5 @@ public class CancelElementItemProductionOrderEndpoint : IAppEndpoint
     }
 
     public AppEndpoint GetEndpointInfo() =>
-        new AppEndpoint(1, 0, EndpointMapper.Items("production_order/element/cancel"), eHttpMethod.Post, Action, MapAuth);
+        new AppEndpoint(1, 0, EndpointMapper.Items("production/element/cancel"), eHttpMethod.Post, Action, MapAuth);
 }

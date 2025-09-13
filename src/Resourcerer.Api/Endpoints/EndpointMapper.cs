@@ -1,6 +1,4 @@
-﻿using Asp.Versioning.Builder;
-using Microsoft.AspNetCore.Components.Forms;
-using Resourcerer.Api.Services.StaticServices;
+﻿using Resourcerer.Api.Services.StaticServices;
 using Resourcerer.Identity.Enums;
 
 namespace Resourcerer.Api.Endpoints;
@@ -166,7 +164,6 @@ public static class EndpointMapper
         mapped.ForEach(e =>
         {
             var path = $"v{e.Major}.{e.Minor}/{e.Path}";
-            
             var endpoint = e.Method switch
             {
                 eHttpMethod.Get => app.MapGet(path, e.EndpointAction),
@@ -176,10 +173,21 @@ public static class EndpointMapper
                 eHttpMethod.Delete => app.MapDelete(path, e.EndpointAction),
                 _ => throw new InvalidOperationException($"HttpMethod {e.Method} not supported")
             };
-
-            Console.WriteLine($"Mapped [{e.Method}] v{e.Major}.{e.Minor} {e.Path}");
+            
+            PrintEndpointToConsole(e.Method, path);
         });
 
         Console.WriteLine($"Endpoint count: {mapped.Count}");
+    }
+
+    private static void PrintEndpointToConsole(eHttpMethod method, string path)
+    {
+        var space = 7 - method.ToString().Length;
+        Console.Write($"Mapped {method}");
+        
+        for (int i = 0; i < space; i++)
+            Console.Write(" ");
+
+        Console.Write($"/{path}{Environment.NewLine}");
     }
 }
