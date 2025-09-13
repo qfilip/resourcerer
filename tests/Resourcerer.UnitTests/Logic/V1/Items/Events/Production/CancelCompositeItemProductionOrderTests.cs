@@ -82,7 +82,7 @@ public class CancelCompositeItemProductionOrderTests : TestsBase
     }
 
     [Fact]
-    public void DataCorrupted__Exception()
+    public async Task DataCorrupted__Exception()
     {
         // arrange
         var order = FakeData(x => x.InstancesUsedIds = []);
@@ -102,7 +102,7 @@ public class CancelCompositeItemProductionOrderTests : TestsBase
         };
 
         // assert
-        Assert.ThrowsAsync<DataCorruptionException>(action);
+        await Assert.ThrowsAsync<DataCorruptionException>(action);
     }
 
     [Fact]
@@ -137,7 +137,7 @@ public class CancelCompositeItemProductionOrderTests : TestsBase
     }
 
     [Fact]
-    public void InvalidDataStored__Exception()
+    public async Task InvalidDataStored__Exception()
     {
         // arrange
         var order = FakeData(x =>
@@ -160,7 +160,7 @@ public class CancelCompositeItemProductionOrderTests : TestsBase
         };
 
         // assert
-        Assert.ThrowsAsync<DataCorruptionException>(action);
+        await Assert.ThrowsAsync<DataCorruptionException>(action);
     }
 
     private ItemProductionOrder FakeData(Action<ItemProductionOrder>? modifier = null)

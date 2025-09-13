@@ -99,7 +99,7 @@ public class RegisterTests : TestsBase
     }
 
     [Fact]
-    public void EmailExists__Exception()
+    public async Task EmailExists__Exception()
     {
         // arrange
         var email = "vaas.montenegro@notmail.com";
@@ -122,6 +122,6 @@ public class RegisterTests : TestsBase
         };
 
         // assert
-        Assert.ThrowsAsync<DbUpdateException>(action);
+        await Assert.ThrowsAsync<DbUpdateException>(action);
     }
 }
