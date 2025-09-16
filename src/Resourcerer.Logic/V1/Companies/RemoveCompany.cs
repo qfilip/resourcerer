@@ -13,7 +13,7 @@ namespace Resourcerer.Logic.V1;
 
 public class RemoveCompany
 {
-    public class Handler : IAppHandler<V1RemoveCompany, Unit>
+    public class Handler : IAppHandler<Guid, Unit>
     {
         private readonly AppDbContext _dbContext;
         private readonly Validator _validatior;
@@ -26,17 +26,17 @@ public class RemoveCompany
             _identityService = identityService;
         }
 
-        public async Task<HandlerResult<Unit>> Handle(V1RemoveCompany request)
+        public async Task<HandlerResult<Unit>> Handle(Guid request)
         {
             var userHasPermissions =
                 _identityService.Get().Admin &&
-                _identityService.Get().CompanyId == request.CompanyId;
+                _identityService.Get().CompanyId == request;
 
             if (!userHasPermissions)
                 return HandlerResult<Unit>.Rejected("Insufficient permissions to perform the operation");
 
             var company = await _dbContext.Companies
-                .FirstOrDefaultAsync(x => x.Id == request.CompanyId);
+                .FirstOrDefaultAsync(x => x.Id == request);
 
             if (company == null)
                 return HandlerResult<Unit>.NotFound();
@@ -48,14 +48,14 @@ public class RemoveCompany
             return HandlerResult<Unit>.Ok(Unit.New);
         }
 
-        public ValidationResult Validate(V1RemoveCompany request) => _validatior.Validate(request);
+        public ValidationResult Validate(Guid request) => _validatior.Validate(request);
     }
 
-    public class Validator : AbstractValidator<V1RemoveCompany>
+    public class Validator : AbstractValidator<Guid>
     {
         public Validator()
         {
-            RuleFor(x => x.CompanyId)
+            RuleFor(x => x)
                 .NotEmpty().WithMessage("Company Id name cannot be empty");
         }
     }

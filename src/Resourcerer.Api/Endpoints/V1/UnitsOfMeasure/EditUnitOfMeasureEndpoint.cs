@@ -26,5 +26,5 @@ public class EditUnitOfMeasureEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.UnitsOfMeasure("edit"), eHttpMethod.Post, Action, MapAuth);
+            EndpointMapper.UnitsOfMeasure(""), eHttpMethod.Patch, Action, MapAuth);
 }

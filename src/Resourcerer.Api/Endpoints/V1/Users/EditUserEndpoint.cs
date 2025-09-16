@@ -26,5 +26,5 @@ public class EditUserEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.Users("edit"), eHttpMethod.Post, Action, MapAuth);
+            EndpointMapper.Users(""), eHttpMethod.Patch, Action, MapAuth);
 }

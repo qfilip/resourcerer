@@ -8,7 +8,7 @@ namespace Resourcerer.Api.Endpoints.V1;
 public class DeleteUnitOfMeasureEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
-       Guid id,
+       [FromQuery] Guid id,
        [FromServices] Pipeline pipeline,
        [FromServices] DeleteUnitOfMeasure.Handler handler)
     {

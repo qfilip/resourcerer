@@ -26,5 +26,5 @@ public class UpdateElementItemEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.Items("update/element"), eHttpMethod.Post, Action, MapAuth);
+            EndpointMapper.Items("element"), eHttpMethod.Patch, Action, MapAuth);
 }

@@ -26,5 +26,5 @@ public class CreateCompositeItemEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.Items("create/composite"), eHttpMethod.Post, Action, MapAuth);
+            EndpointMapper.Items("composite"), eHttpMethod.Put, Action, MapAuth);
 }

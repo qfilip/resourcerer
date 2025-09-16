@@ -25,5 +25,5 @@ public class ChangeCompanyNameEndpoint : IAppEndpoint
     }
 
     public AppEndpoint GetEndpointInfo() =>
-        new AppEndpoint(1, 0, EndpointMapper.Companies("name"), eHttpMethod.Post, Action, MapAuth);
+        new AppEndpoint(1, 0, EndpointMapper.Companies(""), eHttpMethod.Patch, Action, MapAuth);
 }

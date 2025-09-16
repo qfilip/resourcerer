@@ -26,5 +26,5 @@ public class UpdateCompositeItemEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.Items("recipe"), eHttpMethod.Post, Action, MapAuth);
+            EndpointMapper.Items("recipe"), eHttpMethod.Patch, Action, MapAuth);
 }

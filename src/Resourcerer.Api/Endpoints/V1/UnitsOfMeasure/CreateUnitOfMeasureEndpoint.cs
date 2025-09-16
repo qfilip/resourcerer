@@ -26,5 +26,5 @@ public class CreateUnitOfMeasureEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.UnitsOfMeasure(""), eHttpMethod.Post, Action, MapAuth);
+            EndpointMapper.UnitsOfMeasure(""), eHttpMethod.Put, Action, MapAuth);
 }

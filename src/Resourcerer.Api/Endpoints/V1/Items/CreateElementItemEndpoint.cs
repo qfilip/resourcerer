@@ -26,5 +26,5 @@ public class CreateElementItemEndpoint : IAppEndpoint
 
     public AppEndpoint GetEndpointInfo() =>
         new AppEndpoint(1, 0,
-            EndpointMapper.Items("create/element"), eHttpMethod.Post, Action, MapAuth);
+            EndpointMapper.Items("element"), eHttpMethod.Put, Action, MapAuth);
 }

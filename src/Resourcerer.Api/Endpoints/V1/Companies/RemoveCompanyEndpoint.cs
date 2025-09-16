@@ -9,11 +9,11 @@ namespace Resourcerer.Api.Endpoints.V1;
 public class RemoveCompanyEndpoint : IAppEndpoint
 {
     public static async Task<IResult> Action(
-        [FromBody] V1RemoveCompany dto,
+        [FromQuery] Guid id,
         [FromServices] Pipeline pipeline,
         [FromServices] RemoveCompany.Handler handler)
     {
-        return await pipeline.Pipe(handler, dto);
+        return await pipeline.Pipe(handler, id);
     }
 
     internal static void MapAuth(RouteHandlerBuilder endpoint)
@@ -25,5 +25,5 @@ public class RemoveCompanyEndpoint : IAppEndpoint
     }
 
     public AppEndpoint GetEndpointInfo() =>
-        new AppEndpoint(1, 0, EndpointMapper.Companies("remove"), eHttpMethod.Post, Action, MapAuth);
+        new AppEndpoint(1, 0, EndpointMapper.Companies(""), eHttpMethod.Delete, Action, MapAuth);
 }
