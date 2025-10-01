@@ -16,8 +16,6 @@ export class ItemService {
   
   $items = this._$items.asReadonly();
   $selectedItem = this._$selectedItem.asReadonly();
-  
-  private reducer = Functions.getReducer<IItemDto>(this._$items, 'Item reducer failed');
 
   setSelectedItem = (x: IItemDto) => this._$selectedItem.set(x);
 
@@ -26,7 +24,7 @@ export class ItemService {
 
     this.apiService.getCompanyItems(user.company.id)
       .subscribe({
-        next: xs => this.runReducers(xs)
+        next: xs => this._$items.set(xs)
       });
   }
 
@@ -48,30 +46,28 @@ export class ItemService {
   createElementItem(dto: IV1CreateElementItem) {
     return this.apiService.createElementItem(dto)
       .pipe(
-        tap(x => this.runReducers(undefined, x))
+        tap(x => this.runReducer(x, 'create'))
       );
   }
 
   updateElementItem(dto: IV1UpdateElementItem) {
     return this.apiService.updateElementItem(dto)
       .pipe(
-        tap(x => this.runReducers(undefined, undefined, x))
+        tap(x => this.runReducer(x, 'update'))
       );
   }
 
   createCompositeItem(dto: IV1CreateCompositeItem) {
     return this.apiService.createCompositeItem(dto)
       .pipe(
-        tap(x => {
-          this.runReducers(undefined, x);
-        })
+        tap(x => this.runReducer(x, 'create'))
       );
   }
 
   removeItem(dto: IItemDto) {
     return this.apiService.removeItem(dto)
       .pipe(
-        tap(x => this.runReducers(undefined, undefined, undefined, x))
+        tap(x => this.runReducer(x, 'delete'))
       );
   }
 
@@ -79,8 +75,9 @@ export class ItemService {
     return this.apiService.produceElement(cmd);
   }
 
-  private runReducers(all?: IItemDto[], created?: IItemDto, updated?: IItemDto, removed?: IItemDto) {
-      this.reducer(all, created, updated, removed);
-      this._$selectedItem.set(null);
-    }
+  private runReducer(x: IItemDto, action: 'create' | 'update' | 'delete') {
+    const reducer = Functions.getReducer<IItemDto>(this._$items);
+    reducer(x, action);
+    this._$selectedItem.set(null);
+  }
 }

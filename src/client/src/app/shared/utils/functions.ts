@@ -51,18 +51,16 @@ export class Functions {
       return result;
     }
 
-    static getReducer<T extends IEntityDto>($signal: WritableSignal<T[]>, reducerError: string) {
-      return (all?: T[], created?: T, updated?: T, removed?: T) => {
-        if(all)
-          $signal.set(all);
-        else if(created)
-          $signal.update(xs => xs.concat(created));
-        else if(updated)
-          $signal.update(xs => xs.filter(x => x.id !== updated.id).concat(updated));
-        else if(removed)
-          $signal.update(xs => xs.filter(x => x.id !== removed.id));
+    static getReducer<T extends IEntityDto>($signal: WritableSignal<T[]>) {
+      return (entity: T, action: 'create' | 'update' | 'delete') => {
+        if(action === 'create')
+          $signal.update(xs => xs.concat(entity));
+        else if(action === 'update')
+          $signal.update(xs => xs.filter(x => x.id !== entity.id).concat(entity));
+        else if(action === 'delete')
+          $signal.update(xs => xs.filter(x => x.id !== entity.id));
         else
-          throw reducerError;
+          throw 'Invalid action type';
       }
     }
 }

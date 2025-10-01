@@ -16,8 +16,6 @@ export class UomService {
   $uoms = this._$uoms.asReadonly();
   $selectedUom = this._$selectedUom.asReadonly();
 
-  private reducer = Functions.getReducer<IUnitOfMeasureDto>(this._$uoms, 'UnitOfMeasure reducer failed');
-
   selectUom = (x: IUnitOfMeasureDto) => this._$selectedUom.set(x);
 
   getCompanyUnitsOfMeasure() {
@@ -25,7 +23,10 @@ export class UomService {
     
     this.apiService.getCompanyUnitsOfMeasure(user.company.id)
       .subscribe({
-        next: xs => this.runReducers(xs)
+        next: xs => {
+          this._$uoms.set(xs);
+          this._$selectedUom.set(null);
+        }
       });
   }
 
@@ -38,26 +39,27 @@ export class UomService {
 
     return this.apiService.createUnitOfMeasure(request)
       .pipe(
-        tap(x => this.runReducers(undefined, x))
+        tap(x => this.runReducer(x, 'create'))
       );
   }
 
   updateUnitOfMeasure(dto: IV1EditUnitOfMeasure) {
     return this.apiService.editUnitOfMeasure(dto)
       .pipe(
-        tap(x => this.runReducers(undefined, undefined, x))
+        tap(x => this.runReducer(x, 'update'))
       );
   }
 
   deleteUnitOfMeasure(dto: IUnitOfMeasureDto) {
     return this.apiService.deleteUnitOfMeasure(dto.id)
       .pipe(
-        tap(x => this.runReducers(undefined, undefined, undefined, x))
+        tap(x => this.runReducer(x, 'delete'))
       );
   }
 
-  private runReducers(all?: IUnitOfMeasureDto[], created?: IUnitOfMeasureDto, updated?: IUnitOfMeasureDto, removed?: IUnitOfMeasureDto) {
-    this.reducer(all, created, updated, removed);
+  private runReducer(x: IUnitOfMeasureDto, action: 'create' | 'update' | 'delete') {
+    const reducer = Functions.getReducer<IUnitOfMeasureDto>(this._$uoms);
+    reducer(x, action);
     this._$selectedUom.set(null);
   }
 }

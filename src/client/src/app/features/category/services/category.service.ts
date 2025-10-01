@@ -19,7 +19,7 @@ export class CategoryService extends BaseApiService {
   $categoryTrees = computed(() => CategoryUtils.mapTree(this._$categories()));
   $selectedCategory = this._$selectedCategory.asReadonly();
 
-  private reducer = Functions.getReducer<ICategoryDto>(this._$categories, 'Category reducer failed');
+  private reducer = Functions.getReducer<ICategoryDto>(this._$categories);
 
   selectCategory = (x: ICategoryDto) => this._$selectedCategory.set(x);
 
@@ -28,7 +28,7 @@ export class CategoryService extends BaseApiService {
     
     this.apiService.getAllCompanyCategories(user.company.id)
       .subscribe({
-        next: xs => this.runReducers(xs)
+        next: xs => this._$categories.set(xs)
       });
   }
 
@@ -41,26 +41,21 @@ export class CategoryService extends BaseApiService {
 
     return this.apiService.createCategory(request)
       .pipe(
-        tap(x => this.runReducers(undefined, x, undefined, undefined))
+        tap(x => this.reducer(x, 'create'))
       );
   }
 
   updateCategory(dto: IV1UpdateCategory) {
     return this.apiService.updateCategory(dto)
       .pipe(
-        tap(x => this.runReducers(undefined, undefined, x, undefined))
+        tap(x => this.reducer(x, 'update'))
       );
   }
 
   removeCategory(dto: ICategoryDto) {
     return this.apiService.removeCategory(dto)
       .pipe(
-        tap(x => this.runReducers(undefined, undefined, undefined, x))
+        tap(x => this.reducer(x, 'delete'))
       );
-  }
-
-  private runReducers(all?: ICategoryDto[], created?: ICategoryDto, updated?: ICategoryDto, removed?: ICategoryDto) {
-    this.reducer(all, created, updated, removed);
-    this._$selectedCategory.set(null);
   }
 }
