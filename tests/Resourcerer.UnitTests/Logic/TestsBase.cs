@@ -1,7 +1,10 @@
 ﻿using FakeItEasy;
 using MapsterMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Utilities.Faking;
+using Resourcerer.Logic.Fake;
 using Resourcerer.UnitTests.Utilities;
 using SqlForgery;
 using System.Text.Json;
@@ -34,5 +37,44 @@ public class TestsBase
     {
         var mapsterConfig = Resourcerer.Api.Services.ServiceRegistry.GetMapsterConfig();
         return new Mapper(mapsterConfig);
+    }
+
+    [Fact]
+    public void SeedTest()
+    {
+        var f = _forger;
+        f.Fake<Company>(co =>
+        {
+            co.Name = "Charm Farm";
+            var emps = new List<AppUser>()
+            {
+                f.Fake<AppUser>(u => u.Name = "Liam"),
+                f.Fake<AppUser>(u => u.Name = "Sophia")
+            };
+
+            emps.ForEach(e => e.CompanyId = co.Id);
+
+            co.Categories = [
+                f.Fake<Category>(ctg => {
+                    ctg.CompanyId = co.Id;
+                    ctg.Name = "Products";
+                    ctg.ChildCategories = [
+                        f.Fake<Category>(sc => sc.Name = "Meat"),
+                        f.Fake<Category>(sc => sc.Name = "Veggies"),
+                        f.Fake<Category>(sc => sc.Name = "Fruit")
+                    ];
+                })
+            ];
+        });
+
+        _ctx.SaveChanges();
+
+        var c = _ctx.Companies
+            .Include(x => x.Categories)
+                .ThenInclude(x => x.ChildCategories)
+            .Include(x => x.Employees)
+            .ToArray();
+
+        var x = 0;
     }
 }

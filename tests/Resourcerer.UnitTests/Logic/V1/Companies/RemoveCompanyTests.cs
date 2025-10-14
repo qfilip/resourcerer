@@ -36,8 +36,6 @@ public class RemoveCompanyTests : TestsBase
             };
         });
 
-        var dto = new V1RemoveCompany { CompanyId = company.Id };
-
         A.CallTo(() =>
             _fakeIdentityService.Get())
             .Returns(Mapping.Of(company.Employees.First()));
@@ -45,7 +43,7 @@ public class RemoveCompanyTests : TestsBase
         _ctx.SaveChanges();
 
         // act
-        var result = _sut.Handle(dto).Await();
+        var result = _sut.Handle(company.Id).Await();
 
         // assert
         Assert.Multiple(
@@ -79,8 +77,6 @@ public class RemoveCompanyTests : TestsBase
             };
         });
 
-        var dto = new V1RemoveCompany { CompanyId = company.Id };
-
         A.CallTo(() =>
             _fakeIdentityService.Get())
             .Returns(Mapping.Of(company.Employees.First()));
@@ -88,7 +84,7 @@ public class RemoveCompanyTests : TestsBase
         _ctx.SaveChanges();
 
         // act
-        var result = _sut.Handle(dto).Await();
+        var result = _sut.Handle(company.Id).Await();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
@@ -101,8 +97,6 @@ public class RemoveCompanyTests : TestsBase
         var company = _forger.Fake<Company>();
         var user = _forger.Fake<AppUser>(u => u.IsAdmin = true);
 
-        var dto = new V1RemoveCompany { CompanyId = company.Id };
-
         A.CallTo(() =>
             _fakeIdentityService.Get())
             .Returns(Mapping.Of(user));
@@ -110,7 +104,7 @@ public class RemoveCompanyTests : TestsBase
         _ctx.SaveChanges();
 
         // act
-        var result = _sut.Handle(dto).Await();
+        var result = _sut.Handle(company.Id).Await();
 
         // assert
         Assert.Equal(eHandlerResultStatus.Rejected, result.Status);
