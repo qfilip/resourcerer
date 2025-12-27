@@ -1,5 +1,4 @@
-﻿using Resourcerer.Api.Services.StaticServices;
-using Resourcerer.Identity.Enums;
+﻿using Resourcerer.Identity.Enums;
 
 namespace Resourcerer.Api.Endpoints;
 
@@ -38,7 +37,7 @@ public static class EndpointMapper
         RouteHandlerBuilder route,
         List<(eResource claimType, ePermission[] claimValues)>? claims = null)
     {
-        if(!AppStaticData.Auth.Enabled) // set in appsetting.json
+        if(!StaticConfig.AuthEnabled)
         {
             return;
         }

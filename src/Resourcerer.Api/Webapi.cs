@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http.Json;
 using Resourcerer.Api.Endpoints;
 using Resourcerer.Api.Middlewares;
-using System.Text.Json.Serialization;
 
-namespace Resourcerer.Api.Services.StaticServices;
+namespace Resourcerer.Api;
 
 public class Webapi
 {
@@ -18,16 +17,7 @@ public class Webapi
             // x.SerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
         });
 
-        AppInitializer.LoadAuthConfiguration(builder.Configuration);
-
-        var services = builder.Services;
-        var environment = builder.Environment;
-        var configuration = builder.Configuration;
-
-        ServiceRegistry.AddAppHandlersAndValidators(services);
-        ServiceRegistry.Add3rdParyServices(services, environment);
-        ServiceRegistry.AddAppIdentity(services);
-        ServiceRegistry.AddMessagingServices(services, configuration);
+        DependencyInjection.RegisterAppServices(builder);
 
         builder.Host.UseDefaultServiceProvider((_, options) =>
         {

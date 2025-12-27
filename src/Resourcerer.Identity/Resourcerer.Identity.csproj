@@ -11,4 +11,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.9" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Resourcerer.Utilities\Resourcerer.Utilities.csproj" />
+  </ItemGroup>
 </Project>

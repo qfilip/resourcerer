@@ -1,13 +1,14 @@
-﻿using Resourcerer.Api.Services.StaticServices;
-using Resourcerer.Logic.Models;
+﻿using Microsoft.IdentityModel.Tokens;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entities;
 using Resourcerer.Identity.Services;
 using Resourcerer.Identity.Utils;
+using Resourcerer.Logic.Models;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.Utilities.Cryptography;
 using SqlForgery;
+using System.Text;
 using System.Text.Json;
 
 namespace Resourcerer.UnitTests.Logic.V1.Users;
@@ -21,11 +22,11 @@ public class LoginTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        AppStaticData.Auth.Jwt.Configure(Guid.Empty.ToString(), "issuer", "audience");
         var jwtService = new JwtTokenService(
-            AppStaticData.Auth.Jwt.Key!,
-            AppStaticData.Auth.Jwt.Issuer,
-            AppStaticData.Auth.Jwt.Audience);
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Guid.Empty.ToString())),
+            "issuer",
+            "audience",
+            60);
         var (user, password) = ArrangeDb(_ctx, _forger);
         var request = new AppUserDto { Name = user.Name, Password = password };
 

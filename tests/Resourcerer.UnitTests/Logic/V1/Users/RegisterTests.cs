@@ -1,15 +1,15 @@
-﻿using MassTransit.JobService;
-using Microsoft.EntityFrameworkCore;
-using Resourcerer.Api.Services.StaticServices;
-using Resourcerer.Logic.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.Dtos.Entities;
 using Resourcerer.Dtos.V1;
 using Resourcerer.Identity.Services;
+using Resourcerer.Logic.Models;
 using Resourcerer.Logic.Utilities.Query;
 using Resourcerer.Logic.V1;
 using Resourcerer.UnitTests.Utilities;
 using Resourcerer.Utilities.Cryptography;
+using System.Text;
 
 namespace Resourcerer.UnitTests.Logic.V1.Users;
 
@@ -22,11 +22,11 @@ public class RegisterTests : TestsBase
     public void HappyPath__Ok()
     {
         // arrange
-        AppStaticData.Auth.Jwt.Configure(Guid.Empty.ToString(), "issuer", "audience");
         var jwtService = new JwtTokenService(
-            AppStaticData.Auth.Jwt.Key!,
-            AppStaticData.Auth.Jwt.Issuer,
-            AppStaticData.Auth.Jwt.Audience);
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Guid.Empty.ToString())),
+            "issuer",
+            "audience",
+            60);
         var request = new V1Register
         {
             Username = "vaas",

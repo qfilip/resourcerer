@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resourcerer.DataAccess.Entities;
 using Resourcerer.DataAccess.Utilities.Faking;
-using Resourcerer.Logic.Fake;
 using Resourcerer.UnitTests.Utilities;
 using SqlForgery;
 using System.Text.Json;
@@ -35,7 +34,7 @@ public class TestsBase
 
     protected static Mapper GetMapster()
     {
-        var mapsterConfig = Resourcerer.Api.Services.ServiceRegistry.GetMapsterConfig();
+        var mapsterConfig = Resourcerer.Logic.DependencyInjection.GetMapsterConfig();
         return new Mapper(mapsterConfig);
     }
 

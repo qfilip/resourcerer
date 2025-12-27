@@ -1,4 +1,4 @@
-﻿using Resourcerer.Api.Services.StaticServices;
+﻿using Resourcerer.Api;
 
 namespace Resourcerer.UnitTests.Api;
 
