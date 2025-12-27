@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.Json;
 using Resourcerer.Api.Endpoints;
 using Resourcerer.Api.Middlewares;
+using Scalar.AspNetCore;
 
 namespace Resourcerer.Api;
 
@@ -32,18 +33,9 @@ public class Webapi
     {
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
-            app.UseSwaggerUI(o =>
-            {
-                var descriptions = app.DescribeApiVersions();
-                foreach(var description in descriptions)
-                {
-                    string url = $"/swagger/{description.GroupName}/swagger.json";
-                    string name = description.GroupName.ToUpperInvariant();
-
-                    o.SwaggerEndpoint(url, name);
-                }
-            });
+            app.MapOpenApi();
+            app.MapScalarApiReference();
+            var descriptions = app.DescribeApiVersions();
         }
 
         app.UseHttpsRedirection();
